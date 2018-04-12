@@ -29,8 +29,7 @@ function c101005043.initial_effect(c)
 	e3:SetCondition(c101005043.thcon)
 	e3:SetTarget(c101005043.thtg)
 	e3:SetOperation(c101005043.thop)
-	c:RegisterEffect(e13)
-	
+	c:RegisterEffect(e3)	
 end
 function c101005043.lcheck(g,lc)
 	return g:IsExists(Card.IsLinkSetCard,1,nil,0x217)
