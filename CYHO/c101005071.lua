@@ -6,7 +6,6 @@ function c101005071.initial_effect(c)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCountLimit(1,101005071)
 	e1:SetTarget(c101005071.target)
-	e1:SetOperation(c101005071.operation)
 	c:RegisterEffect(e1)
 	--cannot select, except link thing
 	local e2=Effect.CreateEffect(c)
