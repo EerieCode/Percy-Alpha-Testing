@@ -37,7 +37,9 @@ function c101005062.initial_effect(c)
     c:RegisterEffect(e4)
 end
 function c101005062.ctfilter(c)
-    return c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousPosition(POS_FACEUP) and bit.band(c:GetPreviousTypeOnField(),TYPE_PENDULUM)~=0 and c:IsPreviousSetCard(0x10d) and c:IsReason(REASON_BATTLE+REASON_EFFECT)
+    return c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousPosition(POS_FACEUP) 
+        and bit.band(c:GetPreviousTypeOnField(),TYPE_PENDULUM)~=0 and c:IsPreviousSetCard(0x10d) 
+        and c:IsReason(REASON_BATTLE+REASON_EFFECT)
 end
 function c101005062.ctcon(e,tp,eg,ep,ev,re,r,rp)
     return eg:IsExists(c101005062.ctfilter,1,nil)
