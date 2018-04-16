@@ -43,7 +43,6 @@ function c100227036.ntcon(e,c,minc)
 	return minc==0 and c:GetLevel()>4 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and ((Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>0 and Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0) or Duel.IsExistingMatchingCard(c100227036.cfilter,tp,LOCATION_MZONE,0,1,nil))
 end
-
 function c100227036.filter(c,e,tp)
 	return c:IsRace(RACE_WARRIOR) and c:IsLevel(5) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
@@ -60,10 +59,6 @@ function c100227036.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
-
-
-
-
 function c100227036.filter(c,tp)
 	return c:IsFaceup() and c:IsControler(tp) and c:IsLocation(LOCATION_MZONE) and c:IsRACE(RACE_WARRIOR)
 end
