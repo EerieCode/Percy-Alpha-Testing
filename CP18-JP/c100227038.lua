@@ -12,16 +12,17 @@ function c100227043.initial_effect(c)
 	e1:SetOperation(c100227038.fusop)
 	c:RegisterEffect(e1)
 	--special summon
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(57354389,0))
-	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e1:SetType(EFFECT_TYPE_IGNITION)
-	e1:SetRange(LOCATION_GRAVE)
-	e1:SetCountLimit(1,57354389)
-	e1:SetCondition(c100227038.spcon)
-	e1:SetTarget(c100227038.sptg)
-	e1:SetOperation(c100227038.spop)
-	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(100227038,0))
+	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetRange(LOCATION_GRAVE)
+	e2:SetCountLimit(1,100227038)
+	e2:SetCondition(c100227038.spcon)
+	e2:SetTarget(c100227038.sptg)
+	e2:SetOperation(c100227038.spop)
+	c:RegisterEffect(e2)
 end
 function c100227038.fuscost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,500) end
@@ -85,7 +86,7 @@ function c100227038.fusop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function c100227038.cfilter(c)
-	return c:IsFacedown() and c:GetAttack()~=c:GetBaseAttack()
+	return c:IsFaceup() and c:IsRace(RACE_WARRIOR)and c:IsLevelAbove(5) and c:GetAttack()~=c:GetBaseAttack()
 end
 function c100227038.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)>0
