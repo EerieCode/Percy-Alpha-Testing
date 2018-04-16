@@ -13,7 +13,7 @@ function c100227014.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c100227014.costfilter(c)
-	return c:IsCode(100227014) and c:IsAbleToDeck()
+	return c:IsCode(100227013) and c:IsAbleToDeck()
 end
 function c100227014.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsAbleToDeck() and chkc~=e:GetHandler() end
