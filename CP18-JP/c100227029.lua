@@ -61,7 +61,7 @@ function c100227029.acttg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if c100227029.spcon(e,tp,eg,ep,ev,re,r,rp) 
 		and c100227029.spcost(e,tp,eg,ep,ev,re,r,rp,0)
 		and c100227029.sptg(e,tp,eg,ep,ev,re,r,rp,0)
-		and Duel.SelectYesNo(tp,96) then
+		and Duel.SelectYesNo(tp,94) then
 		e:SetCategory(CATEGORY_SPECIAL_SUMMON)
 		e:SetOperation(c100227029.spop)
 		c100227029.spcost(e,tp,eg,ep,ev,re,r,rp,1)
