@@ -41,7 +41,6 @@ end
 function c100227040.ffilter(c,fc,sumtype,tp)
 	return c:IsRace(RACE_WARRIOR,fc,sumtype,tp) and c:GetLevel()>=5
 end
-
 function c100227040.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE
 		and (Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated())
@@ -65,7 +64,6 @@ function c100227040.atkop(e,tp,eg,ep,ev,re,r,rp)
 		tc=g:GetNext()
 	end
 end
-
 function c100227040.atkcon2(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
@@ -90,7 +88,6 @@ function c100227040.atkop2(e,tp,eg,ep,ev,re,r,rp)
 		d:RegisterEffect(e2)
 	end
 end
-
 function c100227040.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local crp=c:GetReasonPlayer()
@@ -114,4 +111,3 @@ function c100227040.spop(e,tp,eg,ep,ev,re,r,rp)
 		tc:CompleteProcedure()
 	end
 end
-
