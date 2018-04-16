@@ -6,6 +6,7 @@ function c100227027.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetTarget(c100227027.target)
 	c:RegisterEffect(e1)
 	--indes
 	local e2=Effect.CreateEffect(c)
@@ -40,6 +41,38 @@ function c100227027.initial_effect(c)
 	e4:SetTarget(c100227027.tdtg)
 	e4:SetOperation(c100227027.tdop)
 	c:RegisterEffect(e4)
+end
+function c100227027.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return c100227027.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc) end
+	if chk==0 then return true end
+	local b1=c100227027.drcost(e,tp,eg,ep,ev,re,r,rp,0)
+		and c100227027.drtg(e,tp,eg,ep,ev,re,r,rp,0)
+	local b2=c100227027.tdcon(e,tp,eg,ep,ev,re,r,rp)
+		and c100227027.cost(e,tp,eg,ep,ev,re,r,rp,0)
+		and c100227027.tdtg(e,tp,eg,ep,ev,re,r,rp,0)
+	if (b1 or b2) and Duel.SelectYesNo(tp,96) then
+		local op=0
+		if b1 and b2 then
+			op=Duel.SelectOption(tp,aux.Stringid(100227027,0),aux.Stringid(100227027,1))
+		elseif b1 then
+			op=Duel.SelectOption(tp,aux.Stringid(100227027,0))
+		else
+			op=Duel.SelectOption(tp,aux.Stringid(100227027,1))+1
+		end
+		if op==0 then
+			e:SetCategory(CATEGORY_DRAW)
+			e:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+			e:SetOperation(c100227027.drop)
+			c100227027.drcost(e,tp,eg,ep,ev,re,r,rp,1)
+			c100227027.drtg(e,tp,eg,ep,ev,re,r,rp,1)
+		else
+			e:SetCategory(CATEGORY_TODECK)
+			e:SetProperty(EFFECT_FLAG_CARD_TARGET)
+			e:SetOperation(c100227027.tdop)
+			c100227027.cost(e,tp,eg,ep,ev,re,r,rp,1)
+			c100227027.tdtg(e,tp,eg,ep,ev,re,r,rp,1)
+		end
+	end
 end
 function c100227027.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
