@@ -1,8 +1,8 @@
 --リトマスの死の剣士
--- Swordman of Doom, Lithmus
+--Lithmus Doom Swordsman
 function c100227013.initial_effect(c)
 	c:EnableReviveLimit()
-
+	--trap immunity
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
@@ -16,7 +16,7 @@ function c100227013.initial_effect(c)
 	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	e2:SetValue(1)
 	c:RegisterEffect(e2)
-	--atk,def
+	--ATK/DEF gain
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
 	e3:SetCode(EFFECT_UPDATE_ATTACK)
@@ -57,10 +57,10 @@ function c100227013.setfilter(c)
 	return c:IsType(TYPE_TRAP) and c:IsSSetable()
 end
 function c100227013.settg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and c100227013.setfilter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(c100227013.setfilter,tp,LOCATION_GRAVE,0,1,nil) end
+	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and c100227013.setfilter(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(c100227013.setfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
-	local g=Duel.SelectTarget(tp,c100227013.setfilter,tp,LOCATION_GRAVE,0,1,1,nil)
+	local g=Duel.SelectTarget(tp,c100227013.setfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_LEAVE_GRAVE,g,1,0,0)
 end
 function c100227013.setop(e,tp,eg,ep,ev,re,r,rp)
