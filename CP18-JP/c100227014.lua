@@ -4,7 +4,7 @@ function c100227014.initial_effect(c)
 	aux.AddRitualProcGreaterCode(c,100227013)
 	--to deck
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_TODECK)
+	e1:SetCategory(CATEGORY_TODECK+CATEGORY_DRAW)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_GRAVE)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
@@ -30,5 +30,7 @@ function c100227014.tdop(e,tp,eg,ep,ev,re,r,rp)
 	if c:IsRelateToEffect(e) and tc:IsRelateToEffect(e) then
 		local g=Group.FromCards(c,tc)
 		Duel.SendtoDeck(g,nil,2,REASON_EFFECT)
+			Duel.BreakEffect()
+			Duel.Draw(tp,1,REASON_EFFECT)
 	end
 end
