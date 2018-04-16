@@ -13,6 +13,7 @@ function c100227027.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
 	e2:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_NO_TURN_RESET)
+	e2:SetRange(LOCATION_SZONE)
 	e2:SetCountLimit(1)
 	e2:SetValue(aux.tgoval)
 	c:RegisterEffect(e2)
@@ -50,7 +51,7 @@ function c100227027.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local b2=c100227027.tdcon(e,tp,eg,ep,ev,re,r,rp)
 		and c100227027.cost(e,tp,eg,ep,ev,re,r,rp,0)
 		and c100227027.tdtg(e,tp,eg,ep,ev,re,r,rp,0)
-	if (b1 or b2) and Duel.SelectYesNo(tp,96) then
+	if (b1 or b2) and Duel.SelectYesNo(tp,94) then
 		local op=0
 		if b1 and b2 then
 			op=Duel.SelectOption(tp,aux.Stringid(100227027,0),aux.Stringid(100227027,1))
@@ -80,7 +81,7 @@ function c100227027.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	c:RegisterFlagEffect(100227027,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
 end
 function c100227027.drfilter(c)
-	return c:GetLevel()==8 and c:IsDiscardable()
+	return c:GetLevel()==10 and c:IsDiscardable()
 end
 function c100227027.drcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c100227027.drfilter,tp,LOCATION_HAND,0,1,nil)
@@ -89,10 +90,10 @@ function c100227027.drcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	c100227027.cost(e,tp,eg,ep,ev,re,r,rp,1)
 end
 function c100227027.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsPlayerCanDraw(tp,2) end
+	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) end
 	Duel.SetTargetPlayer(tp)
-	Duel.SetTargetParam(2)
-	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,2)
+	Duel.SetTargetParam(1)
+	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
 end
 function c100227027.drop(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
