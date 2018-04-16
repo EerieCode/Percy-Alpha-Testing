@@ -35,8 +35,8 @@ function c100227039.initial_effect(c)
 	e3:SetOperation(c100227039.thop)
 	c:RegisterEffect(e3)
 end
-function c100227039.matfilter(c)
-	return c:IsLevelAbove(5) and c:IsFusionRace(RACE_WARRIOR)
+function c100227039.matfilter(c,fc,sumtype,tp)
+	return c:IsLevelAbove(5) and c:IsRace(RACE_WARRIOR,fc,sumtype,tp)
 end
 function c100227039.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
