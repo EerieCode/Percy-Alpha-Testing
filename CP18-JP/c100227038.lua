@@ -85,7 +85,6 @@ function c100227038.fusop(e,tp,eg,ep,ev,re,r,rp)
 		tc:CompleteProcedure()
 	end
 end
-
 function c100227038.cfilter(c)
 	return c:IsFaceup() and c:IsRace(RACE_WARRIOR)and c:IsLevelAbove(5) and c:GetAttack()~=c:GetBaseAttack()
 end
