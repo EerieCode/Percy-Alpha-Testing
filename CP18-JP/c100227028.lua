@@ -78,7 +78,7 @@ function c100227028.acttg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 			c100227028.sptg(e,tp,eg,ep,ev,re,r,rp,1)
 		else
 			e:SetCategory(CATEGORY_TODECK)
-			e:SetProperty(0)
+			e:SetProperty(EFFECT_FLAG_CARD_TARGET)
 			e:SetOperation(c100227028.tdop)
 			c100227028.cost(e,tp,eg,ep,ev,re,r,rp,1)
 			c100227028.tdtg(e,tp,eg,ep,ev,re,r,rp,1)
