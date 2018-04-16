@@ -69,8 +69,7 @@ end
 function c100227022.spcon(e,c)
 	if c==nil then return true end
 	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_MZONE,0)==0
-		and Duel.GetFieldGroupCount(c:GetControler(),0,LOCATION_MZONE)>0
-		and Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
+			and Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
 end
 function c100227022.damcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetBattledGroupCount()>0 or e:GetHandler():GetAttackedCount()>0 
