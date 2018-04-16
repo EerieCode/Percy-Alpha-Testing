@@ -64,19 +64,19 @@ function c100227023.spcon(e,c)
 	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_MZONE,0)==0
 		and Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
 end
-function c100227023.damfilter(c)
+function c100227023.damfilter(c,e)
 	return c:IsFaceup() and e:GetHandler():GetBattledGroup():IsContains(c)
 end
 function c100227023.damcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetBattledGroupCount()>0 or e:GetHandler():GetAttackedCount()>0 
 end
 function c100227023.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c100227023.damfilter,tp,0,LOCATION_MZONE,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(c100227023.damfilter,tp,0,LOCATION_MZONE,1,nil,e) end
 end
 function c100227023.damop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local g=Duel.SelectMatchingCard(tp,c100227023.damfilter,tp,0,LOCATION_MZONE,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,c100227023.damfilter,tp,0,LOCATION_MZONE,1,1,nil,e)
 	local tc=g:GetFirst()
 	if tc and c:IsRelateToEffect(e) then
 		local atk=tc:GetAttack()
