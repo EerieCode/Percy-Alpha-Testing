@@ -1,6 +1,6 @@
 --時械神 ガブリオン
 --Gabrion, the Timelord
---Scipted by ahtelel
+--Scripted by ahtelel
 function c100227024.initial_effect(c)
 	--cannot special summon
 	local e1=Effect.CreateEffect(c)
@@ -30,16 +30,9 @@ function c100227024.initial_effect(c)
 	e4:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 	c:RegisterEffect(e4)
 	--damage val
-	local e5=Effect.CreateEffect(c)
-	e5:SetType(EFFECT_TYPE_SINGLE)
-	e5:SetCode(EFFECT_NO_BATTLE_DAMAGE)
-	e5:SetValue(1)
+	local e5=e3:Clone()
+	e5:SetCode(EFFECT_AVOID_BATTLE_DAMAGE)
 	c:RegisterEffect(e5)
-	local e8=Effect.CreateEffect(c)
-	e8:SetType(EFFECT_TYPE_SINGLE)
-	e8:SetCode(EFFECT_AVOID_BATTLE_DAMAGE)
-	e8:SetValue(1)
-	c:RegisterEffect(e8)
 	--to deck
 	local e6=Effect.CreateEffect(c)
 	e6:SetDescription(aux.Stringid(100227024,1))
