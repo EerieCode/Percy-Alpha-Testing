@@ -1,6 +1,6 @@
 --てんゆうせいカイキ
 --Kaiki the sky star
-function c100227043.initial_effect(c)
+function c100227038.initial_effect(c)
 	--Fusion Summon
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_FUSION_SUMMON)
