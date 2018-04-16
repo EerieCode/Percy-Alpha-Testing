@@ -14,6 +14,7 @@ function c100227028.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
 	e2:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e2:SetRange(LOCATION_SZONE)
 	e2:SetCountLimit(1)
 	e2:SetValue(aux.tgoval)
 	c:RegisterEffect(e2)
@@ -61,7 +62,7 @@ function c100227028.acttg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local b2=c100227028.tdcon(e,tp,eg,ep,ev,re,r,rp)
 		and c100227028.cost(e,tp,eg,ep,ev,re,r,rp,0)
 		and c100227028.tdtg(e,tp,eg,ep,ev,re,r,rp,0)
-	if (b1 or b2) and Duel.SelectYesNo(tp,96) then
+	if (b1 or b2) and Duel.SelectYesNo(tp,94) then
 		local op=0
 		if b1 and b2 then
 			op=Duel.SelectOption(tp,aux.Stringid(100227028,0),aux.Stringid(100227028,1))
