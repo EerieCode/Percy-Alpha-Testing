@@ -29,7 +29,7 @@ function c101004085.initial_effect(c)
     c:RegisterEffect(e3)
 end
 function c101004085.lvcfilter(c)
-    return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x106)
+    return bit.band(c:GetType(),0x81)==0x81 and c:IsSetCard(0x106)
 end
 function c101004085.lvfilter(c,e)
     return c:IsFaceup() and c:IsLevelAbove(1) and (not e or c:IsCanBeEffectTarget(e))
@@ -37,7 +37,7 @@ end
 function c101004085.lvcost(e,tp,eg,ep,ev,re,r,rp,chk)
     local tg=Duel.GetMatchingGroup(c101004085.lvfilter,tp,LOCATION_MZONE,0,nil,e)
     if chk==0 then return Duel.CheckReleaseGroupCost(tp,c101004085.lvcfilter,1,true,aux.ReleaseCheckTarget,nil,tg) end
-    local g=Duel.SelectReleaseGroupCost(tp,c101004085.cfilter,1,99,true,aux.ReleaseCheckTarget,nil,tg)
+    local g=Duel.SelectReleaseGroupCost(tp,c101004085.lvcfilter,1,99,true,aux.ReleaseCheckTarget,nil,tg)
     e:SetLabel(#g)
     Duel.Release(g,REASON_COST)
 end
