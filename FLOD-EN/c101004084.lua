@@ -25,7 +25,8 @@ function c101004084.filter(c,e,tp,m)
 end
 function c101004084.checkRecursive(c,rc,tp,sg,mg)
 	sg:AddCard(c)
-	local res=c101004084.checkGoal(tp,sg,rc) or sg:IsExists(c101004084.checkRecursive,1,sg,rc,tp,sg,mg)
+	local res=sg:GetSum(Card.GetRitualLevel,rc)<=rc:GetLevel() 
+		and (c101004084.checkGoal(tp,sg,rc) or mg:IsExists(c101004084.checkRecursive,1,sg,rc,tp,sg,mg))
 	sg:RemoveCard(c)
 	return res
 end
