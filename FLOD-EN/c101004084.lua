@@ -64,7 +64,7 @@ function c101004084.activate(e,tp,eg,ep,ev,re,r,rp)
 		while true do
 			local cg=mg:Filter(c101004084.checkRecursive,mat,rc,tp,mat,mg)
 			if #cg==0 then break end
-			local tc=Group.SelectUnselect(cg,mat,tp,false,false,1,1)
+			local tc=Group.SelectUnselect(cg,mat,tp,c101004084.checkGoal(tp,mat,rc),false,1,1)
 			if not tc then break end
 			if not mat:IsContains(tc) then
 				mat=mat+tc
