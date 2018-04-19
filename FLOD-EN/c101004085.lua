@@ -29,7 +29,7 @@ function c101004085.initial_effect(c)
     c:RegisterEffect(e3)
 end
 function c101004085.lvcfilter(c)
-    return bit.band(c:GetType(),0x81)==0x81 and c:IsSetCard(0x106)
+    return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x106)
 end
 function c101004085.lvfilter(c,e)
     return c:IsFaceup() and c:IsLevelAbove(1) and (not e or c:IsCanBeEffectTarget(e))
@@ -61,7 +61,7 @@ function c101004085.lvop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c101004085.atkcon(e,tp,eg,ep,ev,re,r,rp)
     local a=Duel.GetAttacker()
-    return a:IsControler(tp) and a:IsSetCard(0x106) and a:GetBattleTarget():IsControler(1-tp)
+    return a:IsControler(tp) and (bit.band(a:GetType(),0x81)==0x81 and a:IsSetCard(0x106)) and a:GetBattleTarget():IsControler(1-tp)
 end
 function c101004085.atkop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
