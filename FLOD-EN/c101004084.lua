@@ -60,7 +60,7 @@ function c101004084.activate(e,tp,eg,ep,ev,re,r,rp)
 		if rc.mat_filter then
 			mg=mg:Filter(rc.mat_filter,nil)
 		end
-		local mat=nil
+		local mat=Group.CreateGroup()
 		while true do
 			local cg=mg:Filter(c101004084.checkRecursive,mat,rc,tp,mat,mg)
 			if #cg==0 then break end
