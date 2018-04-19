@@ -30,7 +30,7 @@ function c101004084.checkRecursive(c,rc,tp,sg,mg)
 	return res
 end
 function c101004084.checkGoal(tp,sg,rc)
-	return sg:CheckWithSumEqual(Card.GetRitualLevel,rc:GetLevel(),1,rc:GetLevel(),rc)
+	return sg:GetSum(Card.GetRitualLevel,rc)==rc:GetLevel() --sg:CheckWithSumEqual(Card.GetRitualLevel,rc:GetLevel(),1,rc:GetLevel(),rc)
 		and sg:FilterCount(Card.IsLocation,nil,LOCATION_DECK)<=1
 		and aux.ReleaseCheckMMZ(sg,tp)
 end
