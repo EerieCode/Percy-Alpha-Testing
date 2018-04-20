@@ -24,7 +24,7 @@ function c101004081.filter(c,e,tp)
 	return c:IsFaceup() and Duel.IsExistingMatchingCard(c101004081.spfilter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp,c)
 end
 function c101004081.spfilter(c,e,tp,tc)
-	return c:IsRace(tc:GetRace()) and not c:IsCode(tc:GetCode()) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:GetOriginalRace()==tc:GetOriginalRace() and c:GetOriginalCode()~=tc:GetOriginalCode() and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c101004081.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c101004081.filter(chkc,e,tp) end
