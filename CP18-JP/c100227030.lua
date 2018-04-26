@@ -40,7 +40,7 @@ function c100227030.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetFlagEffect(100227030)~=0
 end
 function c100227030.filter(c,e,tp)
-	return c:IsRank(10) and c:IsRace(RACE_MACHINE) and e:GetHandler():IsCanBeXyzMaterial(c,tp)
+	return c:IsRankAbove(10) and c:IsRace(RACE_MACHINE) and e:GetHandler():IsCanBeXyzMaterial(c,tp)
 		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_XYZ,tp,false,false)
 end
 function c100227030.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
