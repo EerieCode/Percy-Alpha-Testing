@@ -32,7 +32,7 @@ function c100227030.initial_effect(c)
 	e3:SetTarget(c100227030.reptg)
 	c:RegisterEffect(e3)
 end
-c29085954.xyz_number=27
+c100227030.xyz_number=27
 function c100227030.regop(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():RegisterFlagEffect(100227030,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
 end
