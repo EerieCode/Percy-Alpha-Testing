@@ -1,6 +1,5 @@
-
 --青眼の混沌龍 
--- Blue-Eyes Chaos Dragon
+--Blue-Eyes Chaos Dragon
 function c100409001.initial_effect(c)
 	c:EnableReviveLimit()
 	--spsummon condition
@@ -26,60 +25,55 @@ function c100409001.initial_effect(c)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetValue(c100409001.indval)
 	c:RegisterEffect(e3)
-	--pos Change
-	local e5=Effect.CreateEffect(c)
-	e5:SetDescription(aux.Stringid(100409001,0))
-	e5:SetCategory(CATEGORY_POSITION)
-	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e5:SetCode(EVENT_ATTACK_ANNOUNCE)
-	e5:SetCondition(c100409001.poscon)
-	e5:SetTarget(c100409001.postg)
-	e5:SetOperation(c100409001.posop)
-	c:RegisterEffect(e5)
+	--pos
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(100409001,0))
+	e4:SetCategory(CATEGORY_POSITION+CATEGORY_ATKCHANGE)
+	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e4:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e4:SetCondition(c100409001.poscon)
+	e4:SetTarget(c100409001.postg)
+	e4:SetOperation(c100409001.posop)
+	c:RegisterEffect(e4)
 end
 function c100409001.indval(e,re,tp)
 	return tp~=e:GetHandlerPlayer()
 end
-function c100409001.mfilter(c)
-	return c:IsCode(89631139)
-end
 function c100409001.poscon(e)
-	local c=e:GetHandler()
-	local mg=c:GetMaterial()
-	return c:GetSummonType()==SUMMON_TYPE_RITUAL and mg:GetCount()>0 and mg:IsExists(c100409001.mfilter,1,nil)
+        local c=e:GetHandler()
+        return c:IsSummonType(SUMMON_TYPE_RITUAL) and c:GetMaterial():IsExists(Card.IsCode,1,nil,89631139)
 end
-
-
 function c100409001.postg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE,nil)>0 end
-	local sg=Duel.GetFieldGroup(tp,0,LOCATION_MZONE,nil)
-	Duel.SetOperationInfo(0,CATEGORY_POSITION,sg,sg:GetCount(),0,0)
+    	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsCanChangePosition,tp,0,LOCATION_MZONE,1,nil) end
+    	local g=Duel.GetMatchingGroup(Card.IsCanChangePosition,tp,0,LOCATION_MZONE,nil)
+    	Duel.SetOperationInfo(0,CATEGORY_POSITION,g,g:GetCount(),0,0)
 end
 function c100409001.posop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local sg=Duel.GetFieldGroup(tp,0,LOCATION_MZONE,nil)
-	if sg:GetCount()>0 then
-		Duel.ChangePosition(sg,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK)
-		local tc=sg:GetFirst()
-		while tc do
+    	local c=e:GetHandler()
+    	local tg=Duel.GetMatchingGroup(Card.IsCanChangePosition,tp,0,LOCATION_MZONE,nil)
+    	if #tg>0 then
+        	Duel.ChangePosition(tg,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK)
+		for tc in aux.Next(tg) do
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_SET_ATTACK_FINAL)
 			e1:SetValue(0)
 			e1:SetReset(RESET_EVENT+0x1fe0000)
 			tc:RegisterEffect(e1)
-			local e1=Effect.CreateEffect(c)
-			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_SET_DEFENSE_FINAL)
-			e1:SetValue(0)
-			e1:SetReset(RESET_EVENT+0x1fe0000)
-			tc:RegisterEffect(e1)
-			tc=sg:GetNext()
-		end
-		local e2=Effect.CreateEffect(e:GetHandler())
-		e2:SetType(EFFECT_TYPE_SINGLE)
-		e2:SetCode(EFFECT_PIERCE)
-		e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-		c:RegisterEffect(e2)
-	end
+			local e2=Effect.CreateEffect(c)
+			e2:SetType(EFFECT_TYPE_SINGLE)
+			e2:SetCode(EFFECT_SET_DEFENSE_FINAL)
+            		e2:SetValue(0)
+            		e2:SetReset(RESET_EVENT+0x1fe0000)
+            		tc:RegisterEffect(e2)
+        	end
+    	end
+    	if c:IsRelateToEffect(e) then
+		local e3=Effect.CreateEffect(c)
+		e3:SetType(EFFECT_TYPE_SINGLE)
+		e3:SetCode(EFFECT_PIERCE)
+		e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
+		c:RegisterEffect(e3)
+    	end
 end
