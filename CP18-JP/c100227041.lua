@@ -51,7 +51,7 @@ function c100227041.filter(c)
 	return c:IsType(TYPE_LINK) and c:IsFaceup()
 end
 function c100227041.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return not Duel.IsExistingMatchingCard(c100227041.filter,tp,LOCATION_MZONE,0,1,nil)
+	return aux.exccon(e) and not Duel.IsExistingMatchingCard(c100227041.filter,tp,LOCATION_MZONE,0,1,nil)
 end
 function c100227041.spfilter(c,e,tp)
 	return c:IsRace(RACE_DRAGON) and c:IsAttribute(ATTRIBUTE_DARK) and c:IsType(TYPE_LINK)
