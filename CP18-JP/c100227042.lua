@@ -1,4 +1,4 @@
---トリガー・ヴルム (Anime)
+--トリガー・ヴルム 
 --Triggering Wurm
 function c100227042.initial_effect(c)
 	--spsummon
@@ -40,7 +40,18 @@ end
 function c100227042.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) then return end
-	Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP_ATTACK,re:GetHandler():GetLinkedZone(tp))
+	local zone=0
+	zone=re:GetHandler():GetLinkedZone(tp)
+	if c:IsRelateToEffect(e) and zone~=0 and Duel.SpecialSummonStep(c,0,tp,tp,false,false,POS_FACEUP,zone) then
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		e1:SetCode(EFFECT_CANNOT_BE_LINK_MATERIAL)
+		e1:SetValue(1)
+		e1:SetReset(RESET_EVENT+0x1fe0000)
+		c:RegisterEffect(e1,true)
+		Duel.SpecialSummonComplete()
+	end
 end
 function c100227042.drcon(e,tp,eg,ep,ev,re,r,rp)
 	return bit.band(r,0x41)==0x41 and re:GetHandler():IsType(TYPE_LINK) and re:IsActivated()
