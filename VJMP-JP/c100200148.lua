@@ -56,6 +56,17 @@ function c100200148.spop(e,tp,eg,ep,ev,re,r,rp)
         e3:SetReset(RESET_EVENT+0x47e0000)
         e3:SetValue(LOCATION_DECKBOT)
         tc:RegisterEffect(e3)
+        local e4=Effect.CreateEffect(c)
+	    e4:SetType(EFFECT_TYPE_FIELD)
+	    e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_OATH)
+	    e4:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+	    e4:SetTargetRange(1,0)
+	    e4:SetTarget(c100200148.splimit)
+	    e4:SetReset(RESET_PHASE+PHASE_END)
+	    Duel.RegisterEffect(e4,tp)
     end
     Duel.SpecialSummonComplete()
+end
+function c100200148.splimit(e,c,sump,sumtype,sumpos,targetp,se)
+	return not c:IsType(TYPE_LINK)
 end
