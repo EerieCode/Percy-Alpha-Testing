@@ -54,7 +54,7 @@ function c100227042.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c100227042.drcon(e,tp,eg,ep,ev,re,r,rp)
-	return re:GetHandler():IsType(TYPE_LINK) and re:IsActivated()
+	return r&REASON_EFFECT==REASON_EFFECT and re:GetHandler():IsType(TYPE_LINK) and re:IsActivated()
 end
 function c100227042.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
