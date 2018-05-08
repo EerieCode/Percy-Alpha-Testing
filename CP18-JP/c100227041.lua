@@ -1,6 +1,6 @@
 --ハイバネーション・ドラゴン
 --Hibernation Dragon
-function c100227030.initial_effect(c)
+function c100227041.initial_effect(c)
 	--summon success
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(100227041,0))
