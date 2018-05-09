@@ -26,7 +26,7 @@ function c100228001.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c100228001.ffilter(c,fc,sumtype,tp,sub,mg,sg)
-	return (not sg or not sg:IsExists(c100228001.fusfilter,1,c,c:GetCode(fc,sumtype,tp)))
+	return (not sg or not sg:IsExists(c100228001.fusfilter,1,c,c:GetCode(fc,sumtype,tp),fc,sumtype,tp))
 end
 function c100228001.fusfilter(c,cd,fc,sumtype,tp)
 	return c:IsCode(cd,fc,sumtype,tp) and not c:IsHasEffect(511002961)
