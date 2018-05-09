@@ -26,7 +26,7 @@ function c100228001.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c100228001.ffilter(c,fc,sumtype,tp,sub,mg,sg)
-	return (not sg or not sg:IsExists(c100228001.fusfilter,1,c,c:GetCode(fc,sumtype,tp),fc,sumtype,tp))
+	return (not sg or not sg:IsExists(c100228001.fusfilter,1,c,c:GetCode(fc,sumtype,tp)))
 end
 function c100228001.fusfilter(c,cd,fc,sumtype,tp)
 	return c:IsCode(cd,fc,sumtype,tp) and not c:IsHasEffect(511002961)
@@ -41,7 +41,7 @@ function c100228001.contactop(g)
 	Duel.Remove(g,POS_FACEUP,REASON_COST+REASON_MATERIAL)
 end
 function c100228001.splimit(e,se,sp,st)
-	return e:GetHandler():GetLocation()~=LOCATION_EXTRA
+	return bit.band(st,SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION
 end
 function c100228001.valfilter(c)
 	return c:GetOriginalRace()~=RACE_DRAGON
