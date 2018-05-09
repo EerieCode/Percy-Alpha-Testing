@@ -31,8 +31,11 @@ end
 function c100228001.fusfilter(c,cd,fc,sumtype,tp)
 	return c:IsCode(cd,fc,sumtype,tp) and not c:IsHasEffect(511002961)
 end
+function c100228001.filteraux(c)
+	return c:IsAbleToRemoveAsCost() and c:IsType(TYPE_MONSTER)
+end
 function c100228001.contactfil(tp)
-	return Duel.GetMatchingGroup(Card.IsAbleToRemoveAsCost,tp,LOCATION_ONFIELD,0,nil)
+	return Duel.GetMatchingGroup(c100228001.filteraux,tp,LOCATION_ONFIELD,0,nil)
 end
 function c100228001.contactop(g)
 	Duel.Remove(g,POS_FACEUP,REASON_COST+REASON_MATERIAL)
