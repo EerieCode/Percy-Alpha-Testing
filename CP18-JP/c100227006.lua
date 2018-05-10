@@ -42,16 +42,16 @@ function c100227006.operation(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=Duel.GetFirstMatchingCard(c100227006.spfilter,tp,LOCATION_DECK,0,nil,e,tp)
 	if tc then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
-	end
-	if Duel.IsExistingMatchingCard(c100227004.fieldcond,tp,LOCATION_FZONE,LOCATION_FZONE,1,nil,tp)==false then 
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_FIELD)
-		e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
-		e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-		e1:SetTargetRange(1,0)
-		e1:SetTarget(c100227006.splimit)
-		e1:SetReset(RESET_PHASE+PHASE_END)
-		Duel.RegisterEffect(e1,tp)
+		if Duel.IsExistingMatchingCard(c100227004.fieldcond,tp,LOCATION_FZONE,LOCATION_FZONE,1,nil,tp)==false then 
+			local e1=Effect.CreateEffect(c)
+			e1:SetType(EFFECT_TYPE_FIELD)
+			e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+			e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+			e1:SetTargetRange(1,0)
+			e1:SetTarget(c100227006.splimit)
+			e1:SetReset(RESET_PHASE+PHASE_END)
+			Duel.RegisterEffect(e1,tp)
+		end
 	end
 end
 function c100227006.splimit(e,c)
