@@ -21,7 +21,7 @@ end
 function c100227006.cfilter(c)
 	return c:IsFaceup() and c:IsCode(50319138)
 end
-function c100227006.equipcond(c)
+function c100227006.extdkrestr(c)
 	return c:IsFaceup() and c:IsCode(100227010) and c:GetSequence()==5
 end
 function c100227006.spfilter(c,e,tp)
@@ -42,7 +42,7 @@ function c100227006.operation(e,tp,eg,ep,ev,re,r,rp,chk)
 	if tc then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 	end
-	if Duel.IsExistingMatchingCard(c100227004.equipcond,tp,LOCATION_SZONE,0,1,nil,tp)==false then 
+	if Duel.IsExistingMatchingCard(c100227004.extdkrestr,tp,LOCATION_SZONE,0,1,nil,tp)==false then 
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_FIELD)
 		e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
@@ -52,4 +52,7 @@ function c100227006.operation(e,tp,eg,ep,ev,re,r,rp,chk)
 		e1:SetReset(RESET_PHASE+PHASE_END)
 		Duel.RegisterEffect(e1,tp)
 	end
+end
+function c100227006.splimit(e,c)
+	return c:IsLocation(LOCATION_EXTRA)
 end
