@@ -19,7 +19,7 @@ function c100227007.initial_effect(c)
 	e2:SetCondition(c100227007.thcon)
 	e2:SetTarget(c100227007.thtg)
 	e2:SetOperation(c100227007.thop)
-	c:RegisterEffect(e4)
+	c:RegisterEffect(e2)
 end
 function c100227007.atkfilter(c)
 	return c:IsFaceup() and c:IsCode(100227006)

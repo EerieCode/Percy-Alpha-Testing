@@ -38,11 +38,12 @@ function c100227006.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function c100227006.operation(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	local tc=Duel.GetFirstMatchingCard(c100227006.spfilter,tp,LOCATION_DECK,0,nil,e,tp)
 	if tc then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
-		if Duel.IsExistingMatchingCard(c100227004.fieldcond,tp,LOCATION_FZONE,LOCATION_FZONE,1,nil,tp)==false then 
+		if Duel.IsExistingMatchingCard(c100227006.fieldcond,tp,LOCATION_FZONE,LOCATION_FZONE,1,nil,tp)==false then 
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_FIELD)
 			e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
