@@ -21,6 +21,7 @@ function c100227007.initial_effect(c)
 	e2:SetOperation(c100227007.thop)
 	c:RegisterEffect(e2)
 end
+c100227007.listed_names={100227010}
 function c100227007.atkfilter(c)
 	return c:IsFaceup() and c:IsCode(100227006)
 end

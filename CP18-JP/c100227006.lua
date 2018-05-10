@@ -1,5 +1,5 @@
 --Iron Hans
---e1 scripted by Naim
+--scripted by Naim
 function c100227006.initial_effect(c)
 	--spsummon
 	local e1=Effect.CreateEffect(c)
@@ -17,6 +17,7 @@ function c100227006.initial_effect(c)
 	local e3=e1:Clone()
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e3)
+	--Change ATK
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_SINGLE)
 	e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
@@ -26,6 +27,7 @@ function c100227006.initial_effect(c)
 	e4:SetValue(c100227006.value)
 	c:RegisterEffect(e4)
 end
+c100227006.listed_names={100227010}
 function c100227006.fieldcond(c)
 	return c:IsFaceup() and c:IsCode(100227010)
 end
