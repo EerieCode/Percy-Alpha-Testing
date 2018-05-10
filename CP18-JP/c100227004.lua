@@ -32,7 +32,7 @@ function c100227004.spfilter(c,e,tp)
 	return c:IsCode(100227005) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c100227004.equipcond(c)
-	return c:IsFaceup() and c:IsCode(100227010) and c:GetSequence()==5
+	return c:IsFaceup() and c:IsCode(100227010)
 end
 function c100227004.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -50,7 +50,7 @@ function c100227004.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=g:GetFirst()
 	if tc then Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP) end
 	if Duel.GetLocationCount(tp,LOCATION_SZONE)>0
-		and Duel.IsExistingMatchingCard(c100227004.equipcond,tp,LOCATION_SZONE,0,1,nil,tp) 
+		and Duel.IsExistingMatchingCard(c100227004.equipcond,tp,LOCATION_FZONE,LOCATION_FZONE,1,nil,tp) 
 		and Duel.IsExistingMatchingCard(c100227004.eqfilter1,tp,LOCATION_DECK,0,1,nil,e:GetHandler()) 
 		and c:IsRelateToEffect(e) and c:IsFaceup() and c:IsControler(tp) 
 		and Duel.SelectYesNo(tp,aux.Stringid(100227004,2)) then

@@ -17,18 +17,20 @@ function c100227006.initial_effect(c)
 	local e3=e1:Clone()
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e3)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e4:SetRange(LOCATION_MZONE)
+	e4:SetCode(EFFECT_UPDATE_ATTACK)
+	e4:SetCondition(c100227006.condition)
+	e4:SetValue(c100227006.value)
+	c:RegisterEffect(e4)
 end
-function c100227006.cfilter(c)
-	return c:IsFaceup() and c:IsCode(50319138)
-end
-function c100227006.extdkrestr(c)
-	return c:IsFaceup() and c:IsCode(100227010) and c:GetSequence()==5
+function c100227006.fieldcond(c)
+	return c:IsFaceup() and c:IsCode(100227010)
 end
 function c100227006.spfilter(c,e,tp)
-	return c:IsCode(87526784) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
-end
-function c100227006.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(c100227006.cfilter,tp,LOCATION_ONFIELD,0,1,nil)
+	return c:IsCode(100227007) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function c100227006.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -37,12 +39,11 @@ function c100227006.target(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c100227006.operation(e,tp,eg,ep,ev,re,r,rp,chk)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
-	if not Duel.IsExistingMatchingCard(c100227006.cfilter,tp,LOCATION_ONFIELD,0,1,nil) then return end
 	local tc=Duel.GetFirstMatchingCard(c100227006.spfilter,tp,LOCATION_DECK,0,nil,e,tp)
 	if tc then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 	end
-	if Duel.IsExistingMatchingCard(c100227004.extdkrestr,tp,LOCATION_SZONE,0,1,nil,tp)==false then 
+	if Duel.IsExistingMatchingCard(c100227004.fieldcond,tp,LOCATION_FZONE,LOCATION_FZONE,1,nil,tp)==false then 
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_FIELD)
 		e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
@@ -55,4 +56,13 @@ function c100227006.operation(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c100227006.splimit(e,c)
 	return c:IsLocation(LOCATION_EXTRA)
+end
+function c100227006.atkfilter(c)
+	return c:IsFaceup() and c:IsCode(100227007)
+end
+function c100227006.value(e,c)
+	return Duel.GetMatchingGroupCount(c100227006.atkfilter,c:GetControler(),LOCATION_MZONE,0,nil)*1000
+end
+function c100227006.condition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(c100227006.fieldcond,tp,LOCATION_SZONE,SZONE,1,nil)
 end
