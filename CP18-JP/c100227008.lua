@@ -26,7 +26,7 @@ function c100227008.initial_effect(c)
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e3)
 end
-c100227038.listed_names={100227010}
+c100227008.listed_names={100227010}
 function c100227008.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:IsDiscardable() end
