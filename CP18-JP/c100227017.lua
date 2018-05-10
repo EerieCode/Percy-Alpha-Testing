@@ -74,6 +74,6 @@ function c100227017.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummonComplete()
 	end
 end
-function c18563744.efilter(e,re)
+function c100227017.efilter(e,re)
 	return e:GetHandler()~=re:GetOwner()
 end
