@@ -8,7 +8,7 @@ function c100227005.initial_effect(c)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCode(EFFECT_DIRECT_ATTACK)
 	e1:SetTargetRange(LOCATION_MZONE,0)
-	e1:SetTarget(c100227005.atktg)
+	e1:SetTarget(c100227005.datg)
 	c:RegisterEffect(e1)
 	--indestructable
 	local e2=Effect.CreateEffect(c)
@@ -27,7 +27,7 @@ function c100227005.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 c100227005.listed_names={100227010}
-function c100227005.atktg(e,c)
+function c100227005.datg(e,c)
 	return c:IsCode(100227004)
 end
 function c100227005.indtg(e,c)
