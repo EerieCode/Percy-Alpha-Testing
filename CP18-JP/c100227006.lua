@@ -11,11 +11,17 @@ function c100227006.initial_effect(c)
 	e1:SetTarget(c100227006.target)
 	e1:SetOperation(c100227006.operation)
 	c:RegisterEffect(e1)
+	local e2=e1:Clone()
+	e2:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
+	c:RegisterEffect(e2)
+	local e3=e1:Clone()
+	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
+	c:RegisterEffect(e3)
 end
 function c100227006.cfilter(c)
 	return c:IsFaceup() and c:IsCode(50319138)
 end
-function c100227004.equipcond(c)
+function c100227006.equipcond(c)
 	return c:IsFaceup() and c:IsCode(100227010) and c:GetSequence()==5
 end
 function c100227006.spfilter(c,e,tp)
@@ -36,12 +42,14 @@ function c100227006.operation(e,tp,eg,ep,ev,re,r,rp,chk)
 	if tc then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 	end
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e1:SetTargetRange(1,0)
-	e1:SetTarget(c100227006.splimit)
-	e1:SetReset(RESET_PHASE+PHASE_END)
-	Duel.RegisterEffect(e2,tp)
+	if Duel.IsExistingMatchingCard(c100227004.equipcond,tp,LOCATION_SZONE,0,1,nil,tp)==false then 
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+		e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+		e1:SetTargetRange(1,0)
+		e1:SetTarget(c100227006.splimit)
+		e1:SetReset(RESET_PHASE+PHASE_END)
+		Duel.RegisterEffect(e1,tp)
+	end
 end
