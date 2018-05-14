@@ -68,7 +68,7 @@ end
 function c100409023.ctop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) then
-		Duel.GetControl(tc,tp,PHASE_END,1)
+		Duel.GetControl(tc,tp)
 	end
 end
 function c100409023.desfilter(c)
