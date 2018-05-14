@@ -8,8 +8,8 @@ function c100409013.initial_effect(c)
 	e1:SetCode(EFFECT_SPSUMMON_PROC)
 	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCondition(c100409013.spcon)
-	e1:SetOperation(c100409013.spop)
+	e1:SetCondition(c100409013.spcon1)
+	e1:SetOperation(c100409013.spop1)
 	c:RegisterEffect(e1)
 	--special summon
 	local e2=Effect.CreateEffect(c)
@@ -19,13 +19,14 @@ function c100409013.initial_effect(c)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1)
 	e2:SetTarget(c100409013.sptg)
-	e2:SetOperation(c100409013.spop)
+	e2:SetOperation(c100409013.spop2)
 	c:RegisterEffect(e2)	
-	--special summon
+	--search
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(100409013,2))
 	e3:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e3:SetRange(LOCATION_GRAVE)
 	e3:SetCode(EVENT_DESTROYED)
 	e3:SetCountLimit(1,100409013)
@@ -39,20 +40,17 @@ function c100409013.spfilter(c,ft,tp)
 	return c:IsRace(RACE_MACHINE)
 		and (ft>0 or (c:IsControler(tp) and c:GetSequence()<5)) and (c:IsControler(tp) or c:IsFaceup())
 end
-function c100409013.spcon(e,c)
+function c100409013.spcon1(e,c)
 	if c==nil then return true end
 	local tp=c:GetControler()
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	return ft>-1 and Duel.CheckReleaseGroup(tp,c100409013.spfilter,1,nil,ft,tp)
 end
-function c100409013.spop(e,tp,eg,ep,ev,re,r,rp,c)
+function c100409013.spop1(e,tp,eg,ep,ev,re,r,rp,c)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	local g=Duel.SelectReleaseGroup(tp,c100409013.spfilter,1,1,nil,ft,tp)
 	Duel.Release(g,REASON_COST)
 end
-
-
-
 function c100409013.spfilter1(c,e)
 	return not c:IsImmuneToEffect(e)
 end
@@ -78,7 +76,7 @@ function c100409013.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
 end
-function c100409013.spop(e,tp,eg,ep,ev,re,r,rp)
+function c100409013.spop2(e,tp,eg,ep,ev,re,r,rp)
 	local chkf=tp
 	local mg1=Duel.GetFusionMaterial(tp):Filter(c100409013.spfilter1,nil,e)
 	local sg1=Duel.GetMatchingGroup(c100409013.spfilter2,tp,LOCATION_EXTRA,0,nil,e,tp,mg1,nil,chkf)
@@ -111,11 +109,8 @@ function c100409013.spop(e,tp,eg,ep,ev,re,r,rp)
 		tc:CompleteProcedure()
 	end
 end
-
-
-
 function c100409013.cfilter(c,tp)
-	return c:IsPreviousLocation(LOCATION_MZONE) and c:GetPreviousControler()==tp and c:IsType(TYPE_FUSION) and c:IsReason(REASON_EFFECT)
+	return c:IsPreviousLocation(LOCATION_MZONE) and c:GetPreviousControler()==tp and c:IsType(TYPE_FUSION) and c:IsReason(REASON_BATTLE)
 end
 function c100409013.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c100409013.cfilter,1,nil,tp)
