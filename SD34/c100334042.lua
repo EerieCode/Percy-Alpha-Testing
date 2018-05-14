@@ -1,6 +1,6 @@
 --エルフェーズ
 --Elphase
---original script by Larry126/OCG chabges by Naim
+--original script by Larry126/OCG changes by Naim
 function c100334042.initial_effect(c)
 	--link summon
 	c:EnableReviveLimit()
@@ -67,6 +67,5 @@ function c100334042.spop(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetCode(EFFECT_DISABLE_EFFECT)
 		e3:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e3)
-	Duel.SpecialSummonComplete()
 	end
 end
