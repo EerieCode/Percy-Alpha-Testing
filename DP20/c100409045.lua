@@ -11,7 +11,6 @@ function c100409045.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetCountLimit(1,100409045)
 	e1:SetRange(LOCATION_PZONE)
-	e1:SetCountLimit(1)
 	e1:SetCost(c100409045.cost)
 	e1:SetTarget(c100409045.target)
 	e1:SetOperation(c100409045.operation)
@@ -56,7 +55,7 @@ function c100409045.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.PayLPCost(tp,1000)
 end
 function c100409045.filter(c)
-	return c:IsSetCard(0x10ec) and c:IsType(TYPE_PENDULUM) and c:IsAbleToHand()
+	return c:IsSetCard(0x10ec) and c:IsType(TYPE_PENDULUM) and c:IsAbleToHand() and not c:IsCode(100409045)
 end
 function c100409045.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c100409045.filter,tp,LOCATION_DECK,0,1,nil) end
@@ -81,7 +80,7 @@ function c100409045.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e1,tp)
 end
 function c100409045.splimit(e,c)
-	return not c:IsSetCard(0x10ec)
+	return not (c:IsSetCard(0x10ec) and c:IsType(TYPE_PENDULUM))
 end
 function c100409045.spfilter(c,tp)
 	return c:IsReason(REASON_BATTLE) and c:IsType(TYPE_PENDULUM) and c:GetPreviousControler()==tp
