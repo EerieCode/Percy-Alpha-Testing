@@ -99,8 +99,11 @@ function c100409045.spop(e,tp,eg,ep,ev,re,r,rp)
 	if not c:IsRelateToEffect(e) then return end
 	Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
 end
+function c100409045.atkfilter(c)
+	return c:IsType(TYPE_SPELL) and c:IsSetCard(0x20ec)
+end
 function c100409045.value(e,c)
-	return Duel.GetMatchingGroupCount(Card.IsSetCard,c:GetControler(),LOCATION_GRAVE,0,nil,0x20ec)*100
+	return Duel.GetMatchingGroupCount(c100409045.atkfilter,c:GetControler(),LOCATION_GRAVE,0,nil)*100
 end
 function c100409045.spcond2(e,tp,eg,ep,ev,re,r,rp)
 	return re and re:GetHandler():IsSetCard(0x20ec)
