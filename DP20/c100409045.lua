@@ -1,4 +1,4 @@
---japanese name here
+--魔界劇団－メロー・マドンナ
 --Abyss Actor - Mellow Madonna
 --scripted by Naim
 function c100409045.initial_effect(c)
