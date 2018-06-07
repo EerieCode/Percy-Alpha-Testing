@@ -22,7 +22,7 @@ function c100409049.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCustomActivityCount(100409049,tp,ACTIVITY_CHAIN)>0
 end
 function c100409049.thfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x10ec) and c:IsType(TYPE_PENDULUM) and c:IsAbleTohand()
+	return c:IsFaceup() and c:IsSetCard(0x10ec) and c:IsType(TYPE_PENDULUM) and c:IsAbleToHand()
 end
 function c100409049.spfilter(c,e,tp)
 	return c:IsSetCard(0x10ec) and c:IsType(TYPE_PENDULUM) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
@@ -51,7 +51,7 @@ function c100409049.activate(e,tp,eg,ep,ev,re,r,rp)
 	if #hg>1 and Duel.SendtoHand(hg,nil,REASON_EFFECT)~=0 then
 		local sct=Duel.GetOperatedGroup():FilterCount(Card.IsControler,nil,tp)
 		local sg=Duel.GetMatchingGroup(c100409049.spfilter,tp,LOCATION_HAND,0,nil,e,tp)
-		local ft=math.min(Duel.GetUsableMZoneCount(tp),#g)
+		local ft=math.min(Duel.GetUsableMZoneCount(tp),#sg)
 		if sct>0 and ft>0 and Duel.SelectYesNo(tp,aux.Stringid(100409049,0)) then
 			Duel.BreakEffect()
 			if Duel.IsPlayerAffectedByEffect(tp,59822133) then ft=1 end
