@@ -26,14 +26,6 @@ function c100409048.initial_effect(c)
 	e3:SetCondition(c100409048.chcon1)
 	e3:SetOperation(c100409048.chop1)
 	c:RegisterEffect(e3)
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e4:SetCode(EVENT_CHAIN_ACTIVATING)
-	e4:SetRange(LOCATION_FZONE)
-	e4:SetCountLimit(1,100409148)
-	e4:SetCondition(c100409048.chcon2)
-	e4:SetOperation(c100409048.chop2)
-	c:RegisterEffect(e4)
 end
 function c100409048.cfilter(c)
 	return c:IsSetCard(0x10ec) and c:IsType(TYPE_PENDULUM) and not c:IsPublic()
@@ -73,17 +65,12 @@ function c100409048.chcon1(e,tp,eg,ep,ev,re,r,rp)
 	and re:IsActiveType(TYPE_MONSTER)
 end
 function c100409048.chop1(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():RegisterFlagEffect(100409048,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
+	local g=Group.CreateGroup()
+	Duel.ChangeTargetCard(ev,g)
+	Duel.ChangeChainOperation(ev,c100409048.repop)
 end
 function c100409048.confilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x10ec) and c:IsSummonType(SUMMON_TYPE_PENDULUM)
-end
-function c100409048.chcon2(e,tp,eg,ep,ev,re,r,rp)
-	return ev==1 and e:GetHandler():GetFlagEffect(100409048)>0
-		and Duel.IsExistingMatchingCard(c100409048.confilter,tp,LOCATION_MZONE,0,1,nil)
-end
-function c100409048.chop2(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.ChangeChainOperation(1,c100409048.repop)
 end
 function c100409048.desfilter(c)
 	return c:IsFacedown() and c:IsType(TYPE_SPELL+TYPE_TRAP)
