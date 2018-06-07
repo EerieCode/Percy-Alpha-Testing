@@ -85,7 +85,7 @@ function c100409048.chop2(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.ChangeChainOperation(1,c100409048.repop)
 end
 function c100409048.desfilter(c)
-	return c:IsType(TYPE_SPELL+TYPE_TRAP)
+	return c:IsFacedown() and c:IsType(TYPE_SPELL+TYPE_TRAP)
 end
 function c100409048.repop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
