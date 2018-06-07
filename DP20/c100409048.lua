@@ -51,7 +51,7 @@ function c100409048.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
 	local g1=Duel.SelectMatchingCard(tp,c100409048.cfilter,tp,LOCATION_HAND,0,1,1,nil)
 	local g2=Duel.SelectMatchingCard(tp,c100409048.cfilter2,tp,LOCATION_HAND,0,1,1,nil)
-	g1:AddCard(g2)
+	g1:Merge(g2)
 	Duel.ConfirmCards(1-tp,g1)
 	Duel.ShuffleHand(tp)
 end
