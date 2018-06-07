@@ -68,8 +68,9 @@ function c100409048.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c100409048.chcon1(e,tp,eg,ep,ev,re,r,rp)
-	return ep~=tp and re:GetHandler():GetType()==TYPE_MONSTER and re:IsHasType(EFFECT_TYPE_ACTIVATE)
-		and Duel.IsExistingMatchingCard(c100409048.confilter,tp,LOCATION_MZONE,0,1,nil)
+	return	ep~=tp
+	and Duel.IsExistingMatchingCard(c100409048.confilter,tp,LOCATION_MZONE,0,1,nil)
+	and re:IsActiveType(TYPE_MONSTER)
 end
 function c100409048.chop1(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():RegisterFlagEffect(100409048,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
