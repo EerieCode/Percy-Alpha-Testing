@@ -39,11 +39,11 @@ end
 function c100334001.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)>0 then
-		c:RegisterFlagEffect(511600046,0,0,0)
+		c:RegisterFlagEffect(100334001,0,0,0)
 	end
 end
 function c100334001.condition(e,tp,eg,ep,ev,re,r,rp)
-	return r==REASON_LINK and e:GetHandler():GetFlagEffect(511600046)>0
+	return r==REASON_LINK and e:GetHandler():GetFlagEffect(100334001)>0
 end
 function c100334001.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) end
@@ -54,5 +54,5 @@ end
 function c100334001.operation(e,tp,eg,ep,ev,re,r,rp)
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	Duel.Draw(p,d,REASON_EFFECT)
-	e:GetHandler():ResetFlagEffect(511600046)
+	e:GetHandler():ResetFlagEffect(100334001)
 end
