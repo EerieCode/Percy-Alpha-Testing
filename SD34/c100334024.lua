@@ -70,7 +70,10 @@ function c100334024.regop(e,tp,eg,ep,ev,re,r,rp)
 		else
 			c=g:Select(tp,1,1,nil):GetFirst()
 		end
-		c100334024.summon_group[tp]=eg:Filter(c100334024.regfilter,nil,e:GetLabelObject(),tp)
+		local sg=eg:Filter(c100334024.regfilter,nil,e:GetLabelObject(),tp)
+		c100334024.summon_group[tp]=sg
+		Debug.Message("#g="..#g..", #sg="..#sg)
+		if c100334024.summon_group[tp] then Debug.Message("#var="..c100334024.summon_group[tp]:GetCount()) else Debug.Message("Global variable not set.") end
 		Duel.RaiseSingleEvent(c,EVENT_CUSTOM+100334024,re,r,rp,0,0)
 	end
 end
