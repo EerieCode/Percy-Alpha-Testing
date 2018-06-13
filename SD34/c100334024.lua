@@ -57,7 +57,7 @@ function c100334024.thfilter(c,attr)
 	return c:IsRace(RACE_CYBERSE) and c:IsAttribute(attr) and c:IsAbleToHand()
 end
 function c100334024.regcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(c100334024.regfilter,1,nil,e:GetLabelObject(),tp)
+	return Duel.CheckChainUniqueness() and eg:IsExists(c100334024.regfilter,1,nil,e:GetLabelObject(),tp)
 end
 function c100334024.filter(c)
 	return c:IsFaceup() and c:IsCode(100334024) and not c:IsDisabled()
