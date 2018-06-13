@@ -63,7 +63,8 @@ function c100334024.filter(c)
 	return c:IsFaceup() and c:IsCode(100334024) and not c:IsDisabled()
 end
 function c100334024.regop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.SelectYesNo(tp,aux.Stringid(100334024,0)) then
+	if Duel.GetFlagEffect(tp,100334024)==0 and Duel.SelectYesNo(tp,aux.Stringid(100334024,0)) then
+		Duel.RegisterFlagEffect(tp,100334024,RESET_CHAIN,0,1)
 		Debug.Message("Effect to be activated.")
 		local g=Duel.GetMatchingGroup(c100334024.filter,tp,LOCATION_SZONE,0,nil)
 		local c=nil
