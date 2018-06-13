@@ -47,7 +47,8 @@ function c100334024.resetop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c100334024.regfilter(c,e,tp)
 	local attr=c:GetAttribute()
-	return c:IsSetCard(0x101) and c:IsControler(tp) and c:IsLocation(LOCATION_MZONE)
+	return c:IsSetCard(0x101) and c:IsControler(tp) 
+		and c:IsLocation(LOCATION_MZONE) and c:IsPreviousLocation(LOCATION_EXTRA)
 		and c100334024.attr_list[tp]&attr==0
 		and c:IsCanBeEffectTarget(e)		
 		and Duel.IsExistingMatchingCard(c100334024.thfilter,tp,LOCATION_DECK,0,1,nil,attr)
@@ -63,16 +64,20 @@ function c100334024.filter(c)
 end
 function c100334024.regop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.SelectYesNo(tp,aux.Stringid(100334024,0)) then
+		Debug.Message("Effect to be activated.")
 		local g=Duel.GetMatchingGroup(c100334024.filter,tp,LOCATION_SZONE,0,nil)
 		local c=nil
+		Debug.Message("Checking other Cynet Codecs.")
 		if #g==1 then
 			c=g:GetFirst()
+			Debug.Message("No other Cynet Codecs.")
 		else
+			Debug.Message("Other Cynet Codecs on field, must choose.")
 			c=g:Select(tp,1,1,nil):GetFirst()
 		end
 		local sg=eg:Filter(c100334024.regfilter,nil,e:GetLabelObject(),tp)
+		Debug.Message("#sg="..#sg)
 		c100334024.summon_group[tp]=sg
-		Debug.Message("#g="..#g..", #sg="..#sg)
 		if c100334024.summon_group[tp] then Debug.Message("#var="..c100334024.summon_group[tp]:GetCount()) else Debug.Message("Global variable not set.") end
 		Duel.RaiseSingleEvent(c,EVENT_CUSTOM+100334024,re,r,rp,0,0)
 	end
