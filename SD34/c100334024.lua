@@ -28,8 +28,10 @@ function c100334024.initial_effect(c)
 	--register attributes
 	if not c100334024.global_flag then
 		c100334024.global_flag=true
+		c100334024.attr_list={}
 		c100334024.attr_list[0]=0
 		c100334024.attr_list[1]=0
+		c100334024.summon_group={}
 		c100334024.summon_group[0]=nil
 		c100334024.summon_group[1]=nil
 		local ge1=Effect.CreateEffect(c)
