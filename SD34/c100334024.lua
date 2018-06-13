@@ -50,7 +50,7 @@ function c100334024.thfilter(c,attr)
 end
 function c100334024.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return eg:IsContains(chkc) and c100334024.regfilter(chkc,e,tp) end
-	if chk==0 then return eg:IsExists(c100334024.regfilter,1,nil,e:GetLabelObject(),tp) end
+	if chk==0 then return eg:IsExists(c100334024.regfilter,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	local sg=eg:FilterSelect(tp,c100334024.regfilter,1,1,nil,e,tp)
 	Duel.SetTargetCard(sg)
