@@ -1,5 +1,5 @@
+--転生炎獣フォクシー
 --Salamangreat Foxy
-
 --Scripted by AlphaKretin
 function c101006003.initial_effect(c)
 	--to hand

@@ -1,3 +1,4 @@
+--転生炎獣ヒートライオ
 --Salamangreat Heatleo
 function c101006040.initial_effect(c)
 	--link summon
