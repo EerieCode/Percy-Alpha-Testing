@@ -4,7 +4,7 @@
 function c101006036.initial_effect(c)
 	--fusion summon
 	c:EnableReviveLimit()
-	aux.AddFusionProcMixRep(c,true,true,aux.FilterBoolFunctionEx(Card.IsRACE,RACE_THUNDER),1,1,31786629)
+	aux.AddFusionProcMixRep(c,true,true,aux.FilterBoolFunctionEx(Card.IsRace,RACE_THUNDER),1,1,31786629)
 	--spsummon condition
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -26,14 +26,14 @@ function c101006036.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_FIELD)
 	e3:SetCode(EFFECT_CANNOT_TO_HAND)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetTargetRange(LOCATION_DECK,LOCATION_DECK)
+	e3:SetTargetRange(0,LOCATION_DECK)
 	c:RegisterEffect(e3)
 	--destroy replace
 	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_CONTINUOUS)
+	e4:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
 	e4:SetCode(EFFECT_DESTROY_REPLACE)
+	e4:SetRange(LOCATION_MZONE)
 	e4:SetTarget(c101006036.desreptg)
-	e4:SetOperation(c101006036.desrepop)
 	c:RegisterEffect(e4)
 	if not c101006036.global_check then
 		c101006036.global_check=true
@@ -53,7 +53,7 @@ function c101006036.initial_effect(c)
 	end
 end
 function c101006036.hspfilter(c,tp,sc)
-	return c:IsRace(RACE_THUNDER) and Duel.GetLocationCountFromEx(tp,tp,sc,c)>0 and c101006036[tp]
+	return c:IsRace(RACE_THUNDER) and not c:IsType(TYPE_FUSION) and Duel.GetLocationCountFromEx(tp,tp,sc,c)>0 and c101006036[tp]
 end
 function c101006036.hspcon(e,c)
 	if c==nil then return true end
@@ -64,7 +64,7 @@ function c101006036.hspop(e,tp,eg,ep,ev,re,r,rp,c)
 	Duel.Release(g,REASON_COST)
 end
 function c101006036.checkop(e,tp,eg,ep,ev,re,r,rp)
-	if re:GetActiveType()==TYPE_MONSTER and re:GetActivateLocation()==LOCATION_HAND then
+	if re:IsActiveType(TYPE_MONSTER) and re:GetHandler():IsRace(RACE_THUNDER) and re:GetActivateLocation()==LOCATION_HAND then
 		c101006036[rp]=true
 	end
 end
@@ -72,16 +72,18 @@ function c101006036.clear(e,tp,eg,ep,ev,re,r,rp)
 	c101006036[0]=false
 	c101006036[1]=false
 end
+function c101006036.repfilter(c)
+	return c:IsRace(RACE_THUNDER) and c:IsAbleToRemove() and aux.SpElimFilter(c,true)
+end
 function c101006036.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	local tg=c:GetEquipTarget()
-	if chk==0 then return not c:IsStatus(STATUS_DESTROY_CONFIRMED)
-		and tg and tg:IsReason(REASON_BATTLE+REASON_EFFECT)
-		and Duel.IsExistingMatchingCard(Card.IsAbleToRemove,tp,LOCATION_GRAVE,0,1,nil)
-	return Duel.SelectEffectYesNo(tp,c,96)
-end
-function c101006036.desrepop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local tc=Duel.SelectMatchingCard(tp,Card.IsAbleToRemove,tp,LOCATION_GRAVE,0,1,1,nil)
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
+	if chk==0 then
+	return not c:IsReason(REASON_REPLACE)
+		and Duel.IsExistingMatchingCard(c101006036.repfilter,tp,LOCATION_GRAVE,0,1,1,nil) end
+	if Duel.SelectYesNo(tp,c,96) then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESREPLACE)
+		local g=Duel.SelectMatchingCard(tp,c101006036.repfilter,tp,LOCATION_GRAVE,0,1,1,nil)
+		Duel.Remove(g:GetFirst(),POS_FACEUP,REASON_EFFECT)
+		return true
+	else return false end
 end
