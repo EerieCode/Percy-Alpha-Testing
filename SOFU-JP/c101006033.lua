@@ -26,7 +26,7 @@ end
 function c101006033.cfilter(c,fc,sumtype,tp)
 	return c:IsType(TYPE_LINK) and c:IsSetCard(0x220) 
 end
-function c101006033.cost(e,tp,eg,ep,ev,re,r,rp,chk)
+function c101006033.atcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckReleaseGroupCost(tp,c101006033.cfilter,1,false,nil,nil)
 	and e:GetHandler():GetFlagEffect(101006033)==0	end
 	local g=Duel.SelectReleaseGroupCost(tp,c101006033.cfilter,1,1,false,nil,nil)
@@ -37,7 +37,7 @@ function c101006033.atop(e,tp,eg,ep,ev,re,r,rp)
 	if c:IsFaceup() and c:IsRelateToEffect(e) and c:GetFlagEffect(101006033)==0 then
 			tc:RegisterFlagEffect(101006033,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
 			local e1=Effect.CreateEffect(e:GetHandler())
-			e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+			e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 			e1:SetCode(EVENT_BATTLE_START)
 			e1:SetOwnerPlayer(tp)
 			e1:SetCondition(c101006033.descon2)
