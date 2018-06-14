@@ -27,7 +27,7 @@ end
 function c101006030.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,c101006030.filter,tp,LOCATION_DECK,0,1,1,nil)
-	if g:GetCount()>0 then
+	if #g>0 then
 		local tc=g:GetFirst()
 		Duel.SendtoHand(tc,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,tc)
@@ -36,7 +36,11 @@ function c101006030.operation(e,tp,eg,ep,ev,re,r,rp)
 			local dg=Duel.GetMatchingGroup(c101006030.desfilter,tp,0,LOCATION_MZONE,nil,tc:GetAttack())
 			if ct>0 and #dg>0 then
 				Duel.BreakEffect()
-				Duel.Destroy(dg,REASON_EFFECT)
+				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+				local dc=dg:Select(tp,1,1,nil)
+				if #dc>0 then
+					Duel.Destroy(dc,REASON_EFFECT)
+				end
 			end
 		end
 	end
