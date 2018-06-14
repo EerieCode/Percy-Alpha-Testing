@@ -1,5 +1,5 @@
 --超雷龍ーサンダー•ドラゴン
---Super Thunder Dragon - Thunder Dragon
+--Superbolt Thunder Dragon
 --Scripted by AlphaKretin
 function c101006036.initial_effect(c)
 	--fusion summon
