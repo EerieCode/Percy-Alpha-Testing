@@ -15,7 +15,7 @@ function c101006030.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function c101006030.filter(c)
-	return c:IsLevelBelow(4) and c:IsRace(RACE_INSECT) and c:IsAbleToHand()
+	return c:IsLevel(4) and c:IsRace(RACE_INSECT) and c:IsAbleToHand()
 end
 function c101006030.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c101006030.filter,tp,LOCATION_DECK,0,1,nil) end
