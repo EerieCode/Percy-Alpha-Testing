@@ -55,7 +55,7 @@ function c101006003.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c101006003.costfilter(c)
-	return c:IsSetCard(0x578) and c:IsType(TYPE_MONSTER) and c:IsAbleToGraveAsCost()
+	return c:IsSetCard(0x220) and c:IsType(TYPE_MONSTER) and c:IsAbleToGraveAsCost()
 end
 function c101006003.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
