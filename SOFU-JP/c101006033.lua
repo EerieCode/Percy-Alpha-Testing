@@ -60,7 +60,7 @@ end
 function c101006033.descon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local mg=c:GetMaterial()
-	return c:IsSummonType(SUMMON_TYPE_RITUAL) and mg:GetCount()>0 and mg:IsExists(c101006033.mfilter,1,nil)
+	return c:IsSummonType(SUMMON_TYPE_RITUAL) and #mg>0 and mg:IsExists(c101006033.mfilter,1,nil)
 end
 function c101006033.desfilter(c)
 	return c:IsSummonType(SUMMON_TYPE_SPECIAL)
@@ -68,7 +68,7 @@ end
 function c101006033.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c101006033.desfilter,tp,0,LOCATION_MZONE,1,nil) end
 	local g=Duel.GetMatchingGroup(c101006033.desfilter,tp,0,LOCATION_MZONE,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,g:GetCount(),0,0)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
 end
 function c101006033.desop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(c101006033.desfilter,tp,0,LOCATION_MZONE,nil)

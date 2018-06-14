@@ -38,7 +38,7 @@ function c101006050.target(e,tp,eg,ep,ev,re,r,rp,chk)
 		local mg1=Duel.GetFusionMaterial(tp):Filter(Card.IsAbleToGrave,nil)
 		if not Duel.IsExistingMatchingCard(c101006050.exmfilter,tp,LOCATION_MZONE,0,1,nil) then
 			local sg=Duel.GetMatchingGroup(c101006050.exfilter0,tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil)
-			if sg:GetCount()>0 then
+			if #sg>0 then
 				mg1:Merge(sg)
 				Auxiliary.FCheckAdditional=c101006050.fcheck
 			end
@@ -64,7 +64,7 @@ function c101006050.activate(e,tp,eg,ep,ev,re,r,rp)
 	local exmat=false
 	if not Duel.IsExistingMatchingCard(c101006050.exmfilter,tp,LOCATION_MZONE,0,1,nil) then
 		local sg=Duel.GetMatchingGroup(c101006050.exfilter1,tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil,e)
-		if sg:GetCount()>0 then
+		if #sg>0 then
 			mg1:Merge(sg)
 			exmat=true
 		end
@@ -81,7 +81,7 @@ function c101006050.activate(e,tp,eg,ep,ev,re,r,rp)
 		local mf=ce:GetValue()
 		sg2=Duel.GetMatchingGroup(c101006050.spfilter,tp,LOCATION_EXTRA,0,nil,e,tp,mg2,mf,chkf)
 	end
-	if sg1:GetCount()>0 or (sg2~=nil and sg2:GetCount()>0) then
+	if #sg1>0 or (sg2~=nil and #sg2>0) then
 		local sg=sg1:Clone()
 		if sg2 then sg:Merge(sg2) end
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)

@@ -44,7 +44,7 @@ function c101006003.activate(e,tp,eg,ep,ev,re,r,rp)
 	if g:FilterCount(c101006003.thfilter)>0 then
 		Duel.Hint(HINT_SELECTMSG,p,HINTMSG_ATOHAND)
 		local sg=g:Select(p,c101006003.thfilter,1,1,nil)
-		if sg:GetCount()>0 then
+		if #sg>0 then
 			Duel.SendtoHand(sg,nil,REASON_EFFECT)
 			Duel.ConfirmCards(1-p,sg)
 			Duel.ShuffleHand(p)
@@ -69,7 +69,7 @@ function c101006003.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 	local g=Duel.GetFieldGroup(tp,0,LOCATION_SZONE)
-	if g:GetCount()>0 then
+	if #g>0 then
 		Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 	end
 end
@@ -80,7 +80,7 @@ function c101006003.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.BreakEffect()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 		local g=Duel.SelectMatchingCard(tp,nil,tp,0,LOCATION_SZONE,1,1,nil)
-		if g:GetCount()>0 then
+		if #g>0 then
 			Duel.Destroy(g,REASON_EFFECT)
 		end
 	end
