@@ -94,7 +94,7 @@ function c101006025.tdop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c101006025.desop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectMatchingCard(nil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,2,nil)
+	local g=Duel.SelectMatchingCard(tp,nil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,2,nil)
 	if #g>0 then
 		Duel.Destroy(g,REASON_EFFECT)
 	end
