@@ -1,0 +1,35 @@
+--コード・ラジエーター
+--Code Radiator
+--extra matrial only by edo9300
+function c100334006.lua.initial_effect(c)
+	--Extra Material
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetCode(EFFECT_EXTRA_MATERIAL)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetTargetRange(1,0)
+	e1:SetOperation(c100334006.extracon)
+	e1:SetValue(c100334006.extraval)
+	c:RegisterEffect(e1)
+end
+function c100334006.extracon(c,e,tp,sg,mg,lc,og,chk)
+	return (sg+mg):Filter(Card.IsLocation,nil,LOCATION_MZONE):IsExists(Card.IsRace,og,1,RACE_CYBERSE) and
+	#(sg&sg:Filter(Card.IsCode,nil,e:GetHandler():GetOriginalCode()))<2
+end
+function c100334006.extraval(chk,summon_type,e,...)
+	local c=e:GetHandler()
+	if chk==0 then
+		local tp,sc=...
+		if not summon_type==SUMMON_TYPE_LINK or not sc:IsSetCard(0x101) or Duel.GetFlagEffect(tp,100334006)>0 then
+			return Group.CreateGroup()
+		else
+			return Group.FromCards(c)
+		end
+	else
+		if summon_type==SUMMON_TYPE_LINK then
+			local sg,sc,tp=...
+			Duel.RegisterFlagEffect(tp,100334006,RESET_PHASE+PHASE_END,0,1)
+		end
+	end
+end
