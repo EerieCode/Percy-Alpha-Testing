@@ -1,7 +1,7 @@
 --マイクロ・コーダー
 --Micro Coder
 --extra matrial only by edo9300
-function c100334004.lua.initial_effect(c)
+function c100334004.initial_effect(c)
 	--Extra Material
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
