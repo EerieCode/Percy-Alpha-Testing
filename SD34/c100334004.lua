@@ -36,8 +36,8 @@ function c100334004.extraval(chk,summon_type,e,...)
 			return Group.FromCards(c)
 		end
 	else
-		if summon_type==SUMMON_TYPE_LINK then
-			local sg,sc,tp=...
+		local sg,sc,tp=...
+		if summon_type==SUMMON_TYPE_LINK and #sg>0 then
 			Duel.RegisterFlagEffect(tp,100334004,RESET_PHASE+PHASE_END,0,1)
 		end
 	end

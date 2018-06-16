@@ -15,7 +15,7 @@ function c100334006.initial_effect(c)
 end
 function c100334006.extracon(c,e,tp,sg,mg,lc,og,chk)
 	return (sg+mg):Filter(Card.IsLocation,nil,LOCATION_MZONE):IsExists(Card.IsRace,og,1,RACE_CYBERSE) and
-	#(sg&sg:Filter(c100334004.flagcheck,nil))<2
+	#(sg&sg:Filter(c100334006.flagcheck,nil))<2
 end
 function c100334006.flagcheck(c)
 	return c:GetFlagEffect(100334006)>0
@@ -36,8 +36,8 @@ function c100334006.extraval(chk,summon_type,e,...)
 			return Group.FromCards(c)
 		end
 	else
-		if summon_type==SUMMON_TYPE_LINK then
-			local sg,sc,tp=...
+		local sg,sc,tp=...
+		if summon_type==SUMMON_TYPE_LINK and #sg>0 then
 			Duel.RegisterFlagEffect(tp,100334006,RESET_PHASE+PHASE_END,0,1)
 		end
 	end
