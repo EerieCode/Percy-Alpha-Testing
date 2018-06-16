@@ -17,7 +17,7 @@ function c100334006.extracon(c,e,tp,sg,mg,lc,og,chk)
 	return (sg+mg):Filter(Card.IsLocation,nil,LOCATION_MZONE):IsExists(Card.IsRace,og,1,RACE_CYBERSE) and
 	#(sg&sg:Filter(c100334004.flagcheck,nil))<2
 end
-function c100334004.flagcheck(c)
+function c100334006.flagcheck(c)
 	return c:GetFlagEffect(100334006)>0
 end
 function c100334006.extraval(chk,summon_type,e,...)
