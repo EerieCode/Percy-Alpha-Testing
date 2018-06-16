@@ -33,7 +33,6 @@ function Auxiliary.LCheckRecursive(c,tp,sg,mg,lc,minc,maxc,f,specialchk,og,emt,f
 	for _,f in ipairs(filt) do
 		if not f[2](c,f[3],tp,sg,mg,lc,f[1],1) then
 			sg:RemoveCard(c)
-			filt={table.unpack(oldfilt)}
 			return false
 		end
 	end
@@ -58,7 +57,6 @@ function Auxiliary.LCheckRecursive2(c,tp,sg,sg2,secondg,mg,lc,minc,maxc,f,specia
 	for _,f in ipairs(filt) do
 		if not f[2](c,f[3],tp,sg,mg,lc,f[1],1) then
 			sg:RemoveCard(c)
-			filt={table.unpack(oldfilt)}
 			return false
 		end
 	end
@@ -71,21 +69,18 @@ function Auxiliary.LCheckRecursive2(c,tp,sg,sg2,secondg,mg,lc,minc,maxc,f,specia
 		end
 	end
 	if #(sg2-sg)==0 then
-		if secondg then
-			local res2=secondg:IsExists(Auxiliary.LCheckRecursive,1,sg,tp,sg,mg,lc,minc,maxc,f,specialchk,og,emt,filt)
-			filt={table.unpack(oldfilt)}
+		if secondg and #secondg>0 then
+			local res=secondg:IsExists(Auxiliary.LCheckRecursive,1,sg,tp,sg,mg,lc,minc,maxc,f,specialchk,og,emt,{table.unpack(filt)})
 			sg:RemoveCard(c)
-			return res2
+			return res
 		else
-			local res=Auxiliary.LCheckGoal(tp,sg,lc,minc,f,specialchk,filt)
-			filt={table.unpack(oldfilt)}
+			local res=Auxiliary.LCheckGoal(tp,sg,lc,minc,f,specialchk,{table.unpack(filt)})
 			sg:RemoveCard(c)
 			return res
 		end
 	end
-	local res=sg2:IsExists(Auxiliary.LCheckRecursive2,1,sg,tp,sg,sg2,secondg,mg,lc,minc,maxc,f,specialchk,og,emt,filt)
+	local res=Auxiliary.LCheckRecursive2((sg2-sg):GetFirst(),tp,sg,sg2,secondg,mg,lc,minc,maxc,f,specialchk,og,emt,filt)
 	sg:RemoveCard(c)
-	filt={table.unpack(oldfilt)}
 	return res
 end
 function Auxiliary.LCheckGoal(tp,sg,lc,minc,f,specialchk,filt)
@@ -120,14 +115,14 @@ function Auxiliary.LinkTarget(f,minc,maxc,specialchk)
 				local sg=Group.CreateGroup()
 				local cancel=false
 				sg:Merge(mustg)
-				local filters
 				while sg:GetCount()<maxc do
-					local filt={}
-					sg:Filter(Auxiliary.LCheckRecursive2,nil,tp,Group.CreateGroup(),sg,mg+tg,mg+tg,c,minc,maxc,f,specialchk,mg,emt,filt)
-					filters={table.unpack(filt)}
-					local cg=(mg+tg):Filter(Auxiliary.LCheckRecursive,sg,tp,sg,(mg+tg),c,minc,maxc,f,specialchk,mg,emt,filt)
+					local filters={}
+					if #sg>0 then
+						Auxiliary.LCheckRecursive2(sg:GetFirst(),tp,Group.CreateGroup(),sg,mg+tg,mg+tg,c,minc,maxc,f,specialchk,mg,emt,filters)
+					end
+					local cg=(mg+tg):Filter(Auxiliary.LCheckRecursive,sg,tp,sg,(mg+tg),c,minc,maxc,f,specialchk,mg,emt,filters)
 					if cg:GetCount()==0 then break end
-					if sg:GetCount()>=minc and sg:GetCount()<=maxc and Auxiliary.LCheckGoal(tp,sg,c,minc,f,specialchk,filt) then
+					if sg:GetCount()>=minc and sg:GetCount()<=maxc and Auxiliary.LCheckGoal(tp,sg,c,minc,f,specialchk,filters) then
 						cancel=true
 					else
 						cancel=false
@@ -143,6 +138,8 @@ function Auxiliary.LinkTarget(f,minc,maxc,specialchk)
 					end
 				end
 				if sg:GetCount()>0 then
+					local filters={}
+					Auxiliary.LCheckRecursive2(sg:GetFirst(),tp,Group.CreateGroup(),sg,mg+tg,mg+tg,c,minc,maxc,f,specialchk,mg,emt,filters)
 					sg:KeepAlive()
 					local reteff=Effect.GlobalEffect()
 					reteff:SetTarget(function()return sg,filters end)
