@@ -55,19 +55,6 @@ function Auxiliary.LCheckRecursive2(c,tp,sg,sg2,secondg,mg,lc,minc,maxc,f,specia
 	if #sg>maxc then return false end
 	local oldfilt={table.unpack(filt)}
 	sg:AddCard(c)
-	if #(sg2-sg)==0 then
-		if secondg then
-			local res2=secondg:IsExists(Auxiliary.LCheckRecursive,1,sg,tp,sg,mg,lc,minc,maxc,f,specialchk,og,emt,filt)
-			filt={table.unpack(oldfilt)}
-			sg:RemoveCard(c)
-			return res2
-		else
-			local res=Auxiliary.LCheckGoal(tp,sg,lc,minc,f,specialchk,filt)
-			filt={table.unpack(oldfilt)}
-			sg:RemoveCard(c)
-			return res
-		end
-	end
 	for _,f in ipairs(filt) do
 		if not f[2](c,f[3],tp,sg,mg,lc,f[1],1) then
 			sg:RemoveCard(c)
@@ -81,6 +68,19 @@ function Auxiliary.LCheckRecursive2(c,tp,sg,sg2,secondg,mg,lc,minc,maxc,f,specia
 			sg:RemoveCard(c)
 			filt={table.unpack(oldfilt)}
 			return false
+		end
+	end
+	if #(sg2-sg)==0 then
+		if secondg then
+			local res2=secondg:IsExists(Auxiliary.LCheckRecursive,1,sg,tp,sg,mg,lc,minc,maxc,f,specialchk,og,emt,filt)
+			filt={table.unpack(oldfilt)}
+			sg:RemoveCard(c)
+			return res2
+		else
+			local res=Auxiliary.LCheckGoal(tp,sg,lc,minc,f,specialchk,filt)
+			filt={table.unpack(oldfilt)}
+			sg:RemoveCard(c)
+			return res
 		end
 	end
 	local res=sg2:IsExists(Auxiliary.LCheckRecursive2,1,sg,tp,sg,sg2,secondg,mg,lc,minc,maxc,f,specialchk,og,emt,filt)
@@ -124,8 +124,8 @@ function Auxiliary.LinkTarget(f,minc,maxc,specialchk)
 				while sg:GetCount()<maxc do
 					local filt={}
 					sg:Filter(Auxiliary.LCheckRecursive2,nil,tp,Group.CreateGroup(),sg,mg+tg,mg+tg,c,minc,maxc,f,specialchk,mg,emt,filt)
-					local cg=(mg+tg):Filter(Auxiliary.LCheckRecursive,sg,tp,sg,(mg+tg),c,minc,maxc,f,specialchk,mg,emt,filt)
 					filters={table.unpack(filt)}
+					local cg=(mg+tg):Filter(Auxiliary.LCheckRecursive,sg,tp,sg,(mg+tg),c,minc,maxc,f,specialchk,mg,emt,filt)
 					if cg:GetCount()==0 then break end
 					if sg:GetCount()>=minc and sg:GetCount()<=maxc and Auxiliary.LCheckGoal(tp,sg,c,minc,f,specialchk,filt) then
 						cancel=true
