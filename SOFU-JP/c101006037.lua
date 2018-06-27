@@ -59,7 +59,7 @@ function c101006037.hspcon(e,c)
 	return #g1>0 and #g2>0
 		and aux.SelectUnselectGroup(g,e,tp,2,2,c101006037.rescon,0)
 end
-function c101006037.spop(e,tp,eg,ep,ev,re,r,rp,c)
+function c101006037.hspop(e,tp,eg,ep,ev,re,r,rp,c)
 	local g1=Duel.GetMatchingGroup(c101006037.spfilter1,tp,LOCATION_HAND,0,nil)
 	local g2=Duel.GetMatchingGroup(c101006037.spfilter2,tp,LOCATION_MZONE,0,nil)
 	local g=g1:Clone()
