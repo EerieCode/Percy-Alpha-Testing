@@ -28,6 +28,7 @@ function c101006041.initial_effect(c)
 	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e3:SetType(EFFECT_TYPE_QUICK_O)
 	e3:SetCode(EVENT_FREE_CHAIN)
+	e3:SetHintTiming(TIMING_BATTLE_START)
 	e3:SetCountLimit(1)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCondition(c101006041.atkcon)
@@ -55,6 +56,7 @@ function c101006041.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_POSITION,g,g:GetCount(),0,0)
 end
 function c101006041.atkop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) then
 			if tc:IsFaceup() then
