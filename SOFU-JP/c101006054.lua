@@ -1,6 +1,5 @@
 --World Dino Wrestling
---anime version scripted by Larry196, updates by Naim
---missing the graveyard effect for now
+--anime version scripted by Larry126, updates by Naim
 function c101006054.initial_effect(c)
 	--activate
 	local e1=Effect.CreateEffect(c)
@@ -27,6 +26,7 @@ function c101006054.initial_effect(c)
 	c:RegisterEffect(e3)
 	--atk up
 	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(101006054,1))
 	e4:SetType(EFFECT_TYPE_FIELD)
 	e4:SetCode(EFFECT_UPDATE_ATTACK)
 	e4:SetRange(LOCATION_FZONE)
@@ -35,6 +35,17 @@ function c101006054.initial_effect(c)
 	e4:SetCondition(c101006054.atkcon2)
 	e4:SetValue(200)
 	c:RegisterEffect(e4)
+	--special summon
+	local e5=Effect.CreateEffect(c)
+	e5:SetDescription(aux.Stringid(101006054,1))
+	e5:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e5:SetType(EFFECT_TYPE_IGNITION)
+	e5:SetRange(LOCATION_GRAVE)
+	e5:SetCondition(c101006054.spcon)
+	e5:SetCost(aux.bfgcost)
+	e5:SetTarget(c101006054.sptg)
+	e5:SetOperation(c101006054.spop)
+	c:RegisterEffect(e5)
 end
 function c101006054.filter(c)
 	return c:IsFaceup() and c:IsSetCard(0x580)
@@ -56,4 +67,23 @@ function c101006054.atktg2(e,c)
 end
 function c101006054.atkcon2(e)
 	return Duel.GetCurrentPhase()==PHASE_DAMAGE_CAL and Duel.GetAttackTarget()~=nil
+end
+function c101006054.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)
+end
+function c101006054.spfilter(c,e,tp)
+	return c:IsSetCard(0x580) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
+end
+function c101006054.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and Duel.IsExistingMatchingCard(c101006054.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
+end
+function c101006054.spop(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g=Duel.SelectMatchingCard(tp,c101006054.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
+	if g:GetCount()>0 then
+		Duel.SpecialSummon(g,0,tp,tp,true,false,POS_FACEUP)
+	end
 end
