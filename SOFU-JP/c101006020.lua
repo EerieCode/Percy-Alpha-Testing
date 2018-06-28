@@ -2,7 +2,7 @@
 --Thunder Dragon Bird
 --AlphaKretin
 function c101006020.initial_effect(c)
-	--to hand
+	--special summon
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(101006020,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -13,7 +13,7 @@ function c101006020.initial_effect(c)
 	e1:SetTarget(c101006020.sptg)
 	e1:SetOperation(c101006020.spop)
 	c:RegisterEffect(e1)
-	--to hand
+	--to deck
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(101006020,1))
 	e2:SetCategory(CATEGORY_TODECK+CATEGORY_DRAW)
