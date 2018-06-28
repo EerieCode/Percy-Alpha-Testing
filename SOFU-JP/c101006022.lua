@@ -19,6 +19,7 @@ c:EnableReviveLimit()
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e2:SetCode(EVENT_CHAINING)
 	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1)
 	e2:SetCondition(c101006022.atkcond)
 	e2:SetOperation(c101006022.atkop)
 	c:RegisterEffect(e2)
@@ -124,9 +125,9 @@ function c101006022.tgop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=tg:Filter(Card.IsRelateToEffect,nil,e)
 	if sg:GetCount()>0 then
 		if Duel.SelectOption(tp,aux.Stringid(50383626,5),aux.Stringid(50383626,6))==0 then
-			Duel.SendtoDeck(g,nil,0,REASON_EFFECT)
+			Duel.SendtoDeck(sg,nil,0,REASON_EFFECT)
 		else
-			Duel.SendtoDeck(g,nil,1,REASON_EFFECT)
+			Duel.SendtoDeck(sg,nil,1,REASON_EFFECT)
 		end
 	end
 end
