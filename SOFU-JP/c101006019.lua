@@ -1,5 +1,5 @@
 --JP NAME
---Thunder Dragon Bird
+--Thunder Dragon Bolt
 --AlphaKretin
 function c101006019.initial_effect(c)
 	--to hand
