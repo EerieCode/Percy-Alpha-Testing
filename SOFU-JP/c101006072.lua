@@ -33,15 +33,12 @@ function c101006072.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 		local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 		local sg=Duel.GetMatchingGroup(c101006072.spfilter2,tp,LOCATION_GRAVE,0,nil,code,e,tp)
-		Debug.Message(#sg)
-		Debug.Message(ft)
 		if ft<=0 or sg:GetCount()==0 then return end
 		if Duel.IsPlayerAffectedByEffect(tp,59822133) then ft=1 end
 		if sg:GetCount()>0 and Duel.SelectYesNo(tp,aux.Stringid(101006072,0)) then
 		local g=sg:Select(tp,ft,ft,nil)
 		local dg=g:GetFirst()
 		while dg do
-		Debug.Message(dg)
 		Duel.SpecialSummonStep(dg,0,tp,tp,false,false,POS_FACEUP)
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_SINGLE)
