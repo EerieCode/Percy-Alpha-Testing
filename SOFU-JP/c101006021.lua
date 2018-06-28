@@ -1,6 +1,6 @@
 --JP NAME
 --Thunder Dragon Beast
---AlphaKretin
+--scripted by AlphaKretin
 function c101006021.initial_effect(c)
 	--to hand
 	local e1=Effect.CreateEffect(c)
@@ -79,4 +79,14 @@ function c101006020.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RegisterEffect(e3,tp)
 		Duel.SpecialSummonComplete()
 	end
+end
+function c101006020.thcon(e,tp,eg,ep,ev,re,r,rp)
+	local tc=e:GetLabelObject()
+	if tc:GetFlagEffectLabel(101006020)~=e:GetLabel() then
+		e:Reset()
+		return false
+	else return true end
+end
+function c101006020.thop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.SendtoHand(e:GetLabelObject(),nil,REASON_EFFECT)
 end

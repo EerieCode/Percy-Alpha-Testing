@@ -1,13 +1,13 @@
 --JP NAME
 --Thunder Dragon Bolt
---AlphaKretin
+--scripted by AlphaKretin
 function c101006019.initial_effect(c)
 	--to hand
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(101006019,0))
 	e1:SetCategory(CATEGORY_TOHAND)
 	e1:SetType(EFFECT_TYPE_QUICK_O)
-	e1:SetCode(EFFECT_FREE_CHAIN)
+	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCountLimit(1,101006019)
 	e1:SetCost(c101006019.thcost)

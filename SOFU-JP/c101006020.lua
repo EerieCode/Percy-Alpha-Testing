@@ -1,6 +1,6 @@
 --JP NAME
 --Thunder Dragon Bird
---AlphaKretin
+--scripted by AlphaKretin
 function c101006020.initial_effect(c)
 	--special summon
 	local e1=Effect.CreateEffect(c)
