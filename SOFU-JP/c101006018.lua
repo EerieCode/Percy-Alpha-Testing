@@ -6,7 +6,7 @@ function c101006018.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(101006018,0))
 	e1:SetCategory(CATEGORY_ATKCHANGE)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EFFECT_FREE_CHAIN)
 	e1:SetRange(LOCATION_HAND)
@@ -39,10 +39,10 @@ function c101006018.atkfilter(c)
 	return c:IsFaceup() and c:IsRace(RACE_THUNDER)
 end
 function c101006018.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and c101006018.filter(chkc) end
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and c101006018.atkfilter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(c101006018.atkfilter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local g=Duel.SelectTarget(tp,c101006018.filter,tp,LOCATION_MZONE,0,1,1,nil)
+	local g=Duel.SelectTarget(tp,c101006018.atkfilter,tp,LOCATION_MZONE,0,1,1,nil)
 end
 function c101006018.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
