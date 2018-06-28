@@ -1,6 +1,6 @@
 --JP NAME
 --Thunder Dragon Origin
---AlphaKretin
+--scripted by AlphaKretin
 function c101006018.initial_effect(c)
 	--atk
 	local e1=Effect.CreateEffect(c)
@@ -8,7 +8,7 @@ function c101006018.initial_effect(c)
 	e1:SetCategory(CATEGORY_ATKCHANGE)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetType(EFFECT_TYPE_QUICK_O)
-	e1:SetCode(EFFECT_FREE_CHAIN)
+	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCountLimit(1,101006018)
 	e1:SetCost(c101006018.atkcost)
