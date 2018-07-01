@@ -39,6 +39,14 @@ Normal Spell Card
 • 1000 ATK
 • Gains 200 ATK for each banished monster
 
+#Ninja Grandmaster Saizo
+Link Monster
+• Once per Turn: Set 1 “Ninjitsu Art” Spell/Trap Card directly from the Deck
+• Monsters this card points to cannot be targeted or attacked.
+
+
+
+
 
 
 
@@ -50,16 +58,11 @@ Each effect is name based once per turn
 • If a “Ninja” monster is Summoned, target 1 “Ninja” monster or “Ninjitsu” card in the GY and add it to the hand.
 • If a “Ninja” monster or “Ninjitsu Art” card would be destroyed (by battle or card effect), you can banish a “Ninja” or “Ninjitsu Art” in your GY instead.
 
-Ninja Grandmaster Saizo
-Link Monster
-• Once per Turn: Set 1 “Ninjitsu Art” Spell/Trap Card directly from the Deck
-• Monsters this card points to cannot be targeted or attacked.
-
 Valkyrie Zweite
 • 1900 ATK
 • When this card is summoned, destroy 1 monster on the field.
 
-Ninjitsu Art of Mirage Transformation
+Ninjitsu Art of Mirage Transformation (source: cybercatman)
 Let's you tributes a monster you control to special summon a monster from the opponent's GY and it becomes a Ninja.
 
 Mischief of the Time Goddess Spell
