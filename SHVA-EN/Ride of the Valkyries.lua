@@ -1,7 +1,7 @@
 --Ride of the Valkyries
 --scripted by Naim
 --find replace the below values when revealed
---scripted parts 1 and 2, missing 3 and 4
+--scripted parts 1, 2 and 3, missing 4
 local CARD;
 local CODE;
 local SET_VALKYRIE;
@@ -11,10 +11,21 @@ function CARD.initial_effect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
-	--e1:SetCountLimit(1,14517422+EFFECT_COUNT_CODE_OATH)
+	--e1:SetCountLimit(1,14517422+EFFECT_COUNT_CODE_OATH)		--if it is once per turn or something
 	e1:SetTarget(CARD.sptg)
 	e1:SetOperation(CARD.spop)
 	c:RegisterEffect(e1)
+		--to hand
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(CODE,1))
+	e2:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	e2:SetType(EFFECT_TYPE_IGNITION)
+	e2:SetRange(LOCATION_GRAVE)
+	--e2:SetCondition(aux.exccon)		--except the turn this card was sent to the Graveyard
+	e2:SetCost(aux.bfgcost)
+	e2:SetTarget(CARD.thtg)
+	e2:SetOperation(CARD.thop)
+	c:RegisterEffect(e2)
 end
 function CARD.filter(c,e,tp)
 	return c:IsSetCard(SET_VALKYRIE) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
@@ -56,4 +67,18 @@ end
 function CARD.tdop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SendtoDeck(e:GetHandler(),nil,2,REASON_EFFECT)
 end
+function CARD.thfilter(c)
+	return c:IsCode(MISCHIEF_CODE_HERE) and c:IsAbleToHand()
+end
+function CARD.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(CARD.thfilter,tp,LOCATION_DECK,0,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
+end
+function CARD.thop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectMatchingCard(tp,CARD.thfilter,tp,LOCATION_DECK,0,1,1,nil)
+	if g:GetCount()>0 then
+		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
+	end
 end
