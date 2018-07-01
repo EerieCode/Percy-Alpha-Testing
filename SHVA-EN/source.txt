@@ -3,18 +3,18 @@ https://ygorganization.com/zigfriedhijacksthestream/
 
 
 
-Valkyrie Dritte
+#Valkyrie Dritte
 • If this card is Summoned, add 1 “Valkyrie” from the Deck to the hand.
 
-Goddess Skuld’s Oracle
+#Goddess Skuld’s Oracle
 • Adds “Goddess Verdande’s Guidance” from the Deck to the Hand. (Once per Turn)
 • Rearrange the top 3 cards of the opponent the Deck
 
-Goddess Verdande’s Guidance
+#Goddess Verdande’s Guidance
 • Adds “Goddes Urd’s Verdict” from the Deck to the Hand (Once per Turn)
 • Predict the Card Type of the Card (Monster, Spell or Trap) (He reveals Pot of Greed), and Set it on the field if called correctly
 
-Goddess Urd’s Verdict
+#Goddess Urd’s Verdict
 • Guess the name of the face-downcard, if you guess it correctly, banish it face-up. (Once per Turn)
 • Valkyries cannot be targeted or destroyed by card effects.
 
@@ -33,18 +33,18 @@ Valkyrie Zweite
 • 1900 ATK
 • When this card is summoned, destroy 1 monster on the field.
 
-Yellow Ninja
+#Yellow Ninja
 • 1900 ATK
 • When this card is {Normal?) Summoned, Special Summon 1 “Ninja” from your hand.
 
-Ride of the Valkyries
+#Ride of the Valkyries (missing the last part)
 Normal Spell Card
 • Special Summon up to 5 Valkyrie Monsters from your hand to your side of the field
 • During the End Phase of this turn, all monsters Special Summon by this effect are shuffled into the deck
 • Banish this card from the GY to add “Mischief of the Time Goddess” from the Deck to the hand.
 • If you summon 3 or more monsters with this effect, you cannot lose life points until your next end phase
 
-Valkyrie Brunhilde
+#Valkyrie Brunhilde
 • 1800 ATK
 • Brunhilde gains 500 atk for each monster opponent controls
 
@@ -53,6 +53,6 @@ Mischief of the Time Goddess Spell
 • Somehow get a 2nd Battle Phase
 • Has quite a bit of text implying quite a number of restrictions and conditions
 
-Valkyrie Dritte
+#Valkyrie Dritte
 • 1000 ATK
 • Gains 200 ATK for each banished monster
