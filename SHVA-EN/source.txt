@@ -44,19 +44,13 @@ Link Monster
 • Once per Turn: Set 1 “Ninjitsu Art” Spell/Trap Card directly from the Deck
 • Monsters this card points to cannot be targeted or attacked.
 
-
-
-
-
-
-
-NOT DONE:
-
 Hidden Village of Ninjitsu Art Training
 Field Spell Card
 Each effect is name based once per turn
 • If a “Ninja” monster is Summoned, target 1 “Ninja” monster or “Ninjitsu” card in the GY and add it to the hand.
 • If a “Ninja” monster or “Ninjitsu Art” card would be destroyed (by battle or card effect), you can banish a “Ninja” or “Ninjitsu Art” in your GY instead.
+
+NOT DONE:
 
 Valkyrie Zweite
 • 1900 ATK
