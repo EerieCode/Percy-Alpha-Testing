@@ -50,11 +50,11 @@ Each effect is name based once per turn
 • If a “Ninja” monster is Summoned, target 1 “Ninja” monster or “Ninjitsu” card in the GY and add it to the hand.
 • If a “Ninja” monster or “Ninjitsu Art” card would be destroyed (by battle or card effect), you can banish a “Ninja” or “Ninjitsu Art” in your GY instead.
 
-NOT DONE:
-
 Valkyrie Zweite
 • 1900 ATK
 • When this card is summoned, destroy 1 monster on the field.
+
+NOT DONE:
 
 Ninjitsu Art of Mirage Transformation (source: cybercatman)
 Let's you tributes a monster you control to special summon a monster from the opponent's GY and it becomes a Ninja.
