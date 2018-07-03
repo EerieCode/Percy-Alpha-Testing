@@ -52,7 +52,7 @@ function c100227082.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.BreakEffect()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local sc=Duel.SelectMatchingCard(tp,c100227082.spfilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
-		if #sc>0 and Duel.SpecialSummon(sc,0,tp,false,false,POS_FACEUP) then
+		if #sc>0 and Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP) then
 			Duel.Draw(tp,1,REASON_EFFECT)
 		end
 	end
