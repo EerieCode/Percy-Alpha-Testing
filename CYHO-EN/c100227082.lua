@@ -47,6 +47,7 @@ function c100227082.spop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ShuffleHand(tp)
 	Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_DISCARD)
 	local tc=g:Select(1-tp,1,1,nil)
+	Duel.BreakEffect()
 	Duel.SendtoGrave(tc,REASON_EFFECT+REASON_DISCARD)
 	if not tc:GetFirst():IsCode(100227082) then
 		Duel.BreakEffect()
