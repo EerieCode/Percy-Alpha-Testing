@@ -1,4 +1,4 @@
---Danger! Chupacabra
+--Danger! Chupacabra!
 --Scripted by AlphaKretin
 function c100227085.intial_effect(c)
 	--special summon

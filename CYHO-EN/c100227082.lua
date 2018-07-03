@@ -1,4 +1,4 @@
---Danger! Bigfoot
+--Danger! Bigfoot!
 --Scripted by AlphaKretin
 function c100227082.intial_effect(c)
 	--special summon

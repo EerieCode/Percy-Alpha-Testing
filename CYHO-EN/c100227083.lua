@@ -1,4 +1,4 @@
---Danger! Nessie
+--Danger! Nessie!
 --Scripted by AlphaKretin
 function c100227083.intial_effect(c)
 	--special summon
