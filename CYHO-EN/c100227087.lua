@@ -1,6 +1,5 @@
 --Danger! Zone
 --Scripted by AlphaKretin
-c100227087
 function c100227087.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
