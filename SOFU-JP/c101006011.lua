@@ -46,10 +46,10 @@ function c101006011.sprop(e,tp,eg,ep,ev,re,r,rp,c)
 	e1:SetReset(RESET_EVENT+0x1ff0000+RESET_PHASE+PHASE_END)
 	c:RegisterEffect(e1)
 end
-function c101006011.lvfilter(c)
+function c101006011.aktfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x7b)
 end
-function c101006011.atkfilter(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function c101006011.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and c101006011.atkfilter(chkc) end
 	if chk==0 then return true end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
