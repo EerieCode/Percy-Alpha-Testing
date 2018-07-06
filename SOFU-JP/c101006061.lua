@@ -1,5 +1,5 @@
 --Sky Striker Maneuver - Vectored Blast!
---scripted by unknow guest
+--scripted by andré
 function c101006061.initial_effect(c)
 	--activate
 	local e1=Effect.CreateEffect(c)
