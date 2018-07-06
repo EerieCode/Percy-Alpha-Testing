@@ -17,7 +17,7 @@ function c101006061.condition(e,tp,eg,ep,ev,re,r,rp)
 	return not Duel.IsExistingMatchingCard(c101006061.cfilter,tp,LOCATION_MZONE,0,1,nil)
 end
 function c101006061.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=2 and Duel.GetFieldGroupCount(tp,0,LOCATION_DECK)>=2 end
+	if chk==0 then return Duel.IsPlayerCanDiscardDeck(tp,2) and Duel.IsPlayerCanDiscardDeck(1-tp,2) end
 end
 function c101006061.filter(c)
 	return c:GetSequence()>=5
@@ -31,6 +31,6 @@ function c101006061.operation(e,tp,eg,ep,ev,re,r,rp)
 		and Duel.IsExistingMatchingCard(c101006061.filter,tp,0,LOCATION_MZONE,1,nil)
 		and Duel.SelectYesNo(tp,aux.Stringid(101006061,1)) then
 		local g=Duel.GetMatchingGroup(c101006061.filter,tp,0,LOCATION_MZONE,nil)
-		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.SendtoDeck(g,nil,0,REASON_EFFECT)
 	end
 end
