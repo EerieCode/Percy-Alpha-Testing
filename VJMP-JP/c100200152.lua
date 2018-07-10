@@ -81,5 +81,5 @@ function c100200152.spop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e1,tp)
 end
 function c100200152.splimit(e,c,sump,sumtype,sumpos,targetp,se)
-	return c:IsLocation(LOCATION_EXTRA) and not c:IsRace(RACE_MACHINE)
+	return not c:IsRace(RACE_MACHINE)
 end
