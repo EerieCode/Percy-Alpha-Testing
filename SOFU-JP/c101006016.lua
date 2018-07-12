@@ -11,10 +11,9 @@ function c101006016.initial_effect(c)
 	e2:SetTarget(c101006016.sptarget)
 	e2:SetOperation(c101006016.spoperation)
 	c:RegisterEffect(e2)
-	
 end
 function c101006016.filter(c,e,tp)
-	return c:IsSetCard(0x226) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(101006016)
+	return c:IsSetCard(0x225) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(101006016)
 end
 function c101006016.sptarget(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
