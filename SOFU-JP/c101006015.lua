@@ -1,6 +1,5 @@
 --Orphegel Scherzon
 function c101006015.initial_effect(c)
-	
 	-- special summon
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(101006015,1))
@@ -15,7 +14,7 @@ function c101006015.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function c101006015.spfilter(c,e,tp)
-	return c:IsSetCard(0x226) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(101006015)
+	return c:IsSetCard(0x225) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(101006015)
 end
 function c101006015.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and c101006015.spfilter(chkc,e,tp) end
