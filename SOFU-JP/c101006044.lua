@@ -1,4 +1,4 @@
---Orphegor Longirus
+--Orphegel Longirus
 function c101006044.initial_effect(c)
 	c:EnableReviveLimit()
 	aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_EFFECT),2,nil,c101006044.matcheck)
