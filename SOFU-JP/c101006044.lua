@@ -18,7 +18,7 @@ function c101006044.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetCountLimit(1,101006045)
+	e3:SetCountLimit(1,101006044)
 	e3:SetTarget(c101006044.tdtg)
 	e3:SetOperation(c101006044.tdop)
 	c:RegisterEffect(e3)
@@ -59,6 +59,5 @@ function c101006044.tdop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_OATH)
 		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		e:GetHandler():RegisterEffect(e1)
-	end
 	end
 end
