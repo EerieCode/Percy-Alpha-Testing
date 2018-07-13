@@ -31,7 +31,7 @@ function c101006059.tgfilter(c)
 	return (c:IsSetCard(0xfe) or c:IsSetCard(0x225)) and (c:IsAbleToGrave() or c:IsAbleToRemove())
 end
 function c101006059.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c101006059.tgfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil)
+	if chk==0 then return Duel.IsExistingMatchingCard(c101006059.tgfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,tp,LOCATION_DECK+LOCATION_HAND)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,1,tp,LOCATION_DECK+LOCATION_HAND)
 end
