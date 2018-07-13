@@ -28,7 +28,7 @@ function c101006059.tgcon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp
 end
 function c101006059.tgfilter(c)
-	return (c:IsSetCard(0xfe) or c:IsSetCard(0x225)) and (c:IsCanToGrave() or c:IsCanRemove())
+	return (c:IsSetCard(0xfe) or c:IsSetCard(0x225)) and (c:IsAbleToGrave() or c:IsAbleToRemove())
 end
 function c101006059.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c101006059.tgfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil)

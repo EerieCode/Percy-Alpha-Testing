@@ -13,7 +13,7 @@ function c101006017.initial_effect(c)
 	e2:SetDescription(aux.Stringid(101006017,0))
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e2:SetProperty(EFFECT_FLAG_DELAY)
+	e2:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
 	e2:SetCode(EVENT_TO_GRAVE)
 	e2:SetCountLimit(1,101006017)
 	e2:SetTarget(c101006017.sptg1)
@@ -33,7 +33,7 @@ function c101006017.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function c101006017.indcon(e)
-	return e:GetHandler():IsSummonType(SUMMON_TYPE_SPECIAL)
+	return e:GetHandler():IsSummonType(SUMMON_TYPE_NORMAL)
 end
 function c101006017.indval(e,c)
 	return c:GetSummonLocation()==LOCATION_EXTRA
@@ -55,7 +55,7 @@ function c101006017.spop1(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c101006017.spfilter2(c,e,tp)
-	return c:IsSetCard(0x225) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(101006017)
+	return c:IsSetCard(0x225) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) 
 end
 function c101006017.sptg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_REMOVED) and c101006017.spfilter2(chkc,e,tp) end
