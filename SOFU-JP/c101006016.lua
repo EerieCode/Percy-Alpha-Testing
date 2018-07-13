@@ -48,9 +48,9 @@ function c101006016.splimit(e,c,sump,sumtype,sumpos,targetp)
 end
 function c101006016.igcon(e,tp,eg,ep,ev,re,r,rp)
 	local CARD_ORPHEGEL_BABEL = 101006057
-	return not Duel.IsPlayerAffectedByEffect(tp, CARD_ORPHEGEL_BABEL)
+	return not e:GetHandler():IsHasEffect(CARD_ORPHEGEL_BABEL)
 end
 function c101006016.qcon(e,tp,eg,ep,ev,re,r,rp)
 	local CARD_ORPHEGEL_BABEL = 101006057
-	return Duel.IsPlayerAffectedByEffect(tp, CARD_ORPHEGEL_BABEL)
+	return e:GetHandler():IsHasEffect(CARD_ORPHEGEL_BABEL)
 end
