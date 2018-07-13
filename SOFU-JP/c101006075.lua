@@ -1,4 +1,4 @@
---ネクロ・フュージョン
+--死魂融合
 --Necro Fusion
 function c101006075.initial_effect(c)
 	--Activate

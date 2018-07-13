@@ -1,4 +1,4 @@
--- いっしょくそくはつ
+--一色即発
 --Breaking Point of the Normal
 function c101006079.initial_effect(c)
 	--spsummon

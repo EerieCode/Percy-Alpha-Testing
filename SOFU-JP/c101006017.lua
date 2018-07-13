@@ -1,4 +1,4 @@
--- せいいぶつ－『せいじょう』
+--星遺物－『星杖』
 --World Legacy - "World Scepter"
 function c101006017.initial_effect(c)
 	--indes
