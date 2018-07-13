@@ -38,11 +38,11 @@ function c101006074.activate(e,tp,eg,ep,ev,re,r,rp)
 	c:RegisterEffect(e3,true)
 	Duel.SpecialSummonComplete()
 end
-function c29088922.cfilter(c,tc)
+function c101006074.cfilter(c,tc)
 	return c:IsFaceup() and c:GetLinkedGroup():IsContains(tc)
 end
 function c101006074.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c29088922.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,e:GetHandler()) end
+	if chk==0 then return Duel.IsExistingMatchingCard(c101006074.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,e:GetHandler()) end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function c101006074.filter(c)
