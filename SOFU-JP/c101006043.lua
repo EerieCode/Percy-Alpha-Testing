@@ -1,4 +1,5 @@
--- Orphegel Galatea
+--オルフェゴール・ガラテア
+--Orphegel Galatea
 function c101006043.initial_effect(c)
 	c:EnableReviveLimit()
 	aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_EFFECT),2,nil,c101006043.matcheck)
@@ -12,16 +13,16 @@ function c101006043.initial_effect(c)
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
 	--to deck
-	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(101006043,0))
-	e3:SetCategory(CATEGORY_TODECK+CATEGORY_ATKCHANGE+CATEGORY_DEFCHANGE+CATEGORY_DISABLE)
-	e3:SetType(EFFECT_TYPE_IGNITION)
-	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e3:SetRange(LOCATION_MZONE)
-	e3:SetCountLimit(1,101006043)
-	e3:SetTarget(c101006043.tdtg)
-	e3:SetOperation(c101006043.tdop)
-	c:RegisterEffect(e3)
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(101006043,0))
+	e2:SetCategory(CATEGORY_TODECK)
+	e2:SetType(EFFECT_TYPE_IGNITION)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1,101006043)
+	e2:SetTarget(c101006043.tdtg)
+	e2:SetOperation(c101006043.tdop)
+	c:RegisterEffect(e2)
 end
 function c101006043.matcheck(g,lc,tp)
 	return g:IsExists(Card.IsLinkSetCard,1,nil,0x225)
@@ -34,9 +35,9 @@ function c101006043.tdfilter(c)
 end
 function c101006043.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_REMOVED) and c101006043.tdfilter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(c101006043.tdfilter,tp,LOCATION_REMOVED,0,3,3,nil) end
+	if chk==0 then return Duel.IsExistingTarget(c101006043.tdfilter,tp,LOCATION_REMOVED,0,1,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
-	local g=Duel.SelectTarget(tp,c101006043.tdfilter,tp,LOCATION_REMOVED,0,3,3,nil)
+	local g=Duel.SelectTarget(tp,c101006043.tdfilter,tp,LOCATION_REMOVED,0,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,#g,0,0)
 end
 function c101006043.filter(c)
@@ -50,8 +51,8 @@ function c101006043.tdop(e,tp,eg,ep,ev,re,r,rp)
 	local og=Duel.GetOperatedGroup()
 	if #og==0 then return end
 	if og:IsExists(Card.IsLocation,1,nil,LOCATION_DECK) then Duel.ShuffleDeck(tp) end
-	local g=Duel.GetMatchingGroup(c101006043.filter,tp,0,LOCATION_DECK,nil)
-	if #g>0 then
+	local g=Duel.GetMatchingGroup(c101006043.filter,tp,LOCATION_DECK,0,nil)
+	if #g>0 and Duel.SelectYesNo(tp,aux.Stringid(101006043,1)) then
 		Duel.BreakEffect()
 		local sg=g:Select(tp,1,1,nil)
 		Duel.SSet(tp,sg)

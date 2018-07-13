@@ -1,26 +1,27 @@
+--オルフェゴール・カノーネ
 --Orphegel Canon
 function c101006014.initial_effect(c)
 	--special summon
-	local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e2:SetDescription(aux.Stringid(101006014,0))
-	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetRange(LOCATION_GRAVE)
-	e2:SetCountLimit(1,101006014)
-	e2:SetCost(aux.bfgcost)
-	e2:SetTarget(c101006014.sptarget)
-	e2:SetOperation(c101006014.spoperation)
-	c:RegisterEffect(e2)
+	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e1:SetDescription(aux.Stringid(101006014,0))
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetRange(LOCATION_GRAVE)
+	e1:SetCountLimit(1,101006014)
+	e1:SetCost(aux.bfgcost)
+	e1:SetTarget(c101006014.sptg)
+	e1:SetOperation(c101006014.spop)
+	c:RegisterEffect(e1)
 end
 function c101006014.filter(c,e,tp)
 	return c:IsSetCard(0x225) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(101006014)
 end
-function c101006014.sptarget(e,tp,eg,ep,ev,re,r,rp,chk)
+function c101006014.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsExistingMatchingCard(c101006014.filter,tp,LOCATION_HAND,0,1,nil,e,tp) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND)
 end
-function c101006014.spoperation(e,tp,eg,ep,ev,re,r,rp)
+function c101006014.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,c101006014.filter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
@@ -37,5 +38,5 @@ function c101006014.spoperation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c101006014.splimit(e,c,sump,sumtype,sumpos,targetp)
-	return not ( c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_DARK) )
+	return not c:IsAttribute(ATTRIBUTE_DARK)
 end

@@ -29,7 +29,7 @@ function c101006045.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function c101006045.matcheck(g,lc,tp)
-	return g:IsExists(Card.IsLinkSetCode,1,nil,0x225)
+	return g:IsExists(Card.IsLinkSetCard,1,nil,0x225)
 end
 function c101006045.indcon(e)
 	return e:GetHandler():IsLinkState()
@@ -49,27 +49,27 @@ function c101006045.filter(c)
 end
 function c101006045.tdop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
-	if #tg>0 and Duel.SendtoDeck(tg,nil,2,REASON_EFFECT)>0 then
-		local g=Duel.GetMatchingGroup(c101006045.filter,tp,0,LOCATION_MZONE,nil)
-		if #g==0 then return end
+	local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS):Filter(Card.IsRelateToEffect,nil,e)
+	if #tg==0 then return end
+	Duel.SendtoDeck(tg,nil,0,REASON_EFFECT)
+	local og=Duel.GetOperatedGroup()
+	if #og==0 then return end
+	if og:IsExists(Card.IsLocation,1,nil,LOCATION_DECK) then Duel.ShuffleDeck(tp) end
+	local g=Duel.GetMatchingGroup(c101006045.filter,tp,0,LOCATION_MZONE,nil)
+	if #g>0 then
 		Duel.BreakEffect()
 		for tc in aux.Next(g) do
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_DISABLE)
-			e1:SetReset(RESET_EVENT+0x1fe0000)
+			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 			tc:RegisterEffect(e1)
-			local e2=Effect.CreateEffect(c)
-			e2:SetType(EFFECT_TYPE_SINGLE)
+			local e2=e1:Clone()
 			e2:SetCode(EFFECT_DISABLE_EFFECT)
-			e2:SetReset(RESET_EVENT+0x1fe0000)
 			tc:RegisterEffect(e2)
 			if tc:IsType(TYPE_TRAPMONSTER) then
-				local e3=Effect.CreateEffect(c)
-				e3:SetType(EFFECT_TYPE_SINGLE)
+				local e3=e1:Clone()
 				e3:SetCode(EFFECT_DISABLE_TRAPMONSTER)
-				e3:SetReset(RESET_EVENT+0x1fe0000)
 				tc:RegisterEffect(e3)
 			end
 			local e4=e1:Clone()
