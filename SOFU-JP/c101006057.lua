@@ -12,7 +12,7 @@ function c101006057.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_FIELD)
 	e2:SetCode(101006057)
 	e2:SetRange(LOCATION_FZONE)
-	e2:SetTargetRange(LOCATION_MZONE+LOCATION_GRAVE)
+	e2:SetTargetRange(LOCATION_MZONE+LOCATION_GRAVE,0)
 	c:RegisterEffect(e2)
 	--tohand
 	local e3=Effect.CreateEffect(c)
