@@ -48,10 +48,8 @@ function c101006015.splimit(e,c,sump,sumtype,sumpos,targetp)
 	return not c:IsAttribute(ATTRIBUTE_DARK)
 end
 function c101006015.igcon(e,tp,eg,ep,ev,re,r,rp)
-	local CARD_ORPHEGEL_BABEL = 101006057
 	return not e:GetHandler():IsHasEffect(CARD_ORPHEGEL_BABEL)
 end
 function c101006015.qcon(e,tp,eg,ep,ev,re,r,rp)
-	local CARD_ORPHEGEL_BABEL = 101006057
 	return e:GetHandler():IsHasEffect(CARD_ORPHEGEL_BABEL)
 end
