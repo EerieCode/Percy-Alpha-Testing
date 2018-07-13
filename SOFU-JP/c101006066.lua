@@ -68,37 +68,20 @@ end
 function c101006066.filter(c,tp,seq)
 	local cseq=c:GetSequence()
 	local cp=c:GetControler()
-	if cp==tp then
-		if c:IsLocation(LOCATION_MZONE) then
-			if seq==1 or seq==5 then
-				return cseq==1 or cseq==5
-			elseif seq==3 or seq==6 then
-				return cseq==3 or cseq==6
-			else
-				return cseq==seq
-			end
+	if c:IsLocation(LOCATION_MZONE) then
+		if seq==1 or seq==5 then
+			return (cp==tp and (cseq==1 or cseq==5)) or (cp~=tp and (cseq==3 or cseq==6))
+		elseif seq==3 or seq==6 then
+			return (cp==tp and (cseq==3 or cseq==6)) or (cp~=tp and (cseq==1 or cseq==5))
 		else
-			if seq==5 or seq==6 then
-				return (cseq==1 and seq==5) or (cseq==3 and seq==6)
-			else
-				return cseq==seq
-			end
+			return (cp==tp and cseq==seq) or (cp~=tp and cseq==4-seq)
 		end
 	else
-		if c:IsLocation(LOCATION_MZONE) then
-			if seq==1 or seq==5 then
-				return cseq==3 or cseq==6
-			elseif seq==3 or seq==6 then
-				return cseq==1 or cseq==5
-			else
-				return cseq==4-seq
-			end
+		if seq==5 or seq==6 then
+			return (cp==tp and ((cseq==1 and seq==5) or (cseq==3 and seq==6)))
+				or (cp~=tp and ((cseq==1 and seq==6) or (cseq==3 and seq==5)))
 		else
-			if seq==5 or seq==6 then
-				return (cseq==1 and seq==6) or (cseq==3 and seq==5)
-			else
-				return cseq==4-seq
-			end
+			return (cp==tp and cseq==seq) or (cp~=tp and cseq==4-seq)
 		end
 	end
 end
