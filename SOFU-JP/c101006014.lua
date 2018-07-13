@@ -8,10 +8,16 @@ function c101006014.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_GRAVE)
 	e1:SetCountLimit(1,101006014)
+	e1:SetCondition(c101006014.igcon)
 	e1:SetCost(aux.bfgcost)
 	e1:SetTarget(c101006014.sptg)
 	e1:SetOperation(c101006014.spop)
 	c:RegisterEffect(e1)
+	local e2=e1:Clone()
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetCondition(c101006014.qcon)
+	c:RegisterEffect(e2)
 end
 function c101006014.filter(c,e,tp)
 	return c:IsSetCard(0x225) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(101006014)
@@ -39,4 +45,12 @@ function c101006014.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c101006014.splimit(e,c,sump,sumtype,sumpos,targetp)
 	return not c:IsAttribute(ATTRIBUTE_DARK)
+end
+function c101006014.igcon(e,tp,eg,ep,ev,re,r,rp)
+	local CARD_ORPHEGEL_BABEL = 101006057
+	return not Duel.IsPlayerAffectedByEffect(tp, CARD_ORPHEGEL_BABEL)
+end
+function c101006014.qcon(e,tp,eg,ep,ev,re,r,rp)
+	local CARD_ORPHEGEL_BABEL = 101006057
+	return Duel.IsPlayerAffectedByEffect(tp, CARD_ORPHEGEL_BABEL)
 end

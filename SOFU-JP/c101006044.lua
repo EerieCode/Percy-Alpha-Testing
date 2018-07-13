@@ -20,9 +20,15 @@ function c101006044.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1,101006044)
+	e2:SetCondition(c101006044.igcon)
 	e2:SetTarget(c101006044.tdtg)
 	e2:SetOperation(c101006044.tdop)
 	c:RegisterEffect(e2)
+	local e3=e2:Clone()
+	e3:SetType(EFFECT_TYPE_QUICK_O)
+	e3:SetCode(EVENT_FREE_CHAIN)
+	e3:SetCondition(c101006044.qcon)
+	c:RegisterEffect(e3)
 end
 function c101006044.matcheck(g,lc,tp)
 	return g:IsExists(Card.IsLinkSetCard,1,nil,0x225)
@@ -61,4 +67,12 @@ function c101006044.tdop(e,tp,eg,ep,ev,re,r,rp)
 		local sg=g:Select(tp,1,1,nil)
 		Duel.SendtoGrave(sg,REASON_EFFECT)
 	end
+end
+function c101006044.igcon(e,tp,eg,ep,ev,re,r,rp)
+	local CARD_ORPHEGEL_BABEL = 101006057
+	return not Duel.IsPlayerAffectedByEffect(tp, CARD_ORPHEGEL_BABEL)
+end
+function c101006044.qcon(e,tp,eg,ep,ev,re,r,rp)
+	local CARD_ORPHEGEL_BABEL = 101006057
+	return Duel.IsPlayerAffectedByEffect(tp, CARD_ORPHEGEL_BABEL)
 end
