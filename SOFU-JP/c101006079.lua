@@ -26,10 +26,11 @@ function c101006079.target(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function c101006079.activate(e,tp,eg,ep,ev,re,r,rp)
 	local ct=Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)
+	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ct=1 end
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<1 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,c101006079.filter,tp,LOCATION_HAND,0,1,ct,nil,e,tp)
-	if g:GetCount()==ct then
+	if g:GetCount()>0 then
 		Duel.HintSelection(g)
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
