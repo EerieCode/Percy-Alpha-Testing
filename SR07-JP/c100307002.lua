@@ -7,7 +7,7 @@ function c100307002.initial_effect(c)
 	e1:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 	e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetTargetRange(LOCATION_ONFIELD,0)
+	e1:SetTargetRange(LOCATION_FZONE,LOCATION_FZONE)
 	e1:SetTarget(c100307002.indtg)
 	e1:SetValue(1)
 	c:RegisterEffect(e1)
@@ -26,13 +26,12 @@ function c100307002.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function c100307002.indtg(e,c)
-	return c:IsCode(4064256) and c:IsLocation(LOCATION_FZONE)
+	return c:IsFaceup() and c:IsCode(4064256)
 end
 function c100307002.filter(c)
 	return c:IsCode(4064256) and c:GetActivateEffect() and c:GetActivateEffect():IsActivatable(tp,true,true)
 end
 function c100307002.acop(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetHandler():IsRelateToEffect(e) then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
 	local tc=Duel.SelectMatchingCard(tp,c100307002.filter,tp,LOCATION_HAND+LOCATION_DECK,0,1,1,nil):GetFirst()
 	if tc then
