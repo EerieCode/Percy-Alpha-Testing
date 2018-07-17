@@ -63,7 +63,7 @@ end
 function c100421020.atkval(e,c)
 	local lg=c:GetLinkedGroup():Filter(c100421020.atkfilter,nil)
 	return lg:GetSum(Card.GetLevel)*300
-
+end
 function c100421020.ctcon(e,tp,eg,ep,ev,re,r,rp)
 	return re:IsActiveType(TYPE_SPELL+TYPE_TRAP) and re:GetHandler():IsSetCard(0x107) and e:GetHandler():GetFlagEffect(1)>0
 end
