@@ -22,13 +22,14 @@ function c100410022.initial_effect(c)
 	e1:SetTarget(c100410022.destg)
 	e1:SetOperation(c100410022.desop)
 	c:RegisterEffect(e1)
-	--spsum
+	--tohand
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(77135531,1))
 	e2:SetCategory(CATEGORY_TOHAND)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP)
 	e2:SetCode(EVENT_TO_GRAVE)
+	e2:SetCountLimit(1,100410022)
 	e2:SetCondition(c100410022.thcon)
 	e2:SetTarget(c100410022.thtg)
 	e2:SetOperation(c100410022.thop)
@@ -52,10 +53,10 @@ function c100410022.desop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c100410022.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return c:IsSummonType(SUMMON_TYPE_LINK) and rp~=tp and c:GetPreviousControler()==tp
+	return rp~=tp and c:GetPreviousControler()==tp
 end
 function c100410022.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and chkc:IsAbleToHand() end
+	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and chkc:IsAbleToHand() and (not chkc:IsType(TYPE_LINK)) end
 	if chk==0 then return Duel.IsExistingTarget(Card.IsAbleToHand,tp,LOCATION_GRAVE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectTarget(tp,Card.IsAbleToHand,tp,LOCATION_GRAVE,0,1,1,nil)
