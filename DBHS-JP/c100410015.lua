@@ -4,7 +4,7 @@ function c100410015.initial_effect(c)
 	--recover
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e1:SetCategory(CATEGORY_DAMAGE)
+	e1:SetCategory(CATEGORY_DAMAGE+CATEGORY_SPECIAL_SUMMON)
 	e1:SetCode(EVENT_BE_MATERIAL)
 	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
 	e1:SetCountLimit(1,100410015)
