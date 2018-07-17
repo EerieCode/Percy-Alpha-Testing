@@ -1,7 +1,7 @@
 --氷の魔妖-雪女　リンク
 -- Mayakashi of Ice - Yuki Onna
 function c100410037.initial_effect(c)
-	c:SetUniqueOnField(1,0,100410035)
+	c:SetUniqueOnField(1,0,100410037)
 	-- link summon
 	c:EnableReviveLimit()
 	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsLinkSetCard,0x227),2,2)
