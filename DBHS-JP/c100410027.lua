@@ -1,7 +1,7 @@
 -- 麗の魔妖(まやかし)-妲姫
 --Beautiful Mayakashi – Dakki
 function c100410027.initial_effect(c)
-	c:SetUniqueOnField(1,0,100410035)
+	c:SetUniqueOnField(1,0,100410027)
 	--special summon
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(100410027,2))
