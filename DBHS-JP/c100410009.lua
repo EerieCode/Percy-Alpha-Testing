@@ -35,7 +35,7 @@ function c100410009.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND)
 end
 function c100410009.mfilter(c)
-	return c:IsCode() or c:IsCode()
+	return c:IsCode(100410005) or c:IsCode(100410006)
 end
 function c100410009.activate(e,tp,eg,ep,ev,re,r,rp)
 	local mg=Duel.GetRitualMaterial(tp)
