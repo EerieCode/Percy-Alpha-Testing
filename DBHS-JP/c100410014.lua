@@ -22,6 +22,7 @@ end
 function c100410014.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,tp,LOCATION_DECK)
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,0,tp,LOCATION_DECK+LOCATION_HAND)
 end
 function c100410014.tgfilter(c)
 	return c:IsSetCard(0x226) and c:IsAbleToGrave() and not c:IsCode(100410014)
