@@ -1,5 +1,5 @@
 --ネフティスの覚醒
--- Awakening of Nephthys
+--Awakening of Nephthys
 function c100410011.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -18,8 +18,10 @@ function c100410011.initial_effect(c)
 	--spaw
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(100410011,0))
-	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e3:SetCode(EVENT_TO_GRAVE)
+	e3:SetProperty(EFFECT_FLAG_DELAY)
+	e3:SetCountLimit(1,100410011)
 	e3:SetCondition(c100410011.spcon)
 	e3:SetTarget(c100410011.sptg)
 	e3:SetOperation(c100410011.spop)
@@ -27,8 +29,8 @@ function c100410011.initial_effect(c)
 end
 function c100410011.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsPreviousPosition(POS_FACEUP)
-		and c:GetPreviousControler()==tp and c:IsReason(REASON_DESTROY) and rp~=tp
+	return c:IsPreviousLocation(LOCATION_SZONE) and c:IsPreviousPosition(POS_FACEUP)
+		and c:IsReason(REASON_DESTROY) and c:IsReason(REASON_EFFECT)
 end
 function c100410011.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
