@@ -18,9 +18,11 @@ function c100410018.initial_effect(c)
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(100410018,0))
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e2:SetType(EFFECT_TYPE_IGNITION)
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1,100410018)
+	e2:SetCondition(c100410018.spcon)
 	e2:SetCost(c100410018.spcost)
 	e2:SetTarget(c100410018.sptg)
 	e2:SetOperation(c100410018.spop)
@@ -32,6 +34,9 @@ end
 function c100410018.actcon(e)
 	local a=Duel.GetAttacker()
 	return a and a:IsControler(e:GetHandlerPlayer()) and a:IsSetCard(0x226)
+end
+function c100410018.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetTurnPlayer()~=tp
 end
 function c100410018.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsReleasable() end
