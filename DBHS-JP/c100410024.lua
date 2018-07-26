@@ -79,7 +79,7 @@ end
 function c100410024.drop(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS):Filter(Card.IsRelateToEffect,nil,e)
-	if tg:GetCount()<=0 then return end
+	if not tg or tg:FilterCount(Card.IsRelateToEffect,nil,e)~=3 then return end
 	Duel.SendtoDeck(tg,nil,0,REASON_EFFECT)
 	local g=Duel.GetOperatedGroup()
 	if g:IsExists(Card.IsLocation,1,nil,LOCATION_DECK) then Duel.ShuffleDeck(tp) end
