@@ -1,4 +1,4 @@
---プランキッズ・ブランク
+--プランキッズ・プランク
 --Prankids Prank
 --Scripted by Eerie Code
 function c100410024.initial_effect(c)
