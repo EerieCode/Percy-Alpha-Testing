@@ -42,12 +42,12 @@ function c100410032.operation(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetValue(1)
 	Duel.RegisterEffect(e2,tp)
 end
-function c100410032.spfilter(c,tp,rp)
+function c100410032.spfilter(c,tp)
 	return c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousControler()==tp and c:GetPreviousTypeOnField()&TYPE_SYNCHRO~=0
-		and c:GetOriginalLevel()==5
+		and c:GetOriginalLevel()==5 and (c:IsReason(REASON_BATTLE) or c:IsReason(REASON_EFFECT) and c:GetReasonPlayer()==1-tp)
 end
 function c100410032.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return not eg:IsContains(e:GetHandler()) and eg:IsExists(c100410032.spfilter,1,nil)
+	return not eg:IsContains(e:GetHandler()) and eg:IsExists(c100410032.spfilter,1,nil,tp)
 end
 function c100410032.rmfilter(c)
 	return c:IsAbleToRemove() and c:IsRace(RACE_ZOMBIE)

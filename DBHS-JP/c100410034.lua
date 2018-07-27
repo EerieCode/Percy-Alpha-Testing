@@ -25,7 +25,7 @@ function c100410034.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_DESTROYED)
 	e2:SetRange(LOCATION_GRAVE)
-	e2:SetCountLimit(1,100410134)
+	e2:SetCountLimit(1,100410034)
 	e2:SetCondition(c100410034.spcon)
 	e2:SetTarget(c100410034.sptg)
 	e2:SetOperation(c100410034.spop)
@@ -34,28 +34,28 @@ end
 function c100410034.condition(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetPreviousLocation()==LOCATION_GRAVE and e:GetHandler():GetPreviousControler()==tp
 end
-function c44874522.desfilter(c)
+function c100410034.desfilter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP)
 end
 function c100410034.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c44874522.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
-	local g=Duel.GetMatchingGroup(c44874522.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
+	if chk==0 then return Duel.IsExistingMatchingCard(c100410034.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
+	local g=Duel.GetMatchingGroup(c100410034.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 end
 function c100410034.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectMatchingCard(tp,c44874522.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,c100410034.desfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
 	if g:GetCount()>0 then
 		Duel.HintSelection(g)
 		Duel.Destroy(g,REASON_EFFECT)
 	end
 end
-function c100410034.spfilter(c,tp,rp)
-	return c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousControler()==tp and c:GetPreviousTypeOnField()&TYPE_SYNCHRO~=0
-		and c:GetOriginalLevel()==9
+function c100410034.spfilter(c,tp)
+	return c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousControler()==tp and (c:GetPreviousTypeOnField()&TYPE_SYNCHRO)~=0
+		and c:GetOriginalLevel()==9 and (c:IsReason(REASON_BATTLE) or c:IsReason(REASON_EFFECT) and c:GetReasonPlayer()==1-tp)
 end
 function c100410034.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return not eg:IsContains(e:GetHandler()) and eg:IsExists(c100410034.spfilter,1,nil)
+	return not eg:IsContains(e:GetHandler()) and eg:IsExists(c100410034.spfilter,1,nil,tp)
 end
 function c100410034.rmfilter(c)
 	return c:IsAbleToRemove() and c:IsRace(RACE_ZOMBIE)

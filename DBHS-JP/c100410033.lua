@@ -43,12 +43,12 @@ function c100410033.operation(e,tp,eg,ep,ev,re,r,rp)
 	g1:Merge(g2)
 	Duel.SendtoGrave(g1,REASON_EFFECT)
 end
-function c100410033.spfilter(c,tp,rp)
+function c100410033.spfilter(c,tp)
 	return c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousControler()==tp and c:GetPreviousTypeOnField()&TYPE_SYNCHRO~=0
-		and c:GetOriginalLevel()==7
+		and c:GetOriginalLevel()==7  and (c:IsReason(REASON_BATTLE) or c:IsReason(REASON_EFFECT) and c:GetReasonPlayer()~=tp)
 end
 function c100410033.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return not eg:IsContains(e:GetHandler()) and eg:IsExists(c100410033.spfilter,1,nil)
+	return not eg:IsContains(e:GetHandler()) and eg:IsExists(c100410033.spfilter,1,nil,tp)
 end
 function c100410033.rmfilter(c)
 	return c:IsAbleToRemove() and c:IsRace(RACE_ZOMBIE)
