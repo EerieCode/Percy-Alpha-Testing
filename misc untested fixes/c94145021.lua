@@ -41,8 +41,9 @@ function c94145021.condition(e,tp,eg,ep,ev,re,r,rp)
 	return ev==1-tp or ev==PLAYER_ALL
 end
 function c94145021.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:IsLocation(LOCATION_HAND) and e:GetHandler():IsAbleToGraveAsCost() end
-	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
+	local c=e:GetHandler()
+	if chk==0 then return c:IsLocation(LOCATION_HAND) and c:IsAbleToGraveAsCost() end
+	Duel.SendtoGrave(c,REASON_COST)
 end
 function c94145021.operation(e,tp,eg,ep,ev,re,r,rp)
 	local e1=Effect.CreateEffect(e:GetHandler())
