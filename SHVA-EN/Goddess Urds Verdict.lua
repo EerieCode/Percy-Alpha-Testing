@@ -54,5 +54,11 @@ function c100243010.rmop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ConfirmCards(tp,tc)
 	if tc:IsCode(ac) then
 		Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
+	else
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
+		local g=Duel.SelectMatchingCard(tp,Card.IsAbleToRemove,tp,LOCATION_ONFIELD,0,1,1,nil)
+		if #g>0 then
+			Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
+		end
 	end
 end
