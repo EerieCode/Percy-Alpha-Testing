@@ -26,6 +26,7 @@ function CARD.initial_effect(c)
 	e2:SetOperation(CARD.thop)
 	c:RegisterEffect(e2)
 end
+CARD.listed_names = {MISCHIEF_CODE_HERE}
 function CARD.filter(c,e,tp)
 	return c:IsSetCard(SET_VALKYRIE) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
