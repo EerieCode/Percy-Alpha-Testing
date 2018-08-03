@@ -16,9 +16,6 @@ function CARD.initial_effect(c)
 	e1:SetTarget(CARD.thtg)
 	e1:SetOperation(CARD.thop)
 	c:RegisterEffect(e1)
-	local e2=e1:Clone()
-	e2:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
-	c:RegisterEffect(e2)
 	local e3=e1:Clone()
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e3)
@@ -32,7 +29,7 @@ function CARD.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 function CARD.thfilter(c)
-	return c:IsSetCard(SET_VALKYRIE) and c:IsAbleToHand()
+	return c:IsSetCard(SET_VALKYRIE) and c:IsAbleToHand() and not c:IsCode(CODE)
 end
 function CARD.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(CARD.thfilter,tp,LOCATION_DECK,0,1,nil) end
@@ -50,5 +47,5 @@ function CARD.rmfilter(c)
 	return c:IsFaceup() and c:IsType(TYPE_MONSTER)
 end
 function CARD.atkvalue(e,c)
-	return Duel.GetMatchingGroupCount(CARD.rmfilter,c:GetControler(),LOCATION_REMOVED,LOCATION_REMOVED,nil)*200
+	return Duel.GetMatchingGroupCount(CARD.rmfilter,c:GetControler(),0,LOCATION_REMOVED,nil)*200
 end
