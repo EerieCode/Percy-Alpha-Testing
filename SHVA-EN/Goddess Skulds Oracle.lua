@@ -40,10 +40,11 @@ function c100243008.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c100243008.target(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.GetFieldGroupCount(tp,0,LOCATION_DECK)>2 end
+	if chk==0 then return Duel.GetFieldGroupCount(tp,0,LOCATION_DECK)>2 end
 end
 function c100243008.operation(e,tp,eg,ep,ev,re,r,rp)
-    Duel.SortDecktop(tp,1-tp,3)
+	if not e:GetHandler():IsRelateToEffect(e) then return end
+	Duel.SortDecktop(tp,1-tp,3)
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
