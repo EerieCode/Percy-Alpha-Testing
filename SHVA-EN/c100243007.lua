@@ -1,32 +1,30 @@
 --Mischief of the Time Goddess
 --scripted by AlphaKretin and Larry126
-local CARD
-local CODE
-local SET_VALKYRIE
-function CARD.initial_effect(c)
+function c100243007.initial_effect(c)
     --Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_PHASE+PHASE_BATTLE)
-	e1:SetCondition(CARD.condition)
-	e1:SetTarget(CARD.target)
-	e1:SetOperation(CARD.activate)
+	e1:SetCondition(c100243007.condition)
+	e1:SetTarget(c100243007.target)
+	e1:SetOperation(c100243007.activate)
 	c:RegisterEffect(e1)
 end
-function CARD.cfilter(c)
-	return c:IsFaceup() and c:IsSetCard(SET_VALKYRIE)
+c100243007.listed_names = {CARD_MISCHIEF_TIME}
+function c100243007.cfilter(c)
+	return c:IsFaceup() and c:IsSetCard(0x228)
 end
-function CARD.condition(e,tp,eg,ep,ev,re,r,rp)
+function c100243007.condition(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
-	return Duel.GetCurrentChain()>1 and Duel.GetTurnPlayer()==tp and #g>0 and g:FilterCount(CARD.cfilter,nil)==#g
+	return Duel.GetCurrentChain()>1 and Duel.GetTurnPlayer()==tp and #g>0 and g:FilterCount(c100243007.cfilter,nil)==#g
 end
-function CARD.target(e,tp,eg,ep,ev,re,r,rp,chk)
+function c100243007.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	if e:IsHasType(EFFECT_TYPE_ACTIVATE) then
 		Duel.SetChainLimit(aux.FALSE)
 	end
 end
-function CARD.activate(e,tp,eg,ep,ev,re,r,rp)
+function c100243007.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	Duel.SendtoGrave(c,REASON_EFFECT)
 	local ph=Duel.GetCurrentPhase()
@@ -58,7 +56,7 @@ function CARD.activate(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetCode(EFFECT_CANNOT_BP)
 		e1:SetLabel(tid)
 		e1:SetTargetRange(1,0)
-		e1:SetCondition(CARD.skipcon)
+		e1:SetCondition(c100243007.skipcon)
 		e1:SetReset(RESET_PHASE+PHASE_END)
 		Duel.RegisterEffect(e1,p)
 	else
@@ -71,7 +69,7 @@ function CARD.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetCode(EFFECT_CANNOT_EP)
 	e1:SetLabel(tid)
 	e1:SetTargetRange(1,0)
-	e1:SetCondition(CARD.skipcon)
+	e1:SetCondition(c100243007.skipcon)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,p)
 	local e1=Effect.CreateEffect(c)
@@ -79,13 +77,13 @@ function CARD.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e1:SetCode(EFFECT_CANNOT_ACTIVATE)
 	e1:SetTargetRange(1,0)
-	e1:SetValue(CARD.aclimit)
+	e1:SetValue(c100243007.aclimit)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
 end
-function CARD.skipcon(e,tp,eg,ep,ev,re,r,rp)
+function c100243007.skipcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnCount()==e:GetLabel()
 end
-function CARD.aclimit(e,re,tp)
-	return re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsCode(CODE)
+function c100243007.aclimit(e,re,tp)
+	return re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsCode(CARD_MISCHIEF_TIME)
 end
