@@ -36,6 +36,7 @@ function c55410871.initial_effect(c)
 	e5:SetOperation(c55410871.damop)
 	c:RegisterEffect(e5)
 end
+c55410871.listed_names={21082832}
 function c55410871.indval(e,re,tp)
 	return tp~=e:GetHandlerPlayer()
 end
