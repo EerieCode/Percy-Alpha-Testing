@@ -31,6 +31,7 @@ function c92246806.initial_effect(c)
 	e4:SetOperation(c92246806.regop)
 	c:RegisterEffect(e4)
 end
+c92246806.listed_names={92246806}
 function c92246806.filter(c)
 	return c:IsSetCard(0xb3) and not c:IsCode(92246806) and c:IsSummonable(true,nil)
 end
