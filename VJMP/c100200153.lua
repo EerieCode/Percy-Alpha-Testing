@@ -1,5 +1,6 @@
+--シノビネクロ
 --Shinobi Necro
---scripter by andré
+--scripted by andré
 function c100200153.initial_effect(c)
 	--draw
 	local e1=Effect.CreateEffect(c)
