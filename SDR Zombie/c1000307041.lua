@@ -32,7 +32,7 @@ function c1000307041.atkval(e,c)
 end
 
 function c1000307041.cfilter(c,tp)
-	return c:IsRace(RACE_ZOMBIE) and c:GetPreviousControler()==tp
+	return c:IsRace(RACE_ZOMBIE)
 end
 function c1000307041.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c1000307041.cfilter,1,nil,tp)
