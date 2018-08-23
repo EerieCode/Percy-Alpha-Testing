@@ -56,14 +56,14 @@ function c100244002.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetSummonType()==SUMMON_TYPE_SYNCHRO
 end
 function c100244002.filter(c,e,tp)
-	return c:IsSetCard(0x1017) and c:IsType(TYPE_TUNER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0x1017) and c:IsType(TYPE_TUNER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
 function c100244002.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
 		local ct=Duel.GetLocationCount(tp,LOCATION_MZONE,tp,LOCATION_REASON_TOFIELD)
-		return ct>0 and Duel.IsExistingMatchingCard(c100244002.filter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE,0,1,nil,e,tp)
+		return ct>0 and Duel.IsExistingMatchingCard(c100244002.filter,tp,LOCATION_DECK,0,1,nil,e,tp)
 	end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE)
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function c100244002.rescon(sg,e,tp,mg)
     return aux.ChkfMMZ(#sg)(sg, e, tp, mg) and sg:GetClassCount(Card.GetLevel) == 1
@@ -76,7 +76,7 @@ function c100244002.spop(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then
 		 local sg=aux.SelectUnselectGroup(g,e,tp,1,ct,c100244002.rescon,1,tp,HINTMSG_SPSUMMON)
 		 if #sg>0 then
-		 	Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
+		 	Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 		 end
 	end
 end
