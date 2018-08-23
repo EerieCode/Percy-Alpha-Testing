@@ -71,7 +71,7 @@ function c100244002.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function c100244002.rescon(sg,e,tp,mg)
-    return aux.ChkfMMZ(#sg)(sg, e, tp, mg) and sg:GetClassCount(Card.GetLevel) == 1
+    return aux.ChkfMMZ(#sg)(sg, e, tp, mg) and sg:GetClassCount(Card.GetLevel)==#sg
 end
 function c100244002.spop(e,tp,eg,ep,ev,re,r,rp)
 	local ct=Duel.GetLocationCount(tp,LOCATION_MZONE,tp,LOCATION_REASON_TOFIELD)
