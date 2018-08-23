@@ -1,7 +1,7 @@
 --Junk Speeder
 function c100244002.initial_effect(c)
 	--synchro summon
-	aux.AddSynchroProcedure(c,aux.FilterBoolFunction(Card.IsSetCard,0x1017),1,1,aux.NonTuner(nil),1,99)
+	aux.AddSynchroProcedure(c,c100244002.tfilter,1,1,aux.NonTuner(nil),1,99)
 	c:EnableReviveLimit()
 	--special summon
 	local e1=Effect.CreateEffect(c)
@@ -34,6 +34,10 @@ function c100244002.initial_effect(c)
 	e3:SetOperation(c100244002.regop)
 	c:RegisterEffect(e3)
 	Duel.AddCustomActivityCounter(100244002,ACTIVITY_SPSUMMON,c100244002.counterfilter)
+end
+c100244002.material_setcode=0x1017
+function c100244002.tfilter(c)
+    return c:IsSetCard(0x1017) or c:IsHasEffect(20932152)
 end
 function c100244002.counterfilter(c)
 	return c:GetSummonLocation()~=LOCATION_EXTRA or c:IsType(TYPE_SYNCHRO)
