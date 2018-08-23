@@ -1,4 +1,5 @@
 --Junk Speeder
+--Scripted by Cybercatman and AlphaKretin
 function c100244002.initial_effect(c)
 	--synchro summon
 	aux.AddSynchroProcedure(c,c100244002.tfilter,1,1,aux.NonTuner(nil),1,99)
