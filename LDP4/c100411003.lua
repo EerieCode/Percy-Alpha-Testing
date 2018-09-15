@@ -38,8 +38,8 @@ end
 function c100411003.spcon(e,tp,eg,ep,ev,re,r,rp)
 	if eg:IsExists(c100411003.cfilter,1,nil,tp) then
 		local tc=eg:GetFirst()
-		e:SetLabel(tc:GetCode())
-		return Duel.IsExistingMatchingCard(c100411003.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp)
+		e:SetLabel(tc:GetOriginalCode())
+		return Duel.IsExistingMatchingCard(c100411003.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp,tc:GetOriginalCode())
 	end
 end
 function c100411003.spfilter(c,e,tp,code)
