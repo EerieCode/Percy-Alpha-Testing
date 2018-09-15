@@ -63,7 +63,7 @@ function c100411003.filter(c,e,tp)
 end
 function c100411003.spcon2(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return c:IsPreviousLocation(LOCATION_ONFIELD) and rp==1-tp and c:GetPreviousControler()==tp
+	return c:IsPreviousLocation(LOCATION_ONFIELD) and (rp~=tp or (rp~=tp and re:IsSetCard(0x64)) and c:GetPreviousControler()==tp
 end
 function c100411003.sptg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and c100411003.filter(chkc,e,tp) end
