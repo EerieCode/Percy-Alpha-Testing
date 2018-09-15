@@ -12,7 +12,6 @@ function c101007074.initial_effect(c)
 	e1:SetTarget(c101007074.target)
 	e1:SetOperation(c101007074.activate)
 	c:RegisterEffect(e1)
-end
 	--Banish from the GY to target a zombie monster you control
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(101007074,0))
