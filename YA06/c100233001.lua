@@ -23,7 +23,7 @@ function c100233001.initial_effect(c)
 	e4:SetDescription(aux.Stringid(100233001,0))
 	e4:SetCategory(CATEGORY_REMOVE)
 	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e4:SetCode(EVENT_DAMAGE_STEP_END)
+	e4:SetCode(EVENT_DAMAGE_STEP_END+EFFECT_FLAG_DELAY)
 	e4:SetCondition(c100233001.rmcond)
 	e4:SetTarget(c100233001.rmtg)
 	e4:SetOperation(c100233001.rmop)
@@ -54,9 +54,8 @@ function c100233001.rmop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsAbleToRemove,tp,0,LOCATION_MZONE,nil)
 	if Duel.Remove(g,0,REASON_EFFECT)>0 then
 		local og=Duel.GetOperatedGroup()
-		local fid=c:GetFieldID()
 		for oc in aux.Next(og) do
-			oc:RegisterFlagEffect(100233001,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1,fid)
+			oc:RegisterFlagEffect(100233001,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1,c:GetFieldID())
 		end
 		c:RegisterFlagEffect(100233101,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
 	end
