@@ -328,7 +328,7 @@ table.insert(card.challenges, card.attackCost)
 function card.atop(e, tp, eg, ep, ev, re, r, rp)
     if Duel.IsAttackCostPaid() ~= 2 then
         local CARD_YUGIOH = 5000
-        card.announce_filter = {CARD_YUGIOH, OPCODE_ISCODE, nil, OPCODE_ISCODE, OPCODE_NOT, OPCODE_AND}
+        card.announce_filter = {CARD_YUGIOH, OPCODE_ISCODE}
         Duel.AnnounceCardFilter(tp, table.unpack(card.announce_filter))
         Duel.AttackCostPaid()
     end
