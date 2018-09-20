@@ -580,10 +580,6 @@ function card.noSummonLowATK()
     e3:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
     Duel.RegisterEffect(e3, tp)
     table.insert(card.activeChallenges, e3)
-    local e4 = e1:Clone()
-    e4:SetCode(EFFECT_CANNOT_MSET)
-    Duel.RegisterEffect(e4, tp)
-    table.insert(card.activeChallenges, e4)
 end
 
 function card.splimit(e, c, sump, sumtype, sumpos, targetp, se)
