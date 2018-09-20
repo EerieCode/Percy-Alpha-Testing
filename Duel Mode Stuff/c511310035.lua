@@ -114,6 +114,14 @@ function card.playCard(c, p, e, tp, eg, ep, ev, re, r, rp)
     end
 end
 
+--helper function do destroy all cards that fit a filter
+function card.destroyFilter(func, loc)
+    local dg = Duel.GetMatchingGroup(func, 0, loc, loc, nil) --which player doesn't matter because we get both sides
+    if #dg > 0 then
+        Duel.Destroy(dg, REASON_RULE)
+    end
+end
+
 --All players reveal the top card of their deck. You may play that card immediately, starting with the turn player.
 function card.playTopCard(e, tp, eg, ep, ev, re, r, rp)
     local p = Duel.GetTurnPlayer()
@@ -139,19 +147,12 @@ table.insert(card.challenges, card.revealHands)
 
 --Destroy all monsters with five or more stars.
 function card.destroyFivePlusStar(e, tp, eg, ep, ev, re, r, rp)
-    local dg =
-        Duel.GetMatchingGroup(
+    card.destroyFilter(
         function(c)
             return c:IsLevelAbove(5) or c:IsRankAbove(5)
         end,
-        tp,
-        LOCATION_MZONE,
-        LOCATION_MZONE,
-        nil
+        LOCATION_MZONE
     )
-    if #dg > 0 then
-        Duel.Destroy(dg, REASON_RULE)
-    end
 end
 table.insert(card.challenges, card.destroyFivePlusStar)
 
@@ -208,19 +209,12 @@ table.insert(card.challenges, card.swapLP)
 
 --Destroy all monsters with 1500 or less ATK.
 function card.destroy1500LessATK(e, tp, eg, ep, ev, re, r, rp)
-    local dg =
-        Duel.GetMatchingGroup(
+    card.destroyFilter(
         function(c)
             return c:IsAttackBelow(1500)
         end,
-        tp,
-        LOCATION_MZONE,
-        LOCATION_MZONE,
-        nil
+        LOCATION_MZONE
     )
-    if #dg > 0 then
-        Duel.Destroy(dg, REASON_RULE)
-    end
 end
 table.insert(card.challenges, card.destroy1500LessATK)
 
@@ -363,46 +357,30 @@ table.insert(card.challenges, card.becomeNormal)
 
 --Destroy all cards on the field.
 function card.destroyAll(e, tp, eg, ep, ev, re, r, rp)
-    local dg = Duel.GetMatchingGroup(aux.TRUE, tp, LOCATION_ONFIELD, LOCATION_ONFIELD, nil)
-    if #dg > 0 then
-        Duel.Destroy(dg, REASON_RULE)
-    end
+    card.destroyFilter(aux.TRUE, LOCATION_ONFIELD)
 end
 table.insert(card.challenges, card.destroyAll)
 
 --Destroy all monsters.
 function card.destroyMonster(e, tp, eg, ep, ev, re, r, rp)
-    local dg = Duel.GetMatchingGroup(aux.TRUE, tp, LOCATION_MZONE, LOCATION_MZONE, nil)
-    if #dg > 0 then
-        Duel.Destroy(dg, REASON_RULE)
-    end
+    card.destroyFilter(aux.TRUE, LOCATION_MZONE)
 end
 table.insert(card.challenges, card.destroyMonster)
 
 --Destroy all Spell and Trap Cards.
 function card.destroyBackrow(e, tp, eg, ep, ev, re, r, rp)
-    local dg = Duel.GetMatchingGroup(aux.TRUE, tp, LOCATION_SZONE, LOCATION_SZONE, nil)
-    if #dg > 0 then
-        Duel.Destroy(dg, REASON_RULE)
-    end
+    card.destroyFilter(aux.TRUE, LOCATION_SZONE)
 end
 table.insert(card.challenges, card.destroyBackrow)
 
 --Destroy all face-up Xyz Monsters.
 function card.destroyXyz(e, tp, eg, ep, ev, re, r, rp)
-    local dg =
-        Duel.GetMatchingGroup(
+    card.destroyFilter(
         function(c)
             return c:IsFaceup() and c:IsType(TYPE_XYZ)
         end,
-        tp,
-        LOCATION_MZONE,
-        LOCATION_MZONE,
-        nil
+        LOCATION_MZONE
     )
-    if #dg > 0 then
-        Duel.Destroy(dg, REASON_RULE)
-    end
 end
 table.insert(card.challenges, card.destroyXyz)
 
@@ -492,55 +470,34 @@ table.insert(card.challenges, card.shuffleGrave)
 
 --Destroy all Continuous Spell and Trap Cards.
 function card.destroyCont(e, tp, eg, ep, ev, re, r, rp)
-    local dg =
-        Duel.GetMatchingGroup(
+    card.destroyFilter(
         function(c)
             return c:IsType(TYPE_CONTINUOUS)
         end,
-        tp,
-        LOCATION_SZONE,
-        LOCATION_SZONE,
-        nil
+        LOCATION_SZONE
     )
-    if #dg > 0 then
-        Duel.Destroy(dg, REASON_RULE)
-    end
 end
 table.insert(card.challenges, card.destroyCont)
 
 --Destroy all monsters with 1500 or more ATK.
 function card.destroy1500MoreATK(e, tp, eg, ep, ev, re, r, rp)
-    local dg =
-        Duel.GetMatchingGroup(
+    card.destroyFilter(
         function(c)
             return c:IsAttackAbove(1500)
         end,
-        tp,
-        LOCATION_MZONE,
-        LOCATION_MZONE,
-        nil
+        LOCATION_MZONE
     )
-    if #dg > 0 then
-        Duel.Destroy(dg, REASON_RULE)
-    end
 end
 table.insert(card.challenges, card.destroy1500MoreATK)
 
 --Destroy all monsters with 4 or less Levels.
 function card.destroyFourLessStar(e, tp, eg, ep, ev, re, r, rp)
-    local dg =
-        Duel.GetMatchingGroup(
+    card.destroyFilter(
         function(c)
             return c:IsLevelBelow(4)
         end,
-        tp,
-        LOCATION_MZONE,
-        LOCATION_MZONE,
-        nil
+        LOCATION_MZONE
     )
-    if #dg > 0 then
-        Duel.Destroy(dg, REASON_RULE)
-    end
 end
 table.insert(card.challenges, card.destroyFourLessStar)
 
