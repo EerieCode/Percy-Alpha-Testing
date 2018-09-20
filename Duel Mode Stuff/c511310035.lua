@@ -401,15 +401,13 @@ table.insert(card.challenges, card.discardMulligan)
 
 --Everyone draw the bottom card of their Deck.
 function card.drawBottom(e, tp, eg, ep, ev, re, r, rp)
-    local g = Duel.GetFieldGroup(tp, LOCATION_DECK, 0)
-    if #g > 0 then
-        local tc = g:GetMinGroup(Card.GetSequence):GetFirst()
+    local tc = Duel.GetFieldGroup(tp, LOCATION_DECK, 0):GetFirst() --first card in deck is bottom
+    if tc then
         Duel.SendtoHand(tc, nil, REASON_RULE + REASON_DRAW)
     end
-    local g2 = Duel.GetFieldGroup(tp, 0, LOCATION_DECK)
-    if #g2 > 0 then
-        local tc = g2:GetMinGroup(Card.GetSequence):GetFirst()
-        Duel.SendtoHand(tc, nil, REASON_RULE + REASON_DRAW)
+    local tc2 = Duel.GetFieldGroup(tp, 0, LOCATION_DECK):GetFirst()
+    if tc2 then
+        Duel.SendtoHand(tc2, nil, REASON_RULE + REASON_DRAW)
     end
 end
 table.insert(card.challenges, card.drawBottom)
