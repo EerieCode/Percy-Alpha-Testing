@@ -535,10 +535,10 @@ function card.swapControl(e, tp, eg, ep, ev, re, r, rp)
         Duel.SwapControl(g1, g2)
         return
     end
-    local p = tp
+    local p = 1 - tp
     if #g2 > #g1 then
         g1, g2 = g2, g1
-        p = 1 - tp
+        p = tp
     end
     --get a subset of group 1 equal to size of group 2
     local g3 = Group.CreateGroup()
