@@ -542,8 +542,10 @@ function card.swapControl(e, tp, eg, ep, ev, re, r, rp)
     end
     --get a subset of group 1 equal to size of group 2
     local g3 = Group.CreateGroup()
+    local tc = g1:GetFirst()
     while #g3 < #g2 do
-        g3:AddCard(g1:GetNext())
+        g3:AddCard(tc)
+        tc = g1:GetNext()
     end
     g1 = g1 - g3
     Duel.SwapControl(g2, g3)
