@@ -294,19 +294,28 @@ end
 table.insert(card.challenges, card.switchATKDEF)
 
 --Turn your deck over and then draw from the new top of the deck.
---TODO: Draws before reversing deck no matter what we try
 function card.reverseDeck(e, tp, eg, ep, ev, re, r, rp)
-    local e1 = Effect.CreateEffect(e:GetHandler())
+    local e1 = Effect.GlobalEffect()
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetCode(EFFECT_REVERSE_DECK)
     e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
     e1:SetTargetRange(1, 1)
     Duel.RegisterEffect(e1, tp)
-    table.insert(card.activeChallenges, e2)
-    Duel.Draw(tp, 1, REASON_RULE)
-    Duel.Draw(1 - tp, 1, REASON_RULE)
+    --workaround to delay draw until after deck flips, credit to larry
+    local e2 = Effect.CreateEffect(e:GetHandler())
+    e2:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
+    e2:SetCode(EVENT_ADJUST)
+    e2:SetOperation(card.drop)
+    Duel.RegisterEffect(e2, tp)
+    table.insert(card.activeChallenges, e1)
 end
 table.insert(card.challenges, card.reverseDeck)
+
+function card.drop(e, tp, eg, ep, ev, re, r, rp)
+    Duel.Draw(tp, 1, REASON_RULE)
+    Duel.Draw(tp, 1 - tp, REASON_RULE)
+    e:Reset()
+end
 
 --You cannot attack unless you say "Yu-Gi-Oh!"
 function card.attackCost(e, tp, eg, ep, ev, re, r, rp)
