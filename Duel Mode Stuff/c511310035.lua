@@ -697,13 +697,13 @@ table.insert(card.challenges, card.handTrap)
 --and send them to the Graveyard.
 function card.smite(e, tp, eg, ep, ev, re, r, rp)
     local p = Duel.GetTurnPlayer()
-    local max1 = math.floor(Duel.GetLP(p) / 1000)
+    local max1 = Duel.GetLP(p) // 1000
     local dg1 = Duel.SelectMatchingCard(p, aux.TRUE, p, 0, LOCATION_MZONE, 0, max1, nil)
     if #dg1 > 0 then
         Duel.PayLPCost(p, #dg1 * 1000)
         Duel.SendtoGrave(dg1, REASON_RULE)
     end
-    local max2 = math.floor(Duel.GetLP(1 - p) / 1000)
+    local max2 = Duel.GetLP(1 - p) // 1000
     local dg2 = Duel.SelectMatchingCard(1 - p, aux.TRUE, 1 - p, 0, LOCATION_MZONE, 0, max1, nil)
     if #dg2 > 0 then
         Duel.PayLPCost(1 - p, #dg2 * 1000)
@@ -842,10 +842,10 @@ end
 --The turn player decides how many cards to draw first.
 function card.costDraw(e, tp, eg, ep, ev, re, r, rp)
     local p = Duel.GetTurnPlayer()
-    local ct = Duel.AnnounceLevel(p, 0, Math.min(2, Duel.GetFieldGroupCount(p, LOCATION_DECK)))
+    local ct = Duel.AnnounceLevel(p, 0, math.min(2, Duel.GetFieldGroupCount(p, LOCATION_DECK)))
     Duel.Draw(p, ct, REASON_RULE)
     Duel.SetLP(p, Duel.GetLP(p) - 1000 * ct)
-    local ct = Duel.AnnounceLevel(1 - p, 0, Math.min(2, Duel.GetFieldGroupCount(1 - p, LOCATION_DECK)))
+    local ct = Duel.AnnounceLevel(1 - p, 0, math.min(2, Duel.GetFieldGroupCount(1 - p, LOCATION_DECK)))
     Duel.Draw(1 - p, ct, REASON_RULE)
     Duel.SetLP(1 - p, Duel.GetLP(1 - p) - 1000 * ct)
 end
