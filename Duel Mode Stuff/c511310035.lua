@@ -531,7 +531,23 @@ table.insert(card.challenges, card.goFaceUp)
 function card.swapControl(e, tp, eg, ep, ev, re, r, rp)
     local g1 = Duel.GetFieldGroup(tp, LOCATION_MZONE, 0)
     local g2 = Duel.GetFieldGroup(tp, 0, LOCATION_MZONE)
-    Duel.SwapControl(g1, g2)
+    if #g1 == #g2 then
+        Duel.SwapControl(g1, g2)
+        return
+    end
+    local p = tp
+    if #g2 > #g1 then
+        g1, g2 = g2, g1
+        p = 1 - tp
+    end
+    --get a subset of group 1 equal to size of group 2
+    local g3 = Group.CreateGroup()
+    while #g3 < #g2 do
+        g3:AddCard(g1:GetNext())
+    end
+    g1 = g1 - g3
+    Duel.SwapControl(g2, g3)
+    Duel.GetControl(g1, p)
 end
 table.insert(card.challenges, card.swapControl)
 
