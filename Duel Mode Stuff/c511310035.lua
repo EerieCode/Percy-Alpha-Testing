@@ -772,33 +772,29 @@ function card.rescon(mzc, szc, g)
 			elseif szc == 1 then
 				if #bg > 2 then return false end
 				if g:IsExists(Card.IsType, 1, nil, TYPE_SPELL | TYPE_TRAP) then
-					return bg:IsExists(card.raux1, 1, nil, bg, g)
+					return bg:IsExists(card.raux1, 1, nil, bg, g, true)
 				end
 			else
 				if #bg > 2 then return false end
 				if g:IsExists(Card.IsType, 1, nil, TYPE_SPELL | TYPE_TRAP) then
-					return bg:IsExists(card.raux3, 1, nil, bg, g) and bg:FilterCount(Card.IsType, nil, TYPE_FIELD) <= 1
+					return bg:IsExists(card.raux1, 1, nil, bg, g, false) and bg:FilterCount(Card.IsType, nil, TYPE_FIELD) <= 1
 				end
 			end
 			return true
 		end
 end
-function card.raux1(c, bg, g)
-	local bool = g:IsExists(card.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()), not c:IsType(TYPE_FIELD))
-	return (bool and bg:IsExists(card.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()), not c:IsType(TYPE_FIELD))) 
+function card.raux1(c, bg, g, mfield)
+	local bool = g:IsExists(card.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()), not c:IsType(TYPE_FIELD), mfield)
+	return (bool and bg:IsExists(card.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()), not c:IsType(TYPE_FIELD), mfield)) 
 		or (not bool and bg:FilterCount(aux.TRUE, c) == 0)
 end
-function card.raux2(c, type, field)
+function card.raux2(c, type, field, mfield)
 	if type == 0 then type = TYPE_SPELL | TYPE_TRAP end
-	return c:IsType(type) and ((field and c:IsType(TYPE_FIELD)) or (not field and not c:IsType(TYPE_FIELD)))
-end
-function card.raux3(c, bg, g)
-	local bool = g:IsExists(card.raux4, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()))
-	return (bool and bg:IsExists(card.raux4, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()))) or (not bool and bg:FilterCount(aux.TRUE, c) == 0)
-end
-function card.raux4(c, type)
-	if type == 0 then type = TYPE_SPELL | TYPE_TRAP end
-	return c:IsType(type)
+	if mfield then
+		return c:IsType(type) and ((field and c:IsType(TYPE_FIELD)) or (not field and not c:IsType(TYPE_FIELD)))
+	else
+		return c:IsType(type)
+	end
 end
 
 --Each duelist must search his or her deck for any card, add it to their hand, and shuffle their deck afterward.
