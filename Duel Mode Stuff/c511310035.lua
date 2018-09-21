@@ -717,23 +717,35 @@ table.insert(card.challenges, card.necrovalley)
 
 --Choose a monster, a spell, and a trap card from your Graveyard and set them all onto your field.
 function card.mimicat(e, tp, eg, ep, ev, re, r, rp)
-    if (Duel.GetLocationCount(tp, LOCATION_MZONE) > 0 and Duel.GetLocationCount(tp, LOCATION_SZONE > 1)) then
-        local g = Duel.GetMatchingGroup(card.graveSetFilter, tp, LOCATION_GRAVE, 0, nil, e, tp)
-        g = aux.SelectUnselectGroup(g, e, tp, 3, 3, card.rescon, 1, tp, HINTMSG_SET)
-        local g1 = g:Filter(Card.IsType, nil, TYPE_MONSTER)
-        local g2 = g - g1
-        Duel.SpecialSummon(g1, 0, tp, tp, true, true, POS_FACEDOWN_DEFENSE)
-        Duel.SSet(tp, g2)
-        Duel.ConfirmCards(1 - tp, g)
+    local mzc = Duel.GetLocationCount(tp, LOCATION_MZONE)
+    local szc = Duel.GetLocationCount(tp, LOCATION_SZONE)
+    local g = Duel.GetMatchingGroup(card.graveSetFilter, tp, LOCATION_GRAVE, 0, nil, e, tp)
+    if #g>0 and aux.SelectUnselectGroup(g, e, tp, 1, 3, card.rescon(mzc, szc, g), 0) then
+        local sg = aux.SelectUnselectGroup(g, e, tp, 1, 3, card.rescon(mzc, szc, g), 1, tp, HINTMSG_SET, card.rescon(mzc, szc, g))
+        local sg1 = sg:Filter(Card.IsType, nil, TYPE_MONSTER)
+        local sg2 = sg - sg1
+        if #sg1 > 0 then
+            Duel.SpecialSummon(sg1, 0, tp, tp, true, true, POS_FACEDOWN_DEFENSE)
+        end
+        if #sg2 > 0 then
+            Duel.SSet(tp, sg2)
+        end
+        Duel.ConfirmCards(1 - tp, sg)
     end
-    if (Duel.GetLocationCount(1 - tp, LOCATION_MZONE) > 0 and Duel.GetLocationCount(1 - tp, LOCATION_SZONE > 1)) then
-        local g = Duel.GetMatchingGroup(card.graveSetFilter, 1 - tp, LOCATION_GRAVE, 0, nil, e, tp)
-        g = aux.SelectUnselectGroup(g, e, 1 - tp, 3, 3, card.rescon, 1, 1 - tp, HINTMSG_SET)
-        local g1 = g:Filter(Card.IsType, nil, TYPE_MONSTER)
-        local g2 = g - g1
-        Duel.SpecialSummon(g1, 0, 1 - tp, 1 - tp, true, true, POS_FACEDOWN_DEFENSE)
-        Duel.SSet(1 - tp, g2)
-        Duel.ConfirmCards(tp, g)
+    mzc = Duel.GetLocationCount(1 - tp, LOCATION_MZONE)
+    szc = Duel.GetLocationCount(1 - tp, LOCATION_SZONE)
+    g = Duel.GetMatchingGroup(card.graveSetFilter, 1 - tp, LOCATION_GRAVE, 0, nil, e, 1 - tp)
+    if #g>0 and aux.SelectUnselectGroup(g, e, 1 - tp, 1, 3, card.rescon(mzc, szc, g), 0) then
+        local sg = aux.SelectUnselectGroup(g, e, 1 - tp, 1, 3, card.rescon(mzc, szc, g), 1, 1 - tp, HINTMSG_SET, card.rescon(mzc, szc, g))
+        local sg1 = sg:Filter(Card.IsType, nil, TYPE_MONSTER)
+        local sg2 = sg - sg1
+        if #sg1 > 0 then
+            Duel.SpecialSummon(sg1, 0, 1 - tp, 1 - tp, true, true, POS_FACEDOWN_DEFENSE)
+        end
+        if #sg2 > 0 then
+            Duel.SSet(1 - tp, sg2)
+        end
+        Duel.ConfirmCards(tp, sg)
     end
 end
 table.insert(card.challenges, card.mimicat)
@@ -743,10 +755,50 @@ function card.graveSetFilter(c, e, tp)
         (c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e, 0, tp, true, true, POS_FACEDOWN_DEFENSE))
 end
 
---TODO: Handle setting a field over another field like Multi-roll
-function card.rescon(sg, e, tp, mg)
-    return sg:FilterCount(Card.IsType, nil, TYPE_SPELL) and sg:FilterCount(Card.IsType, nil, TYPE_TRAP) and
-        sg:FilterCount(Card.IsType, nil, TYPE_MONSTER)
+function card.rescon(mzc, szc, g)
+	return function (sg, e, tp, mg)
+			if mzc > 0 and g:IsExists(Card.IsType, 1, nil, TYPE_MONSTER) and sg:FilterCount(Card.IsType, nil, TYPE_MONSTER) ~= 1 then
+				return false
+			elseif mzc == 0 and sg:FilterCount(Card.IsType, nil, TYPE_MONSTER) ~= 0 then
+				return false
+			end
+			local bg = sg:Filter(aux.NOT(Card.IsType), nil, TYPE_MONSTER)
+			if szc == 0 then
+				if g:IsExists(Card.IsType, 1, nil, TYPE_FIELD) then
+					return #bg == 1 and bg:GetFirst():IsType(TYPE_FIELD)
+				else
+					return #bg == 0
+				end
+			elseif szc == 1 then
+				if #bg > 2 then return false end
+				if g:IsExists(Card.IsType, 1, nil, TYPE_SPELL | TYPE_TRAP) then
+					return bg:IsExists(card.raux1, 1, nil, bg, g)
+				end
+			else
+				if #bg > 2 then return false end
+				if g:IsExists(Card.IsType, 1, nil, TYPE_SPELL | TYPE_TRAP) then
+					return bg:IsExists(card.raux3, 1, nil, bg, g) and bg:FilterCount(Card.IsType, nil, TYPE_FIELD) <= 1
+				end
+			end
+			return true
+		end
+end
+function card.raux1(c, bg, g)
+    local bool = g:IsExists(card.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()), not c:IsType(TYPE_FIELD))
+    return (bool and bg:IsExists(card.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()), not c:IsType(TYPE_FIELD))) 
+        or (not bool and bg:FilterCount(aux.TRUE, c) == 0)
+end
+function card.raux2(c, type, field)
+	if type == 0 then type = TYPE_SPELL | TYPE_TRAP end
+	return c:IsType(type) and ((field and c:IsType(TYPE_FIELD)) or (not field and not c:IsType(TYPE_FIELD)))
+end
+function card.raux3(c, bg, g)
+	local bool = g:IsExists(card.raux4, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()))
+	return (bool and bg:IsExists(card.raux4, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()))) or (not bool and bg:FilterCount(aux.TRUE, c) == 0)
+end
+function card.raux4(c, type)
+	if type == 0 then type = TYPE_SPELL | TYPE_TRAP end
+	return c:IsType(type)
 end
 
 --Each duelist must search his or her deck for any card, add it to their hand, and shuffle their deck afterward.
