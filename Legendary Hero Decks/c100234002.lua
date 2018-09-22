@@ -1,12 +1,11 @@
---Phantom Knight of Rusty Bardiche
--- During your Main Phase: 
--- You can send 1 "The Phantom Knights" monster from your Deck to the GY;
- -- Set 1 "Phantom Knights" Spell/Trap directly from your Deck in your Spell & Trap Zone. 
- -- If a DARK Xyz Monster(s) is Special Summoned to a zone(s) this card points to
- -- while this card is on the field, except during the Damage Step: You can target 1 card on the field; 
- -- destroy it.
- -- You can only use each effect of "The Phantom Knights of Rusty Bardiche" once per turn. 
- -- Cannot be used as Link Material
+--[[Phantom Knight of Rusty Bardiche
+During your Main Phase, you can send 1 "The Phantom Knights" card from your Deck to the GY
+then set 1 "Phantom Knights" Spell/Trap card from your Deck to the Spell & Trap Zone.
+If a DARK Xyz Monster is Special Summoned to a zone(s) this card points to,
+while this monster is on the field except during the Damage Step:
+You can target 1 card on the field; destroy it.
+You can only use each effect of "The Phantom Knights of Rusty Bardiche" once per turn.
+Cannot be used to Link Summon.--]]
 function c100234001.initial_effect(c)
 	--link summon
 	aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsAttribute,ATTRIBUTE_DARK),2)
