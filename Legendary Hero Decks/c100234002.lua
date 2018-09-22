@@ -1,5 +1,5 @@
 --[[Phantom Knight of Rusty Bardiche
-During your Main Phase: you can send 1 "The Phantom Knights" card from your Deck to the GY
+During your Main Phase: you can send 1 "The Phantom Knights" monster from your Deck to the GY
 then set 1 "Phantom Knights" Spell/Trap card from your Deck to the Spell & Trap Zone.
 If a DARK Xyz Monster is Special Summoned to a zone(s) this card points to,
 while this monster is on the field except during the Damage Step:
@@ -40,16 +40,16 @@ function c100234001.initial_effect(c)
 	e3:SetValue(1)
 	c:RegisterEffect(e3)
 end
-
 function c100234002.tgfilter(c)
-	return  c:IsSetCard(0x10d9) and c c:IsAbleToGrave()
-	and Duel.IsExistingMatchingCard(c100234002.setfilter,tp,LOCATION_DECK,0,1,nil)
+	return c:IsSetCard(0x10d9) and c:IsAbleToGrave() and c:IsType(TYPE_MONSTER)
+		and Duel.IsExistingMatchingCard(c100234002.setfilter,tp,LOCATION_DECK,0,1,c)
 end
 function c100234002.setfilter(c)
-	return c:IsSetCard(0xd9)  and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsSSetable()
+	return c:IsSetCard(0xd9) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsSSetable()
 end
 function c100234002.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c100234002.tgfilter,tp,LOCATION_DECK,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(c100234002.tgfilter,tp,LOCATION_DECK,0,1,nil)
+		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,tp,LOCATION_DECK)
 end
 function c100234002.tgop(e,tp,eg,ep,ev,re,r,rp)
