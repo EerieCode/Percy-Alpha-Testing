@@ -65,12 +65,12 @@ function c100234002.tgop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
-function c100234002.descfilter(c,tp,lg)
-	return c:IsFaceup() and c:IsControler(tp) and c:IsType(TYPE_XYZ) and c:IsAttribute(ATTRIBUTE_DARK) and lg:IsContains(c)
+function c100234002.descfilter(c,lg)
+	return c:IsFaceup() and c:IsType(TYPE_XYZ) and c:IsAttribute(ATTRIBUTE_DARK) and lg:IsContains(c)
 end
 function c100234002.descon(e,tp,eg,ep,ev,re,r,rp)
 	local lg=e:GetHandler():GetLinkedGroup()
-	return eg:IsExists(c100234002.descfilter,1,nil,tp,lg)
+	return eg:IsExists(c100234002.descfilter,1,nil,lg)
 end
 function c100234002.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() end
