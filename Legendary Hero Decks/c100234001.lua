@@ -25,5 +25,7 @@ function c100234001.atktg(e,c)
 	return (e:GetHandler():GetLinkedGroup():IsContains(c) or c==e:GetHandler()) and c:IsSetCard(0x8) and c:IsFaceup()
 end
 function c100234001.atkval(e,c)
-	return Duel.GetMatchingGroup(Card.IsSetCard,e:GetHandlerPlayer(),LOCATION_GRAVE,0,nil,0x8):GetClassCount(Card.GetCode)*100
+	local g=Duel.GetMatchingGroup(Card.IsSetCard,c:GetControler(),LOCATION_GRAVE,0,nil,0x8)
+	local ct=g:GetClassCount(Card.GetCode)
+	return ct*100
 end
