@@ -534,7 +534,8 @@ function card.swapControl(e, tp, eg, ep, ev, re, r, rp)
 	if #g1 == #g2 then
 		Duel.SwapControl(g1, g2)
 		return
-	end
+    end
+    --workaround for groups of different sizes
 	local p = 1 - tp
 	if #g2 > #g1 then
 		g1, g2 = g2, g1
@@ -716,6 +717,7 @@ end
 table.insert(card.challenges, card.necrovalley)
 
 --Choose a monster, a spell, and a trap card from your Graveyard and set them all onto your field.
+--Credit to andré for SelectUnselectLoop that handles Fields and Spell/Traps
 function card.mimicat(e, tp, eg, ep, ev, re, r, rp)
 	local mzc = Duel.GetLocationCount(tp, LOCATION_MZONE)
 	local szc = Duel.GetLocationCount(tp, LOCATION_SZONE)
@@ -785,7 +787,7 @@ function card.rescon(mzc, szc, g)
 end
 function card.raux1(c, bg, g, mfield)
 	local bool = g:IsExists(card.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()), not c:IsType(TYPE_FIELD), mfield)
-	return (bool and bg:IsExists(card.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()), not c:IsType(TYPE_FIELD), mfield)) 
+	return (bool and bg:IsExists(card.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP)&(~c:GetType()), not c:IsType(TYPE_FIELD), mfield))
 		or (not bool and bg:FilterCount(aux.TRUE, c) == 0)
 end
 function card.raux2(c, type, field, mfield)
