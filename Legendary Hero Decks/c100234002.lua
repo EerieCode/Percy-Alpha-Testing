@@ -58,6 +58,7 @@ function c100234002.operation(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 and Duel.SendtoGrave(g,REASON_EFFECT)>0 and Duel.IsExistingMatchingCard(c100234002.setfilter,tp,LOCATION_DECK,0,1,nil) then
 		local tc=Duel.SelectMatchingCard(tp,c100234002.setfilter,tp,LOCATION_DECK,0,1,1,nil):GetFirst()
 		if tc then
+			Duel.BreakEffect()
 			Duel.SSet(tp,tc)
 			Duel.ConfirmCards(1-tp,tc)
 		end
