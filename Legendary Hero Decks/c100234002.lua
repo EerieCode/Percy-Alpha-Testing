@@ -1,31 +1,33 @@
 --Phantom Knight of Rusty Bardiche
--- "During your main phase:
- -- you can send one "the phantom Knights" monster from your deck to the GY, 
- -- and if you do, set one "phantom knights" spell/trap from your deck to your spell/trap zone.
- -- If a DARK Xyz monster is summoned to a zone this monster points to (except during the damage step): target one card on the field, destroy it
+-- During your Main Phase: 
+-- You can send 1 "The Phantom Knights" monster from your Deck to the GY;
+ -- Set 1 "Phantom Knights" Spell/Trap directly from your Deck in your Spell & Trap Zone. 
+ -- If a DARK Xyz Monster(s) is Special Summoned to a zone(s) this card points to
+ -- while this card is on the field, except during the Damage Step: You can target 1 card on the field; 
+ -- destroy it.
+ -- You can only use each effect of "The Phantom Knights of Rusty Bardiche" once per turn. 
+ -- Cannot be used as Link Material
 function c100234001.initial_effect(c)
 	--link summon
 	aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsAttribute,ATTRIBUTE_DARK),2)
 	c:EnableReviveLimit()
-	
-	--destroy
+	--to grave
 	local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_DESTROY)
 	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetRange(LOCATION_MZONE)
+	e1:SetCountLimit(1,100234002)
 	e2:SetTarget(c100234002.tgtg)
 	e2:SetOperation(c100234002.tgop)
-	c:RegisterEffect(e2)
-	
-	
-	--set
+	c:RegisterEffect(e2)	
+	--destroy
 	local e1=Effect.CreateEffect(c)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetCategory(CATEGORY_DESTROY)
 	e1:SetDescription(aux.Stringid(1948619,0))
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e1:SetCode(EVENT_SUMMON_SUCCESS)
 	e1:SetRange(LOCATION_MZONE)
+	e1:SetCountLimit(1,100234102)
 	e1:SetCondition(c100234002.setcon)
 	e1:SetTarget(c100234002.destg)
 	e1:SetOperation(c100234002.desop)
@@ -33,6 +35,13 @@ function c100234001.initial_effect(c)
 	local e2=e1:Clone()
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e2)
+	--cannot link material
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e1:SetCode(EFFECT_CANNOT_BE_LINK_MATERIAL)
+	e1:SetValue(1)
+	c:RegisterEffect(e1)
 end
 
 function c100234002.tgfilter(c)
@@ -61,10 +70,6 @@ function c100234002.tgop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
-
-
-
-
 function c100234002.descfilter(c,tp,lg)
 	return c:IsFaceup() and c:IsControler(tp) and c:IsAttribute(ATTRIBUTE_DARK) and lg:IsContains(c)
 end
