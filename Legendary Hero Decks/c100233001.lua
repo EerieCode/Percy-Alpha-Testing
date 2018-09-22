@@ -1,4 +1,5 @@
---Xtra HERO Dread Decimator
+--時械神祖ヴルガータ
+--Timelord Progenitor Vulgate
 function c100233001.initial_effect(c)
 	--synchro summon
 	aux.AddSynchroProcedure(c,nil,1,1,aux.NonTuner(nil),1,99)
