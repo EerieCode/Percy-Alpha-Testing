@@ -41,11 +41,11 @@ function c100234001.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function c100234002.tgfilter(c)
-	return c:IsSetCard(0x10d9) and c:IsAbleToGrave() and c:IsType(TYPE_MONSTER)
+	return c:IsSetCard(0x10db) and c:IsAbleToGrave() and c:IsType(TYPE_MONSTER)
 		and Duel.IsExistingMatchingCard(c100234002.setfilter,tp,LOCATION_DECK,0,1,c)
 end
 function c100234002.setfilter(c)
-	return c:IsSetCard(0xd9) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsSSetable()
+	return c:IsSetCard(0xdb) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsSSetable()
 end
 function c100234002.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c100234002.tgfilter,tp,LOCATION_DECK,0,1,nil)
