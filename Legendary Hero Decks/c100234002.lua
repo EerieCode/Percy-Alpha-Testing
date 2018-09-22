@@ -16,8 +16,8 @@ function c100234001.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCountLimit(1,100234002)
-	e1:SetTarget(c100234002.tgtg)
-	e1:SetOperation(c100234002.tgop)
+	e1:SetTarget(c100234002.target)
+	e1:SetOperation(c100234002.operation)
 	c:RegisterEffect(e1)	
 	--destroy
 	local e2=Effect.CreateEffect(c)
@@ -47,22 +47,19 @@ end
 function c100234002.setfilter(c)
 	return c:IsSetCard(0xd9) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsSSetable()
 end
-function c100234002.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
+function c100234002.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c100234002.tgfilter,tp,LOCATION_DECK,0,1,nil)
 		and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,tp,LOCATION_DECK)
 end
-function c100234002.tgop(e,tp,eg,ep,ev,re,r,rp)
+function c100234002.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,c100234002.tgfilter,tp,LOCATION_DECK,0,1,1,nil)
-	if g:GetCount()>0 then
-		if Duel.SendtoGrave(g,REASON_EFFECT)~=0 and Duel.IsExistingMatchingCard(c100234002.setfilter,tp,LOCATION_DECK,0,1,nil) then
-		local g=Duel.SelectMatchingCard(tp,c100234002.setfilter,tp,LOCATION_DECK,0,1,1,nil)
-		local tc=g:GetFirst()
-			if tc then
+	if #g>0 and Duel.SendtoGrave(g,REASON_EFFECT)>0 and Duel.IsExistingMatchingCard(c100234002.setfilter,tp,LOCATION_DECK,0,1,nil) then
+		local tc=Duel.SelectMatchingCard(tp,c100234002.setfilter,tp,LOCATION_DECK,0,1,1,nil):GetFirst()
+		if tc then
 			Duel.SSet(tp,tc)
 			Duel.ConfirmCards(1-tp,tc)
-			end
 		end
 	end
 end
