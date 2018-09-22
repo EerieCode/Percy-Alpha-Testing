@@ -1,5 +1,5 @@
 --[[Phantom Knight of Rusty Bardiche
-During your Main Phase, you can send 1 "The Phantom Knights" card from your Deck to the GY
+During your Main Phase: you can send 1 "The Phantom Knights" card from your Deck to the GY
 then set 1 "Phantom Knights" Spell/Trap card from your Deck to the Spell & Trap Zone.
 If a DARK Xyz Monster is Special Summoned to a zone(s) this card points to,
 while this monster is on the field except during the Damage Step:
@@ -20,7 +20,7 @@ function c100234001.initial_effect(c)
 	c:RegisterEffect(e1)	
 	--destroy
 	local e2=Effect.CreateEffect(c)
-	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
 	e2:SetCategory(CATEGORY_DESTROY)
 	e2:SetDescription(aux.Stringid(100234102,0))
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
@@ -32,12 +32,12 @@ function c100234001.initial_effect(c)
 	e2:SetOperation(c100234002.desop)
 	c:RegisterEffect(e2)
 	--cannot link material
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_SINGLE)
-	e4:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e4:SetCode(EFFECT_CANNOT_BE_LINK_MATERIAL)
-	e4:SetValue(1)
-	c:RegisterEffect(e4)
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e3:SetCode(EFFECT_CANNOT_BE_LINK_MATERIAL)
+	e3:SetValue(1)
+	c:RegisterEffect(e3)
 end
 
 function c100234002.tgfilter(c)
