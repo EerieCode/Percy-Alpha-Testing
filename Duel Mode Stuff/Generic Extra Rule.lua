@@ -10,22 +10,20 @@ function Auxiliary.EnableExtraRule(c)
 end
 
 function Auxiliary.EnableExtraRuleOperation(e,tp,eg,ep,ev,re,r,rp)
-    local c=e:GetHandler()
-    local code=c:GetOriginalCode()
-    local tp=c:GetControler()
+    local c = e:GetHandler()
+    local tp = c:GetControler()
+    local card = GetID()
     Duel.DisableShuffleCheck()
     Duel.SendtoDeck(c, nil, -2, REASON_RULE)
     local ct = Duel.GetMatchingGroupCount(nil, tp, LOCATION_HAND + LOCATION_DECK, 0, c)
-    if ((Duel.GetFlagEffect(tp, 511004001) and Duel.GetFlagEffect(1-tp, 511004001)
-        or Duel.IsDuelType(SPEED_DUEL)) and ct < 20 or ct < 40)
+    if ((card.global_active_check or Duel.IsDuelType(SPEED_DUEL)) and ct < 20 or ct < 40)
         and Duel.SelectYesNo(1 - tp, aux.Stringid(4014, 4)) then
         Duel.Win(1 - tp, 0x60)
     end
     if c:IsPreviousLocation(LOCATION_HAND) then Duel.Draw(tp, 1, REASON_RULE) end
-    if Duel.GetFlagEffect(tp,code)==0 and Duel.GetFlagEffect(1-tp,code)==0 then
-        Duel.ConfirmCards(1-tp,c)
-        Duel.RegisterFlagEffect(tp,code,0,0,0)
-        Duel.RegisterFlagEffect(1-tp,code,0,0,0)
+    if not card.global_active_check then
+        Duel.ConfirmCards(1-tp, c)
+        card.global_active_check = true
     end
 end
 
