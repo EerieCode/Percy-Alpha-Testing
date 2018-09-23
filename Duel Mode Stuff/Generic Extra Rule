@@ -1,0 +1,36 @@
+function Auxiliary.EnableExtraRule(c)
+    local e1=Effect.CreateEffect(c)
+    e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+    e1:SetCode(EVENT_ADJUST)
+    e1:SetCountLimit(1)
+    e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_NO_TURN_RESET)
+    e1:SetRange(0xff)
+    e1:SetOperation(Auxiliary.EnableExtraRuleOperation)
+    c:RegisterEffect(e1)
+end
+
+function Auxiliary.EnableExtraRuleOperation(e,tp,eg,ep,ev,re,r,rp)
+    local c=e:GetHandler()
+    local code=c:GetOriginalCode()
+    local tp=c:GetControler()
+    Duel.DisableShuffleCheck()
+    Duel.SendtoDeck(c, nil, -2, REASON_RULE)
+    local ct = Duel.GetMatchingGroupCount(nil, tp, LOCATION_HAND + LOCATION_DECK, 0, c)
+    if ((Duel.GetFlagEffect(tp, 511004001) and Duel.GetFlagEffect(1-tp, 511004001)
+        or Duel.IsDuelType(SPEED_DUEL)) and ct < 20 or ct < 40)
+        and Duel.SelectYesNo(1 - tp, aux.Stringid(4014, 4)) then
+        Duel.Win(1 - tp, 0x60)
+    end
+    if c:IsPreviousLocation(LOCATION_HAND) then Duel.Draw(tp, 1, REASON_RULE) end
+    if Duel.GetFlagEffect(tp,code)==0 and Duel.GetFlagEffect(1-tp,code)==0 then
+        Duel.ConfirmCards(1-tp,c)
+        Duel.RegisterFlagEffect(tp,code,0,0,0)
+        Duel.RegisterFlagEffect(1-tp,code,0,0,0)
+    end
+end
+
+--aux.Stringid(4014, 4):
+--Your opponent has an illegal number of cards in their deck after removing the Duel Mode. Do you want to take the win (Yes) or allow this (No)?
+
+--Duel.Win(1 - tp, 0x60)
+-- "Victory by entering the Duel with invalid Deck" (provisional)
