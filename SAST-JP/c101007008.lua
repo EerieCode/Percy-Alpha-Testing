@@ -24,8 +24,9 @@ function c101007008.initial_effect(c)
 	e2:SetOperation(c101007008.spop2)
 	c:RegisterEffect(e2)
 end
+c101007008.listed_names={CARD_NEOS}
 function c101007008.spfilter(c,e,tp)
-	return (c:IsCode(89943723) or c:IsSetCard(0x1f)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
+	return (c:IsCode(CARD_NEOS) or c:IsSetCard(0x1f)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
 function c101007008.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
