@@ -40,7 +40,7 @@ end
 function c101007036.nacon(e)
 	return e:GetHandler():GetSummonLocation()&LOCATION_EXTRA==LOCATION_EXTRA
 end
-function c101007036.natg(e,tp,eg,ep,ev,re,r,rp)
+function c101007036.natg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetChainLimit(c101007036.chainlm)
 end
