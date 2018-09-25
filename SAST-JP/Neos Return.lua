@@ -1,11 +1,13 @@
 --Parameters:
 -- c: the card that will receive the effect
+-- extracat: optional, eventual extra categories for the effect. Adding CATEGORY_TODECK is not necessary
 -- extrainfo: optional, eventual OperationInfo to be set in the target (see Nebula Neos)
 -- extraop: optional, eventual operation to be performed if the card is returned to the ED (see Nebula Neos, NOT Magma Neos)
-function Auxiliary.EnableNeosReturn(c,extrainfo,extraop)
+function Auxiliary.EnableNeosReturn(c,extracat,extrainfo,extraop)
+	if not extracat then extracat=0 end
 	--return
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_TODECK+CATEGORY_REMOVE)
+	e1:SetCategory(CATEGORY_TODECK | extracat)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e1:SetCode(EVENT_PHASE+PHASE_END)
 	e1:SetRange(LOCATION_MZONE)
