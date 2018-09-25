@@ -39,7 +39,7 @@ function c101007071.spop(e,tp,eg,ep,ev,re,r,rp)
 	local g=aux.SelectUnselectGroup(sg,e,tp,1,ft,c101007071.rescon,1,tp,HINTMSG_SPSUMMON)
 	if #g>0 then
 		for tc in aux.Next(g) do
-			Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+			Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_DISABLE)
