@@ -42,7 +42,7 @@ function c101007035.atkval(e,c)
 	return Duel.GetMatchingGroupCount(c101007035.atkfilter,c:GetControler(),LOCATION_GRAVE,0,nil)*100
 end
 function c101007035.thfilter(c)
-	return c:IsType(TYPE_SPELL+TYPE_TRAP) and aux.IsCodeListed(c,89943723)) and c:IsAbleToHand()
+	return c:IsType(TYPE_SPELL+TYPE_TRAP) and aux.IsCodeListed(c,89943723) and c:IsAbleToHand()
 end
 function c101007035.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c101007035.thfilter,tp,LOCATION_DECK,0,1,nil) end

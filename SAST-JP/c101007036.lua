@@ -9,8 +9,9 @@ function c101007036.initial_effect(c)
 	--no activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(101007036,0))
-	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e1:SetProperty(EFFECT_FLAG_DELAY)
 	e1:SetCondition(c101007036.nacon)
 	e1:SetTarget(c101007036.natg)
 	e1:SetOperation(c101007036.naop)
@@ -36,8 +37,8 @@ end
 function c101007036.splimit(e,se,sp,st)
 	return not e:GetHandler():IsLocation(LOCATION_EXTRA)
 end
-function c101007036.nacon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsPreviousLocation(LOCATION_EXTRA)
+function c101007036.nacon(e)
+	return e:GetHandler():GetSummonLocation()&LOCATION_EXTRA==LOCATION_EXTRA
 end
 function c101007036.natg(e,tp,eg,ep,ev,re,r,rp)
 	if chk==0 then return true end
