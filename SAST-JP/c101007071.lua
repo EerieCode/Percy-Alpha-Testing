@@ -1,5 +1,6 @@
 --NEXT
 --Neospace Extension
+--Scripted by AlphaKretin
 function c101007071.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
