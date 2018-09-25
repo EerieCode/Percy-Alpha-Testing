@@ -16,7 +16,7 @@ function c101007036.initial_effect(c)
 	e1:SetOperation(c101007036.naop)
 	c:RegisterEffect(e1)
 	--neos return
-	aux.EnableNeosReturn(c,c101007036.desop)
+	aux.EnableNeosReturn(c,CATEGORY_DESTROY,c101007036.desinfo,c101007036.desop)
 end
 c101007036.listed_names={CARD_NEOS}
 c101007036.material_setcode={0x8,0x3008,0x9,0x1f}
@@ -59,7 +59,11 @@ end
 function c101007036.aclimit(e,re,tp)
 	return re:GetHandler():IsOnField()
 end
-function c101007036.desop(e,tp,eg,ep,ev,re,r,rp))
+function c101007036.desinfo(e,tp,eg,ep,ev,re,r,rp)
+	local dg=Duel.GetFieldGroup(tp,0,LOCATION_ONFIELD)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,dg,#dg,0,0)
+end
+function c101007036.desop(e,tp,eg,ep,ev,re,r,rp)
 	local dg=Duel.GetFieldGroup(tp,0,LOCATION_ONFIELD)
 	if #dg>0 then
 		Duel.Destroy(dg,REASON_EFFECT)
