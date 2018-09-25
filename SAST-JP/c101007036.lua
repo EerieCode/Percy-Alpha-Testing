@@ -11,7 +11,6 @@ function c101007036.initial_effect(c)
 	e1:SetDescription(aux.Stringid(101007036,0))
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e1:SetProperty(EFFECT_FLAG_DELAY)
 	e1:SetCondition(c101007036.nacon)
 	e1:SetTarget(c101007036.natg)
 	e1:SetOperation(c101007036.naop)
@@ -22,10 +21,10 @@ end
 c101007036.listed_names={CARD_NEOS}
 c101007036.material_setcode={0x8,0x3008,0x9,0x1f}
 function c101007036.ffilter(c,fc,sumtype,tp,sub,mg,sg)
-	return c:IsFusionSetCard(0x1f) and (not sg or not sg:IsExists(c101007036.fusfilter,1,c,c:GetFusionCode()))
+	return c:IsFusionSetCard(0x1f)  and c:GetAttribute(fc,sumtype,tp)~=0 and (not sg or not sg:IsExists(c101007036.fusfilter,1,c,c:GetAttribute(fc,sumtype,tp),fc,sumtype,tp))
 end
-function c101007036.fusfilter(c,code)
-	return c:IsFusionCode(code) and not c:IsHasEffect(511002961)
+function c101007036.fusfilter(c,attr,fc,sumtype,tp)
+	return c:IsAttribute(attr,fc,sumtype,tp) and not c:IsHasEffect(511002961)
 end
 function c101007036.contactfil(tp)
 	return Duel.GetMatchingGroup(Card.IsAbleToDeckOrExtraAsCost,tp,LOCATION_ONFIELD,0,nil)
