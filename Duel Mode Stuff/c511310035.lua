@@ -64,6 +64,11 @@ function scard.eventop(e, tp)
 	end
 end
 
+function scard.chalcon(e, tp, eg, ep, ev, re, r, rp)
+    --set by extra rule
+	return scard.global_active_check
+end
+
 function scard.chalop(e, tp, eg, ep, ev, re, r, rp)
     --if the game state is open or a chain is building (but not resolving)
     if Duel.GetCurrentChain()==0 or Duel.CheckEvent(EVENT_CHAINING) then
