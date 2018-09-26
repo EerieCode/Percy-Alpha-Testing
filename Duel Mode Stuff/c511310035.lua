@@ -2,7 +2,7 @@
 --Scripted by AlphaKretin
 local scard, s_id = GetID()
 local CHALLENGE_CHANCE = 1 --chance of a challenge applying each adjust, out of 100.
-local EVENT_PEGASUS_SPEAKS = EVENT_CUSTOM + 
+local EVENT_PEGASUS_SPEAKS = EVENT_CUSTOM + s_id
 
 function scard.initial_effect(c)
 	--enable REVERSE_DECK function
@@ -28,14 +28,12 @@ function scard.initial_effect(c)
 		Duel.RegisterEffect(ge2, 0)
 		--Apply challenges
 		local e3 = Effect.CreateEffect(c)
-		e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE + EFFECT_FLAG_UNCOPYABLE)
 		e3:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
 		e3:SetCode(EVENT_PEGASUS_SPEAKS)
 		e3:SetCondition(scard.chalcon)
 		e3:SetOperation(scard.chalop)
 		Duel.RegisterEffect(e3, 0)
 		local e4 = Effect.CreateEffect(c)
-		e4:SetProperty(EFFECT_FLAG_CANNOT_DISABLE + EFFECT_FLAG_UNCOPYABLE)
 		e4:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
 		e4:SetCode(EVENT_ADJUST)
 		e4:SetLabelObject(e3)
