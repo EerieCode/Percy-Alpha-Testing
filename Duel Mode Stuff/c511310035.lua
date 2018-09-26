@@ -66,32 +66,33 @@ function card.actop(e, tp, eg, ep, ev, re, r, rp)
         local e1 = Effect.CreateEffect(c)
         e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE + EFFECT_FLAG_UNCOPYABLE)
         e1:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
-        e1:SetCode(EVENT_ADJUST)
+        e1:SetCode(EVENT_PEGASUS_SPEAKS)
         e1:SetTargetRange(1, 1)
-        e1:SetOperation(card.eventop)
+        e1:SetOperation(card.chalop)
         Duel.RegisterEffect(e1, tp)
         local e2 = Effect.CreateEffect(c)
         e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE + EFFECT_FLAG_UNCOPYABLE)
         e2:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
-        e2:SetCode(EVENT_PEGASUS_SPEAKS)
+        e2:SetCode(EVENT_ADJUST)
         e2:SetTargetRange(1, 1)
-        e2:SetOperation(card.chalop)
+        e2:SetOperation(card.eventop)
         Duel.RegisterEffect(e2, tp)
     end
 end
 
 function card.eventop(e, tp, eg, ep, ev, re, r, rp)
-    Duel.RaiseEvent(eg, EVENT_PEGASUS_SPEAKS, re, r, rp, ep, ev)
-end
-
-function card.chalop(e, tp, eg, ep, ev, re, r, rp)
     local rand = Duel.GetRandomNumber(1, 100)
     if (rand <= CHALLENGE_CHANCE) then
         local challenge = Duel.GetRandomNumber(1, #card.challenges)
         Duel.Hint(HINT_MESSAGE, 0, aux.Stringid(5000, challenge - 1)) --if over 15 wraps to next token
         Duel.Hint(HINT_MESSAGE, 1, aux.Stringid(5000, challenge - 1))
-        card.challenges[challenge](e, tp, eg, ep, ev, re, r, rp)
+        e:GetLabelObject():SetLabel(challenge)
+        Duel.RaiseEvent(eg, EVENT_PEGASUS_SPEAKS, re, r, rp, ep, ev)
     end
+end
+
+function card.chalop(e, tp, eg, ep, ev, re, r, rp)
+    card.challenges[e:GetLabel()](e, tp, eg, ep, ev, re, r, rp)
 end
 
 --helper function to apply custom reset to challenges
