@@ -1,7 +1,8 @@
 --Pegasus Ultimate Challenge
 --Scripted by AlphaKretin
 local card, code = GetID()
-local CHALLENGE_CHANCE = 15 --chance of a challenge applying each phase, out of 100.
+local CHALLENGE_CHANCE = 1 --chance of a challenge applying each adjust, out of 100.
+local EVENT_PEGASUS_SPEAKS = EVENT_CUSTOM + code
 function card.initial_effect(c)
     --enable REVERSE_DECK function
     Duel.EnableGlobalFlag(GLOBALFLAG_DECK_REVERSE_CHECK)
@@ -65,26 +66,22 @@ function card.actop(e, tp, eg, ep, ev, re, r, rp)
         local e1 = Effect.CreateEffect(c)
         e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE + EFFECT_FLAG_UNCOPYABLE)
         e1:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
-        e1:SetCode(EVENT_PHASE_START + PHASE_DRAW)
+        e1:SetCode(EVENT_ADJUST)
         e1:SetTargetRange(1, 1)
-        e1:SetOperation(card.chalop)
+        e1:SetOperation(card.eventop)
         Duel.RegisterEffect(e1, tp)
-        local e2 = e1:Clone()
-        e2:SetCode(EVENT_PHASE_START + PHASE_STANDBY)
+        local e2 = Effect.CreateEffect(c)
+        e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE + EFFECT_FLAG_UNCOPYABLE)
+        e2:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
+        e2:SetCode(EVENT_PEGASUS_SPEAKS)
+        e2:SetTargetRange(1, 1)
+        e2:SetOperation(card.chalop)
         Duel.RegisterEffect(e2, tp)
-        local e3 = e1:Clone()
-        e3:SetCode(EVENT_PHASE_START + PHASE_MAIN1)
-        Duel.RegisterEffect(e3, tp)
-        local e4 = e1:Clone()
-        e4:SetCode(EVENT_PHASE_START + PHASE_BATTLE_START)
-        Duel.RegisterEffect(e4, tp)
-        local e5 = e1:Clone()
-        e5:SetCode(EVENT_PHASE_START + PHASE_MAIN2)
-        Duel.RegisterEffect(e5, tp)
-        local e6 = e1:Clone()
-        e6:SetCode(EVENT_PHASE_START + PHASE_END)
-        Duel.RegisterEffect(e6, tp)
     end
+end
+
+function card.eventop(e, tp, eg, ep, ev, re, r, rp)
+    Duel.RaiseEvent(eg, EVENT_PEGASUS_SPEAKS, re, r, rp, ep, ev)
 end
 
 function card.chalop(e, tp, eg, ep, ev, re, r, rp)
@@ -95,6 +92,21 @@ function card.chalop(e, tp, eg, ep, ev, re, r, rp)
         Duel.Hint(HINT_MESSAGE, 1, aux.Stringid(5000, challenge - 1))
         card.challenges[challenge](e, tp, eg, ep, ev, re, r, rp)
     end
+end
+
+--helper function to apply custom reset to challenges
+function card.applyNewChallengeReset(e)
+    local e1 = Effect.CreateEffect(e:GetHandler())
+    e1:SetType(EFFECT_TYPE_CONTINUOUS + EFFECT_TYPE_FIELD)
+    e1:SetCode(EVENT_PEGASUS_SPEAKS)
+    e1:SetLabelObject(e)
+    e1:SetOperation(card.resetop)
+    Duel.RegisterEffect(e1, e:GetHandlerPlayer())
+end
+
+function card.resetop(e)
+    e:GetLabelObject():Reset()
+    e:Reset()
 end
 
 --helper function to "play" a card
@@ -160,7 +172,7 @@ function card.revealHands(e, tp, eg, ep, ev, re, r, rp)
     e1:SetCode(EFFECT_PUBLIC)
     e1:SetTargetRange(LOCATION_HAND, LOCATION_HAND)
     Duel.RegisterEffect(e1, tp)
-    table.insert(card.activeChallenges, e1)
+    aux.applyNewChallengeReset(e1)
 end
 table.insert(card.challenges, card.revealHands)
 
@@ -275,7 +287,7 @@ function card.noActSpell(e, tp, eg, ep, ev, re, r, rp)
     e1:SetTargetRange(1, 1)
     e1:SetValue(card.aclimit)
     Duel.RegisterEffect(e1, tp)
-    table.insert(card.activeChallenges, e1)
+    card.applyNewChallengeReset(e1)
 end
 table.insert(card.challenges, card.noActSpell)
 
@@ -301,7 +313,7 @@ function card.switchATKDEF(e, tp, eg, ep, ev, re, r, rp)
         e1:SetCode(EFFECT_SWAP_AD)
         e1:SetReset(RESET_EVENT + RESETS_STANDARD)
         tc:RegisterEffect(e1)
-        table.insert(card.activeChallenges, e1)
+        aux.applyNewChallengeReset(e1)
     end
 end
 table.insert(card.challenges, card.switchATKDEF)
@@ -320,7 +332,7 @@ function card.reverseDeck(e, tp, eg, ep, ev, re, r, rp)
     e2:SetCode(EVENT_ADJUST)
     e2:SetOperation(card.drop)
     Duel.RegisterEffect(e2, tp)
-    table.insert(card.activeChallenges, e1)
+    aux.applyNewChallengeReset(e1)
 end
 table.insert(card.challenges, card.reverseDeck)
 
@@ -340,7 +352,7 @@ function card.attackCost(e, tp, eg, ep, ev, re, r, rp)
     e1:SetTargetRange(1, 1)
     e1:SetOperation(card.atop)
     Duel.RegisterEffect(e1, tp)
-    table.insert(card.activeChallenges, e1)
+    aux.applyNewChallengeReset(e1)
 end
 table.insert(card.challenges, card.attackCost)
 
@@ -362,7 +374,7 @@ function card.becomeNormal(e, tp, eg, ep, ev, re, r, rp)
     e1:SetTargetRange(LOCATION_MZONE, LOCATION_MZONE)
     e1:SetCode(EFFECT_DISABLE)
     Duel.RegisterEffect(e1, tp)
-    table.insert(card.activeChallenges, e1)
+    aux.applyNewChallengeReset(e1)
     --type
     local e2 = Effect.CreateEffect(c)
     e2:SetType(EFFECT_TYPE_FIELD)
@@ -370,7 +382,7 @@ function card.becomeNormal(e, tp, eg, ep, ev, re, r, rp)
     e2:SetCode(EFFECT_CHANGE_TYPE)
     e2:SetValue(TYPE_NORMAL)
     Duel.RegisterEffect(e2, tp)
-    table.insert(card.activeChallenges, e2)
+    aux.applyNewChallengeReset(e2)
 end
 table.insert(card.challenges, card.becomeNormal)
 
@@ -463,7 +475,7 @@ function card.noActTrap(e, tp, eg, ep, ev, re, r, rp)
     e1:SetTargetRange(1, 1)
     e1:SetValue(card.aclimit2)
     Duel.RegisterEffect(e1, tp)
-    table.insert(card.activeChallenges, e1)
+    aux.applyNewChallengeReset(e1)
 end
 table.insert(card.challenges, card.noActTrap)
 
@@ -528,14 +540,14 @@ function card.goFaceUp(e, tp, eg, ep, ev, re, r, rp)
     e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
     e1:SetTargetRange(1, 1)
     Duel.RegisterEffect(e1, tp)
-    table.insert(card.activeChallenges, e1)
+    aux.applyNewChallengeReset(e1)
     --cannot turn set
     local e2 = Effect.CreateEffect(c)
     e2:SetType(EFFECT_TYPE_FIELD)
     e2:SetCode(EFFECT_CANNOT_TURN_SET)
     e2:SetTargetRange(LOCATION_MZONE, LOCATION_MZONE)
     Duel.RegisterEffect(e2, tp)
-    table.insert(card.activeChallenges, e2)
+    aux.applyNewChallengeReset(e2)
     local sg = Duel.GetMatchingGroup(Card.IsFacedown, tp, LOCATION_MZONE, LOCATION_MZONE, nil)
     if #sg > 0 then
         Duel.ChangePosition(sg, POS_FACEUP_ATTACK, POS_FACEUP_ATTACK, POS_FACEUP_DEFENSE, POS_FACEUP_DEFENSE, true)
@@ -599,7 +611,7 @@ function card.noActOppTurn(e, tp, eg, ep, ev, re, r, rp)
     e1:SetTargetRange(1, 1)
     e1:SetValue(card.aclimit3)
     Duel.RegisterEffect(e1, tp)
-    table.insert(card.activeChallenges, e1)
+    aux.applyNewChallengeReset(e1)
 end
 table.insert(card.challenges, card.noActTrap)
 
@@ -616,15 +628,15 @@ function card.noSummonLowATK()
     e1:SetTargetRange(1, 1)
     e1:SetTarget(card.splimit)
     Duel.RegisterEffect(e1, tp)
-    table.insert(card.activeChallenges, e1)
+    aux.applyNewChallengeReset(e1)
     local e2 = e1:Clone()
     e2:SetCode(EFFECT_CANNOT_FLIP_SUMMON)
     Duel.RegisterEffect(e2, tp)
-    table.insert(card.activeChallenges, e2)
+    aux.applyNewChallengeReset(e2)
     local e3 = e1:Clone()
     e3:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
     Duel.RegisterEffect(e3, tp)
-    table.insert(card.activeChallenges, e3)
+    aux.applyNewChallengeReset(e3)
 end
 
 function card.splimit(e, c, sump, sumtype, sumpos, targetp, se)
