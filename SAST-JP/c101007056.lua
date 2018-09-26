@@ -60,8 +60,7 @@ function c101007056.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 function c101007056.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return c:IsReason(REASON_DESTROY) and c:IsReason(REASON_BATTLE+REASON_EFFECT) and c:GetReasonPlayer()~=tp
-	and c:IsSummonType(SUMMON_TYPE_LINK)
+	return c:IsReason(REASON_BATTLE+REASON_EFFECT) and c:GetReasonPlayer()~=tp and c:IsSummonType(SUMMON_TYPE_LINK)
 end
 function c101007056.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
