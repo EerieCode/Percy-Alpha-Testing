@@ -99,19 +99,38 @@ end
 
 --helper function to "play" a card
 function card.playCard(c, p, e, tp, eg, ep, ev, re, r, rp)
-    if c then
-        if c:IsType(TYPE_MONSTER) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0 and Duel.SelectYesNo(p, 1075) then
-            --play monster to the field (skill summon!)
-            Duel.MoveToField(c, p, p, LOCATION_MZONE, POS_FACEUP, true, 0x1f)
+    if c and not c:IsForbidden() then
+        local canSummon = Duel.GetLocationCount(p, LOCATION_MZONE) > 0
+        local canPendActivate =
+            Duel.IsType(TYPE_PENDULUM) and
+            (Duel.CheckLocation(tp, LOCATION_PZONE, 0) or Duel.CheckLocation(tp, LOCATION_PZONE, 1))
+        if c:IsType(TYPE_MONSTER) and (canSummon or canPendActivate) then
+            --TODO: This could be made more efficient surely
+            if canSummon and not canPendActivate and Duel.SelectYesNo(p, 1152) then --Special Summon
+                --play monster to the field (skill summon!)
+                return Duel.MoveToField(c, p, p, LOCATION_MZONE, POS_FACEUP, true, 0x1f)
+            elseif canPendActivate and not canSummon and Duel.SelectYesNo(p, 1060) then --Activate in PZONE
+                return Duel.MoveToField(c, p, p, LOCATION_PZONE, POS_FACEUP, true)
+            elseif canSummon and canPendActivate then
+                local opt = Duel.SelectOption(p, 1203, 1152, 1060) --N/A, SS, PZone
+                if opt == 1 then
+                    return Duel.MoveToField(c, p, p, LOCATION_MZONE, POS_FACEUP, true, 0x1f)
+                elseif opt == 2 then
+                    return Duel.MoveToField(c, p, p, LOCATION_PZONE, POS_FACEUP, true)
+                end
+            end
         else
             --activate backrow
             local ae = c:GetActivateEffect()
             if ae and ae:IsActivatable(p) and Duel.SelectYesNo(p, 94) then
-                Duel.MoveToField(c, p, p, LOCATION_SZONE, POS_FACEDOWN, true, 0x1f)
-                Duel.Activate(ae)
+                if Duel.MoveToField(c, p, p, LOCATION_SZONE, POS_FACEDOWN, true, 0x1f) then
+                    Duel.Activate(ae)
+                    return true
+                end
             end
         end
     end
+    return false
 end
 
 --helper function do destroy all cards that fit a filter
@@ -420,10 +439,10 @@ function card.loserSpecial(e, tp, eg, ep, ev, re, r, rp)
     elseif Duel.GetLP(1 - tp) < Duel.GetLP(tp) then
         p = 1 - tp
     end
-    if not p or Duel.GetLocationCount(tp, LOCATION_MZONE) <= 0 then
+    if not p or Duel.GetLocationCount(p, LOCATION_MZONE) <= 0 then
         return
     end
-    Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_SPSUMMON)
+    Duel.Hint(HINT_SELECTMSG, p, HINTMSG_SPSUMMON)
     local g = Duel.SelectMatchingCard(p, card.spfilter, p, LOCATION_HAND, 0, 1, 1, nil, e, p)
     if #g > 0 then
         Duel.SpecialSummon(g, 0, p, p, true, false, POS_FACEUP)
@@ -554,11 +573,20 @@ function card.swapControl(e, tp, eg, ep, ev, re, r, rp)
 end
 table.insert(card.challenges, card.swapControl)
 
---Turn all monsters face-down.
+--Turn all monsters face-down. They cannot be flipped up this turn.
 function card.goFaceDown(e, tp, eg, ep, ev, re, r, rp)
     local g = Duel.GetMatchingGroup(Card.IsCanTurnSet, tp, LOCATION_MZONE, LOCATION_MZONE, nil)
     if #g > 0 then
         Duel.ChangePosition(g, POS_FACEDOWN_DEFENSE)
+        --pos limit
+        local e1 = Effect.CreateEffect(c)
+        e1:SetType(EFFECT_TYPE_FIELD)
+        e1:SetCode(EFFECT_CANNOT_CHANGE_POSITION)
+        e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
+        e1:SetTargetRange(LOCATION_MZONE, LOCATION_MZONE)
+        e1:SetTarget(aux.TargetBoolFunction(Card.IsFacedown))
+        e1:SetReset(RESET_PHASE + PHASE_END)
+        Duel.RegisterEffect(e1, tp)
     end
 end
 
