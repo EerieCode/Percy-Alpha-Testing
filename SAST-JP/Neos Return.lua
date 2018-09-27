@@ -12,20 +12,17 @@ function Auxiliary.EnableNeosReturn(c,extracat,extrainfo,extraop)
 	e1:SetCode(EVENT_PHASE+PHASE_END)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCountLimit(1)
-	e1:SetCondition(Auxiliary.NeosReturnCondition1)
+	e1:SetCondition(Auxiliary.NOT(Auxiliary.NeosReturnCondition))
 	e1:SetTarget(Auxiliary.NeosReturnTarget(c,extrainfo))
 	e1:SetOperation(Auxiliary.NeosReturnOperation(c,extraop))
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(0)
-	e2:SetCondition(Auxiliary.NeosReturnCondition2)
+	e2:SetCondition(Auxiliary.NeosReturnCondition)
 	c:RegisterEffect(e2)
 end
-function Auxiliary.NeosReturnCondition1(e,tp,eg,ep,ev,re,r,rp)
-	return not e:GetHandler():IsHasEffect(42015635)
-end
-function Auxiliary.NeosReturnCondition2(e,tp,eg,ep,ev,re,r,rp)
+function Auxiliary.NeosReturnCondition(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsHasEffect(42015635)
 end
 function Auxiliary.NeosReturnTarget(c,extrainfo)
@@ -35,17 +32,52 @@ function Auxiliary.NeosReturnTarget(c,extrainfo)
 		if extrainfo then extrainfo(e,tp,eg,ep,ev,re,r,rp,chk) end
 	end
 end
-function Auxiliary.NeosReturnSubstituteFilter(c)
-	return c:IsCode(101007060) and c:IsAbleToRemoveAsCost()
-end
 function Auxiliary.NeosReturnOperation(c,extraop)
 	return function(e,tp,eg,ep,ev,re,r,rp)
 		local c=e:GetHandler()
 		if not c:IsRelateToEffect(e) or c:IsFacedown() then return end
-		local sc=Duel.GetFirstMatchingCard(Auxiliary.NecroValleyFilter(Auxiliary.NeosReturnSubstituteFilter),tp,LOCATION_GRAVE,0,nil)
-		if sc and Duel.SelectYesNo(tp,aux.Stringid(101007060,0)) then
-			Duel.Remove(sc,POS_FACEUP,REASON_COST)
-		else
+		local effs={Duel.GetPlayerEffect(tp,101007060)}
+		local valideffs={}
+		local sg=Group.CreateGroup()
+		for _,te in ipairs(effs) do
+			if te:GetCode()==101007060 then
+				local cond=type(te:GetValue())=='function' and te:GetValue()(te,c,tp) or true
+				if cond then
+					sg:AddCard(te:GetHandler())
+					table.insert(valideffs,te)
+				end
+			end
+		end
+		local mapresult={}
+		for _,eff in ipairs(valideffs) do
+			local handler = eff:GetHandler()
+			if mapresult[handler] == nil then
+				mapresult[handler] = {}
+			end
+			table.insert(mapresult[handler],eff)
+		end
+		local deck=true
+		if #valideffs==1 then
+			if Duel.SelectYesNo(tp,valideffs[1]:GetDescription()) then
+				deck=false
+				local tc=valideffs[1]:GetHandler()
+				Duel.Hint(HINT_CARD,2,tc:GetCode())
+				valideffs[1]:GetOperation()(valideffs[1],c,tp)
+			end
+		elseif #valideffs>1 and Duel.SelectYesNo(tp,1) then
+			deck=false
+			local tc
+			if #sg==1 then
+				tc=sg:GetFirst()
+			else
+				tc=sg:Select(tp,1,1,nil):GetFirst()
+			end
+			local opt=#mapresult[tc]>1 and Duel.SelectOption(tp,table.unpack(mapresult[tc])) or 1
+			local seleff=mapresult[tc][opt]
+			Duel.Hint(HINT_CARD,2,tc:GetCode())
+			seleff:GetOperation()(seleff,c,tp)	
+		end
+		if deck then
 			Duel.SendtoDeck(c,nil,2,REASON_EFFECT)
 		end
 		if c:IsLocation(LOCATION_EXTRA) then
