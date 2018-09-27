@@ -13,7 +13,7 @@ function scard.initial_effect(c)
 		scard.global_check = true
 		scard[0] = false
 		scard[1] = false
-		--check for destroyed card this turnß
+		--check for destroyed card this turn
 		local ge1 = Effect.CreateEffect(c)
 		ge1:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
 		ge1:SetCode(EVENT_DESTROYED)
@@ -119,7 +119,8 @@ function scard.playCard(c, p, e, tp, eg, ep, ev, re, r, rp)
 		else
 			--activate backrow
 			local ae = c:GetActivateEffect()
-			if ae and ae:IsActivatable(p) and Duel.SelectYesNo(p, 94) then
+            if ae and ae:IsActivatable(p) and Duel.SelectYesNo(p, 94) then
+                --not just for show, actually helps it not crash! go figure
 				if Duel.MoveToField(c, p, p, LOCATION_SZONE, POS_FACEDOWN, true, 0x1f) then
 					Duel.Activate(ae)
 					return true
@@ -192,7 +193,8 @@ table.insert(scard.challenges, scard.introduce)
 --Lose 500 LP for each Spell and Trap Card you control.
 function scard.loseLPForBackrow(e, tp, eg, ep, ev, re, r, rp)
 	local tpLoss = Duel.GetFieldGroupCount(tp, LOCATION_SZONE, 0) * 500
-	local ntpLoss = Duel.GetFieldGroupCount(tp, 0, LOCATION_SZONE) * 500
+    local ntpLoss = Duel.GetFieldGroupCount(tp, 0, LOCATION_SZONE) * 500
+    --Happens at same time and causes draw if appropriate
 	Duel.SetLP(tp, Duel.GetLP(tp) - tpLoss)
 	Duel.SetLP(1 - tp, Duel.GetLP(1 - tp) - ntpLoss)
 end
@@ -516,6 +518,7 @@ end
 table.insert(scard.challenges, scard.destroyFourLessStar)
 
 --No monsters can be face-down, flip all face-down monsters to face up and their flip effects are negated.
+--TODO: Is there a practical difference between "flip effects negated" and "don't activate flip effects when flipped"?
 function scard.goFaceUp(e, tp, eg, ep, ev, re, r, rp)
 	local c = e:GetHandler()
 	--cannot mset
@@ -913,7 +916,7 @@ end
 table.insert(scard.challenges, scard.graveSteal)
 
 function scard.graveStealFilter(c, tp)
-	return (c:IsType(TYPE_SPELL + TYPE_TRAP) and c:IsSSetable() and Duel.GetLocationCount(tp, LOCATION_SZONE) > 0) or
+	return (c:IsType(TYPE_SPELL + TYPE_TRAP) and c:IsSSetable() and (Duel.GetLocationCount(tp, LOCATION_SZONE) > 0 or c:IsType(TYPE_FIELD))) or
 		(c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e, 0, tp, true, true, POS_FACEDOWN_DEFENSE) and
 			Duel.GetLocationCount(tp, LOCATION_MZONE) > 0)
 end
