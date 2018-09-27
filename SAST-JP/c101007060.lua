@@ -10,6 +10,25 @@ function c101007060.initial_effect(c)
 	e1:SetTarget(c101007060.target)
 	e1:SetOperation(c101007060.activate)
 	c:RegisterEffect(e1)
+	--destroy replace
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e2:SetCode(EFFECT_DESTROY_REPLACE)
+	e2:SetRange(LOCATION_GRAVE)
+	e2:SetTarget(c101007060.reptg)
+	e2:SetValue(c101007060.repval)
+	e2:SetOperation(c101007060.repop)
+	c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_FIELD)
+	e3:SetRange(LOCATION_GRAVE)
+	e3:SetCode(101007060)
+	e3:SetDescription(aux.Stringid(101007060,0))
+	e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e3:SetTargetRange(1,0)
+	e3:SetValue(function(e)return aux.NecroValleyFilter(function(c)c:IsAbleToRemoveAsCost()end)(e:GetHandler()) end)
+	e3:SetOperation(function(e)Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_COST) end)
+	c:RegisterEffect(e3)
 	if not AshBlossomTable then AshBlossomTable={} end
 	table.insert(AshBlossomTable,e1)
 end
@@ -22,11 +41,10 @@ function c101007060.filter1(c,e)
 end
 function c101007060.filter2(c,e,tp,m,chkf)
 	return aux.IsMaterialListCode(c,CARD_NEOS)
-		and c:IsCanBeSpecialSummoned(e,0,tp,true,false) and c:CheckFusionMaterial(m,nil,chkf+65536)
+		and c:IsCanBeSpecialSummoned(e,0,tp,true,false) and c:CheckFusionMaterial(m,nil,tp)
 end
 function c101007060.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
-		local chkf=tp
 		Auxiliary.FCheckExact=2
 		local mg1=Duel.GetFusionMaterial(tp)
 		local mg2=Duel.GetMatchingGroup(c101007060.filter0,tp,LOCATION_DECK,0,nil)
@@ -64,4 +82,19 @@ function c101007060.activate(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
 	Auxiliary.FCheckExact=nil
+end
+function c101007060.repfilter(c,tp)
+	return c:IsFaceup() and c:IsControler(tp) and c:IsLocation(LOCATION_MZONE) 
+		and c:IsType(TYPE_FUSION) and aux.IsMaterialListCode(c,CARD_NEOS)
+		and not c:IsReason(REASON_REPLACE) and c:IsReason(REASON_EFFECT+REASON_BATTLE)
+end
+function c101007060.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return e:GetHandler():IsAbleToRemove() and eg:IsExists(c101007060.repfilter,1,nil,tp) end
+	return Duel.SelectEffectYesNo(tp,e:GetHandler(),96)
+end
+function c101007060.repval(e,c)
+	return c101007060.repfilter(c,e:GetHandlerPlayer())
+end
+function c101007060.repop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Remove(e:GetHandler(),POS_FACEUP,REASON_EFFECT)
 end
