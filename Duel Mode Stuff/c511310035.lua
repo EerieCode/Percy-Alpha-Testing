@@ -607,30 +607,6 @@ function scard.aclimit3(e, re, tp)
 	return re:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.GetTurnPlayer() ~= tp
 end
 
---You can only play monsters with an ATK of 1600 or higher.
-function scard.noSummonLowATK()
-	local e1 = Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_CANNOT_SUMMON)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e1:SetTargetRange(1, 1)
-	e1:SetTarget(scard.splimit)
-	Duel.RegisterEffect(e1, tp)
-	aux.applyNewChallengeReset(e1)
-	local e2 = e1:Clone()
-	e2:SetCode(EFFECT_CANNOT_FLIP_SUMMON)
-	Duel.RegisterEffect(e2, tp)
-	aux.applyNewChallengeReset(e2)
-	local e3 = e1:Clone()
-	e3:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
-	Duel.RegisterEffect(e3, tp)
-	aux.applyNewChallengeReset(e3)
-end
-
-function scard.splimit(e, c, sump, sumtype, sumpos, targetp, se)
-	return not c:IsAttackAbove(1600)
-end
-
 --All duelists must discard a card at random.
 function scard.discardRandomMarik(e, tp, eg, ep, ev, re, r, rp)
 	local g = Duel.GetFieldGroup(tp, LOCATION_HAND, 0)
@@ -933,3 +909,28 @@ function scard.costDraw(e, tp, eg, ep, ev, re, r, rp)
 	Duel.SetLP(1 - p, Duel.GetLP(1 - p) - 1000 * ct)
 end
 table.insert(scard.challenges, scard.costDraw)
+
+--You can only play monsters with an ATK of 1600 or higher.
+function scard.noSummonLowATK()
+	local e1 = Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_CANNOT_SUMMON)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetTargetRange(1, 1)
+	e1:SetTarget(scard.splimit)
+	Duel.RegisterEffect(e1, tp)
+	aux.applyNewChallengeReset(e1)
+	local e2 = e1:Clone()
+	e2:SetCode(EFFECT_CANNOT_FLIP_SUMMON)
+	Duel.RegisterEffect(e2, tp)
+	aux.applyNewChallengeReset(e2)
+	local e3 = e1:Clone()
+	e3:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+	Duel.RegisterEffect(e3, tp)
+	aux.applyNewChallengeReset(e3)
+end
+table.insert(scard.challenges, scard.noSummonLowATK)
+
+function scard.splimit(e, c, sump, sumtype, sumpos, targetp, se)
+	return not c:IsAttackAbove(1600)
+end
