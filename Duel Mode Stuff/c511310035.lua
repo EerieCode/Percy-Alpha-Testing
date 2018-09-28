@@ -1,7 +1,8 @@
 --Pegasus Ultimate Challenge
 --Scripted by AlphaKretin
 local scard, s_id = GetID()
-local CHALLENGE_CHANCE = 3 --chance of a challenge applying each adjust, out of 100.
+local ADJUST_COUNT_MEAN = 75 --average number of adjusts between challenges
+local ADJUST_COUNT_VAR = 25 --number of adjusts between challenges can be mean +- this
 local EVENT_PEGASUS_SPEAKS = EVENT_CUSTOM + s_id
 
 function scard.initial_effect(c)
@@ -13,6 +14,7 @@ function scard.initial_effect(c)
         scard.global_check = true
         scard[0] = false
         scard[1] = false
+        scard.adjustCount = scard.getAdjustCount()
         --check for destroyed card this turn
         local ge1 = Effect.CreateEffect(c)
         ge1:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
@@ -42,25 +44,37 @@ function scard.initial_effect(c)
         Duel.RegisterEffect(e4, 0)
     end
 end
+
 scard.illegal = true --enables announcing illegal card names. Crucially this includes the "Yu-Gi-Oh!" token
 scard.challenges = {} --table of functions that apply the challenges
 scard.activeChallenges = {} --table of effects for lingering challenges to be reset for the challenge that does so
+
+function scard.getAdjustCount()
+    return ADJUST_COUNT_MEAN + Duel.GetRandomNumber(-ADJUST_COUNT_VAR, ADJUST_COUNT_VAR)
+end
 
 function scard.eventop(e, tp)
     --if challenge already queued
     if e:GetLabelObject():GetLabel() > 0 then
         --raise the event again without changing the challenge until the challenge happenes
         Duel.RaiseEvent(Group.CreateGroup(), EVENT_PEGASUS_SPEAKS, e, 0, 0, 0, 0)
-    elseif (Duel.GetRandomNumber(1, 100) <= CHALLENGE_CHANCE) then
-        --select a random challenge
-        local challenge = Duel.GetRandomNumber(1, #scard.challenges)
-        --announce the challenge
-        Duel.Hint(HINT_MESSAGE, 0, aux.Stringid(5000, challenge - 1)) --if over 15 wraps to next token
-        Duel.Hint(HINT_MESSAGE, 1, aux.Stringid(5000, challenge - 1))
-        --queue the challenge
-        e:GetLabelObject():SetLabel(challenge)
-        --raise the event for the challenge to happen
-        Duel.RaiseEvent(Group.CreateGroup(), EVENT_PEGASUS_SPEAKS, e, 0, 0, 0, 0)
+    else
+        --decrement "timer" until next challenge
+        scard.adjustCount = scard.adjustCount - 1
+        --if next challenge is due
+        if scard.adjustCount <= 0 then
+            --select a random challenge
+            local challenge = Duel.GetRandomNumber(1, #scard.challenges)
+            --announce the challenge
+            Duel.Hint(HINT_MESSAGE, 0, aux.Stringid(5000, challenge - 1)) --if over 15 wraps to next token
+            Duel.Hint(HINT_MESSAGE, 1, aux.Stringid(5000, challenge - 1))
+            --queue the challenge
+            e:GetLabelObject():SetLabel(challenge)
+            --raise the event for the challenge to happen
+            Duel.RaiseEvent(Group.CreateGroup(), EVENT_PEGASUS_SPEAKS, e, 0, 0, 0, 0)
+            --reset timer
+            scard.adjustCount = scard.getAdjustCount()
+        end
     end
 end
 
