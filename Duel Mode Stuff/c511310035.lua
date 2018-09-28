@@ -8,7 +8,7 @@ function scard.initial_effect(c)
 	--enable REVERSE_DECK function
 	Duel.EnableGlobalFlag(GLOBALFLAG_DECK_REVERSE_CHECK)
 	--Add Extra Rule procedure
-	aux.EnableExtraRule(c)
+	aux.EnableExtraRule(c, scard)
 	if not scard.global_check then
 		scard.global_check = true
 		scard[0] = false
