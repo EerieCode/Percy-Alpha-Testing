@@ -648,7 +648,7 @@ function scard.jamspfilter(c, e)
     return c:IsPreviousSetCard(0x54b) and c:IsCanBeSpecialSummoned(e, nil, p, false, false)
 end
 
-function scard.jamspop(e, tp)
+function scard.jamspop(e, tp, eg)
     for tc in aux.Next(eg) do
         local p = tc:GetControler()
         if scard.jamspfilter(tc, e) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0 and Duel.SelectYesNo(p, 1075) then
