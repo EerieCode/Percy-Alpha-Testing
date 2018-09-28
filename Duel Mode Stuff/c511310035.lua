@@ -860,16 +860,16 @@ function scard.reset(e, tp, eg, ep, ev, re, r, rp)
 		e:Reset()
 	end
 	scard.activeChallenges = {}
-	local g = Duel.GetFieldGroup(tp, LOCATION_HAND + LOCATION_MZONE + LOCATION_SZONE, 0):Filter(scard.IsFacedown)
+	local g = Duel.GetFieldGroup(tp, LOCATION_HAND + LOCATION_MZONE + LOCATION_SZONE, 0):Filter(scard.IsFacedown, nil)
 	Duel.ConfirmCards(1 - tp, g)
-	local g2 = Duel.GetFieldGroup(tp, 0, LOCATION_HAND + LOCATION_MZONE + LOCATION_SZONE):Filter(scard.IsFacedown)
+	local g2 = Duel.GetFieldGroup(tp, 0, LOCATION_HAND + LOCATION_MZONE + LOCATION_SZONE):Filter(scard.IsFacedown, nil)
 	Duel.ConfirmCards(tp, g2)
 end
 table.insert(scard.challenges, scard.reset)
 
 --Choose a card in your opponent's graveyard and set it to your side of the field.
 function scard.graveSteal(e, tp, eg, ep, ev, re, r, rp)
-	local tc = Duel.SelectMatchingCard(tp, scard.graveStealFilter, tp, 0, LOCATION_GRAVE, 1, 1, nil, tp):GetFirst()
+	local tc = Duel.SelectMatchingCard(tp, scard.graveStealFilter, tp, 0, LOCATION_GRAVE, 1, 1, nil, e, tp):GetFirst()
 	if tc then
 		if tc:IsType(TYPE_MONSTER) then
 			Duel.SpecialSummon(tc, 0, tp, tp, true, true, POS_FACEDOWN_DEFENSE)
@@ -879,7 +879,7 @@ function scard.graveSteal(e, tp, eg, ep, ev, re, r, rp)
 		Duel.ConfirmCards(1 - tp, tc)
 	end
 	local tc2 =
-		Duel.SelectMatchingCard(1 - tp, scard.graveStealFilter, 1 - tp, 0, LOCATION_GRAVE, 1, 1, nil, 1 - tp):GetFirst()
+		Duel.SelectMatchingCard(1 - tp, scard.graveStealFilter, 1 - tp, 0, LOCATION_GRAVE, 1, 1, nil, e, 1 - tp):GetFirst()
 	if tc2 then
 		if tc2:IsType(TYPE_MONSTER) then
 			Duel.SpecialSummon(tc2, 0, 1 - tp, 1 - tp, true, true, POS_FACEDOWN_DEFENSE)
@@ -891,7 +891,7 @@ function scard.graveSteal(e, tp, eg, ep, ev, re, r, rp)
 end
 table.insert(scard.challenges, scard.graveSteal)
 
-function scard.graveStealFilter(c, tp)
+function scard.graveStealFilter(c, e, tp)
 	return (c:IsType(TYPE_SPELL + TYPE_TRAP) and c:IsSSetable() and (Duel.GetLocationCount(tp, LOCATION_SZONE) > 0 or c:IsType(TYPE_FIELD))) or
 		(c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e, 0, tp, true, true, POS_FACEDOWN_DEFENSE) and
 			Duel.GetLocationCount(tp, LOCATION_MZONE) > 0)
@@ -911,7 +911,7 @@ end
 table.insert(scard.challenges, scard.costDraw)
 
 --You can only play monsters with an ATK of 1600 or higher.
-function scard.noSummonLowATK()
+function scard.noSummonLowATK(e, tp, eg, ep, ev, re, r, rp)
 	local e1 = Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(EFFECT_CANNOT_SUMMON)
