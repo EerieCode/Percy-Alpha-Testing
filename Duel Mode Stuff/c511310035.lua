@@ -256,7 +256,7 @@ function scard.paybackDestroy(e, tp)
 end
 table.insert(scard.challenges, scard.paybackDestroy)
 
-function scard.checkop(e, tp)
+function scard.checkop(e, tp, eg)
     for tc in aux.Next(eg) do
         scard[tc:GetPreviousControler()] = true
     end
