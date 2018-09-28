@@ -1,7 +1,7 @@
 --Pegasus Ultimate Challenge
 --Scripted by AlphaKretin
 local scard, s_id = GetID()
-local CHALLENGE_CHANCE = 1 --chance of a challenge applying each adjust, out of 100.
+local CHALLENGE_CHANCE = 3 --chance of a challenge applying each adjust, out of 100.
 local EVENT_PEGASUS_SPEAKS = EVENT_CUSTOM + s_id
 
 function scard.initial_effect(c)
@@ -328,7 +328,7 @@ table.insert(scard.challenges, scard.reverseDeck)
 
 function scard.drop(e, tp)
     Duel.Draw(tp, 1, REASON_RULE)
-    Duel.Draw(tp, 1 - tp, REASON_RULE)
+    Duel.Draw(1 - tp, 1, REASON_RULE)
     e:Reset()
 end
 
