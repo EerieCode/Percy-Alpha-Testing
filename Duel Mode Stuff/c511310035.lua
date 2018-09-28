@@ -592,6 +592,7 @@ function scard.goFaceDown(e, tp)
         Duel.RegisterEffect(e1, tp)
     end
 end
+table.insert(scard.challenges, scard.goFaceDown)
 
 --You can only activate cards on your turn.
 function scard.noActOppTurn(e, tp)
