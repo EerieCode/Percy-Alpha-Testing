@@ -99,7 +99,7 @@ function scard.playCard(c, p)
     if c and not c:IsForbidden() then
         local canSummon = Duel.GetLocationCount(p, LOCATION_MZONE) > 0
         local canPendActivate =
-            Duel.IsType(TYPE_PENDULUM) and
+            c:IsType(TYPE_PENDULUM) and
             (Duel.CheckLocation(p, LOCATION_PZONE, 0) or Duel.CheckLocation(p, LOCATION_PZONE, 1))
         if c:IsType(TYPE_MONSTER) then
             --check for monster seperately so skips next block if is monster
