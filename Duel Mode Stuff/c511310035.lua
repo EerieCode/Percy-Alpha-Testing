@@ -66,8 +66,8 @@ function scard.eventop(e, tp)
             --select a random challenge
             local challenge = Duel.GetRandomNumber(1, #scard.challenges)
             --announce the challenge
-            Duel.Hint(HINT_MESSAGE, 0, aux.Stringid(5000, challenge - 1)) --if over 15 wraps to next token
-            Duel.Hint(HINT_MESSAGE, 1, aux.Stringid(5000, challenge - 1))
+            Duel.SelectOption(0, aux.Stringid(5000, challenge - 1)) --if over 15 wraps to next token
+            Duel.SelectOption(1, aux.Stringid(5000, challenge - 1))
             --queue the challenge
             e:GetLabelObject():SetLabel(challenge)
             --raise the event for the challenge to happen
@@ -86,10 +86,11 @@ end
 function scard.chalop(e, tp)
     --if the game state is open or a chain is building (but not resolving)
     if Duel.GetCurrentChain() == 0 or Duel.CheckEvent(EVENT_CHAINING) then
-        --apply the queued challenge
-        scard.challenges[e:GetLabel()](e, tp)
-        --clear the queue
+        local challenge = e:GetLabel()
+        --clear the queue before challenge to avoid recursion in challenges that raise adjusts
         e:SetLabel(0)
+        --apply the queued challenge
+        scard.challenges[challenge](e, tp)
     end
 end
 
