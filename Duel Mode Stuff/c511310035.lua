@@ -750,6 +750,7 @@ table.insert(scard.challenges, scard.necrovalley)
 --Choose a monster, a spell, and a trap card from your Graveyard and set them all onto your field.
 --Credit to andré for SelectUnselectLoop that handles Fields and Spell/Traps
 function scard.mimicat(e, tp)
+    Debug.Message("Start of mimicat func")
     local mzc = Duel.GetLocationCount(tp, LOCATION_MZONE)
     local szc = Duel.GetLocationCount(tp, LOCATION_SZONE)
     local g = Duel.GetMatchingGroup(scard.graveSetFilter, tp, LOCATION_GRAVE, 0, nil, e, tp)
@@ -767,7 +768,7 @@ function scard.mimicat(e, tp)
             HINTMSG_SET,
             scard.rescon(mzc, szc, g)
         )
-        local sg1 = sg:Filter(scard.IsType, nil, TYPE_MONSTER)
+        local sg1 = sg:Filter(Card.IsType, nil, TYPE_MONSTER)
         local sg2 = sg - sg1
         if #sg1 > 0 then
             Duel.SpecialSummon(sg1, 0, tp, tp, true, true, POS_FACEDOWN_DEFENSE)
@@ -794,7 +795,7 @@ function scard.mimicat(e, tp)
             HINTMSG_SET,
             scard.rescon(mzc, szc, g)
         )
-        local sg1 = sg:Filter(scard.IsType, nil, TYPE_MONSTER)
+        local sg1 = sg:Filter(Card.IsType, nil, TYPE_MONSTER)
         local sg2 = sg - sg1
         if #sg1 > 0 then
             Duel.SpecialSummon(sg1, 0, 1 - tp, 1 - tp, true, true, POS_FACEDOWN_DEFENSE)
@@ -815,16 +816,16 @@ end
 function scard.rescon(mzc, szc, g)
     return function(sg, e, tp, mg)
         if
-            mzc > 0 and g:IsExists(scard.IsType, 1, nil, TYPE_MONSTER) and
-                sg:FilterCount(scard.IsType, nil, TYPE_MONSTER) ~= 1
+            mzc > 0 and g:IsExists(Card.IsType, 1, nil, TYPE_MONSTER) and
+                sg:FilterCount(Card.IsType, nil, TYPE_MONSTER) ~= 1
          then
             return false
-        elseif mzc == 0 and sg:FilterCount(scard.IsType, nil, TYPE_MONSTER) ~= 0 then
+        elseif mzc == 0 and sg:FilterCount(Card.IsType, nil, TYPE_MONSTER) ~= 0 then
             return false
         end
-        local bg = sg:Filter(aux.NOT(scard.IsType), nil, TYPE_MONSTER)
+        local bg = sg:Filter(aux.NOT(Card.IsType), nil, TYPE_MONSTER)
         if szc == 0 then
-            if g:IsExists(scard.IsType, 1, nil, TYPE_FIELD) then
+            if g:IsExists(Card.IsType, 1, nil, TYPE_FIELD) then
                 return #bg == 1 and bg:GetFirst():IsType(TYPE_FIELD)
             else
                 return #bg == 0
@@ -833,16 +834,16 @@ function scard.rescon(mzc, szc, g)
             if #bg > 2 then
                 return false
             end
-            if g:IsExists(scard.IsType, 1, nil, TYPE_SPELL | TYPE_TRAP) then
-                return bg:IsExists(scard.raux1, 1, nil, bg, g, true)
+            if g:IsExists(Card.IsType, 1, nil, TYPE_SPELL | TYPE_TRAP) then
+                return bg:IsExists(Card.raux1, 1, nil, bg, g, true)
             end
         else
             if #bg > 2 then
                 return false
             end
-            if g:IsExists(scard.IsType, 1, nil, TYPE_SPELL | TYPE_TRAP) then
+            if g:IsExists(Card.IsType, 1, nil, TYPE_SPELL | TYPE_TRAP) then
                 return bg:IsExists(scard.raux1, 1, nil, bg, g, false) and
-                    bg:FilterCount(scard.IsType, nil, TYPE_FIELD) <= 1
+                    bg:FilterCount(Card.IsType, nil, TYPE_FIELD) <= 1
             end
         end
         return true
