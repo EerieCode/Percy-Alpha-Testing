@@ -272,8 +272,10 @@ end
 table.insert(scard.challenges, scard.paybackDestroy)
 
 function scard.checkop(e, tp, eg)
-    for tc in aux.Next(eg) do
-        scard[tc:GetPreviousControler()] = true
+    if eg and #eg > 0 then
+        for tc in aux.Next(eg) do
+            scard[tc:GetPreviousControler()] = true
+        end
     end
 end
 
@@ -312,13 +314,15 @@ table.insert(scard.challenges, scard.vanishGrave)
 function scard.switchATKDEF(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_MZONE, LOCATION_MZONE)
     local c = e:GetHandler()
-    for tc in aux.Next(g) do
-        local e1 = Effect.CreateEffect(c)
-        e1:SetType(EFFECT_TYPE_SINGLE)
-        e1:SetCode(EFFECT_SWAP_AD)
-        e1:SetReset(RESET_EVENT + RESETS_STANDARD)
-        tc:RegisterEffect(e1)
-        scard.applyNewChallengeReset(e1)
+    if g and #g > 0 then
+        for tc in aux.Next(g) do
+            local e1 = Effect.CreateEffect(c)
+            e1:SetType(EFFECT_TYPE_SINGLE)
+            e1:SetCode(EFFECT_SWAP_AD)
+            e1:SetReset(RESET_EVENT + RESETS_STANDARD)
+            tc:RegisterEffect(e1)
+            scard.applyNewChallengeReset(e1)
+        end
     end
 end
 table.insert(scard.challenges, scard.switchATKDEF)
@@ -665,14 +669,16 @@ function scard.jamspfilter(c, e)
 end
 
 function scard.jamspop(e, tp, eg)
-    for tc in aux.Next(eg) do
-        local p = tc:GetControler()
-        if
-            scard.jamspfilter(tc, e) and
-                (not tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0) or
-                (tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(p) > 0) and Duel.SelectYesNo(p, 1075)
-         then
-            Duel.SpecialSummon(tc, 0, p, p, false, false, POS_FACEUP_DEFENSE)
+    if eg and #eg > 0 then
+        for tc in aux.Next(eg) do
+            local p = tc:GetControler()
+            if
+                scard.jamspfilter(tc, e) and
+                    (not tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0) or
+                    (tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(p) > 0) and Duel.SelectYesNo(p, 1075)
+             then
+                Duel.SpecialSummon(tc, 0, p, p, false, false, POS_FACEUP_DEFENSE)
+            end
         end
     end
 end
