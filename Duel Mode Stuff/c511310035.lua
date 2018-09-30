@@ -80,9 +80,9 @@ end
 
 function scard.chalcon(e, tp)
     --set by extra rule
-    return scard.global_active_check
+    return scard.global_active_check and
         --check challenge not already applying, to avoid recursion where events raise adjusts
-        and e:GetHandler():GetFlagEffect(s_id) == 0
+        e:GetHandler():GetFlagEffect(s_id) == 0
 end
 
 function scard.chalop(e, tp)
@@ -277,10 +277,8 @@ end
 table.insert(scard.challenges, scard.paybackDestroy)
 
 function scard.checkop(e, tp, eg)
-    if eg and #eg > 0 then
-        for tc in aux.Next(eg) do
-            scard[tc:GetPreviousControler()] = true
-        end
+    for tc in aux.Next(eg) do
+        scard[tc:GetPreviousControler()] = true
     end
 end
 
@@ -319,15 +317,13 @@ table.insert(scard.challenges, scard.vanishGrave)
 function scard.switchATKDEF(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_MZONE, LOCATION_MZONE)
     local c = e:GetHandler()
-    if g and #g > 0 then
-        for tc in aux.Next(g) do
-            local e1 = Effect.CreateEffect(c)
-            e1:SetType(EFFECT_TYPE_SINGLE)
-            e1:SetCode(EFFECT_SWAP_AD)
-            e1:SetReset(RESET_EVENT + RESETS_STANDARD)
-            tc:RegisterEffect(e1)
-            scard.applyNewChallengeReset(e1)
-        end
+    for tc in aux.Next(g) do
+        local e1 = Effect.CreateEffect(c)
+        e1:SetType(EFFECT_TYPE_SINGLE)
+        e1:SetCode(EFFECT_SWAP_AD)
+        e1:SetReset(RESET_EVENT + RESETS_STANDARD)
+        tc:RegisterEffect(e1)
+        scard.applyNewChallengeReset(e1)
     end
 end
 table.insert(scard.challenges, scard.switchATKDEF)
@@ -674,15 +670,13 @@ function scard.jamspfilter(c, e)
 end
 
 function scard.jamspop(e, tp, eg)
-    if eg and #eg > 0 then
-        for tc in aux.Next(eg) do
-            local p = tc:GetControler()
-            if scard.jamspfilter(tc, e) and
-                (not tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0) or
-                (tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(p) > 0) and Duel.SelectYesNo(p, 1075)
-            then
-                Duel.SpecialSummon(tc, 0, p, p, false, false, POS_FACEUP_DEFENSE)
-            end
+    for tc in aux.Next(eg) do
+        local p = tc:GetControler()
+        if scard.jamspfilter(tc, e) and
+            (not tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0) or
+            (tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(p) > 0) and Duel.SelectYesNo(p, 1075)
+        then
+            Duel.SpecialSummon(tc, 0, p, p, false, false, POS_FACEUP_DEFENSE)
         end
     end
 end
