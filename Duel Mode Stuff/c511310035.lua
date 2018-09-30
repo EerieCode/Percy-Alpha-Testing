@@ -667,7 +667,11 @@ end
 function scard.jamspop(e, tp, eg)
     for tc in aux.Next(eg) do
         local p = tc:GetControler()
-        if scard.jamspfilter(tc, e) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0 and Duel.SelectYesNo(p, 1075) then
+        if
+            scard.jamspfilter(tc, e) and
+                (not tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0) or
+                (tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(p) > 0) and Duel.SelectYesNo(p, 1075)
+         then
             Duel.SpecialSummon(tc, 0, p, p, false, false, POS_FACEUP_DEFENSE)
         end
     end
