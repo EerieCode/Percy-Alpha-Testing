@@ -931,10 +931,10 @@ end
 --Each duelist may draw up to two cards, but loses 1000 Life Points for each card he or she chooses to draw.
 --The turn player decides how many cards to draw first.
 function scard.costDraw(e, tp)
-    local ct = Duel.AnnounceLevel(tp, 0, math.min(2, Duel.GetFieldGroupCount(tp, LOCATION_DECK)))
+    local ct = Duel.AnnounceLevel(tp, 0, math.min(2, Duel.GetFieldGroupCount(tp, LOCATION_DECK, 0)))
     Duel.Draw(tp, ct, REASON_RULE)
     Duel.SetLP(tp, Duel.GetLP(tp) - 1000 * ct)
-    local ct = Duel.AnnounceLevel(1 - tp, 0, math.min(2, Duel.GetFieldGroupCount(1 - tp, LOCATION_DECK)))
+    local ct = Duel.AnnounceLevel(1 - tp, 0, math.min(2, Duel.GetFieldGroupCount(1 - tp, LOCATION_DECK, 0)))
     Duel.Draw(1 - tp, ct, REASON_RULE)
     Duel.SetLP(1 - tp, Duel.GetLP(1 - tp) - 1000 * ct)
 end
