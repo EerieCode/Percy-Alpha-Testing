@@ -3,6 +3,7 @@
 local scard, s_id = GetID()
 local ADJUST_COUNT_MEAN = 75 --average number of adjusts between challenges
 local ADJUST_COUNT_VAR = 25 --number of adjusts between challenges can be mean +- this
+local DEBUG_FORCE_CHALLENGE = 0 --if not 0, will force a specific challenge for testing
 local EVENT_PEGASUS_SPEAKS = EVENT_CUSTOM + s_id
 
 function scard.initial_effect(c)
@@ -56,12 +57,18 @@ end
 function scard.eventop(e, tp)
     --if no challenge queued
     if e:GetLabelObject():GetLabel() == 0 then
+        --if challenge already queued
         --decrement "timer" until next challenge
         scard.adjustCount = scard.adjustCount - 1
         --if next challenge is due
         if scard.adjustCount <= 0 then
             --select a random challenge
-            local challenge = Duel.GetRandomNumber(1, #scard.challenges)
+            local challenge
+            if DEBUG_FORCE_CHALLENGE > 0 and DEBUG_FORCE_CHALLENGE <= #scard.challenges then
+                challenge = DEBUG_FORCE_CHALLENGE
+            else
+                challenge = Duel.GetRandomNumber(1, #scard.challenges)
+            end
             --announce the challenge
             Duel.SelectOption(0, aux.Stringid(5000, challenge - 1)) --if over 15 wraps to next token
             Duel.SelectOption(1, aux.Stringid(5000, challenge - 1))
@@ -72,7 +79,6 @@ function scard.eventop(e, tp)
             --reset timer
             scard.adjustCount = scard.getAdjustCount()
         end
-    --if challenge already queued
     elseif Duel.GetCurrentChain() == 0 then
         --raise the event again without changing the challenge until the challenge happenes
         Duel.RaiseEvent(Group.CreateGroup(), EVENT_PEGASUS_SPEAKS, e, 0, 0, 0, 0)
@@ -673,10 +679,11 @@ end
 function scard.jamspop(e, tp, eg)
     for tc in aux.Next(eg) do
         local p = tc:GetControler()
-        if scard.jamspfilter(tc, e) and
-            (not tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0) or
-            (tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(p) > 0) and Duel.SelectYesNo(p, 1075)
-        then
+        if
+            scard.jamspfilter(tc, e) and
+                (not tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0) or
+                (tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(p) > 0) and Duel.SelectYesNo(p, 1075)
+         then
             Duel.SpecialSummon(tc, 0, p, p, false, false, POS_FACEUP_DEFENSE)
         end
     end
