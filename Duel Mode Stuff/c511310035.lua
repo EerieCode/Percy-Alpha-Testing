@@ -597,7 +597,7 @@ function scard.goFaceDown(e, tp)
     if #g > 0 then
         Duel.ChangePosition(g, POS_FACEDOWN_DEFENSE)
         --pos limit
-        local e1 = Effect.CreateEffect(c)
+        local e1 = Effect.CreateEffect(e:GetHandler())
         e1:SetType(EFFECT_TYPE_FIELD)
         e1:SetCode(EFFECT_CANNOT_CHANGE_POSITION)
         e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
