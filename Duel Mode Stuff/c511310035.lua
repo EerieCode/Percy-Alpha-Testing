@@ -89,8 +89,9 @@ function scard.chalop(e, tp)
         local challenge = e:GetLabel()
         --clear the queue before challenge to avoid recursion in challenges that raise adjusts
         e:SetLabel(0)
+        local p = Duel.GetTurnPlayer()
         --apply the queued challenge
-        scard.challenges[challenge](e, tp)
+        scard.challenges[challenge](e, p)
     end
 end
 
@@ -159,13 +160,12 @@ end
 
 --All players reveal the top card of their deck. You may play that card immediately, starting with the turn player.
 function scard.playTopCard(e, tp)
-    local p = Duel.GetTurnPlayer()
-    Duel.ConfirmDecktop(p, 1)
-    local turnPlayersCard = Duel.GetDecktopGroup(p, 1):GetFirst()
-    Duel.ConfirmDecktop(1 - p, 1)
-    local nonTurnPlayersCard = Duel.GetDecktopGroup(1 - p, 1):GetFirst()
-    scard.playCard(turnPlayersCard, p)
-    scard.playCard(nonTurnPlayersCard, 1 - p)
+    Duel.ConfirmDecktop(tp, 1)
+    local turnPlayersCard = Duel.GetDecktopGroup(tp, 1):GetFirst()
+    Duel.ConfirmDecktop(1 - tp, 1)
+    local nonTurnPlayersCard = Duel.GetDecktopGroup(1 - tp, 1):GetFirst()
+    scard.playCard(turnPlayersCard, tp)
+    scard.playCard(nonTurnPlayersCard, 1 - tp)
 end
 table.insert(scard.challenges, scard.playTopCard)
 
@@ -693,17 +693,16 @@ table.insert(scard.challenges, scard.handTrap)
 --By paying 1000 Life Points per monster, players may smite any number of their opponent's monsters
 --and send them to the Graveyard.
 function scard.smite(e, tp)
-    local p = Duel.GetTurnPlayer()
-    local max1 = Duel.GetLP(p) // 1000
-    local dg1 = Duel.SelectMatchingCard(p, aux.TRUE, p, 0, LOCATION_MZONE, 0, max1, nil)
+    local max1 = Duel.GetLP(tp) // 1000
+    local dg1 = Duel.SelectMatchingCard(tp, aux.TRUE, tp, 0, LOCATION_MZONE, 0, max1, nil)
     if #dg1 > 0 then
-        Duel.PayLPCost(p, #dg1 * 1000)
+        Duel.PayLPCost(tp, #dg1 * 1000)
         Duel.SendtoGrave(dg1, REASON_RULE)
     end
-    local max2 = Duel.GetLP(1 - p) // 1000
-    local dg2 = Duel.SelectMatchingCard(1 - p, aux.TRUE, 1 - p, 0, LOCATION_MZONE, 0, max1, nil)
+    local max2 = Duel.GetLP(1 - tp) // 1000
+    local dg2 = Duel.SelectMatchingCard(1 - tp, aux.TRUE, 1 - tp, 0, LOCATION_MZONE, 0, max1, nil)
     if #dg2 > 0 then
-        Duel.PayLPCost(1 - p, #dg2 * 1000)
+        Duel.PayLPCost(1 - tp, #dg2 * 1000)
         Duel.SendtoGrave(dg2, REASON_RULE)
     end
 end
@@ -926,13 +925,12 @@ end
 --Each duelist may draw up to two cards, but loses 1000 Life Points for each card he or she chooses to draw.
 --The turn player decides how many cards to draw first.
 function scard.costDraw(e, tp)
-    local p = Duel.GetTurnPlayer()
-    local ct = Duel.AnnounceLevel(p, 0, math.min(2, Duel.GetFieldGroupCount(p, LOCATION_DECK)))
-    Duel.Draw(p, ct, REASON_RULE)
-    Duel.SetLP(p, Duel.GetLP(p) - 1000 * ct)
-    local ct = Duel.AnnounceLevel(1 - p, 0, math.min(2, Duel.GetFieldGroupCount(1 - p, LOCATION_DECK)))
-    Duel.Draw(1 - p, ct, REASON_RULE)
-    Duel.SetLP(1 - p, Duel.GetLP(1 - p) - 1000 * ct)
+    local ct = Duel.AnnounceLevel(tp, 0, math.min(2, Duel.GetFieldGroupCount(tp, LOCATION_DECK)))
+    Duel.Draw(tp, ct, REASON_RULE)
+    Duel.SetLP(tp, Duel.GetLP(tp) - 1000 * ct)
+    local ct = Duel.AnnounceLevel(1 - tp, 0, math.min(2, Duel.GetFieldGroupCount(1 - tp, LOCATION_DECK)))
+    Duel.Draw(1 - tp, ct, REASON_RULE)
+    Duel.SetLP(1 - tp, Duel.GetLP(1 - tp) - 1000 * ct)
 end
 table.insert(scard.challenges, scard.costDraw)
 
