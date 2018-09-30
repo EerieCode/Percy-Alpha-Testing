@@ -757,7 +757,6 @@ table.insert(scard.challenges, scard.necrovalley)
 --36: Choose a monster, a spell, and a trap card from your Graveyard and set them all onto your field.
 --Credit to andré for SelectUnselectLoop that handles Fields and Spell/Traps
 function scard.mimicat(e, tp)
-    Debug.Message("Start of mimicat func")
     local mzc = Duel.GetLocationCount(tp, LOCATION_MZONE)
     local szc = Duel.GetLocationCount(tp, LOCATION_SZONE)
     local g = Duel.GetMatchingGroup(scard.graveSetFilter, tp, LOCATION_GRAVE, 0, nil, e, tp)
