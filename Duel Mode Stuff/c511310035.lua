@@ -54,11 +54,8 @@ function scard.getAdjustCount()
 end
 
 function scard.eventop(e, tp)
-    --if challenge already queued
-    if e:GetLabelObject():GetLabel() > 0 then
-        --raise the event again without changing the challenge until the challenge happenes
-        Duel.RaiseEvent(Group.CreateGroup(), EVENT_PEGASUS_SPEAKS, e, 0, 0, 0, 0)
-    else
+    --if no challenge queued
+    if e:GetLabelObject():GetLabel() == 0 then
         --decrement "timer" until next challenge
         scard.adjustCount = scard.adjustCount - 1
         --if next challenge is due
@@ -75,6 +72,10 @@ function scard.eventop(e, tp)
             --reset timer
             scard.adjustCount = scard.getAdjustCount()
         end
+    --if challenge already queued
+    elseif Duel.GetCurrentChain() == 0 then
+        --raise the event again without changing the challenge until the challenge happenes
+        Duel.RaiseEvent(Group.CreateGroup(), EVENT_PEGASUS_SPEAKS, e, 0, 0, 0, 0)
     end
 end
 
