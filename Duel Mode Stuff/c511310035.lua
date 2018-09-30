@@ -170,7 +170,7 @@ function scard.destroyFilter(func, loc)
     end
 end
 
---All players reveal the top card of their deck. You may play that card immediately, starting with the turn player.
+--1: All players reveal the top card of their deck. You may play that card immediately, starting with the turn player.
 function scard.playTopCard(e, tp)
     Duel.ConfirmDecktop(tp, 1)
     local turnPlayersCard = Duel.GetDecktopGroup(tp, 1):GetFirst()
@@ -181,7 +181,7 @@ function scard.playTopCard(e, tp)
 end
 table.insert(scard.challenges, scard.playTopCard)
 
---Both players play with their hands revealed.
+--2: Both players play with their hands revealed.
 function scard.revealHands(e, tp)
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
@@ -203,7 +203,7 @@ function scard.destroyFivePlusStar(e, tp)
 end
 table.insert(scard.challenges, scard.destroyFivePlusStar)
 
---Everyone discard a random card from their hand.
+--3: Everyone discard a random card from their hand.
 function scard.discardRandom(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_HAND, 0)
     local sg = g:RandomSelect(tp, 1)
@@ -214,13 +214,13 @@ function scard.discardRandom(e, tp)
 end
 table.insert(scard.challenges, scard.discardRandom)
 
---Everyone stop and introduce yourself to the person sitting on your right.
+--4: Everyone stop and introduce yourself to the person sitting on your right.
 function scard.introduce(e, tp)
     --only displays a message, as handled by chalop
 end
 table.insert(scard.challenges, scard.introduce)
 
---Lose 500 LP for each Spell and Trap Card you control.
+--5: Lose 500 LP for each Spell and Trap Card you control.
 function scard.loseLPForBackrow(e, tp)
     local tpLoss = Duel.GetFieldGroupCount(tp, LOCATION_SZONE, 0) * 500
     local ntpLoss = Duel.GetFieldGroupCount(tp, 0, LOCATION_SZONE) * 500
@@ -230,7 +230,7 @@ function scard.loseLPForBackrow(e, tp)
 end
 table.insert(scard.challenges, scard.loseLPForBackrow)
 
---Shuffle your hand into your deck and then draw that many cards.
+--6: Shuffle your hand into your deck and then draw that many cards.
 function scard.mulligan(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_HAND, 0)
     if #g > 0 then
@@ -247,7 +247,7 @@ function scard.mulligan(e, tp)
 end
 table.insert(scard.challenges, scard.mulligan)
 
---Swap LP with your opponent.
+--7: Swap LP with your opponent.
 function scard.swapLP(e, tp)
     local temp = Duel.GetLP(tp)
     Duel.SetLP(tp, Duel.GetLP(1 - tp))
@@ -255,7 +255,7 @@ function scard.swapLP(e, tp)
 end
 table.insert(scard.challenges, scard.swapLP)
 
---Destroy all monsters with 1500 or less ATK.
+--8: Destroy all monsters with 1500 or less ATK.
 function scard.destroy1500LessATK(e, tp)
     scard.destroyFilter(
         function(c)
@@ -266,7 +266,7 @@ function scard.destroy1500LessATK(e, tp)
 end
 table.insert(scard.challenges, scard.destroy1500LessATK)
 
---If you had a card destroyed this turn, you may destroy one of your opponent's cards.
+--9: If you had a card destroyed this turn, you may destroy one of your opponent's cards.
 function scard.paybackDestroy(e, tp)
     if scard[tp] then
         local dc = Duel.SelectMatchingCard(tp, aux.TRUE, tp, 0, LOCATION_ONFIELD, 0, 1, nil)
@@ -295,7 +295,7 @@ function scard.clear(e, tp)
     return false
 end
 
---Players cannot activate Spell Cards. (They could activate their effects.)
+--10: Players cannot activate Spell Cards. (They could activate their effects.)
 function scard.noActSpell(e, tp)
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
@@ -312,7 +312,7 @@ function scard.aclimit(e, re, tp)
     return re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsActiveType(TYPE_SPELL)
 end
 
---Remove all cards in all graveyard from the game.
+--11: Remove all cards in all graveyard from the game.
 function scard.vanishGrave(e, tp)
     local rg = Duel.GetFieldGroup(tp, LOCATION_GRAVE, LOCATION_GRAVE)
     Duel.DisableShuffleCheck()
@@ -320,7 +320,7 @@ function scard.vanishGrave(e, tp)
 end
 table.insert(scard.challenges, scard.vanishGrave)
 
---Switch the ATK and DEF of all monsters on the field.
+--12: Switch the ATK and DEF of all monsters on the field.
 function scard.switchATKDEF(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_MZONE, LOCATION_MZONE)
     local c = e:GetHandler()
@@ -335,7 +335,7 @@ function scard.switchATKDEF(e, tp)
 end
 table.insert(scard.challenges, scard.switchATKDEF)
 
---Turn your deck over and then draw from the new top of the deck.
+--13: Turn your deck over and then draw from the new top of the deck.
 function scard.reverseDeck(e, tp)
     local e1 = Effect.GlobalEffect()
     e1:SetType(EFFECT_TYPE_FIELD)
@@ -359,7 +359,7 @@ function scard.drop(e, tp)
     e:Reset()
 end
 
---You cannot attack unless you say "Yu-Gi-Oh!"
+--14: You cannot attack unless you say "Yu-Gi-Oh!"
 function scard.attackCost(e, tp)
     --attack cost
     local e1 = Effect.CreateEffect(e:GetHandler())
@@ -382,7 +382,7 @@ function scard.atop(e, tp)
     end
 end
 
---All monsters become Normal Monsters with no effects.
+--15: All monsters become Normal Monsters with no effects.
 function scard.becomeNormal(e, tp)
     local c = e:GetHandler()
     --disable
@@ -403,25 +403,25 @@ function scard.becomeNormal(e, tp)
 end
 table.insert(scard.challenges, scard.becomeNormal)
 
---Destroy all cards on the field.
+--16: Destroy all cards on the field.
 function scard.destroyAll(e, tp)
     scard.destroyFilter(aux.TRUE, LOCATION_ONFIELD)
 end
 table.insert(scard.challenges, scard.destroyAll)
 
---Destroy all monsters.
+--17: Destroy all monsters.
 function scard.destroyMonster(e, tp)
     scard.destroyFilter(aux.TRUE, LOCATION_MZONE)
 end
 table.insert(scard.challenges, scard.destroyMonster)
 
---Destroy all Spell and Trap Cards.
+--18: Destroy all Spell and Trap Cards.
 function scard.destroyBackrow(e, tp)
     scard.destroyFilter(aux.TRUE, LOCATION_SZONE)
 end
 table.insert(scard.challenges, scard.destroyBackrow)
 
---Destroy all face-up Xyz Monsters.
+--19: Destroy all face-up Xyz Monsters.
 function scard.destroyXyz(e, tp)
     scard.destroyFilter(
         function(c)
@@ -432,7 +432,7 @@ function scard.destroyXyz(e, tp)
 end
 table.insert(scard.challenges, scard.destroyXyz)
 
---Discard your hand and then draw that many cards.
+--20: Discard your hand and then draw that many cards.
 function scard.discardMulligan(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_HAND, 0)
     if #g > 0 then
@@ -447,7 +447,7 @@ function scard.discardMulligan(e, tp)
 end
 table.insert(scard.challenges, scard.discardMulligan)
 
---Everyone draw the bottom card of their Deck.
+--21: Everyone draw the bottom card of their Deck.
 function scard.drawBottom(e, tp)
     local tc = Duel.GetFieldGroup(tp, LOCATION_DECK, 0):GetFirst() --first card in deck is bottom
     if tc then
@@ -460,7 +460,7 @@ function scard.drawBottom(e, tp)
 end
 table.insert(scard.challenges, scard.drawBottom)
 
---If you have less LP than your opponent, Special Summon one monster from your hand to the field, ignore all Summoning conditions.
+--22: If you have less LP than your opponent, Special Summon one monster from your hand to the field, ignore all Summoning conditions.
 function scard.loserSpecial(e, tp)
     local p = nil
     if Duel.GetLP(tp) < Duel.GetLP(1 - tp) then
@@ -483,7 +483,7 @@ function scard.spfilter(c, e, tp)
     return c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e, 0, tp, true, false)
 end
 
---Players cannot activate Trap Cards. (They could activate their effects.)
+--23: Players cannot activate Trap Cards. (They could activate their effects.)
 function scard.noActTrap(e, tp)
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
@@ -500,7 +500,7 @@ function scard.aclimit2(e, re, tp)
     return re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsActiveType(TYPE_TRAP)
 end
 
---Shuffle your Graveyard into your Deck and then put the top 15 cards of your Deck into the Graveyard.
+--24: Shuffle your Graveyard into your Deck and then put the top 15 cards of your Deck into the Graveyard.
 function scard.shuffleGrave(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_GRAVE, LOCATION_GRAVE)
     Duel.SendtoDeck(g, nil, 2, REASON_EFFECT)
@@ -514,7 +514,7 @@ table.insert(scard.challenges, scard.shuffleGrave)
 --You must sing your Battle Phase.
 --UNIMPLEMENTABLE
 
---Destroy all Continuous Spell and Trap Cards.
+--25: Destroy all Continuous Spell and Trap Cards.
 function scard.destroyCont(e, tp)
     scard.destroyFilter(
         function(c)
@@ -525,7 +525,7 @@ function scard.destroyCont(e, tp)
 end
 table.insert(scard.challenges, scard.destroyCont)
 
---Destroy all monsters with 1500 or more ATK.
+--26: Destroy all monsters with 1500 or more ATK.
 function scard.destroy1500MoreATK(e, tp)
     scard.destroyFilter(
         function(c)
@@ -547,7 +547,7 @@ function scard.destroyFourLessStar(e, tp)
 end
 table.insert(scard.challenges, scard.destroyFourLessStar)
 
---No monsters can be face-down, flip all face-down monsters to face up and their flip effects are negated.
+--27: No monsters can be face-down, flip all face-down monsters to face up and their flip effects are negated.
 --TODO: Is there a practical difference between "flip effects negated" and "don't activate flip effects when flipped"?
 function scard.goFaceUp(e, tp)
     local c = e:GetHandler()
@@ -576,7 +576,7 @@ table.insert(scard.challenges, scard.goFaceUp)
 --Shuffle your Side Deck and then draw from that instead of your Main Deck.
 --UNIMPLEMENTABLE
 
---Swap monsters with your opponent. All of them.
+--28: Swap monsters with your opponent. All of them.
 function scard.swapControl(e, tp)
     local g1 = Duel.GetFieldGroup(tp, LOCATION_MZONE, 0)
     local g2 = Duel.GetFieldGroup(tp, 0, LOCATION_MZONE)
@@ -603,7 +603,7 @@ function scard.swapControl(e, tp)
 end
 table.insert(scard.challenges, scard.swapControl)
 
---Turn all monsters face-down. They cannot be flipped up this turn.
+--29: Turn all monsters face-down. They cannot be flipped up this turn.
 function scard.goFaceDown(e, tp)
     local g = Duel.GetMatchingGroup(scard.IsCanTurnSet, tp, LOCATION_MZONE, LOCATION_MZONE, nil)
     if #g > 0 then
@@ -621,7 +621,7 @@ function scard.goFaceDown(e, tp)
 end
 table.insert(scard.challenges, scard.goFaceDown)
 
---You can only activate cards on your turn.
+--30: You can only activate cards on your turn.
 function scard.noActOppTurn(e, tp)
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
@@ -638,7 +638,7 @@ function scard.aclimit3(e, re, tp)
     return re:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.GetTurnPlayer() ~= tp
 end
 
---All duelists must discard a card at random.
+--31: All duelists must discard a card at random.
 function scard.discardRandomMarik(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_HAND, 0)
     local sg = g:RandomSelect(tp, 1)
@@ -649,7 +649,7 @@ function scard.discardRandomMarik(e, tp)
 end
 table.insert(scard.challenges, scard.discardRandomMarik)
 
---For three turns, all monsters have "Jam" added to the ends of their names.
+--32: For three turns, all monsters have "Jam" added to the ends of their names.
 --When a "Jam" monster is destroyed, you can Special Summon it back to the field in Defense Position.
 function scard.allJam(e, tp)
     local c = e:GetHandler()
@@ -689,7 +689,7 @@ function scard.jamspop(e, tp, eg)
     end
 end
 
---For three turns, duelists can activate trap cards from their hands.
+--33: For three turns, duelists can activate trap cards from their hands.
 function scard.handTrap(e, tp)
     local c = e:GetHandler()
     local e1 = Effect.CreateEffect(c)
@@ -702,7 +702,7 @@ function scard.handTrap(e, tp)
 end
 table.insert(scard.challenges, scard.handTrap)
 
---By paying 1000 Life Points per monster, players may smite any number of their opponent's monsters
+--34: By paying 1000 Life Points per monster, players may smite any number of their opponent's monsters
 --and send them to the Graveyard.
 function scard.smite(e, tp)
     local max1 = Duel.GetLP(tp) // 1000
@@ -720,7 +720,7 @@ function scard.smite(e, tp)
 end
 table.insert(scard.challenges, scard.smite)
 
---Necrovalley is in effect for three turns. Cards cannot leave the Graveyard for 3 turns.
+--35: Necrovalley is in effect for three turns. Cards cannot leave the Graveyard for 3 turns.
 function scard.necrovalley(e, tp)
     local c = e:GetHandler()
     --field
@@ -754,7 +754,7 @@ function scard.necrovalley(e, tp)
 end
 table.insert(scard.challenges, scard.necrovalley)
 
---Choose a monster, a spell, and a trap card from your Graveyard and set them all onto your field.
+--36: Choose a monster, a spell, and a trap card from your Graveyard and set them all onto your field.
 --Credit to andré for SelectUnselectLoop that handles Fields and Spell/Traps
 function scard.mimicat(e, tp)
     Debug.Message("Start of mimicat func")
@@ -874,7 +874,7 @@ function scard.raux2(c, type, field, mfield)
     end
 end
 
---Each duelist must search his or her deck for any card, add it to their hand, and shuffle their deck afterward.
+--37: Each duelist must search his or her deck for any card, add it to their hand, and shuffle their deck afterward.
 function scard.search(e, tp)
     local g = Duel.SelectMatchingCard(tp, aux.TRUE, tp, LOCATION_DECK, 0, 1, 1, nil)
     if #g > 0 then
@@ -889,7 +889,7 @@ function scard.search(e, tp)
 end
 table.insert(scard.challenges, scard.search)
 
---All old rules become no longer in effect, and all players reveal their hands and face-down cards to their opponents.
+--38: All old rules become no longer in effect, and all players reveal their hands and face-down cards to their opponents.
 function scard.reset(e, tp)
     for _, e in ipairs(scard.activeChallenges) do
         e:Reset()
@@ -902,7 +902,7 @@ function scard.reset(e, tp)
 end
 table.insert(scard.challenges, scard.reset)
 
---Choose a card in your opponent's graveyard and set it to your side of the field.
+--39: Choose a card in your opponent's graveyard and set it to your side of the field.
 function scard.graveSteal(e, tp)
     local tc = Duel.SelectMatchingCard(tp, scard.graveStealFilter, tp, 0, LOCATION_GRAVE, 1, 1, nil, e, tp):GetFirst()
     if tc then
@@ -935,7 +935,7 @@ function scard.graveStealFilter(c, e, tp)
             Duel.GetLocationCount(tp, LOCATION_MZONE) > 0)
 end
 
---Each duelist may draw up to two cards, but loses 1000 Life Points for each card he or she chooses to draw.
+--40: Each duelist may draw up to two cards, but loses 1000 Life Points for each card he or she chooses to draw.
 --The turn player decides how many cards to draw first.
 function scard.costDraw(e, tp)
     local ct = Duel.AnnounceLevel(tp, 0, math.min(2, Duel.GetFieldGroupCount(tp, LOCATION_DECK, 0)))
@@ -947,7 +947,7 @@ function scard.costDraw(e, tp)
 end
 table.insert(scard.challenges, scard.costDraw)
 
---You can only play monsters with an ATK of 1600 or higher.
+--41: You can only play monsters with an ATK of 1600 or higher.
 function scard.noSummonLowATK(e, tp)
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
