@@ -81,17 +81,22 @@ end
 function scard.chalcon(e, tp)
     --set by extra rule
     return scard.global_active_check
+        --check challenge not already applying, to avoid recursion where events raise adjusts
+        and e:GetHandler():GetFlagEffect(s_id) == 0
 end
 
 function scard.chalop(e, tp)
     --if the game state is open or a chain is building (but not resolving)
     if Duel.GetCurrentChain() == 0 or Duel.CheckEvent(EVENT_CHAINING) then
+        --register that challenge is applying to avoid recursion in challenges that raise adjusts
+        e:GetHandler():RegisterFlagEffect(s_id, 0, 0, 0)
         local challenge = e:GetLabel()
-        --clear the queue before challenge to avoid recursion in challenges that raise adjusts
+        --clear the queue before challenge, also to avoid recursion
         e:SetLabel(0)
         local p = Duel.GetTurnPlayer()
         --apply the queued challenge
         scard.challenges[challenge](e, p)
+        e:GetHandler():ResetFlagEffect(s_id)
     end
 end
 
@@ -672,11 +677,10 @@ function scard.jamspop(e, tp, eg)
     if eg and #eg > 0 then
         for tc in aux.Next(eg) do
             local p = tc:GetControler()
-            if
-                scard.jamspfilter(tc, e) and
-                    (not tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0) or
-                    (tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(p) > 0) and Duel.SelectYesNo(p, 1075)
-             then
+            if scard.jamspfilter(tc, e) and
+                (not tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0) or
+                (tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(p) > 0) and Duel.SelectYesNo(p, 1075)
+            then
                 Duel.SpecialSummon(tc, 0, p, p, false, false, POS_FACEUP_DEFENSE)
             end
         end
