@@ -841,7 +841,7 @@ function scard.rescon(mzc, szc, g)
                 return false
             end
             if g:IsExists(Card.IsType, 1, nil, TYPE_SPELL | TYPE_TRAP) then
-                return bg:IsExists(Card.raux1, 1, nil, bg, g, true)
+                return bg:IsExists(scard.raux1, 1, nil, bg, g, true)
             end
         else
             if #bg > 2 then
