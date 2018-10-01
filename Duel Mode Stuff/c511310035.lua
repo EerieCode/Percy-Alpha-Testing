@@ -762,25 +762,15 @@ function scard.mimicat(e, tp)
     local g = Duel.GetMatchingGroup(scard.graveSetFilter, tp, LOCATION_GRAVE, 0, nil, e, tp)
     if #g > 0 and aux.SelectUnselectGroup(g, e, tp, 1, 3, scard.rescon(mzc, szc, g), 0) then
         local sg =
-            aux.SelectUnselectGroup(
-            g,
-            e,
-            tp,
-            1,
-            3,
-            scard.rescon(mzc, szc, g),
-            1,
-            tp,
-            HINTMSG_SET,
-            scard.rescon(mzc, szc, g)
-        )
+            aux.SelectUnselectGroup(g, e, tp, 1, 3, scard.rescon(mzc, szc, g),
+                1, tp, HINTMSG_SET, scard.rescon(mzc, szc, g))
         local sg1 = sg:Filter(Card.IsType, nil, TYPE_MONSTER)
         local sg2 = sg - sg1
-        if #sg1 > 0 then
-            Duel.SpecialSummon(sg1, 0, tp, tp, true, true, POS_FACEDOWN_DEFENSE)
+        for tc in aux.Next(sg1) do
+            Duel.MoveToField(tc, tp, tp, LOCATION_MZONE, POS_FACEDOWN_DEFENSE, true)
         end
-        if #sg2 > 0 then
-            Duel.SSet(tp, sg2)
+        for tc in aux.Next(sg2) do
+            Duel.MoveToField(tc, tp, tp, LOCATION_SZONE, POS_FACEDOWN, true)
         end
         Duel.ConfirmCards(1 - tp, sg)
     end
@@ -788,26 +778,15 @@ function scard.mimicat(e, tp)
     szc = Duel.GetLocationCount(1 - tp, LOCATION_SZONE)
     g = Duel.GetMatchingGroup(scard.graveSetFilter, 1 - tp, LOCATION_GRAVE, 0, nil, e, 1 - tp)
     if #g > 0 and aux.SelectUnselectGroup(g, e, 1 - tp, 1, 3, scard.rescon(mzc, szc, g), 0) then
-        local sg =
-            aux.SelectUnselectGroup(
-            g,
-            e,
-            1 - tp,
-            1,
-            3,
-            scard.rescon(mzc, szc, g),
-            1,
-            1 - tp,
-            HINTMSG_SET,
-            scard.rescon(mzc, szc, g)
-        )
+        local sg = aux.SelectUnselectGroup(g, e, 1 - tp, 1, 3, scard.rescon(mzc, szc, g),
+            1, 1 - tp, HINTMSG_SET, scard.rescon(mzc, szc, g))
         local sg1 = sg:Filter(Card.IsType, nil, TYPE_MONSTER)
         local sg2 = sg - sg1
-        if #sg1 > 0 then
-            Duel.SpecialSummon(sg1, 0, 1 - tp, 1 - tp, true, true, POS_FACEDOWN_DEFENSE)
+        for tc in aux.Next(sg1) do
+            Duel.MoveToField(tc, 1 - tp, 1 - tp, LOCATION_MZONE, POS_FACEDOWN_DEFENSE, true)
         end
-        if #sg2 > 0 then
-            Duel.SSet(1 - tp, sg2)
+        for tc in aux.Next(sg2) do
+            Duel.MoveToField(tc, 1 - tp, 1 - tp, LOCATION_SZONE, POS_FACEDOWN, true)
         end
         Duel.ConfirmCards(tp, sg)
     end
@@ -906,21 +885,20 @@ function scard.graveSteal(e, tp)
     local tc = Duel.SelectMatchingCard(tp, scard.graveStealFilter, tp, 0, LOCATION_GRAVE, 1, 1, nil, e, tp):GetFirst()
     if tc then
         if tc:IsType(TYPE_MONSTER) then
-            Duel.SpecialSummon(tc, 0, tp, tp, true, true, POS_FACEDOWN_DEFENSE)
+            Duel.MoveToField(tc2, tp, tp, LOCATION_MZONE, POS_FACEDOWN_DEFENSE, true)
         else
-            Duel.SSet(tp, tc)
+            Duel.MoveToField(tc2, tp, tp, LOCATION_SZONE, POS_FACEDOWN, true)
         end
         Duel.ConfirmCards(1 - tp, tc)
     end
     local tc2 =
-        Duel.SelectMatchingCard(1 - tp, scard.graveStealFilter, 1 - tp, 0, LOCATION_GRAVE, 1, 1, nil, e, 1 - tp):GetFirst(
-
-    )
+        Duel.SelectMatchingCard(1 - tp, scard.graveStealFilter,
+            1 - tp, 0, LOCATION_GRAVE, 1, 1, nil, e, 1 - tp):GetFirst()
     if tc2 then
         if tc2:IsType(TYPE_MONSTER) then
-            Duel.SpecialSummon(tc2, 0, 1 - tp, 1 - tp, true, true, POS_FACEDOWN_DEFENSE)
+            Duel.MoveToField(tc2, 1 - tp, 1 - tp, LOCATION_MZONE, POS_FACEDOWN_DEFENSE, true)
         else
-            Duel.SSet(1 - tp, tc2)
+            Duel.MoveToField(tc2, 1 - tp, 1 - tp, LOCATION_SZONE, POS_FACEDOWN, true)
         end
         Duel.ConfirmCards(tp, tc2)
     end
