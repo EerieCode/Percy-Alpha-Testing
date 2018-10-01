@@ -767,9 +767,11 @@ function scard.mimicat(e, tp)
         local sg1 = sg:Filter(Card.IsType, nil, TYPE_MONSTER)
         local sg2 = sg - sg1
         for tc in aux.Next(sg1) do
+            --move to field instead of summon to avoid raising adjusts and prevent reponse window
             Duel.MoveToField(tc, tp, tp, LOCATION_MZONE, POS_FACEDOWN_DEFENSE, true)
         end
         for tc in aux.Next(sg2) do
+            --ditto, and also avoids core error with Duel.SSet
             Duel.MoveToField(tc, tp, tp, LOCATION_SZONE, POS_FACEDOWN, true)
         end
         Duel.ConfirmCards(1 - tp, sg)
