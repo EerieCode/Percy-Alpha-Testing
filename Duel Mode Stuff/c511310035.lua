@@ -1,5 +1,10 @@
 --Pegasus Ultimate Challenge
 --Scripted by AlphaKretin
+--[[
+    Credits to andré, Larry126 and edo9300 for assistance in scripting.
+    Credits to pyrQ and Naim for assistance in testing.
+    Credits to Larry126, Cybercatman, pyrQ and SnorlaxMonster from Yugipedia for consultation on rules and mechanics.
+]]
 local scard, s_id = GetID()
 local ADJUST_COUNT_MEAN = 75 --average number of adjusts between challenges
 local ADJUST_COUNT_VAR = 25 --number of adjusts between challenges can be mean +- this
