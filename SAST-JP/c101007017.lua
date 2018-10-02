@@ -63,6 +63,7 @@ function c101007017.operation(e,tp,eg,ep,ev,re,r,rp)
 		end
 		tc=sg:GetNext()
 	end	
+	Duel.SpecialSummonComplete()
 end 
 function c101007017.splimit(e,c,tp,sumtp,sumpos)
 	return not c:IsRace(RACE_ZOMBIE)
