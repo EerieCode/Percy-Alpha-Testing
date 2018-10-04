@@ -15,6 +15,7 @@ function c101007011.initial_effect(c)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_TOKEN)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_BE_MATERIAL)
+	e2:SetCountLimit(1,101007011)
 	e2:SetCondition(c101007011.tcon)
 	e2:SetTarget(c101007011.ttg)
 	e2:SetOperation(c101007011.top)
@@ -25,7 +26,8 @@ function c101007011.ntval(c,sc,tp)
 end
 	--If monster was sent to GY for synchro summon of "T.G." monster
 function c101007011.tcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsLocation(LOCATION_GRAVE) and r==REASON_SYNCHRO and c:GetReasonCard():IsSetCard(0x27)
+	local c=e:GetHandler()
+	return c:IsLocation(LOCATION_GRAVE) and r==REASON_SYNCHRO and c:GetReasonCard():IsSetCard(0x27)
 end
 	--Activation legality
 function c101007011.ttg(e,tp,eg,ep,ev,re,r,rp,chk)
