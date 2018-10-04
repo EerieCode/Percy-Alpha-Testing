@@ -33,10 +33,10 @@ function c101006086.filter2(c)
 end
 function c101006086.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return false end
-	if chk==0 then return Duel.IsExistingTarget(c101006086.filter1,tp,LOCATION_MZONE,0,1,e:GetHandler())
+	if chk==0 then return Duel.IsExistingTarget(c101006086.filter1,tp,LOCATION_MZONE,0,1,nil)
 		and Duel.IsExistingTarget(c101006086.filter2,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RTOHAND)
-	local g1=Duel.SelectTarget(tp,c101006086.filter1,tp,LOCATION_MZONE,0,1,1,e:GetHandler())
+	local g1=Duel.SelectTarget(tp,c101006086.filter1,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RTOHAND)
 	local g2=Duel.SelectTarget(tp,c101006086.filter2,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,g1:GetFirst())
 	g1:Merge(g2)
