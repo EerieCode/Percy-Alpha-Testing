@@ -7,7 +7,7 @@ function c101007011.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCode(EFFECT_NONTUNER)
-	e1:SetCondition(c101007011.tcon)
+	e1:SetValue(c101007011.ntval)
 	c:RegisterEffect(e1)
 	--Token summoning
 	local e2=Effect.CreateEffect(c)
@@ -19,6 +19,9 @@ function c101007011.initial_effect(c)
 	e2:SetTarget(c101007011.ttg)
 	e2:SetOperation(c101007011.top)
 	c:RegisterEffect(e2)
+end
+function c101007011.ntval(c,sc,tp)
+	return sc and sc:IsSetCard(0x27)
 end
 	--If monster was sent to GY for synchro summon of "T.G." monster
 function c101007011.tcon(e,tp,eg,ep,ev,re,r,rp)
