@@ -61,10 +61,10 @@ function c101007077.tgfilter1(c)
 	return (c:IsLocation(LOCATION_HAND) and c:GetOriginalLevel()>0 or c:IsFaceup()) and c:IsType(TYPE_FLIP) and c:IsAbleToGrave() 
 	and Duel.IsExistingMatchingCard(c101007077.thfilter1,tp,LOCATION_DECK,0,1,nil,c)
 end
-	--Check for monster with same attribute but lower level by 1
+	--Check for monster with same attribute but lower level
 function c101007077.thfilter1(c,tc)
 	return c:IsAbleToHand() 
-	and c:GetOriginalLevel()==tc:GetOriginalLevel()-1
+	and c:GetOriginalLevel()>tc:GetOriginalLevel()
 	and c:GetOriginalAttribute()==tc:GetOriginalAttribute()
 end
 
