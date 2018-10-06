@@ -83,7 +83,7 @@ end
 	--Check for monster with same attribute but lower level
 function c101007077.thfilter2(c,tc)
 	return c:IsAbleToHand() 
-	and c:GetOriginalLevel()>tc:GetOriginalLevel()
+	and c:GetOriginalLevel()<tc:GetOriginalLevel()
 	and c:GetOriginalAttribute()==tc:GetOriginalAttribute()
 end
 
