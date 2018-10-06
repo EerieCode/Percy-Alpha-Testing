@@ -56,6 +56,7 @@ function c101007077.thtg1(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 	--Performing the effect of adding to hand
 function c101007077.thop1(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local tg=Duel.SelectMatchingCard(tp,c101007077.tgfilter1,tp,LOCATION_MZONE,0,1,1,nil)
 	local tc=tg:GetFirst()
@@ -94,6 +95,7 @@ function c101007077.thtg2(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 	--Performing the effect of adding to hand
 function c101007077.thop2(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local tg=Duel.SelectMatchingCard(tp,c101007077.tgfilter2,tp,LOCATION_MZONE,0,1,1,nil)
 	local tc=tg:GetFirst()
