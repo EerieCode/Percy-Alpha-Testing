@@ -90,7 +90,7 @@ end
 	--Activation legality
 function c101007077.thtg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return 
-		Duel.IsExistingMatchingCard(c101007077.tgfilter1,tp,LOCATION_HAND+LOCATION_MZONE,0,1,nil) end
+		Duel.IsExistingMatchingCard(c101007077.tgfilter2,tp,LOCATION_HAND+LOCATION_MZONE,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,tp,LOCATION_HAND+LOCATION_MZONE)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
