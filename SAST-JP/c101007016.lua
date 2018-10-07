@@ -1,11 +1,7 @@
 --World Legacy - "World Ark"
 --Logical Nonsense
-
---Substitue ID, c101007016
-local s,id=GetID()
-
-function s.initial_effect(c)
-	--spsummon
+function c101007016.initial_effect(c)
+	--Special summon link monster, optional trigger effect
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_DAMAGE)
@@ -13,7 +9,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_DESTROYED)
 	e2:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_CARD_TARGET)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCountLimit(1,id)
+	e1:SetCountLimit(1,101007016)
 	e1:SetCost(s.spcost)
 	e1:SetCondition(s.condition)
 	e1:SetTarget(s.target)
@@ -30,7 +26,7 @@ function s.initial_effect(c)
 	e3:SetCategory(CATEGORY_TOGRAVE)
 	e3:SetType(EFFECT_TYPE_TRIGGER_O)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetCountLimit(1,id+100)
+	e3:SetCountLimit(1,101007016+100)
 	e3:SetProperty(EFFECT_FLAG_DELAY)
 	e3:SetCondition(s.dkcon)
 	e3:SetTarget(s.dktg)
@@ -38,17 +34,17 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 	--Check for link monster that was destroyed due to opponent's card effect
-function s.cfilter(c,tp)
+function c101007016.cfilter(c,tp)
 	return c:IsPreviousPosition(POS_FACEUP) and c:IsPreviousLocation(LOCATION_MZONE) 
 		and c:GetPreviousControler()==tp and c:GetPreviousType(TYPE_LINK)
 		and c:IsReason(REASON_DESTROY) and ((c:IsReason(REASON_EFFECT) and c:GetReasonPlayer()==1-tp))
 end
 	--Check if ever happened
-function s.condition(e,tp,eg,ep,ev,re,r,rp)
+function c101007016.condition(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)
 end
 	--Cost of sending from hand to GY
-function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
+function c101007016.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToGraveAsCost() end
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
 end
@@ -57,7 +53,7 @@ function s.spfilter(c,e,tp)
 	return c:IsType(TYPE_LINK) and c:IsCanBeSpecialSummoned(e,0,tp,true,false)
 end
 	--Activation legality
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function c101007016.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.spfilter(chkc,e,tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsExistingTarget(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
@@ -66,31 +62,31 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,g,1,0,0)
 end
 	--Performing the effect of special summoning
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
+function c101007016.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) then
 		Duel.SpecialSummon(tc,0,tp,tp,true,false,POS_FACEUP)
 	end
 end
 	--If opponent special summons from extra deck
-function s.cfilter(c,tp)
+function c101007016.edfilter(c,tp)
 	return c:GetSummonPlayer()==tp and c:IsPreviousLocation(LOCATION_EXTRA)
 end
 	--If this ever happened and monster was normal summoned
-function s.dkcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.cfilter,1,nil,1-tp) and e:GetHandler():IsSummonType(SUMMON_SUMMON) and rp~=tp
+function c101007016.dkcon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(c101007016.edfilter,1,nil,1-tp) and e:GetHandler():IsSummonType(SUMMON_SUMMON) and rp~=tp
 end
 	--Check for a monster
-function s.dkfilter(c)
+function c101007016.dkfilter(c)
 	return c:IsType(TYPE_MONSTER) and c:IsAbleToGrave()
 end
 	--Activation legality
-function s.dktg(e,tp,eg,ep,ev,re,r,rp,chk)
+function c101007016.dktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.tgfilter,tp,LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,tp,LOCATION_DECK)
 end
 	--Performing the effect of sending a monster from deck to GY
-function s.dkop(e,tp,eg,ep,ev,re,r,rp)
+function c101007016.dkop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,s.tgfilter,tp,LOCATION_DECK,0,1,1,nil)
 	if g:GetCount()>0 then
