@@ -28,7 +28,7 @@ function s.initial_effect(c)
 	--If used as synchro material, mill from deck, optional trigger effect
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,2))
-	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e3:SetCategory(CATEGORY_TOGRAVE)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e3:SetCode(EVENT_BE_MATERIAL)
 	e3:SetCountLimit(1,id+100)
