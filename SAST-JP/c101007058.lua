@@ -75,5 +75,5 @@ end
 function s.spcon2(e,c)
 	if c==nil then return true end
 	local tp=c:GetControler()
-	return Duel.IsExistingMatchingCard(s.filter,tp,0,LOCATION_SZONE,2,nil)
+	return Duel.IsExistingMatchingCard(s.filter,tp,0,LOCATION_SZONE,1,nil)
 end
