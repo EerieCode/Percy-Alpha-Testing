@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_CARD_TARGET)
 	e1:SetTarget(s.natg)
 	e1:SetOperation(s.naop)
-	c:RegisterEffect(e3)
+	c:RegisterEffect(e1)
 	--recover LP
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_FIELD)
@@ -45,6 +45,7 @@ end
 function s.lpop(e,tp,eg,ep,ev,re,r,rp)
 	local c=re:GetHandler()
 	if re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsActiveType(TYPE_SPELL) and rp==tp and c:IsSetCard(0x115) then
-		e:GetHandler():AddCounter(0x1,1)
+		Duel.Hint(HINT_CARD,0,id)
+		Duel.Recover(tp,100,REASON_EFFECT)
 	end
 end
