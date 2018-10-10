@@ -1,3 +1,4 @@
+--トリックスター・ライブステージ
 --Trickstar Live Stage
 --Logical Nonsense
 
