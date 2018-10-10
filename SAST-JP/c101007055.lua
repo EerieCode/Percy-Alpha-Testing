@@ -30,7 +30,7 @@ function s.natg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and chkc:IsFaceup() end
 	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local sg=Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE1,1,nil)
+	local sg=Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
 end
 function s.naop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
