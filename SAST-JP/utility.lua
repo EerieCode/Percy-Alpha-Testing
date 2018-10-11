@@ -13,7 +13,7 @@ function Duel.GetZoneWithLinkedCount(count, tp)
 		zones[zone] = ct
 	end
 	local rzone = 0
-	for i,ct in ipairs(zones) do
+	for i,ct in pairs(zones) do
 		if ct >= count then
 			rzone = rzone | i
 		end
