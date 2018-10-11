@@ -63,7 +63,7 @@ function s.repfilter(c,tp)
         and c:IsLocation(LOCATION_MZONE) and c:IsControler(tp) and c:IsReason(REASON_BATTLE+REASON_EFFECT) and not c:IsReason(REASON_REPLACE)
 end
 function s.tgfilter(c)
-    return c:IsRace(RACE_DRAGON) and c:IsType(TYPE_NORMAL) and c:IsAbleToGrave()
+    return c:IsType(TYPE_NORMAL) and c:IsAbleToGrave()
 end
 function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return eg:IsExists(s.repfilter,1,nil,tp) and eg:GetCount()==1
