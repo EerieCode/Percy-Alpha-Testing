@@ -45,7 +45,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if not (tc and tc:IsRelateToEffect(e)) then return end
 	local b1=tc:IsAbleToHand()
-	local b2=Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	local b2=Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and tc:IsCanBeSpecialSummoned(e,0,tp,false,false)
 	if b1 and (not b2 or Duel.SelectYesNo(tp,aux.Stringid(id,1))) then
 		Duel.SendtoHand(tc,nil,REASON_EFFECT)
 	elseif b2 then
