@@ -29,7 +29,7 @@ function s.initial_effect(c)
     c:RegisterEffect(e3)
 end
 function s.atkfilter(c)
-    return c:IsFaceup() and c:IsRace(RACE_DRAGON)
+    return c:IsFaceup() and c:IsRace(RACE_DRAGON) and Duel.IsExistingMatchingCard(Card.IsType,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil,TYPE_LINK)
 end
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.atkfilter(chkc) end
@@ -55,7 +55,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
     end
 end
 function s.atkval(e,c)
-    local g=Duel.GetMatchingGroup(Card.IsType,0,LOCATION_MZONE,LOCATION_MZONE,nil)
+    local g=Duel.GetMatchingGroup(Card.IsType,0,LOCATION_MZONE,LOCATION_MZONE,nil,TYPE_LINK)
     return g:GetSum(Card.GetLink)*100
 end
 function s.repfilter(c,tp)
@@ -63,7 +63,7 @@ function s.repfilter(c,tp)
         and c:IsLocation(LOCATION_MZONE) and c:IsControler(tp) and c:IsReason(REASON_BATTLE+REASON_EFFECT) and not c:IsReason(REASON_REPLACE)
 end
 function s.tgfilter(c)
-    return c:IsRace(RACE_DRAGON) and c:IsAbleToGrave()
+    return c:IsRace(RACE_DRAGON) and c:IsType(TYPE_NORMAL) and c:IsAbleToGrave()
 end
 function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return eg:IsExists(s.repfilter,1,nil,tp) and eg:GetCount()==1
@@ -72,7 +72,7 @@ function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
         local sg=Duel.SelectMatchingCard(tp,s.tgfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,1,nil)
         Duel.Hint(HINT_CARD,0,id)
-        Duel.SendtoGrave(sg,REASON_EFFECT)
+        Duel.SendtoGrave(sg,REASON_EFFECT+REASON_REPLACE)
         return true
     else return false end
 end
