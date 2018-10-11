@@ -51,7 +51,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 		c:RegisterEffect(e1)
 		local e2=e1:Clone()
 		e2:SetCode(EFFECT_SET_DEFENSE_FINAL)
-		e2:SetValue(at:GetBaseDefense()*2)
+		e2:SetValue(c:GetBaseDefense()*2)
 		c:RegisterEffect(e2)
 	end
 end

@@ -28,7 +28,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.sumlimit(e,c)
-	return not c:GetRace(RACE_DRAGON)
+	return not c:IsRace(RACE_DRAGON)
 end
 function s.filter(c,e,tp,zone)
 	return c:IsRace(RACE_DRAGON) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP,tp,zone)
