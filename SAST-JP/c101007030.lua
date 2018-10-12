@@ -27,26 +27,26 @@ function s.initial_effect(c)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
 end
-function s.cfilter(c)
-	local rc=c:GetRace()
-	return rc~=0 and c:IsAbleToRemoveAsCost() and Duel.IsExistingMatchingCard(s.dfilter,0,LOCATION_DECK,0,1,nil,rc)
+function s.cfilter(c,tp)
+	return c:IsAbleToRemoveAsCost() and Duel.IsExistingMatchingCard(s.dfilter,tp,LOCATION_DECK,0,1,nil,c:GetRace())
 end
 function s.dfilter(c,rc)
-	return c:IsFaceup() and c:IsRace(rc) and c:IsAbleToRemove()
+	return c:IsRace(rc) and c:IsAbleToRemove()
 end
 function s.rmcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
 	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,nil)
+	e:SetLabel(g:GetFirst():GetRace())
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.rmtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.dfilter,tp,LOCATION_DECK,0,1,nil) end
+	if chk==0 then return true end
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,1,tp,LOCATION_DECK)
 end
 function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(tp,s.dfilter,tp,LOCATION_DECK,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.dfilter,tp,LOCATION_DECK,0,1,1,nil,e:GetLabel())
 	local tg=g:GetFirst()
 	if tg==nil then return end
 	Duel.Remove(tg,POS_FACEUP,REASON_EFFECT)
@@ -56,11 +56,14 @@ function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return (c:IsReason(REASON_BATTLE) or (rp~=tp and c:IsReason(REASON_EFFECT) and c:GetPreviousControler()==tp))
 		and c:IsPreviousLocation(LOCATION_MZONE)
 end
+function s.thfilter(c)
+	return c:IsFaceup() and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
+end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_REMOVED) and chkc:IsControler(tp) end
-	if chk==0 then return Duel.IsExistingTarget(Card.IsType,tp,LOCATION_REMOVED,0,1,nil,TYPE_MONSTER) end
+	if chkc then return chkc:IsLocation(LOCATION_REMOVED) and chkc:IsControler(tp) and s.thfilter(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(s.thfilter,tp,LOCATION_REMOVED,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectTarget(tp,Card.IsType,tp,LOCATION_REMOVED,0,1,1,nil,TYPE_MONSTER)
+	local g=Duel.SelectTarget(tp,s.thfilter,tp,LOCATION_REMOVED,0,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,0,0)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
