@@ -1,9 +1,9 @@
---土俵間際
---Edge of the Ring
+--孤高除獣
+--The Proud Beast
 --Scripted by ahtelel
 local s,id=GetID()
 function s.initial_effect(c)
-	--special summon
+	--remove
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_REMOVE)
