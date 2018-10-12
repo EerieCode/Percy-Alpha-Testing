@@ -23,7 +23,7 @@ function s.initial_effect(c)
     c:RegisterEffect(e2)
 end
 function s.filter(c,e,tp,m,ft)
-    if not bit.band(c:GetType(),0x81)~=0x81
+    if not bit.band(c:GetType(),0x81)==0x81
         or not c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_RITUAL,tp,false,true) then return false end
     local mg=m:Filter(Card.IsCanBeRitualMaterial,c,c)
     if ft>0 then
