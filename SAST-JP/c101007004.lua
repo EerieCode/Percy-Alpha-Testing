@@ -1,6 +1,7 @@
 --転生炎獣パロー
 --Salamangreat Parro
 --scripted by Larry126
+local s,id=GetID()
 function s.initial_effect(c)
 	--spsummon
 	local e1=Effect.CreateEffect(c)
