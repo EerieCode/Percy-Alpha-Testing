@@ -129,6 +129,7 @@ function s.tkop(e,tp,eg,ep,ev,re,r,rp)
 		for i=1,ft do
 			selct[i]=i
 		end
+		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(15341821,0))
 		ct=Duel.AnnounceNumber(tp,table.unpack(selct))
 	end
 	for i=1,ct do
