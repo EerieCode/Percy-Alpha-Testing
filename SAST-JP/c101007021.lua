@@ -2,7 +2,7 @@
 --Orcustrated Knightmare
 --Scripted by AlphaKretin
 local s,id=GetID()
-function s.intial_effect(c)
+function s.initial_effect(c)
 	--indes
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
