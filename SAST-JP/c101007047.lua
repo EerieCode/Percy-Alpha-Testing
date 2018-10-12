@@ -38,7 +38,7 @@ function s.mfilter(c)
 end
 function s.tdfilter(c,e,tp,mg,f,mgc,mf)
 	return c:IsType(TYPE_FUSION) and c:IsAbleToExtra()
-		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,false,false)
+		and Duel.IsPlayerCanSpecialSummon(tp,SUMMON_TYPE_FUSION,POS_FACEUP,tp,c)
 		and (c:CheckFusionMaterial(mg,nil,tp) and (not f or f(c))
 		or c:CheckFusionMaterial(mgc,nil,tp) and (not mf or mf(c)))
 end
