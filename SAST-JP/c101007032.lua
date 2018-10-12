@@ -50,7 +50,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 	if g:GetCount()>0 then
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP) then
+		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 		Duel.ConfirmCards(1-tp,g)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -71,7 +71,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 	--If ritual summoned, set label to 0
 function s.regop(e,tp,eg,ep,ev,re,r,rp)
-	if:e:GetLabel()==0 then return end
+	if e:GetLabel()==0 then return end
 	if eg and eg:IsExist(Card.IsSummonType,1,nil,SUMMON_TYPE_RITUAL) then
 		e:SetLabel(0)
 	end
