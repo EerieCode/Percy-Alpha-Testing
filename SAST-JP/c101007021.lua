@@ -1,5 +1,5 @@
 --オルフェゴール・トロイメア
---Orcust Knightmare
+--Orcustrated Knightmare
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.intial_effect(c)
