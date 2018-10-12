@@ -1,6 +1,7 @@
 --キャシー・イヴＬ２
 --Catche Eve L2
 --scripted by Larry126
+local s,id=GetID()
 function s.initial_effect(c)
 	--spsummon
 	local e1=Effect.CreateEffect(c)
