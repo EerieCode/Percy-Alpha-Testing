@@ -18,19 +18,19 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetLP(tp)<Duel.GetLP(1-tp)
 end
 function s.filter(c)
-	return c:IsFaceup() and c:GetAttack()>0 
+	return c:IsFaceup() and c:GetBaseAttack()>0 
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.filter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
 	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,g:GetFirst():GetAttack()/2)
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,g:GetFirst():GetBaseAttack()/2)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsFaceup() and tc:GetAttack()>0 then
-		Duel.Damage(1-tp,tc:GetAttack()/2,REASON_EFFECT)
+	if tc:IsRelateToEffect(e) and tc:IsFaceup() and tc:GetBaseAttack()>0 then
+		Duel.Damage(1-tp,tc:GetBaseAttack()/2,REASON_EFFECT)
 	end
 	if e:IsHasType(EFFECT_TYPE_ACTIVATE) then
 		local e1=Effect.CreateEffect(e:GetHandler())
