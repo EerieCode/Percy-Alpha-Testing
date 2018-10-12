@@ -1,3 +1,4 @@
+--デトネイト・デリーター
 --Detonate Deleter
 --scripted by andré
 local s, id = GetID()
