@@ -6,7 +6,7 @@ local s,id=GetID()
 
 function s.initial_effect(c)
 	--Link summon procedure
-	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsLinkRace,RACE_CYBERSE),2,2)
+	aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_CYBERSE),2,2)
 	--Must be properly summoned in order to revive
 	c:EnableReviveLimit()
 	--Cannot be destroyed by battle
@@ -75,7 +75,7 @@ function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 	--Check for Cyberse tuner
-function s.thfilter(c,tp))
+function s.thfilter(c,tp)
 	return c:IsRace(RACE_CYBERSE) and c:IsType(TYPE_TUNER) and c:IsAbleToHand()
 end
 	--Activation legality
@@ -88,7 +88,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil,tp)
 	if #g>0 then
-		Duel.SendtoHand(g1,nil,REASON_EFFECT)
+		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end
 end
