@@ -36,6 +36,9 @@ end
 function s.hcondition(e,tp,eg,ep,ev,re,r,rp)
 	return eg and eg:IsExists(c101007069.filter,1,nil,tp)
 end
+function s.hoperation(e,tp)
+	Duel.Recover(tp,300,REASON_EFFECT)
+end
 function s.bpcondition(e)
 	return Duel.GetLP(e:GetHandlerPlayer())>=10000
 end
