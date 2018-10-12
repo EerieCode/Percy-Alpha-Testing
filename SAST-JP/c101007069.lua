@@ -1,3 +1,4 @@
+--
 --Boldly Invincible
 local s,id=GetID()
 function s.initial_effect(c)
@@ -29,6 +30,7 @@ function s.initial_effect(c)
 	e5:SetTargetRange(LOCATION_MZONE,0)
 	e5:SetRange(LOCATION_SZONE)
 	e5:SetCondition(s.bpcondition)
+	e5:SetValue(1)
 	c:RegisterEffect(e5)
 end
 function s.filter(c,tp)
