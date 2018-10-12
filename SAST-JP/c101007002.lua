@@ -1,3 +1,4 @@
+--サイバース・シンクロン
 --Cyberse Synchron
 --Logical Nonsense
 
@@ -10,7 +11,6 @@ function s.initial_effect(c)
 	e1:SetCategory(CATEGORY_UPDATE_LEVEL)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetCountLimit(1)
-	e1:SetCondition(s.condition)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
@@ -51,8 +51,8 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 	--Check for your monster in EMZ
 function s.repfilter(c,tp)
-	return c:IsFaceup() and c:GetSequence()>=5 
-		and c:IsControler(tp) and c:IsReason(REASON_EFFECT+REASON_BATTLE) and not c:IsReason(REASON_REPLACE)
+	return c:GetSequence()>=5 and c:IsControler(tp)
+		and c:IsReason(REASON_EFFECT+REASON_BATTLE) and not c:IsReason(REASON_REPLACE)
 end
 	--Activation legality
 function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
