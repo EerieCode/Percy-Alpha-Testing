@@ -32,7 +32,7 @@ function s.dtarget(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	local tc=c:GetBattleTarget()
 	if chk==0 then return tc and tc:IsFaceup() and not (tc:IsType(TYPE_LINK) and tc:IsLinkAbove(3)) end
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,tc,1,tp,0)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,tc,1,tc:GetControler(),LOCATION_MZONE)
 end
 function s.doperation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -53,7 +53,7 @@ function s.tdtarget(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
 	if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end
 	local tg=Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,tg,1,tp,0)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,tg,1,1-tp,LOCATION_MZONE)
 end
 function s.tdoperation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
