@@ -1,9 +1,7 @@
+--
 --Impcantation Chalislime
---Logical Nonsense
-
---Substitute ID
+--Scripted by Logical Nonsense
 local s,id=GetID()
-
 function s.initial_effect(c)
 	c:EnableReviveLimit()
 	--Special summon from deck
@@ -47,11 +45,11 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 	if g:GetCount()>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
-		Duel.ConfirmCards(1-tp,g)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		e1:SetCode(EVENT_SPSUMMON_SUCCESS)
 		e1:SetOperation(s.regop)
+		e1:SetLabel(1)
 		e1:SetReset(RESET_PHASE+PHASE_END)
 		Duel.RegisterEffect(e1,tp)
 		local e2=Effect.CreateEffect(e:GetHandler())
@@ -67,7 +65,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.regop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetLabel()==0 then return end
-	if eg and eg:IsExist(Card.IsSummonType,1,nil,SUMMON_TYPE_RITUAL) then
+	if eg and eg:IsExists(Card.IsSummonType,1,nil,SUMMON_TYPE_RITUAL) then
 		e:SetLabel(0)
 	end
 end
