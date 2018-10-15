@@ -14,7 +14,7 @@ function s.initial_effect(c)
 	e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	e2:SetRange(LOCATION_SZONE)
 	e2:SetTargetRange(LOCATION_MZONE,0)
-	e2:SetTarget(s.infilter)
+	e2:SetTarget(s.indfilter)
 	e2:SetValue(1)
 	c:RegisterEffect(e2)
 	--ritual summon
@@ -29,9 +29,11 @@ function s.initial_effect(c)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
 end
-function s.infilter(c,e,tp)
+function s.indfilter(e,c)
 	return c:IsRitualMonster() and c:IsSetCard(0x2093)
-		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND,0,1,c,e,tp)
+end
+function s.infilter(c,e,tp)
+	return c:IsRitualMonster() and c:IsSetCard(0x2093) and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND,0,1,c,e,tp)
 end
 function s.spfilter(c,e,tp)
 	return c:IsRitualMonster() and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_RITUAL,tp,true,false)
