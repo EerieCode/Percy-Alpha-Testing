@@ -92,7 +92,7 @@ function s.lvop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if c:IsFaceup() and c:IsRelateToEffect(e) and tc:IsFaceup() and tc:IsRelateToEffect(e) and not tc:IsLevel(c:GetLevel()) then
 		local g=Group.FromCards(c,tc)
-		Duel.Hint(HINT_SELECTMSG,tp,560) --Select the monster with the level you want
+		Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,2)) --Select the monster with the level you want
 		local sg=g:Select(tp,1,1,nil)
 		local oc=(g-sg):GetFirst()
 		local e1=Effect.CreateEffect(c)
