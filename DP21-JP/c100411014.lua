@@ -57,12 +57,12 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
 		e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 		e1:SetTargetRange(1,0)
-		e1:SetTarget(c61884774.splimit)
+		e1:SetTarget(s.splimit)
 		e1:SetReset(RESET_PHASE+PHASE_END)
 		Duel.RegisterEffect(e1,tp)
 	end
 end
 	--Restricted to ritual monsters for rest of the turn
 function s.splimit(e,c)
-	return not c:IsRitualMonster
+	return not c:IsRitualMonster()
 end
