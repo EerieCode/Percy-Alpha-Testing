@@ -36,7 +36,7 @@ function s.infilter(c,e,tp)
 	return c:IsRitualMonster() and c:IsSetCard(0x2093) and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND,0,1,c,e,tp)
 end
 function s.spfilter(c,e,tp)
-	return c:IsRitualMonster() and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_RITUAL,tp,true,false)
+	return c:IsRitualMonster() and c:IsSetCard(0x2093) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_RITUAL,tp,true,false)
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.infilter,1,true,aux.ChkfMMZ(1),nil,e,tp) end
