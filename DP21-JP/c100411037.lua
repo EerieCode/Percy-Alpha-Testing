@@ -52,7 +52,7 @@ function s.spfilter(c,e,tp)
 	return c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_EARTH) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
 function s.rescon(sg,e,tp,mg)
-    return aux.ChkfMMZ(2)(sg,e,tp,mg) and sg:FilterCount(s.spfilter,nil)==2
+    return aux.ChkfMMZ(2)(sg,e,tp,mg) and sg:FilterCount(s.spfilter,nil,e,tp)==2
     	and sg:FilterCount(Card.IsLevelAbove,nil,5)==1 and sg:FilterCount(Card.IsLevelBelow,nil,4)==1
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -65,6 +65,7 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then return end
+	local g=Duel.GetMatchingGroup(card.spfilter,tp,LOCATION_DECK,0,nil,e,tp)
 	local sg=aux.SelectUnselectGroup(g,e,tp,2,2,card.rescon,1,tp,HINTMSG_SPSUMMON)
 	if #sg>0 and Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP_DEFENSE)~=0 then
 		for tc in aux.Next(sg) do
