@@ -49,18 +49,14 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			local mg=Duel.GetDecktopGroup(p,1)
 			Duel.MoveSequence(mg:GetFirst(),1)
 		end
-	end
-	local c=e:GetHandler()
-	if e:IsHasType(EFFECT_TYPE_ACTIVATE) then
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_FIELD)
-		e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
-		e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-		e1:SetTargetRange(1,0)
-		e1:SetTarget(s.splimit)
-		e1:SetReset(RESET_PHASE+PHASE_END)
-		Duel.RegisterEffect(e1,tp)
-	end
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetTargetRange(1,0)
+	e1:SetTarget(s.splimit)
+	e1:SetReset(RESET_PHASE+PHASE_END)
+	Duel.RegisterEffect(e1,tp)
 end
 	--Restricted to ritual monsters for rest of the turn
 function s.splimit(e,c)
