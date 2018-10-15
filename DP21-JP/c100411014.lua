@@ -19,7 +19,7 @@ function s.initial_effect(c)
 end
 	--Check for "Cyber Angel" ritual monster
 function s.costfilter(c)
-	return (c:IsSetCard(0x2093) and c:IsType(TYPE_RITUAL)
+	return c:IsSetCard(0x2093) and c:IsRitualMonster()
 end
 	--Defining cost
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
