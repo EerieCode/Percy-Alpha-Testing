@@ -1,5 +1,5 @@
 --サイバー・エンジェル-伊舎那-
---Cyber Angel Izuna
+--Cyber Angel Izana
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
@@ -17,8 +17,6 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 	--chain attack
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,1))
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_BATTLE_DESTROYING)
 	e2:SetCondition(s.atcon)
@@ -56,7 +54,7 @@ end
 function s.atcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local bc=c:GetBattleTarget()
-	return c==Duel.GetAttacker() and c:IsRelateToBattle() and c:IsStatus(STATUS_OPPO_BATTLE) 
+	return c==Duel.GetAttacker() and c:IsRelateToBattle() and c:IsStatus(STATUS_OPPO_BATTLE) and c:IsChainAttackable(2,true) 
 		and bc:IsLocation(LOCATION_GRAVE) and bc:IsType(TYPE_MONSTER)
 end
 function s.atop(e,tp,eg,ep,ev,re,r,rp)
