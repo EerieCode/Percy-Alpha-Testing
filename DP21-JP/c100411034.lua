@@ -55,7 +55,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
     e0:SetCode(EFFECT_CANNOT_ATTACK)
     e0:SetTargetRange(LOCATION_MZONE,0)
     e0:SetTarget(s.ftarget)
-    e0:SetLabel(tc:GetFieldID())
+    e0:SetLabel(c:GetFieldID())
     e0:SetReset(RESET_PHASE+PHASE_END)
     Duel.RegisterEffect(e0,tp)
 end
