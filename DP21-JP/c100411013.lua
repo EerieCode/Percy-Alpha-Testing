@@ -1,3 +1,4 @@
+--
 --Cyber Egg Angel
 --scripted by unknow
 local s, id=GetID()
@@ -21,7 +22,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function s.thfilter(c)
-	return ((c:IsSetCard(0x224) and c:IsType(TYPE_SPELL|TYPE_TRAP)) or c:IsCode(95658967)) and c:IsAbleToHand()
+	return ((c:IsSetCard(0x224) and c:IsType(TYPE_SPELL)) or c:IsCode(95658967)) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
