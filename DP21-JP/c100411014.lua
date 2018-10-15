@@ -19,13 +19,13 @@ function s.initial_effect(c)
 end
 	--Check for "Cyber Angel" ritual monster
 function s.costfilter(c)
-	return c:IsSetCard(0x2093) and c:IsRitualMonster()
+	return c:IsSetCard(0x2093) and c:IsRitualMonster() and c:IsReleasable()
 end
 	--Defining cost
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckReleaseGroup(tp,s.costfilter,LOCATION_HAND+LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.costfilter,1,true,nil,nil,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
-	local g=Duel.SelectReleaseGroup(tp,s.costfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,1,1,nil)
+	local g=Duel.SelectReleaseGroupCost(tp,s.costfilter,1,1,true,nil,nil,tp)
 	Duel.Release(g,REASON_COST)
 end
 	--Activation legality
