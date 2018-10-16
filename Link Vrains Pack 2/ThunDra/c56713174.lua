@@ -1,5 +1,5 @@
 --雷電龍－サンダー・ドラゴン
---Thunder Dragon Bolt
+--Thunder Dragondark
 --scripted by AlphaKretin
 function c56713174.initial_effect(c)
 	--to hand

@@ -1,5 +1,5 @@
 --雷源龍－サンダー・ドラゴン
---Thunder Dragon Origin
+--Thunder Dragonmatrix
 --scripted by AlphaKretin
 function c20318029.initial_effect(c)
 	--atk
