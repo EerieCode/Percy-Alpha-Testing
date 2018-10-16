@@ -1,4 +1,5 @@
 --天空賢者ミネルヴァ
+--Minerva, Scholar of the Sky
 function c53666449.initial_effect(c)
 	--atk
 	local e0=Effect.CreateEffect(c)
@@ -29,12 +30,12 @@ function c53666449.atkop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetValue(500)
-	e1:SetReset(RESET_EVENT+0x1ff0000)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
 	c:RegisterEffect(e1)
 	local rc=re:GetHandler()
 	if not rc then return end
 	local g=Duel.GetMatchingGroup(aux.NecroValleyFilter(c53666449.thfilter),tp,LOCATION_GRAVE,0,nil,rc:GetCode())
-	if Duel.IsEnvironment(CARD_SANCTUARY_SKY) and g:GetCount()>0 then
+	if Duel.IsEnvironment(CARD_SANCTUARY_SKY) and #g>0 then
 		Duel.Hint(HINT_CARD,0,53666449)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 		local sg=g:Select(tp,1,1,nil)

@@ -1,4 +1,5 @@
 --大天使ゼラート
+--Archlord Zerato
 function c18378582.initial_effect(c)
 	c:EnableReviveLimit()
 	--cannot special summon
@@ -27,7 +28,7 @@ function c18378582.initial_effect(c)
 	e3:SetOperation(c18378582.desop)
 	c:RegisterEffect(e3)
 end
-c18378582.listed_names={CARD_SANCTUARY_SKY}
+c18378582.listed_names={CARD_SANCTUARY_SKY,66073051}
 function c18378582.rfilter(c,ft)
 	return c:IsFaceup() and c:IsCode(66073051) and (ft>0 or c:GetSequence()<5)
 end
@@ -54,7 +55,7 @@ end
 function c18378582.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_MZONE,1,nil) end
 	local g=Duel.GetMatchingGroup(aux.TRUE,tp,0,LOCATION_MZONE,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,g:GetCount(),0,0)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
 end
 function c18378582.desop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.IsExistingMatchingCard(c18378582.envfilter,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) or Duel.IsEnvironment(CARD_SANCTUARY_SKY) then

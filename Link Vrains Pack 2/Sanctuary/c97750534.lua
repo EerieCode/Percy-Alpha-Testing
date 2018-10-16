@@ -1,4 +1,5 @@
 --死の代行者 ウラヌス
+--The Agent of Entropy - Uranus
 function c97750534.initial_effect(c)
 	--spsummon
 	local e1=Effect.CreateEffect(c)
@@ -46,7 +47,7 @@ function c97750534.tgop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_CHANGE_LEVEL)
 		e1:SetValue(lv)
-		e1:SetReset(RESET_EVENT+0x1ff0000)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
 		c:RegisterEffect(e1)
 	end
 end

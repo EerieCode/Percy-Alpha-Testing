@@ -1,4 +1,5 @@
 --裁きの光
+--Light of Judgment
 function c44595286.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -33,10 +34,10 @@ function c44595286.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g1=Duel.GetFieldGroup(tp,0,LOCATION_ONFIELD)
 	local g2=Duel.GetFieldGroup(tp,0,LOCATION_HAND)
 	local opt=0
-	if g1:GetCount()>0 and g2:GetCount()>0 then
+	if #g1>0 and #g2>0 then
 		opt=Duel.SelectOption(tp,aux.Stringid(44595286,0),aux.Stringid(44595286,1))+1
-	elseif g1:GetCount()>0 then opt=1
-	elseif g2:GetCount()>0 then opt=2
+	elseif #g1>0 then opt=1
+	elseif #g2>0 then opt=2
 	end
 	if opt==1 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)

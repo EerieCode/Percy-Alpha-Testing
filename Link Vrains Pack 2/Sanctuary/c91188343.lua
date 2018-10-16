@@ -1,4 +1,5 @@
 --神秘の代行者 アース
+--The Agent of Mystery - Earth
 function c91188343.initial_effect(c)
 	--search
 	local e1=Effect.CreateEffect(c)
@@ -10,7 +11,7 @@ function c91188343.initial_effect(c)
 	e1:SetOperation(c91188343.op)
 	c:RegisterEffect(e1)
 end
-c91188343.listed_names={CARD_SANCTUARY_SKY}
+c91188343.listed_names={CARD_SANCTUARY_SKY,55794644}
 function c91188343.filter1(c)
 	return c:IsSetCard(0x44) and c:GetCode()~=91188343 and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
 end
@@ -34,7 +35,7 @@ function c91188343.op(e,tp,eg,ep,ev,re,r,rp)
 	if not (Duel.IsExistingMatchingCard(c91188343.envfilter,e:GetHandlerPlayer(),LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) or Duel.IsEnvironment(CARD_SANCTUARY_SKY)) then
 		g=Duel.SelectMatchingCard(tp,c91188343.filter1,tp,LOCATION_DECK,0,1,1,nil)
 	else g=Duel.SelectMatchingCard(tp,c91188343.filter2,tp,LOCATION_DECK,0,1,1,nil) end
-	if g:GetCount()>0 then
+	if #g>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end

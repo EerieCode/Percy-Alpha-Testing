@@ -1,4 +1,5 @@
 --コーリング・ノヴァ
+--Nova Summoner
 function c48783998.initial_effect(c)
 	--special summon
 	local e1=Effect.CreateEffect(c)
@@ -11,7 +12,7 @@ function c48783998.initial_effect(c)
 	e1:SetOperation(c48783998.operation)
 	c:RegisterEffect(e1)
 end
-c48783998.listed_names={CARD_SANCTUARY_SKY}
+c48783998.listed_names={CARD_SANCTUARY_SKY,18036057}
 function c48783998.condition(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsLocation(LOCATION_GRAVE) and e:GetHandler():IsReason(REASON_BATTLE)
 end
@@ -46,7 +47,7 @@ function c48783998.operation(e,tp,eg,ep,ev,re,r,rp)
 	else
 		g=Duel.SelectMatchingCard(tp,c48783998.filter2,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 	end
-	if g:GetCount()>0 then
+	if #g>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
