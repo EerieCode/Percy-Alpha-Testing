@@ -31,7 +31,11 @@ function s.initial_effect(c)
 	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
 end
-s.listed_names={CARD_SANCTUARY_SKY }
+s.listed_names={CARD_SANCTUARY_SKY}
+function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDiscardable,tp,LOCATION_HAND,0,1,nil) end
+	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD)
+end
 function s.thfilter(c,chk)
 	if not c:IsAbleToHand() then return false end
 	return c:IsCode(CARD_SANCTUARY_SKY) or aux.IsCodeListed(c,CARD_SANCTUARY_SKY) or (chk and c:IsRace(RACE_FAIRY))

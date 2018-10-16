@@ -1,3 +1,4 @@
+--
 -- Dragunity Romulus
 local s,id=GetID()
 function s.initial_effect(c)
@@ -46,7 +47,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.seqcfilter(c,tp,lg)
-	return c:IsRace(RACE_DRAGON) and c::IsPreviousLocation(LOCATION_EXTRA) and lg:IsContains(c)
+	return c:IsRace(RACE_DRAGON) and c:IsPreviousLocation(LOCATION_EXTRA) and lg:IsContains(c)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local lg=e:GetHandler():GetLinkedGroup()
