@@ -76,6 +76,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 			te=ac[op]
 		end
 		if not te then return end
+		Duel.ClearTargetCard()
 		local teh=te
 		te=teh:GetLabelObject()
 		local tg=te:GetTarget()
@@ -85,21 +86,13 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		tc:CreateEffectRelation(te)
 		Duel.BreakEffect()
 		local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
-		if g then
-			local etc=g:GetFirst()
-			while etc do
-				etc:CreateEffectRelation(te)
-				etc=g:GetNext()
-			end
+		for etc in aux.Next(g) do
+		    etc:CreateEffectRelation(te)
 		end
 		if op then op(te,tp,Group.CreateGroup(),PLAYER_NONE,0,teh,REASON_EFFECT,PLAYER_NONE,1) end
 		tc:ReleaseEffectRelation(te)
-		if etc then	
-			etc=g:GetFirst()
-			while etc do
-				etc:ReleaseEffectRelation(te)
-				etc=g:GetNext()
-			end
+		for etc in aux.Next(g) do
+		    etc:ReleaseEffectRelation(te)
 		end
 		local opt=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,2))
 		Duel.SendtoDeck(tc,nil,opt,REASON_EFFECT)
