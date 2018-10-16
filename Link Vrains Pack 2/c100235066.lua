@@ -48,20 +48,19 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 		local g=Duel.GetMatchingGroup(s.pcfilter,tp,LOCATION_DECK,0,nil)
 		return g:GetClassCount(Card.GetCode)>=2
 	end
-	e:SetCategory(0) --???
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,tp,1000)
 end
 	--Performing the effect of placing 2 different "D/D" pendulums into the scales
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
-	if not Duel.CheckLocation(tp,LOCATION_PZONE,0) or not Duel.CheckLocation(tp,LOCATION_PZONE,1) then return end
 	local g=Duel.GetMatchingGroup(s.pcfilter,tp,LOCATION_DECK,0,1,1,nil)
-	if g:GetClassCount(Card.GetCode)>=2 then
+	if g:GetClassCount(Card.GetCode)>=2 and Duel.CheckLocation(tp,LOCATION_PZONE,0) and Duel.CheckLocation(tp,LOCATION_PZONE,1) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
-		local g1=g:Select(tp,1,1,nil)
-		g:Remove(Card.IsCode,nil,g1:GetFirst():GetCode())
+		local tc1=g:Select(tp,1,1,nil):GetFirst()
+		g:Remove(Card.IsCode,nil,tc1:GetCode())
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
 		local g2=g:Select(tp,1,1,nil)
-		g1:Merge(g2)
-		Duel.MoveToField(g1,nil,REASON_EFFECT)
+		Duel.MoveToField(tc1,tp,tp,LOCATION_PZONE,POS_FACEUP,true)
+		Duel.MoveToField(g2:GetFirst(),tp,tp,LOCATION_PZONE,POS_FACEUP,true)
 		Duel.Damage(tp,1000,REASON_EFFECT)
 	end
 	local e1=Effect.CreateEffect(e:GetHandler())
@@ -81,13 +80,13 @@ end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return c:GetPreviousControler()==tp and c:IsPreviousLocation(LOCATION_MZONE)
-		and (c:IsReason(REASON_EFFECT) and rp==1-tp or c:IsReason(REASON_BATTLE) and Duel.GetAttacker():IsControler(1-tp))
-		and c:IsSummonType(SUMMON_TYPE_LINK)
+		and (c:IsReason(REASON_EFFECT) or (c:IsReason(REASON_BATTLE) and Duel.GetAttacker():IsControler(1-tp)))
+		and c:IsSummonType(SUMMON_TYPE_LINK) and rp~=tp
 end
 	--Check for "D/D" monster in GY or face-up extra deck
 function s.spfilter(c,e,tp)
 	return c:IsSetCard(0xaf) and (c:IsLocation(LOCATION_GRAVE) or c:IsFaceup())
-		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
 	--Activation legality
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -105,7 +104,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if loc==0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.spfilter),tp,loc,0,1,1,nil,e,tp)
-	if g:GetCount()>0 then
+	if #g>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 	end
 end
