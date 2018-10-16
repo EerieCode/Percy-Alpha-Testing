@@ -20,9 +20,9 @@ local e1=Effect.CreateEffect(c)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1,id+100)
-	e2:SetCondition(s.seqcon)
-	e2:SetTarget(s.seqtg)
-	e2:SetOperation(s.seqop)
+	e2:SetCondition(s.spcon)
+	e2:SetTarget(s.sptg)
+	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
@@ -42,6 +42,13 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end
+end
+function s.seqcfilter(c,tp,lg)
+	return c:IsRace(RACE_DRAGON) and c::IsPreviousLocation(LOCATION_EXTRA) and lg:IsContains(c)
+end
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	local lg=e:GetHandler():GetLinkedGroup()
+	return eg:IsExists(c39528955.seqcfilter,1,nil,tp,lg)
 end
 function s.filter(c,e,tp)
 	return c:IsRace(RACE_DRAGON+RACE_WINDBEAST) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
