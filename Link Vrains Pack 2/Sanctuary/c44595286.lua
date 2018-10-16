@@ -1,41 +1,42 @@
 --裁きの光
 --Light of Judgment
-function c44595286.initial_effect(c)
+local s,id=GetID()
+function s.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_TOGRAVE)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetHintTiming(0,TIMING_TOHAND+0x1e0)
 	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetCondition(c44595286.condition)
-	e1:SetCost(c44595286.cost)
-	e1:SetTarget(c44595286.target)
-	e1:SetOperation(c44595286.activate)
+	e1:SetCondition(s.condition)
+	e1:SetCost(s.cost)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 end
-c44595286.listed_names={CARD_SANCTUARY_SKY}
-function c44595286.envfilter(c)
+s.listed_names={CARD_SANCTUARY_SKY}
+function s.envfilter(c)
 	return c:IsFaceup() and c:IsCode(CARD_SANCTUARY_SKY)
 end
-function c44595286.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(c44595286.envfilter,e:GetHandlerPlayer(),LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) or Duel.IsEnvironment(CARD_SANCTUARY_SKY)
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(s.envfilter,e:GetHandlerPlayer(),LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) or Duel.IsEnvironment(CARD_SANCTUARY_SKY)
 end
-function c44595286.cfilter(c)
+function s.cfilter(c)
 	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsDiscardable() and c:IsAbleToGraveAsCost()
 end
-function c44595286.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(c44595286.cfilter,tp,LOCATION_HAND,0,1,nil) end
-	Duel.DiscardHand(tp,c44595286.cfilter,1,1,REASON_COST+REASON_DISCARD)
+function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil) end
+	Duel.DiscardHand(tp,s.cfilter,1,1,REASON_COST+REASON_DISCARD)
 end
-function c44595286.target(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFieldGroupCount(tp,0,LOCATION_ONFIELD+LOCATION_HAND)>0 end
 end
-function c44595286.activate(e,tp,eg,ep,ev,re,r,rp)
+function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g1=Duel.GetFieldGroup(tp,0,LOCATION_ONFIELD)
 	local g2=Duel.GetFieldGroup(tp,0,LOCATION_HAND)
 	local opt=0
 	if #g1>0 and #g2>0 then
-		opt=Duel.SelectOption(tp,aux.Stringid(44595286,0),aux.Stringid(44595286,1))+1
+		opt=Duel.SelectOption(tp,aux.Stringid(id,0),aux.Stringid(id,1))+1
 	elseif #g1>0 then opt=1
 	elseif #g2>0 then opt=2
 	end

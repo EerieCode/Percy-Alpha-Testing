@@ -1,6 +1,7 @@
 --パーシアスの神域
 --The Sanctum of Parshath
-function c15449853.initial_effect(c)
+local s,id=GetID()
+function s.initial_effect(c)
 	--activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -47,17 +48,17 @@ function c15449853.initial_effect(c)
 	e7:SetRange(LOCATION_SZONE)
 	e7:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e7:SetCountLimit(1)
-	e7:SetTarget(c15449853.tdtg)
-	e7:SetOperation(c15449853.tdop)
+	e7:SetTarget(s.tdtg)
+	e7:SetOperation(s.tdop)
 	c:RegisterEffect(e7)
 end
-c15449853.listed_names={CARD_SANCTUARY_SKY}
-function c15449853.tdfilter(c,e)
+s.listed_names={CARD_SANCTUARY_SKY}
+function s.tdfilter(c,e)
 	return (c:IsRace(RACE_FAIRY) or c:IsType(TYPE_COUNTER)) and c:IsAbleToDeck() and (not e or c:IsCanBeEffectTarget(e))
 end
-function c15449853.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return false end
-	local g=Duel.GetMatchingGroup(c15449853.tdfilter,tp,LOCATION_GRAVE,0,nil,e)
+	local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_GRAVE,0,nil,e)
 	if chk==0 then return g:GetClassCount(Card.GetCode)>=3 end
 	local tg=Group.CreateGroup()
 	repeat
@@ -69,7 +70,7 @@ function c15449853.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetTargetCard(tg)
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,tg,#tg,0,0)
 end
-function c15449853.tdop(e,tp,eg,ep,ev,re,r,rp)
+function s.tdop(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local tg=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS):Filter(Card.IsRelateToEffect,nil,e)
 	if #tg==0 then return end
