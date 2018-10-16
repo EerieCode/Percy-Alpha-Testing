@@ -66,7 +66,7 @@ end
 function s.atop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.IsAttackCostPaid()~=2 and e:GetHandler():IsLocation(LOCATION_MZONE) then
         local g=Duel.GetMatchingGroup(Card.IsAbleToGraveAsCost,tp,LOCATION_ONFIELD,0,e:GetHandler())
-        local sg=aux.SelectUnselectGroup(g,e,tp,2,2,nil,1,tp,HINTMSG_TOGRAVE,nil,nil)
+        local sg=aux.SelectUnselectGroup(g,e,tp,0,2,nil,1,tp,HINTMSG_TOGRAVE,nil,nil)
         if #sg==2 then
             Duel.SendtoGrave(sg,REASON_COST)
             Duel.AttackCostPaid()
@@ -89,7 +89,7 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and s.thfilter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.thfilter,tp,LOCATION_GRAVE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectTarget(tp,s.thfilter,tp,LOCATION_GRAVE,0,1,1,nil) --might need necrovalley stuff?
+	local g=Duel.SelectTarget(tp,s.thfilter,tp,LOCATION_GRAVE,0,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,tp,LOCATION_GRAVE)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
