@@ -3,6 +3,8 @@
 --Scripted by Eerie Code
 local s,id=GetID()
 function s.initial_effect(c)
+	c:EnableReviveLimit()
+	aux.AddLinkProcedure(c,s.matfilter,1,1)
 	--to hand
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
@@ -26,6 +28,9 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 s.listed_names={1295111}
+function s.matfilter(c,scard,sumtype,tp)
+	return c:IsLevelBelow(4) and c:IsRace(RACE_CYBERSE,scard,sumtype,tp)
+end
 function s.thfilter(c)
 	return c:IsCode(1295111) and c:IsAbleToHand()
 end
