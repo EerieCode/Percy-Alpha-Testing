@@ -35,7 +35,7 @@ function s.filter(c,e,tp)
 		and c:IsHasEffect(id) and c:IsCanBeEffectTarget(e) and c:IsAbleToDeck()) then 
 		return false
 	end
-	local eff={tc:GetCardEffect(id)}
+	local eff={c:GetCardEffect(id)}
 	for _,teh in ipairs(eff) do
 		local te=teh:GetLabelObject()
 		local con=te:GetCondition()
