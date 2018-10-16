@@ -6,6 +6,10 @@
 local s,id=GetID()
 
 function s.initial_effect(c)
+	--Link summon
+	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsLinkSetCard,0xaf),2)
+	--Must be properly summoned before being revived
+	c:EnableReviveLimit()
 	--Place 2 "D/D" monsters from
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
