@@ -1,9 +1,8 @@
+--ハーピィの羽根休め
 --Harpie’s Feather Roosting
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
