@@ -24,7 +24,7 @@ function s.drfilter(c)
 end
 	--Activation legality
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if Duel.IsExistingMatchingCard(c100411001.filter,tp,LOCATION_MZONE,0,1,nil) then ct=2 end
+	if Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil) then ct=2 end
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.drfilter(chkc) end
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,ct) and Duel.IsExistingTarget(s.drfilter,tp,LOCATION_GRAVE,0,3,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
