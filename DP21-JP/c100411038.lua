@@ -39,16 +39,16 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return s.rmtg(e,tp,eg,ep,ev,re,r,rp,0,chkc) end
 	if chk==0 then return true end
 	if s.rmcost(e,tp,eg,ep,ev,re,r,rp,0) and s.rmtg(e,tp,eg,ep,ev,re,r,rp,0) and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
-        e:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e:SetLabel(1)
-        s.rmcost(e,tp,eg,ep,ev,re,r,rp,1)
-        s.rmtg(e,tp,eg,ep,ev,re,r,rp,1)
-        e:SetOperation(s.rmop)
-	e:GetHandler():RegisterFlagEffect(id,RESET_PHASE+PHASE_END,0,1)
+		e:SetProperty(EFFECT_FLAG_CARD_TARGET)
+		e:SetLabel(1)
+		s.rmcost(e,tp,eg,ep,ev,re,r,rp,1)
+		s.rmtg(e,tp,eg,ep,ev,re,r,rp,1)
+		e:SetOperation(s.rmop)
+		e:GetHandler():RegisterFlagEffect(id,RESET_PHASE+PHASE_END,0,1)
     else
-        e:SetProperty(0)
-	e:SetLabel(0)
-        e:SetOperation(nil)
+		e:SetProperty(0)
+		e:SetLabel(0)
+		e:SetOperation(nil)
     end
 end
 function s.rmfilter(c)
