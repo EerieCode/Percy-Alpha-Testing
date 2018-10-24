@@ -84,7 +84,7 @@ function s.damcon(e,tp,eg,ep,ev,re,r,rp)
 end
 	--Check for machine Xyz monster
 function s.damfilter(c)
-	return c:IsType(TYPE_XYZ) and c:IsRace(RACE_MACHINE) and c:IsAbleToRemoveAsCost() c:GetRank()>0
+	return c:IsType(TYPE_XYZ) and c:IsRace(RACE_MACHINE) and c:IsAbleToRemoveAsCost() and c:GetRank()>0
 end
 	--Cost
 function s.damcost(e,tp,eg,ep,ev,re,r,rp,chk)
