@@ -39,7 +39,7 @@ end
 function s.XyzMachineFilter(c)
     return c:IsFaceup() and c:IsRace(RACE_MACHINE) and c:IsType(TYPE_XYZ) and c:GetOverlayCount()>=1
 end
-function s.cost1(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
     -- Check if there are valid Xyz Machines to pay cost (deatach monsters)
     local xyzMachineMonsters = Duel.GetMatchingGroup(s.XyzMachineFilter, tp, LOCATION_MZONE, 0, nil)
     if chk==0 then return #xyzMachineMonsters == 0 end
