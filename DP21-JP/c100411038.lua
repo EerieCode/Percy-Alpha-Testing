@@ -8,20 +8,20 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetHintTiming(0,TIMING_END_PHASE)
-    e1:SetTarget(s.target)
+	e1:SetTarget(s.target)
 	c:RegisterEffect(e1)
 	--destroy
-    local e2=Effect.CreateEffect(c)
-    e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
-    e2:SetType(EFFECT_TYPE_QUICK_O)
-    e2:SetRange(LOCATION_SZONE)
-    e2:SetCode(EVENT_FREE_CHAIN)
-    e2:SetLabel(1)
-    e2:SetHintTiming(0,TIMING_END_PHASE)
-    e2:SetCost(s.rmcost)
-    e2:SetTarget(s.rmtg)
-    e2:SetOperation(s.rmop)
-    c:RegisterEffect(e2)
+	local e2=Effect.CreateEffect(c)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetRange(LOCATION_SZONE)
+	e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetLabel(1)
+	e2:SetHintTiming(0,TIMING_END_PHASE)
+	e2:SetCost(s.rmcost)
+	e2:SetTarget(s.rmtg)
+	e2:SetOperation(s.rmop)
+	c:RegisterEffect(e2)
 	--damage
 	local e3=Effect.CreateEffect(c)
 	e3:SetCategory(CATEGORY_DAMAGE)
@@ -36,44 +36,44 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-    if chkc then return s.rmtg(e,tp,eg,ep,ev,re,r,rp,0,chkc) end
-    if chk==0 then return true end
-    if s.rmcost(e,tp,eg,ep,ev,re,r,rp,0) and s.rmtg(e,tp,eg,ep,ev,re,r,rp,0) and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
+	if chkc then return s.rmtg(e,tp,eg,ep,ev,re,r,rp,0,chkc) end
+	if chk==0 then return true end
+	if s.rmcost(e,tp,eg,ep,ev,re,r,rp,0) and s.rmtg(e,tp,eg,ep,ev,re,r,rp,0) and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
         e:SetProperty(EFFECT_FLAG_CARD_TARGET)
-		e:SetLabel(1)
+	e:SetLabel(1)
         s.rmcost(e,tp,eg,ep,ev,re,r,rp,1)
         s.rmtg(e,tp,eg,ep,ev,re,r,rp,1)
         e:SetOperation(s.rmop)
-		e:GetHandler():RegisterFlagEffect(id,RESET_PHASE+PHASE_END,0,1)
+	e:GetHandler():RegisterFlagEffect(id,RESET_PHASE+PHASE_END,0,1)
     else
         e:SetProperty(0)
-		e:SetLabel(0)
+	e:SetLabel(0)
         e:SetOperation(nil)
     end
 end
 function s.rmfilter(c)
-    return c:IsFaceup() and c:IsRace(RACE_MACHINE) and c:IsType(TYPE_XYZ)
+	return c:IsFaceup() and c:IsRace(RACE_MACHINE) and c:IsType(TYPE_XYZ)
 end
 function s.rmcost(e,tp,eg,ep,ev,re,r,rp,chk)
-    local dg=Group.CreateGroup()
+	local dg=Group.CreateGroup()
 	Duel.GetMatchingGroup(s.rmfilter,tp,LOCATION_MZONE,0,nil):ForEach(function(c)dg:Merge(c:GetOverlayGroup())end)
-    if chk==0 then return #dg>0 end
-    local cg=dg:Select(tp,1,Duel.GetFieldGroupCount(tp,LOCATION_ONFIELD,LOCATION_ONFIELD)-(e:GetHandler():IsOnField() and 1 or 0), nil)
-    e:SetLabel(Duel.SendtoGrave(cg,REASON_COST))
+	if chk==0 then return #dg>0 end
+	local cg=dg:Select(tp,1,Duel.GetFieldGroupCount(tp,LOCATION_ONFIELD,LOCATION_ONFIELD)-(e:GetHandler():IsOnField() and 1 or 0), nil)
+	e:SetLabel(Duel.SendtoGrave(cg,REASON_COST))
 end
 function s.rmtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-    if chkc then return chkc:IsLocation(LOCATION_ONFIELD) end
-    if chk==0 then return e:GetHandler():GetFlagEffect(id)==0 
+	if chkc then return chkc:IsLocation(LOCATION_ONFIELD) end
+	if chk==0 then return e:GetHandler():GetFlagEffect(id)==0 
 		and Duel.IsExistingTarget(nil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,e:GetHandler()) end
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-    local g=Duel.SelectTarget(tp,nil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,e:GetLabel(),e:GetLabel(),e:GetHandler())
-    Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,g:GetCount(),0,0)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
+	local g=Duel.SelectTarget(tp,nil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,e:GetLabel(),e:GetLabel(),e:GetHandler())
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,g:GetCount(),0,0)
 	e:GetHandler():RegisterFlagEffect(id,RESET_PHASE+PHASE_END,0,1)
 end
 function s.rmop(e,tp,eg,ep,ev,re,r,rp)
-    if not e:GetHandler():IsRelateToEffect(e) then return end
-    local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS):Filter(Card.IsRelateToEffect,nil,e)
-    Duel.Destroy(g,REASON_EFFECT)
+	if not e:GetHandler():IsRelateToEffect(e) then return end
+	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS):Filter(Card.IsRelateToEffect,nil,e)
+	Duel.Destroy(g,REASON_EFFECT)
 end
 function s.desfilter(c,e,tp)
 	return (c:IsReason(REASON_BATTLE) or (c:IsReason(REASON_EFFECT) and c:GetReasonPlayer()==1-tp)) 
