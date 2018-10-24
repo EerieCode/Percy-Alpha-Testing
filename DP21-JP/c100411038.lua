@@ -42,7 +42,7 @@ end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
     -- Check if there are valid Xyz Machines to pay cost (deatach monsters)
     local xyzMachineMonsters = Duel.GetMatchingGroup(s.XyzMachineFilter, tp, LOCATION_MZONE, 0, nil)
-    if chk==0 then return #xyzMachineMonsters == 0 end
+    if chk==0 then return #xyzMachineMonsters == 0 and Duel.CheckRemoveOverlayCard(tp,1,0,1,REASON_COST) end
     -- Select Xyz monsters to deattach from and sum all deatached materials
     local selectedXyz = Group.Select(xyzMachineMonsters, tp, 1, #xyzMachineMonsters, nil)
     local totalTargets = 0
