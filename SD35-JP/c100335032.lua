@@ -80,7 +80,7 @@ function s.activate2(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(nil,tp,0,LOCATION_ONFIELD,nil)
 	if g:GetCount()>0 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-		local sg=g:Select(tp,1,1,nil)
+		local sg=g:Select(tp,1,ct,nil)
 		Duel.HintSelection(sg)
 		Duel.Destroy(sg,REASON_EFFECT)
 	end
