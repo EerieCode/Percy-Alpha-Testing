@@ -35,8 +35,8 @@ function s.atkfilter(c)
 end
 	--Cost of tribute "Cyber Angel" ritual monster from hand or field
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckReleaseGroupCost(tp,c24361622.thcfilter,1,true,nil,nil,tp) end
-	local g=Duel.SelectReleaseGroupCost(tp,c24361622.thcfilter,1,1,true,nil,nil,tp)
+	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.costfilter,1,true,nil,nil,tp) end
+	local g=Duel.SelectReleaseGroupCost(tp,s.costfilter,1,1,true,nil,nil,tp)
 	e:SetLabel(g:GetFirst():GetLevel())
 	Duel.Release(g,REASON_COST)
 end
