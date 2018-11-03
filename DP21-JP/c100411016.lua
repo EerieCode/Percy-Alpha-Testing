@@ -13,6 +13,7 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetHintTiming(TIMING_DAMAGE_STEP)
+	e1:SetCountLimit(id,1)
 	e1:SetCost(s.cost)
 	e1:SetCondition(s.condition)
 	e1:SetTarget(s.target)
@@ -34,9 +35,8 @@ function s.atkfilter(c)
 end
 	--Cost of tribute "Cyber Angel" ritual monster from hand or field
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_MZONE+LOCATION_HAND,0,1,nil,tp) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
-	local g=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_MZONE+LOCATION_HAND,0,1,1,nil,tp)
+	if chk==0 then return Duel.CheckReleaseGroupCost(tp,c24361622.thcfilter,1,true,nil,nil,tp) end
+	local g=Duel.SelectReleaseGroupCost(tp,c24361622.thcfilter,1,1,true,nil,nil,tp)
 	e:SetLabel(g:GetFirst():GetLevel())
 	Duel.Release(g,REASON_COST)
 end
