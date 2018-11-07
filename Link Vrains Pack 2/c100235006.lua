@@ -1,6 +1,6 @@
---japanese name goes here
+--ハーピィ・コンダクター
 --Harpie Conductor
---scripted by
+--scripted by Naim
 local s,id=GetID()
 function c100235006.initial_effect(c)
 	--link summon
