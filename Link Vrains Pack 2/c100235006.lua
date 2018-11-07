@@ -1,6 +1,6 @@
---japanese name goes here
+--ハーピィ・コンダクター
 --Harpie Conductor
---scripted by
+--scripted by Naim
 local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
@@ -69,7 +69,7 @@ function s.repop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.rtfilter(c,e,tp)
 	return c:IsPreviousLocation(LOCATION_MZONE)	and c:IsPreviousPosition(POS_FACEUP)
-	and c:IsPreviousSetCard(0x64) and c:GetPreviousControler()==tp and c:IsControler(tp)	and c~=e:GetHandler()
+	and c:IsPreviousSetCard(0x64) and c:GetPreviousControler()==tp and c:IsControler(tp) and c~=e:GetHandler()
 end
 function s.thcond(e,tp,eg,ep,ev,re,r,rp)
 	Debug.Message(eg:IsExists(s.rtfilter,1,nil,e,tp))
