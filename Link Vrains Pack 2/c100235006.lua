@@ -1,6 +1,6 @@
---ハーピィ・コンダクター
+--japanese name goes here
 --Harpie Conductor
---scripted by Naim
+--scripted by
 local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
@@ -68,16 +68,12 @@ function s.repop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Destroy(tc,REASON_EFFECT+REASON_REPLACE)
 end
 function s.rtfilter(c,e,tp)
-	return c:IsPreviousLocation(LOCATION_MZONE)
-	and c:IsPreviousPosition(POS_FACEUP)
-	and c:IsPreviousSetCard(0x64)
-	--and c:GetPreviousControler()==tp
-	--and c:IsControler(tp)
-	--and c~=e:GetHandler()
+	return c:IsPreviousLocation(LOCATION_MZONE)	and c:IsPreviousPosition(POS_FACEUP)
+	and c:IsPreviousSetCard(0x64) and c:GetPreviousControler()==tp and c:IsControler(tp)	and c~=e:GetHandler()
 end
 function s.thcond(e,tp,eg,ep,ev,re,r,rp)
-	Debug.Message(eg:IsExists(s.rtfilter,1,nil))
-	return eg:IsExists(s.rtfilter,1,nil)
+	Debug.Message(eg:IsExists(s.rtfilter,1,nil,e,tp))
+	return eg:IsExists(s.rtfilter,1,nil,e,tp)
 end
 function s.rttgfilter(c)
 	return c:IsFaceup() and c:IsAbleToHand() and c:IsSummonType(SUMMON_TYPE_SPECIAL) 
