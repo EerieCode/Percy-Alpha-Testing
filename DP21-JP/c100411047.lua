@@ -1,9 +1,7 @@
+--
 --Lunalight Yellow Marten
---Logical Nonsense
-
---Substitute ID
+--scripted by Logical Nonsense
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Special summon, ignition effect
 	local e1=Effect.CreateEffect(c)
@@ -13,9 +11,8 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetRange(LOCATION_HAND+LOCATION_GRAVE)
 	e1:SetCountLimit(1,id)
-	e1:SetCost(s.cost)
-	e1:SetTarget(s.target)
-	e1:SetOperation(s.operation)
+	e1:SetTarget(s.sptg)
+	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
 	--Search spell/trap, optional trigger effect
 	local e2=Effect.CreateEffect(c)
@@ -31,16 +28,16 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 	--Check for Lunalight monster to return to hand
-function s.thfilter(c,tp)
+function s.thfilter1(c,tp)
 	return c:IsFaceup() and c:IsSetCard(0xdf) and not c:IsCode(id) and c:IsAbleToHand() and Duel.GetMZoneCount(tp,c)
 end
 	--Activation legality
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.thfilter(chkc,tp) end
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.thfilter1(chkc,tp) end
 	if chk==0 then return e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false)
-		and Duel.IsExistingTarget(s.thfilter,tp,LOCATION_MZONE,0,1,nil,tp) end
+		and Duel.IsExistingTarget(s.thfilter1,tp,LOCATION_MZONE,0,1,nil,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RTOHAND)
-	local g=Duel.SelectTarget(tp,s.thfilter,tp,LOCATION_MZONE,0,1,1,nil,tp)
+	local g=Duel.SelectTarget(tp,s.thfilter1,tp,LOCATION_MZONE,0,1,1,nil,tp)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 end
@@ -59,21 +56,21 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 	--If sent to the GY by card effect
-function s.gycon(e,tp,eg,ep,ev,re,r,rp)
+function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsReason(REASON_EFFECT)
 end
 	--Check for "Lunalight" spell/trap
-function s.gyfilter(c)
+function s.srchfilter(c)
 	return c:IsSetCard(0xdf) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
-function s.gytg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.gyfilter,tp,LOCATION_DECK,0,1,nil) end
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.srchfilter,tp,LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 	--Performing the effect of adding a "Lunalight" spell/trap from deck to hand
-function s.gyop(e,tp,eg,ep,ev,re,r,rp)
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectMatchingCard(tp,s.gyfilter,tp,LOCATION_DECK,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.srchfilter,tp,LOCATION_DECK,0,1,1,nil)
 	if g:GetCount()>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
