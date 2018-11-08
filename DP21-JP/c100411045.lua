@@ -9,7 +9,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetValue(s.aktval)
+	e1:SetValue(s.atkval)
 	c:RegisterEffect(e1)
 	--cannot be target
 	local e2=Effect.CreateEffect(c)
@@ -39,7 +39,7 @@ function s.fusfilter(c,code)
 	return c:IsFusionCode(code) and not c:IsHasEffect(511002961)
 end
 function s.atkfilter(c)
-	return c:IsFaceup() and c:IsRace(RACE_BEASTWARROR)
+	return (c:IsLocation(LOCATION_GRAVE) or c:IsFaceup()) and c:IsRace(RACE_BEASTWARRIOR)
 end
 function s.atkval(e,c)
 	return Duel.GetMatchingGroupCount(s.atkfilter,c:GetControler(),LOCATION_GRAVE+LOCATION_REMOVED,LOCATION_GRAVE+LOCATION_REMOVED,nil)*200
