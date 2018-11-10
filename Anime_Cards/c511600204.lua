@@ -1,14 +1,15 @@
 --クロック・リザード
 --Clock Lizard
 --scripted by Larry126
-local s,id=GetID()
+local s,id,alias=GetID()
 function s.initial_effect(c)
+	alias=c:GetOriginalCodeRule()
 	--link summon
 	aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_CYBERSE),2,2)
 	c:EnableReviveLimit()
 	--fusion summon
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(11228035,0))
+	e1:SetDescription(aux.Stringid(alias,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_FUSION_SUMMON+CATEGORY_TODECK)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetType(EFFECT_TYPE_IGNITION)
@@ -19,7 +20,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 	--atk down
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(37038993,0))
+	e2:SetDescription(aux.Stringid(alias,1))
 	e2:SetCategory(CATEGORY_ATKCHANGE)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
@@ -28,11 +29,10 @@ function s.initial_effect(c)
 	e2:SetTarget(s.atktg)
 	e2:SetOperation(s.atkop)
 	c:RegisterEffect(e2)
-	if not s.global_check then
-		subs = {}
-		subg = Group.CreateGroup()
-		subg:KeepAlive()
-		s.global_check=true
+	if not ClockLizardSubstitute then
+		ClockLizardSubstitute = {}
+		ClockLizardSubstituteGroup = Group.CreateGroup()
+		ClockLizardSubstituteGroup:KeepAlive()
 		local ge1=Effect.CreateEffect(c)
 		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		ge1:SetProperty(EFFECT_FLAG_NO_TURN_RESET)
@@ -45,32 +45,32 @@ function s.initial_effect(c)
 		Duel.IsExistingMatchingCard=function(f,tp,int_s,int_o,count,ex,...)
 		local arg={...}
 		if arg~=nil then
-			return isexist(f,tp,int_s,int_o,count,ex and subg+ex or subg,table.unpack(arg))
+			return isexist(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
 		else
-			return isexist(f,tp,int_s,int_o,count,ex and subg+ex or subg)
+			return isexist(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
 		end
 	end
 	local isexisttg=Duel.IsExistingTarget
 		Duel.IsExistingTarget=function(f,tp,int_s,int_o,count,ex,...)
 		local arg={...}
 		if arg~=nil then
-			return isexisttg(f,tp,int_s,int_o,count,ex and subg+ex or subg,table.unpack(arg))
+			return isexisttg(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
 		else
-			return isexisttg(f,tp,int_s,int_o,count,ex and subg+ex or subg)
+			return isexisttg(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
 		end
 	end
 	local getmatchg=Duel.GetMatchingGroup
 		Duel.GetMatchingGroup=function(f,tp,int_s,int_o,ex,...)
 		local arg={...}
 		if arg~=nil then
-			return getmatchg(f,tp,int_s,int_o,ex and subg+ex or subg,table.unpack(arg))
+			return getmatchg(f,tp,int_s,int_o,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
 		else
-			return getmatchg(f,tp,int_s,int_o,ex and subg+ex or subg)
+			return getmatchg(f,tp,int_s,int_o,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
 		end
 	end
 	local getfg=Duel.GetFieldGroup
 		Duel.GetFieldGroup=function(tp,int_s,int_o)
-		return getfg(tp,int_s,int_o)-subg
+		return getfg(tp,int_s,int_o)-ClockLizardSubstituteGroup
 	end
 	local getfgc=Duel.GetFieldGroupCount
 		Duel.GetFieldGroupCount=function(tp,int_s,int_o)
@@ -90,25 +90,25 @@ function s.initial_effect(c)
 		Duel.SelectMatchingCard=function(sp,f,tp,int_s,int_o,min,max,ex, ...)
 		local arg={...}
 		if arg~=nil then
-			return selmatchc(sp,f,tp,int_s,int_o,min,max,ex and subg+ex or subg,table.unpack(arg))
+			return selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
 		else
-			return selmatchc(sp,f,tp,int_s,int_o,min,max,ex and subg+ex or subg)
+			return selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
 		end
 	end
 	local gettgc=Duel.GetTargetCount
 		Duel.GetTargetCount=function(f,tp,int_s,int_o,ex,...)
 		local arg={...}
-		return #Duel.GetTarget(f,tp,int_s,int_o,ex and subg+ex or subg,arg)
+		return #Duel.GetTarget(f,tp,int_s,int_o,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,arg)
 	end
 	local seltg=Duel.SelectTarget
 		Duel.SelectTarget=function(sp,f,tp,int_s,int_o,min,max,ex, ...)
 		local arg={...}
 		if arg~=nil then
-			local sel=selmatchc(sp,f,tp,int_s,int_o,min,max,ex and subg+ex or subg,table.unpack(arg))
+			local sel=selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
 			Duel.SetTargetCard(sel)
 			return sel
 		else
-			local sel=selmatchc(sp,f,tp,int_s,int_o,min,max,ex and subg+ex or subg)
+			local sel=selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
 			Duel.SetTargetCard(sel)
 			return sel
 		end
@@ -117,9 +117,9 @@ end
 function s.subop(e,tp,eg,ep,ev,re,r,rp,chk)
 	for i=0,1 do
 		local sub=Duel.CreateToken(i,511610204)
-		subs[i] = sub
-		subg:AddCard(sub)
-		Duel.Sendto(sub,LOCATION_EXTRA,REASON_RULE,POS_FACEUP,nil,15)
+		ClockLizardSubstitute[i] = sub
+		ClockLizardSubstituteGroup:AddCard(sub)
+		Duel.SendtoDeck(sub,nil,1,REASON_RULE)
 	end
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -130,8 +130,11 @@ function s.mfilter(c)
 	return c:IsType(TYPE_MONSTER) and c:IsCanBeFusionMaterial() and c:IsAbleToRemove() and aux.SpElimFilter(c)
 end
 function s.tdfilter(c,e,tp,mg,f,mgc,mf)
-	local fc=subs[tp]
-	local sum = false
+	if not c:IsType(TYPE_FUSION) or not c:IsAbleToExtra()
+		or not (c:CheckFusionMaterial(mg,nil,tp) and (not f or f(c))
+		or c:CheckFusionMaterial(mgc,nil,tp) and (not mf or mf(c))) then return false end
+	local fc=ClockLizardSubstitute[tp]
+	if Duel.GetLocationCountFromEx(tp,tp,e:GetHandler(),fc)<=0 then return false end
 	fc:AssumeProperty(ASSUME_CODE,c:GetOriginalCodeRule())
 	fc:AssumeProperty(ASSUME_TYPE,c:GetOriginalType())
 	fc:AssumeProperty(ASSUME_LEVEL,c:GetOriginalLevel())
@@ -140,6 +143,7 @@ function s.tdfilter(c,e,tp,mg,f,mgc,mf)
 	fc:AssumeProperty(ASSUME_ATTACK,c:GetTextAttack())
 	fc:AssumeProperty(ASSUME_DEFENSE,c:GetTextDefense())
 	local fceffs={}
+	local sum=false
 	for _,eff in ipairs({c:GetCardEffect(EFFECT_SPSUMMON_CONDITION)}) do
 		local e=eff:Clone()
 		fc:RegisterEffect(e,true)
@@ -149,9 +153,7 @@ function s.tdfilter(c,e,tp,mg,f,mgc,mf)
 	for _,eff in ipairs(fceffs) do
 		eff:Reset()
 	end
-	return c:IsType(TYPE_FUSION) and c:IsAbleToExtra() and sum
-		and (c:CheckFusionMaterial(mg,nil,tp) and (not f or f(c))
-		or c:CheckFusionMaterial(mgc,nil,tp) and (not mf or mf(c)))
+	return sum
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local mg=Duel.GetMatchingGroup(s.mfilter,tp,LOCATION_GRAVE+LOCATION_ONFIELD,0,nil)
@@ -172,15 +174,15 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and Duel.SendtoDeck(tc,nil,0,REASON_EFFECT)~=0 then
-		local mg=Duel.GetMatchingGroup(s.mfilter,tp,LOCATION_GRAVE+LOCATION_ONFIELD,0,nil)
-		local mgc=Group.CreateGroup()
-		local mf=nil
-		local ce=Duel.GetChainMaterial(tp)
-		if ce~=nil then
-			mgc=ce:GetTarget()(ce,e,tp)
-			mf=ce:GetValue()
-		end
+	local mg=Duel.GetMatchingGroup(s.mfilter,tp,LOCATION_GRAVE+LOCATION_ONFIELD,0,nil)
+	local ce=Duel.GetChainMaterial(tp)
+	local mgc=Group.CreateGroup()
+	local mf=nil
+	if ce~=nil then
+		mgc=ce:GetTarget()(ce,e,tp)
+		mf=ce:GetValue()
+	end
+	if tc:IsRelateToEffect(e) and s.tdfilter(tc,e,tp,mg,nil,mgc,mf) and Duel.SendtoDeck(tc,nil,0,REASON_EFFECT)~=0 then
 		local nf=tc:CheckFusionMaterial(mg,nil,tp) and (not f or f(tc))
 		local cef=tc:CheckFusionMaterial(mgc,nil,tp) and (not mf or mf(tc))
 		if tc:IsCanBeSpecialSummoned(e,SUMMON_TYPE_FUSION,tp,false,false)
