@@ -22,6 +22,7 @@ function s.initial_effect(c)
     e2:SetRange(LOCATION_GRAVE)
     e2:SetCountLimit(1,id+100)
     e2:SetCost(aux.bfgcost)
+    e2:SetCondition(s.drcon)
     e2:SetTarget(s.drtg)
     e2:SetOperation(s.drop)
     c:RegisterEffect(e2)
@@ -46,13 +47,16 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
         Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP,zone)
     end
 end
+function s.drcon(e,tp,eg,ep,ev,re,r,rp)
+    return Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)==0
+end
 function s.filter(c)
     return c:IsSetCard(0x119) and c:IsAbleToDeck()
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.filter(chkc) end
     if chk==0 then return Duel.IsPlayerCanDraw(tp,2)
-        and Duel.IsExistingTarget(s.filter,tp,LOCATION_GRAVE,0,5,nil) end
+        and Duel.IsExistingTarget(s.filter,tp,LOCATION_GRAVE,0,5,e:GetHandler()) end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
     local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_GRAVE,0,5,5,nil)
     Duel.SetOperationInfo(0,CATEGORY_TODECK,g,#g,0,0)
