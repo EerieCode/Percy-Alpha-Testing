@@ -35,15 +35,17 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.thfilter,tp,LOCATION_DECK,0,nil)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOHAND)
 	local sg=aux.SelectUnselectGroup(g,e,tp,5,5,s.rescon,1,tp,HINTMSG_TOHAND)
 	local sc
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOHAND)
 	if sg:FilterCount(Card.IsAbleToHand)>0 then
 		sc=sg:FilterSelect(tp,Card.IsAbleToHand,1,1,nil)
 	else
 		sc=sg:Select(tp,1,1,nil)
 	end
 	sg=sg-sc
-	if Duel.SendtoHand(sc,nil,REASON_EFFECT)==0 then
+	if #sg>0 and Duel.SendtoHand(sc,nil,REASON_EFFECT)==0 then
 		Duel.SendtoGrave(sc,REASON_RULE)
 	end
 	Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
