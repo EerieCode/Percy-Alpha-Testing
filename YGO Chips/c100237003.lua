@@ -1,5 +1,5 @@
 --農園からの配送
---Delivery from the Plantation
+--Farm Delivery
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
