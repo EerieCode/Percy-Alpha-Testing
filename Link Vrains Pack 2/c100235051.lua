@@ -44,7 +44,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return ph==PHASE_MAIN1 or ph==PHASE_MAIN2
 end
 function s.costfilter(c,tp)
-	return ((c:IsLocation(LOCATION_HAND) and c:IsType(TYPE_MONSTER)) or c:IsFaceup()) and c:IsAbleToGraveAsCost() and Duel.GetMZoneCount(tp,c)>0
+	return c:IsType(TYPE_MONSTER) and c:IsAbleToGraveAsCost() and Duel.GetMZoneCount(tp,c)>0
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_MZONE+LOCATION_HAND,0,1,nil,tp) end
@@ -81,7 +81,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.costfilter2(c,tp)
-	return (c:IsLocation(LOCATION_HAND) or c:IsFaceup()) and c:IsAbleToGraveAsCost() and Duel.GetMZoneCount(tp,c)>0
+	return c:IsAbleToGraveAsCost() and Duel.GetMZoneCount(tp,c)>0
 end
 function s.spcost2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter2,tp,LOCATION_ONFIELD+LOCATION_HAND,0,1,nil,tp) end
