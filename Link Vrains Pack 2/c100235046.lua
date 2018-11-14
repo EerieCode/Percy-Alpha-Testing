@@ -1,3 +1,4 @@
+--
 --Great General of the Six Samurai
 --Logical Nonsense
 
@@ -6,6 +7,9 @@ local s,id=GetID()
 
 function s.initial_effect(c)
 	c:EnableCounterPermit(0x3)
+	--Must be properly summoned in order to revive
+	c:EnableReviveLimit()
+	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsLinkRace,RACE_WARRIOR),2,2,s.lcheck)
 	--Add a card that can place a "Bushido" counter, optional trigger effect
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
@@ -39,6 +43,10 @@ function s.initial_effect(c)
 	e4:SetCode(EFFECT_UPDATE_ATTACK)
 	e4:SetValue(s.atkval)
 	c:RegisterEffect(e4)
+end
+	--Check for "Six Samurai" monster
+function s.lcheck(g,lc)
+	return g:IsExists(Card.IsLinkSetCard,1,nil,0x3d)
 end
 	--If it was link summoned
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
