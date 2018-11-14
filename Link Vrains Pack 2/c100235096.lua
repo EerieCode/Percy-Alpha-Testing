@@ -55,7 +55,7 @@ function s.thfilter(c)
 	return c:IsSetCard(0x108) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
 function s.threscon(sg,e,tp,mg)
-	return sg:GetClassCounter(Card.GetCode)==#sg
+	return sg:GetClassCount(Card.GetCode)==#sg
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ct=Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)
@@ -69,15 +69,15 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if not (ct>0 and #g>0) then return end
 	local sg=aux.SelectUnselectGroup(g,e,tp,1,ct,s.threscon,1,tp,HINTMSG_TOHAND)
 	if #sg>0 then
-		Duel.SendtoHand(sg,REASON_EFFECT)
-		Duel.ConfirmCards(sg)
+		Duel.SendtoHand(sg,tp,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,sg)
 	end
 end
 function s.spfilter(c,e,tp)
 	return c:IsSetCard(0x108) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sprescon(sg,e,tp,mg)
-	return aux.ChkfMMZ(#sg) and sg:GetClassCounter(Card.GetCode)==#sg
+	return aux.ChkfMMZ(#sg) and sg:GetClassCount(Card.GetCode)==#sg
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ct=Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)
@@ -87,9 +87,9 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local ct=Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)
-	local g=Duel.GetMatchingGroup(s.thfilter,tp,LOCATION_DECK,0,nil,e,tp)
+	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_DECK,0,nil,e,tp)
 	if not (ct>0 and #g>0) then return end
-	local sg=aux.SelectUnselectGroup(g,e,tp,1,ct,s.threscon,1,tp,HINTMSG_SPSUMMON)
+	local sg=aux.SelectUnselectGroup(g,e,tp,1,ct,s.sprescon,1,tp,HINTMSG_SPSUMMON)
 	if #sg>0 then
 		Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
 	end
