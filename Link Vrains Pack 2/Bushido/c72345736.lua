@@ -29,6 +29,13 @@ function s.initial_effect(c)
 	e4:SetTarget(s.drtg)
 	e4:SetOperation(s.drop)
 	c:RegisterEffect(e4)
+	--cannot link material
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e5:SetCode(EFFECT_CANNOT_BE_LINK_MATERIAL)
+	e5:SetValue(1)
+	c:RegisterEffect(e5)
 end
 s.counter_add_list={0x3}
 function s.ctfilter(c)
