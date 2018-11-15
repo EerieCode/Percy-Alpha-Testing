@@ -27,7 +27,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 	local e3=e2:Clone()
 	e3:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
-	e3:SetValue(s.inval)
+	e3:SetValue(aux.indoval)
 	c:RegisterEffect(e3)
 	--speed world 2
 	--damage
