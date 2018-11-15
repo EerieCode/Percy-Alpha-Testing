@@ -1,9 +1,8 @@
+--japanese name goes here
 --Backup Supervisor
 --Logical Nonsense, partly rewritten by dest
-
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	c:EnableReviveLimit()
 	aux.AddLinkProcedure(c,nil,2,2)
@@ -41,14 +40,14 @@ function s.initial_effect(c)
 end
 function s.valcheck(e,c)
 	local g=c:GetMaterial()
-	e:SetLabel(false)
+	e:SetLabel(0)
 	if g:IsExists(Card.IsCode,1,nil,63528891) then
-		e:SetLabel(true)
+		e:SetLabel(1)
 	end
 end
 	--If a monster this card points to battled
 function s.spcon1(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetLabelObject():GetLabel() then return false end
+	if e:GetLabelObject():GetLabel()~=1 then return false end
 	local lg=e:GetHandler():GetLinkedGroup()
 	local a=Duel.GetAttacker()
 	local b=a:GetBattleTarget()
