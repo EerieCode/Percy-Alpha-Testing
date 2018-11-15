@@ -101,7 +101,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 			local sg4=g4:Select(tp,1,1,nil)
 			sg:Merge(sg4)
 		end
-		Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
+		Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 		end
 	local ge1=Effect.CreateEffect(e:GetHandler())
 	ge1:SetType(EFFECT_TYPE_FIELD)
