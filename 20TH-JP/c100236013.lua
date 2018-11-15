@@ -37,6 +37,7 @@ function s.initial_effect(c)
 	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e4:SetType(EFFECT_TYPE_IGNITION)
 	e4:SetRange(LOCATION_MZONE)
+	e4:SetCountLimit(1,EFFECT_COUNT_CODE_SINGLE)
 	e4:SetCost(s.ctcost(4))
 	e4:SetTarget(s.damtg)
 	e4:SetOperation(s.damop)
@@ -47,7 +48,8 @@ function s.initial_effect(c)
 	e5:SetDescription(aux.Stringid(id,2))
 	e5:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e5:SetType(EFFECT_TYPE_IGNITION)
-	e5:SetRange(LOCATION_MZONE)	
+	e5:SetRange(LOCATION_MZONE)
+	e5:SetCountLimit(1,EFFECT_COUNT_CODE_SINGLE)
 	e5:SetCost(s.ctcost(7))
 	e5:SetTarget(s.drtg)
 	e5:SetOperation(s.drop)
@@ -57,7 +59,8 @@ function s.initial_effect(c)
 	e6:SetCategory(CATEGORY_DESTROY)
 	e6:SetDescription(aux.Stringid(id,3))
 	e6:SetType(EFFECT_TYPE_IGNITION)
-	e6:SetRange(LOCATION_MZONE)	
+	e6:SetRange(LOCATION_MZONE)
+	e6:SetCountLimit(1,EFFECT_COUNT_CODE_SINGLE)
 	e6:SetCost(s.ctcost(10))
 	e6:SetTarget(s.destg)
 	e6:SetOperation(s.desop)
@@ -66,7 +69,7 @@ end
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local g=Duel.GetFieldGroup(tp,LOCATION_FZONE,LOCATION_FZONE)
-	if c:IsRelateToEffect(e) then g:Add(c) end
+	if c:IsRelateToEffect(e) then g:AddCard(c) end
 	for tc in aux.Next(g) do
 		if tc:IsCanAddCounter(0x1149,1) then
 			tc:AddCounter(0x1149,1)
@@ -78,9 +81,9 @@ function s.incon(e)
 end
 function s.ctcost(ct)
 	return function(e,tp,eg,ep,ev,re,r,rp,chk)
-		if chk==0 then return Duel.IsCanRemoveCounter(tp,0x1149,ct,REASON_COST) end
+		if chk==0 then return Duel.IsCanRemoveCounter(tp,1,1,0x1149,ct,REASON_COST) end
 		Duel.Hint(HINT_OPSELECTED,1-tp,e:GetDescription())
-		Duel.RemoveCounter(tp,0x1149,ct,REASON_COST)
+		Duel.RemoveCounter(tp,1,1,0x1149,ct,REASON_COST)
 	end
 end
 function s.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -107,9 +110,10 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,nil,1,0,0)
 end
-function s.op3(e,tp,eg,ep,ev,re,r,rp)
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local g=Duel.SelectMatchingCard(tp,aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
+	local tc=g:GetFirst()
 	if #g>0 then
 		Duel.Destroy(tc,REASON_EFFECT)
 	end
