@@ -5,6 +5,8 @@
 local s,id=GetID()
 
 function s.initial_effect(c)
+	c:EnableReviveLimit()
+	aux.AddLinkProcedure(c,nil,2,2)
 	--Special summon "Backup Secretary" from hand, deck or GY, optional trigger effect
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
