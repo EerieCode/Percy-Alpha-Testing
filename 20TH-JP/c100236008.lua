@@ -70,7 +70,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local bc=c:GetBattleTarget()
 	return c:IsRelateToBattle() and bc:IsType(TYPE_MONSTER)
 end
-function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsReleasable() end
 	Duel.Release(e:GetHandler(),REASON_COST)
 end
@@ -87,6 +87,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp)
 	local tc=g:GetFirst()
+	local c=e:GetHandler()
 	if tc and Duel.SpecialSummonStep(tc,0,tp,tp,true,false,POS_FACEUP)~=0 then
 		--atklimit
 		local e1=Effect.CreateEffect(c)
@@ -95,7 +96,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_IGNORE_IMMUNE)
 		e1:SetValue(s.bttg)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-		c:RegisterEffect(e1,true)
+		tc:RegisterEffect(e1,true)
 	end
 end
 function s.bttg(e,c)
