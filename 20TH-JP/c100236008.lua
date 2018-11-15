@@ -46,7 +46,7 @@ function s.valcheck(e,c)
 	local g=c:GetMaterial()
 	local atk=0
 	for tc in aux.Next(g) do
-		atk=atk+tc:GetAttack()
+		atk=atk+tc:GetOriginalLevel()
 	end
 	e:SetLabel(atk)
 end
@@ -55,7 +55,7 @@ function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local atk=e:GetLabelObject():GetLabel()
+	local atk=e:GetLabelObject():GetLabel()*300
 	if atk>0 then
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
@@ -68,7 +68,7 @@ end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local bc=c:GetBattleTarget()
-	return c:IsRelateToBattle() and bc:IsType(TYPE_MONSTER)
+	return c:IsRelateToBattle() and bc and bc:IsType(TYPE_MONSTER)
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsReleasable() end
