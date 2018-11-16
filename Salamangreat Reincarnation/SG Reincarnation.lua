@@ -1,15 +1,6 @@
 CARD_SALAMANGREAT_SANCTUARY =1295111
-function Auxiliary.IsReincarnationSummoned(c)
-	if c:GetFlagEffect(CARD_SALAMANGREAT_SANCTUARY)~=0 then return true end
-	local g=c:GetMaterial()
-	local id=c:GetID()
-	if c:IsType(TYPE_LINK) then
-		return g:IsExists(Card.IsLinkCode,1,nil,id)
-	elseif c:IsType(TYPE_FUSION) then
-		return g:IsExists(Card.IsFusionCode,1,nil,id)
-	else
-		return false 
-	end
+function Card.IsReincarnationSummoned(c)
+	return c:GetFlagEffect(CARD_SALAMANGREAT_SANCTUARY)~=0
 end
 function Auxiliary.EnableCheckReincarnation(c)
 	if not c1295111.global_check then
