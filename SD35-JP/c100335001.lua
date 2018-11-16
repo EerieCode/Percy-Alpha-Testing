@@ -55,14 +55,15 @@ function s.lpop(e,tp,eg,ep,ev,re,r,rp)
     if at and g:IsContains(at) and at:IsFaceup() then
         Duel.Recover(tp,at:GetAttack(),REASON_EFFECT)
     end
-    local tg=g:Filter(Card.IsControler,nil,tp)
+    local tg=g:Filter(Card.IsControler,nil,tp):GetFirst()
     if tg and tg:IsFaceup() then
         local e1=Effect.CreateEffect(e:GetHandler())
         e1:SetType(EFFECT_TYPE_SINGLE)
         e1:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+		e1:SetRange(LOCATION_MZONE)
         e1:SetValue(1)
         e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-        tc:RegisterEffect(e2)
+        tg:RegisterEffect(e1)
     end
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
