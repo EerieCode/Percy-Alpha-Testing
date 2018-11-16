@@ -33,8 +33,12 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 	--Check for "Salamangreat" card
-function s.atkcon(c)
+function s.atkfilter2(c)
 	return c:IsFaceup() and c:IsSetCard(0x119) and Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
+end
+function s.atkcon(e,c)
+	if c==nil then return true end
+	return Duel.IsExistingMatchingCard(s.atkfilter2,tp,LOCATION_ONFIELD,0,1,nil)
 end
 	--Cost of discarding itself
 function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -48,9 +52,9 @@ end
 	--Acitvation legality
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_MZONE) and s.atkfilter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.atkfilter,tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingTarget(s.atkfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
-	Duel.SelectTarget(tp,s.atkfilter,tp,LOCATION_MZONE,0,1,1,nil)
+	Duel.SelectTarget(tp,s.atkfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 end
 	--Performing the effect of increasing ATK by 500
 function s.atkop(e,tp,eg,ep,ev,re,r,rp,chk)
