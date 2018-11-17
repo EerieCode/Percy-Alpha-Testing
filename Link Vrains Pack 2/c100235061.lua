@@ -69,7 +69,7 @@ function s.efilter(e,te)
 end
 	--If a normal trap card is activated
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:GetType()==TYPE_TRAP
+	return re:GetActiveType()==TYPE_TRAP and re:IsHasType(EFFECT_TYPE_ACTIVATE)
 end
 	--Check names of monsters
 function s.namefilter(c,cd)
@@ -101,7 +101,7 @@ function s.setcon(e,tp,eg,ep,ev,re,r,rp)
 end
 	--Check for "Trap Hole" normal trap
 function s.setfilter(c)
-	return (c:IsSetCard(0x4c) or c:IsSetCard(0x89)) and c:IsType()==TYPE_TRAP and c:IsSSetable()
+	return (c:IsSetCard(0x4c) or c:IsSetCard(0x89)) and c:IsType(TYPE_TRAP) and c:IsSSetable()
 end
 	--Activation legality
 function s.settg(e,tp,eg,ep,ev,re,r,rp,chk)
