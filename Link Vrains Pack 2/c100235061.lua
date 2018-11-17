@@ -1,9 +1,7 @@
+--japanese name
 --Traptrix Sera
---Logical Nonsense
-
---Substitute ID
+--scripted by Logical Nonsense
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Link summon method
 	c:EnableReviveLimit()
@@ -58,7 +56,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 end
 	--Link material of a non-link "Traptrix" monster
-function c63288573.matfilter(c)
+function s.matfilter(c)
 	return c:IsLinkSetCard(0x108a) and not c:IsType(TYPE_LINK)
 end
 	--If this card was link summoned
@@ -67,7 +65,7 @@ function s.immcon(e)
 end
 	--Unaffected by trap effects
 function s.efilter(e,te)
-	if te:IsActiveType(TYPE_TRAP) then return true
+	if te:IsActiveType(TYPE_TRAP) then return true end
 end
 	--If a normal trap card is activated
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
