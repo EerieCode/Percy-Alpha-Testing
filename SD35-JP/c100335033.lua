@@ -5,6 +5,7 @@
 local s,id=GetID()
 
 function s.initial_effect(c)
+	aux.EnableCheckReincarnation(c)
 	--Omni-negate, activate effect
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_NEGATE+CATEGORY_DESTROY)
@@ -27,15 +28,6 @@ function s.initial_effect(c)
 	e2:SetTarget(s.settg)
 	e2:SetOperation(s.setop)
 	c:RegisterEffect(e2)
-	if not s.global_check then
-		s.global_check=true
-		local ge1=Effect.CreateEffect(c)
-		ge1:SetType(EFFECT_TYPE_FIELD)
-		ge1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_IGNORE_RANGE)
-		ge1:SetCode(EFFECT_MATERIAL_CHECK)
-		ge1:SetValue(s.valcheck)
-	Duel.RegisterEffect(ge1,0)
-	end
 end
 
 	--Check for "Salamangreat" link monster
@@ -62,11 +54,8 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 	--Check if "Salamangreat" is reborn link summoned
-function s.valcheck(e,c)
-	local g=c:GetMaterial()
-	if g:IsExists(Card.IsLinkCode,1,nil,c:GetCode()) and c:IsSetCard(0x119) then
-		c:RegisterFlagEffect(id,0,0,0)
-	end
+function s.lkfilter(c)
+	return c:IsSetCard(0x119) and c:IsType(TYPE_LINK) and c:IsReincarnationSummoned()
 end
 	--If the said monster is on your field
 function s.setfilter(c,tp)
@@ -74,10 +63,7 @@ function s.setfilter(c,tp)
 end
 	--If it ever happened
 function s.setcon(e,tp,eg,ep,ev,re,r,rp)
-	local tc=eg:GetFirst()
-	local res=tc:IsSummonType(SUMMON_TYPE_LINK) and tc:GetFlagEffect(id)~=0
-	tc:ResetFlagEffect(id)
-	return res and eg:IsExists(s.setfilter,1,nil,tp)
+	return Duel.IsExistingMatchingCard(s.lkfilter,tp,LOCATION_MZONE,0,1,nil) and eg:IsExists(s.setfilter,1,nil,tp)
 end
 	--Activation legality
 function s.settg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
