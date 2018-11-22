@@ -29,7 +29,6 @@ function s.initial_effect(c)
 	e2:SetOperation(s.setop)
 	c:RegisterEffect(e2)
 end
-
 	--Check for "Salamangreat" link monster
 function s.cfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x119) and c:IsType(TYPE_LINK)
@@ -71,7 +70,6 @@ function s.settg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return e:GetHandler():IsSSetable() end
 	Duel.SetOperationInfo(0,CATEGORY_LEAVE_GRAVE,e:GetHandler(),1,0,0)
 end
-
 	--Performing the effect of setting back to S/T zone, banish if leave the field
 function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
