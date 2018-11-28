@@ -18,4 +18,9 @@ Updates known not to be applied by this script:
 - Card.IsRitualMonster/IsRitualSpell functions
 - Listed names
 - Listed counters added
+- Old cards that could use SelectUnselect (e.g. Aroma Garden destroy, Block Dragon summon)
+
+Update for the next core
+- Un-hardcode continuous trap "Use effect now"
+- "Must attack" fix (? ask larry)
  
