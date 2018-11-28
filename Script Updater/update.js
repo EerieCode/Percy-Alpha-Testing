@@ -12,7 +12,7 @@ const GET_ID = /GetID\(\)/; // checks if script already has a GetID() call
 async function updateGetID(file, fileName) {
     const sResult = EXTRACT_S.exec(fileName);
     if (!sResult) {
-        // e.g. utility, constant, do not modify
+        // e.g. utility, constant, do not modify - though those shouldn't be run through this anyway
         return file;
     }
     const s = sResult[0];
