@@ -65,8 +65,9 @@ function s.cop(e,tp,eg,ep,ev,re,r,rp)
     end
 end
 function s.acop(e,tp,eg,ep,ev,re,r,rp)
-    if eg:IsExists(Card.IsPreviousLocation,1,nil,LOCATION_ONFIELD) then
-        e:GetHandler():AddCounter(0x149,1)
+	local ct=eg:FilterCount(Card.IsPreviousLocation,nil,LOCATION_ONFIELD)
+    if ct>0 then
+        e:GetHandler():AddCounter(0x149,ct)
     end
 end
 function s.atktg(e,c)
