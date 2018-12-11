@@ -3,40 +3,41 @@
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
-	aux.EnablePendulumAttribute(c)
 	c:EnableReviveLimit()
-	--spsummon condition
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e1:SetCode(EFFECT_SPSUMMON_CONDITION)
-	c:RegisterEffect(e1)
-	--special summon
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetCode(EFFECT_SPSUMMON_PROC)
-	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetRange(LOCATION_HAND)
-	e2:SetCountLimit(1,id)
-	e2:SetCondition(s.spcon)
-	e2:SetOperation(s.spop)
-	local e3=e2:Clone()
-	e3:SetRange(LOCATION_EXTRA)
-	c:RegisterEffect(e3)
+	aux.EnablePendulumAttribute(c)
 	--chain attack
-	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(id,1))
-	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e4:SetCode(EVENT_DAMAGE_STEP_END)
-	e4:SetRange(LOCATION_PZONE)
-	e4:SetCountLimit(1)
-	e4:SetCondition(s.cacon)
-	e4:SetCost(s.cacost)
-	e4:SetTarget(s.catg)
-	e4:SetOperation(s.caop)
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,1))
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e1:SetCode(EVENT_DAMAGE_STEP_END)
+	e1:SetRange(LOCATION_PZONE)
+	e1:SetCountLimit(1)
+	e1:SetCondition(s.cacon)
+	e1:SetCost(s.cacost)
+	e1:SetTarget(s.catg)
+	e1:SetOperation(s.caop)
+	c:RegisterEffect(e1)
+	--spsummon condition
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e2:SetCode(EFFECT_SPSUMMON_CONDITION)
+	c:RegisterEffect(e2)
+	--special summon procedure
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_FIELD)
+	e3:SetCode(EFFECT_SPSUMMON_PROC)
+	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e3:SetDescription(aux.Stringid(id,0))
+	e3:SetRange(LOCATION_HAND)
+	e3:SetCountLimit(1,id)
+	e3:SetCondition(s.spcon)
+	e3:SetOperation(s.spop)
+	c:RegisterEffect(e3)
+	local e4=e3:Clone()
+	e4:SetRange(LOCATION_EXTRA)
 	c:RegisterEffect(e4)
-	--atk
+	--atk change
 	local e5=Effect.CreateEffect(c)
 	e5:SetDescription(aux.Stringid(id,2))
 	e5:SetCategory(CATEGORY_ATKCHANGE)
@@ -72,10 +73,20 @@ function s.initial_effect(c)
 		local ge2=Effect.CreateEffect(c)
 		ge2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		ge2:SetCode(EVENT_PHASE_START+PHASE_DRAW)
-		ge2:SetCountLimit(1)
 		ge2:SetCondition(s.clear)
 		Duel.RegisterEffect(ge2,0)
 	end
+end
+function s.checkop(e,tp,eg,ep,ev,re,r,rp)
+	local tc=eg:GetFirst()
+	if tc:GetFlagEffect(id)==0 then
+		s[ep]=s[ep]+1
+		tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
+	end
+end
+function s.clear(e,tp,eg,ep,ev,re,r,rp)
+	s[0]=0
+	s[1]=0
 end
 function s.cfilter(c)
 	return c:GetSequence()<5
@@ -88,7 +99,6 @@ function s.spcon(e,c)
 	local tp=c:GetControler()
 	local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
 	local rg=Duel.GetReleaseGroup(tp)
-	Debug.Message(g:FilterCount(Card.IsReleasable,nil)==#g)
 	return (#g>0 or #rg>0) and g:FilterCount(Card.IsReleasable,nil)==#g and #g>1 and g:IsExists(s.pfilter,1,nil)
 		and g:FilterCount(s.cfilter,nil)+Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 end
@@ -142,7 +152,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) then return false end
-	return re:IsActiveType(TYPE_SPELL+TYPE_TRAP) and Duel.IsChainNegatable(ev)
+	return ep~=tp and re:IsActiveType(TYPE_SPELL+TYPE_TRAP) and Duel.IsChainNegatable(ev)
 end
 function s.disfilter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToGraveAsCost()
@@ -159,16 +169,4 @@ function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateActivation(ev)
-end
-function s.checkop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=eg:GetFirst()
-	if tc:GetFlagEffect(id)==0 then
-		s[ep]=s[ep]+1
-		tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
-	end
-end
-function s.clear(e,tp,eg,ep,ev,re,r,rp)
-	s[0]=0
-	s[1]=0
-	return false
 end
