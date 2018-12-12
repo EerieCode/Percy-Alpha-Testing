@@ -48,7 +48,6 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 	--Performing the effect of adding "Double or Nothing!", then Xyz summon 1 "Utopia" monster
-Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP)
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
@@ -58,7 +57,6 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,g)
 		Duel.ShuffleHand(tp)
 		Duel.BreakEffect()
-		Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP)
 		if Duel.GetLocationCountFromEx(tp,tp,c)>0 and aux.MustMaterialCheck(c,tp,EFFECT_MUST_BE_XMATERIAL) then
 			if c:IsFaceup() and c:IsRelateToEffect(e) and c:IsControler(tp) and not c:IsImmuneToEffect(e) then
 				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
@@ -71,21 +69,22 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 					end
 					sc:SetMaterial(Group.FromCards(c))
 					Duel.Overlay(sc,Group.FromCards(c))
-					Duel.SpecialSummon(sc,SUMMON_TYPE_XYZ,tp,tp,false,false,POS_FACEUP)
+					if Duel.SpecialSummonStep(sc,SUMMON_TYPE_XYZ,tp,tp,false,false,POS_FACEUP) then
+						local e1=Effect.CreateEffect(e:GetHandler())
+						e1:SetType(EFFECT_TYPE_SINGLE)
+						e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+						e1:SetCode(EFFECT_CANNOT_DIRECT_ATTACK)
+						e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+						sc:RegisterEffect(e1)
+						local e2=Effect.CreateEffect((e:GetHandler()))
+						e2:SetType(EFFECT_TYPE_SINGLE)
+						e2:SetCode(EFFECT_SET_ATTACK_FINAL)
+						e2:SetValue(tc:GetBaseAttack()*2)
+						e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+						sc:RegisterEffect(e2)
+					end
 					sc:CompleteProcedure()
 				end
-			local e1=Effect.CreateEffect(e:GetHandler())
-			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-			e1:SetCode(EFFECT_CANNOT_DIRECT_ATTACK)
-			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-			sc:RegisterEffect(e1)
-			local e2=Effect.CreateEffect((e:GetHandler()))
-			e2:SetType(EFFECT_TYPE_SINGLE)
-			e2:SetCode(EFFECT_SET_ATTACK_FINAL)
-			e2:SetValue(tc:GetBaseAttack()*2)
-			e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-			sc:RegisterEffect(e2)
 			end
 		end
 	end
