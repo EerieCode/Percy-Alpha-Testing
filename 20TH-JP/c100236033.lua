@@ -28,6 +28,14 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetFirstTarget()
     if not tc:IsRelateToEffect(e) then return end
     local lc=tc:GetLinkedGroupCount()
+	if tc then
+		local e0=Effect.CreateEffect(e:GetHandler())
+		e0:SetType(EFFECT_TYPE_SINGLE)
+		e0:SetDescription(aux.Stringid(id,0))
+		e0:SetProperty(EFFECT_FLAG_CLIENT_HINT)
+		e0:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
+		tc:RegisterEffect(e0)
+	end
     if lc>=1 then
         local e1=Effect.CreateEffect(c)
         e1:SetType(EFFECT_TYPE_SINGLE)
