@@ -1,50 +1,48 @@
 --EMスマイル・マジシャン
 --Performapal Smile Sorcerer
 --Logical Nonsense
-
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Pendulum summon feature
 	aux.EnablePendulumAttribute(c)
 	--Special summon this card from pendulum zone
-	local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_DAMAGE)
-	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e2:SetCode(EVENT_DESTROYED)
-	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
-	e2:SetRange(LOCATION_PZONE)
-	e2:SetCountLimit(1,id)
-	e2:SetCondition(s.spcon)
-	e2:SetTarget(s.sptg)
-	e2:SetOperation(s.spop)
-	c:RegisterEffect(e2)
+	local e1=Effect.CreateEffect(c)
+	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_DAMAGE)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e1:SetCode(EVENT_DESTROYED)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e1:SetRange(LOCATION_PZONE)
+	e1:SetCountLimit(1,id)
+	e1:SetCondition(s.spcon)
+	e1:SetTarget(s.sptg)
+	e1:SetOperation(s.spop)
+	c:RegisterEffect(e1)
 	--Add 1 "Smile" spell/trap if normal summoned
-	local e3=Effect.CreateEffect(c)
-	e3:SetCategory(CATEGORY_SEARCH+CATEGORY_TOHAND)
-	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e3:SetCode(EVENT_SUMMON_SUCCESS)
-	e3:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
-	e3:SetCountLimit(1,id+100)
-	e3:SetTarget(s.thtg)
-	e3:SetOperation(s.thop)
-	c:RegisterEffect(e3)
+	local e2=Effect.CreateEffect(c)
+	e2:SetCategory(CATEGORY_SEARCH+CATEGORY_TOHAND)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e2:SetCode(EVENT_SUMMON_SUCCESS)
+	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e2:SetCountLimit(1,id+100)
+	e2:SetTarget(s.thtg)
+	e2:SetOperation(s.thop)
+	c:RegisterEffect(e2)
 	--Same as above, but if special summoned
-	local e4=e3:Clone()
-	e4:SetCode(EVENT_SPSUMMON_SUCCESS)
-	c:RegisterEffect(e4)
+	local e3=e2:Clone()
+	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
+	c:RegisterEffect(e3)
 	--Draw equal to the number of boosted monsters
-	local e5=Effect.CreateEffect(c)
-	e5:SetCategory(CATEGORY_DRAW)
-	e5:SetType(EFFECT_TYPE_IGNITION)
-	e5:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e2:SetRange(LOCATION_MZONE)
-	e5:SetCountLimit(1,id+1000)
-	e5:SetCondition(s.drcon)
-	e5:SetTarget(s.drtg)
-	e5:SetOperation(s.drop)
-	c:RegisterEffect(e5)
+	local e6=Effect.CreateEffect(c)
+	e6:SetCategory(CATEGORY_DRAW)
+	e6:SetType(EFFECT_TYPE_IGNITION)
+	e6:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e6:SetRange(LOCATION_MZONE)
+	e6:SetCountLimit(1,id+1000)
+	e6:SetCondition(s.drcon)
+	e6:SetTarget(s.drtg)
+	e6:SetOperation(s.drop)
+	c:RegisterEffect(e6)
 end
 	--Check for ATK higher than original ATK
 function s.filter(c)
@@ -52,6 +50,7 @@ function s.filter(c)
 end
 	--Check if monster(s) with ATK higher than base ATK were destroyed
 function s.cfilter(c,tp)
+Debug.Message(c:GetPreviousAttackOnField()>c:GetBaseAttack())
 	return c:IsReason(REASON_BATTLE+REASON_EFFECT) and c:GetPreviousAttackOnField()>c:GetBaseAttack()
 		and c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousControler()==tp
 end
@@ -91,12 +90,12 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 end
 	--Check for "Performapal" monsters, "Magician" pendulums, or "Odd-Eyes" monsters
 function s.drfilter(c)
-	return c:IsFaceup() and (c:IsSetCard(0x9f) or c:IsSetCard(0x98) or c:IsSetCard(0x99)) and s.filter(e:GetHandler())
+	return c:IsFaceup() and (c:IsSetCard(0x9f) or c:IsSetCard(0x98) or c:IsSetCard(0x99))
 end
 	--If you only control those archetypes and this card's ATK is boosted
 function s.drcon(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
-	return #g>0 and g:FilterCount(s.drfilter,nil)==#g
+	return #g>0 and g:FilterCount(s.drfilter,nil)==#g and s.filter(e:GetHandler())
 end
 	--Check for monsters' ATK higher than original ATK
 function s.atkfilter(c)
@@ -116,10 +115,10 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp)
 	local ct=Duel.GetMatchingGroupCount(s.atkfilter,tp,LOCATION_MZONE,0,nil)
 	Duel.Draw(p,ct,REASON_EFFECT)
 	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
-	e1:SetReset(RESET_PHASE+PHASE_END)
-	e1:SetTargetRange(1,0)
-	Duel.RegisterEffect(e1,tp)
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+		e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+		e1:SetReset(RESET_PHASE+PHASE_END)
+		e1:SetTargetRange(1,0)
+		Duel.RegisterEffect(e1,tp)
 end
