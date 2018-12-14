@@ -54,7 +54,7 @@ function s.ffilter(c,fc,sumtype,tp)
     return c:IsAttribute(ATTRIBUTE_DARK,fc,sumtype,tp) and c:IsType(TYPE_PENDULUM,fc,sumtype,tp)
 end
 function s.ctg(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,nil) end
+    if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end
 end
 function s.cop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
