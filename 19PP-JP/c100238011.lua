@@ -74,7 +74,7 @@ function s.atktg(e,c)
     return not (c:IsAttribute(ATTRIBUTE_DARK) and c:IsRace(RACE_DRAGON))
 end
 function s.atkval(e,c)
-    return Duel.GetCounter(0,1,1,0x1149)*-300
+    return Duel.GetCounter(0,1,1,0x1149)*-200
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end
