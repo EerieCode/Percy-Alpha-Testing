@@ -5,14 +5,14 @@ function s.initial_effect(c)
 	c:EnableReviveLimit()
 	aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_BEAST),3,nil,s.matcheck)
 	--atk
-	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_SINGLE)
-	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e3:SetCode(EFFECT_UPDATE_ATTACK)
-	e3:SetRange(LOCATION_MZONE)
-	e3:SetCondition(s.atkcon)
-	e3:SetValue(3000)
-	c:RegisterEffect(e3)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e1:SetCode(EFFECT_UPDATE_ATTACK)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCondition(s.atkcon)
+	e1:SetValue(3000)
+	c:RegisterEffect(e1)
 	--indes
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
@@ -39,16 +39,16 @@ function s.initial_effect(c)
 	e4:SetOperation(s.spop)
 	c:RegisterEffect(e4)
 end
-c29432790.listed_names={90011152}
+s.listed_names={90011152}
 function s.matcheck(g,lc,tp)
 	return g:IsExists(Card.IsLinkSetCard,1,nil,0xf)
 end
-function c40522482.ffilter(c)
+function s.ffilter(c)
 	return c:IsFaceup() and c:IsCode(90011152)
 end
 function s.atkcon(e)
 	local fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
-	return fc and c40522482.ffilter(fc)
+	return fc and s.ffilter(fc)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local dam=Duel.GetBattleDamage(tp)
