@@ -1,5 +1,5 @@
 --剛炎の剣士
---
+--Mighty Flame Swordsman
 --Scripted by Eerie Code
 local s,id=GetID()
 function s.initial_effect(c)
@@ -9,7 +9,7 @@ function s.initial_effect(c)
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetCode(EFFECT_UPDATE_ATTACK)
-    e1:SetValue(300)
+    e1:SetValue(500)
     e1:SetRange(LOCATION_MZONE)
     e1:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
     e1:SetTarget(aux.TargetBoolFunction(Card.IsRace,RACE_WARRIOR))
