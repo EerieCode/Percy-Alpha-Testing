@@ -49,7 +49,7 @@ function s.initial_effect(c)
     e5:SetOperation(s.penop)
     c:RegisterEffect(e5)
 end
-s.counter_add_list={0x149}
+s.counter_add_list={0x1149}
 function s.ffilter(c,fc,sumtype,tp)
     return c:IsAttribute(ATTRIBUTE_DARK,fc,sumtype,tp) and c:IsType(TYPE_PENDULUM,fc,sumtype,tp)
 end
@@ -61,20 +61,20 @@ function s.cop(e,tp,eg,ep,ev,re,r,rp)
     if not c:IsRelateToEffect(e) then return end
     local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_MZONE,nil)
     for tc in aux.Next(g) do
-        tc:AddCounter(0x149,1)
+        tc:AddCounter(0x1149,1)
     end
 end
 function s.acop(e,tp,eg,ep,ev,re,r,rp)
 	local ct=eg:FilterCount(Card.IsPreviousLocation,nil,LOCATION_ONFIELD)
     if ct>0 then
-        e:GetHandler():AddCounter(0x149,ct)
+        e:GetHandler():AddCounter(0x1149,ct)
     end
 end
 function s.atktg(e,c)
     return not (c:IsAttribute(ATTRIBUTE_DARK) and c:IsRace(RACE_DRAGON))
 end
 function s.atkval(e,c)
-    return Duel.GetCounter(0,1,1,0x149)*-300
+    return Duel.GetCounter(0,1,1,0x1149)*-300
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end
