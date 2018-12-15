@@ -1,4 +1,5 @@
---Fusion DEstiny
+-- フュージョン・デステニー
+-- Fusion DEstiny
 local s,id=GetID()
 function s.initial_effect(c)
 	--activate
@@ -7,28 +8,9 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCountLimit(1,id+EFFECT_COUNT_CODE_OATH)
-	e1:SetCost(s.cost)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
-end
-function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetActivityCount(tp,ACTIVITY_SUMMON)==0 and Duel.GetActivityCount(tp,ACTIVITY_SPSUMMON)==0 end
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_CANNOT_SUMMON)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_OATH)
-	e1:SetTargetRange(1,0)
-	e1:SetReset(RESET_PHASE+PHASE_END)
-	Duel.RegisterEffect(e1,tp)
-	local e2=e1:Clone()
-	e2:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
-	e2:SetLabelObject(e)
-	e2:SetTarget(s.splimit)
-	Duel.RegisterEffect(e2,tp)
-end
-function s.splimit(e,c,sump,sumtype,sumpos,targetp,se)
-	return se~=e:GetLabelObject()
 end
 function s.filter0(c)
 	return c:IsType(TYPE_MONSTER) and c:IsCanBeFusionMaterial() and c:IsAbleToGrave()
@@ -60,6 +42,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local mg1=Duel.GetFusionMaterial(tp):Filter(s.filter1,nil,e)
 	local mg2=Duel.GetMatchingGroup(s.filter0,tp,LOCATION_DECK,0,nil)
 	mg1:Merge(mg2)
@@ -90,31 +73,40 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			local fop=ce:GetOperation()
 			fop(ce,e,tp,tc,mat2)
 		end
+		tc:RegisterFlagEffect(id,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,2)
 		tc:CompleteProcedure()
-		local e1=Effect.CreateEffect(e:GetHandler())
-		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		e1:SetCode(EVENT_PHASE+PHASE_END)
-		e1:SetCountLimit(1)
-		e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-		if Duel.GetTurnPlayer()==tp then
-			e1:SetLabel(Duel.GetTurnCount()+2)
-		else
-			e1:SetLabel(Duel.GetTurnCount()+1)
-		end
-		e1:SetLabelObject(tc)
+		
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+		e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+		e1:SetTargetRange(1,0)
+		e1:SetTarget(s.splimit)
 		e1:SetReset(RESET_PHASE+PHASE_END)
-		e1:SetCondition(s.descon)
-		e1:SetOperation(s.desop)
 		Duel.RegisterEffect(e1,tp)
+		
+		local e2=Effect.CreateEffect(c)
+		e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e2:SetCode(EVENT_PHASE+PHASE_END)
+		e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+		e2:SetCondition(s.descon)
+		e2:SetOperation(s.desop)
+		e2:SetReset(RESET_PHASE+PHASE_END,2)
+		e2:SetCountLimit(1)
+		e2:SetLabel(Duel.GetTurnCount())
+		e2:SetLabelObject(tc)
+		Duel.RegisterEffect(e2,tp)
+	
 	end
 end
-
+function s.splimit(e,c)
+	return c:IsSetCard(0x8) and c:IsAttribute(ATTRIBUTE_DARK)
+end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
-	return Duel.GetTurnCount()==e:GetLabel()
+	return Duel.GetTurnCount()~=e:GetLabel() and tc:GetFlagEffect(id)~=0
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
 	Duel.Destroy(tc,REASON_EFFECT)
 end
-
