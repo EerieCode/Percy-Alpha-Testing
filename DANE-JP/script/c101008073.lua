@@ -15,6 +15,7 @@ function s.initial_effect(c)
     e2:SetCategory(CATEGORY_TOHAND)
     e2:SetType(EFFECT_TYPE_QUICK_O)
     e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetRange(LOCATION_MZONE)
     e2:SetCondition(s.spcon)
     e2:SetCost(aux.bfgcost)
     e2:SetTarget(s.sptg)
@@ -35,21 +36,22 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
     return Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>0
 end
 function s.spfilter(c,e,tp,code)
-    return c:IsSetCard(0xd9) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(code)
+    return c:IsSetCard(0x109) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(code)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-        and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND,0,1,nil,e,tp,e:GetHandler():GetCode()) end
+        and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp,e:GetHandler():GetCode()) end
     Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-    local g=Duel.GetMatchingGroup(tp,s.spfilter,tp,LOCATION_HAND,0,nil,e,tp,e:GetHandler():GetCode())
+	local c=e:GetHandler()
+    local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_DECK,0,nil,e,tp,c:GetCode())
     if #g>0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
         local sg=g:Select(tp,1,1,nil)
         Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
     end
-    local e1=Effect.CreateEffect(e:GetHandler())
+    local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
     e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
