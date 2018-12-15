@@ -39,7 +39,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.GetFlagEffect(tp,id)==0 end
-    Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0)
+    Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0,1)
 end
 function s.spfilter(c,e,tp)
     return c:IsSetCard(0x108) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
@@ -64,7 +64,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
             e1:SetLabel(nseq+16)
             e1:SetOperation(s.disop)
             e1:SetReset(RESET_PHASE+PHASE_END)
-            Duel.RegisterEffect(tp,e1)
+            Duel.RegisterEffect(e1,tp)
         end
     end
 end
