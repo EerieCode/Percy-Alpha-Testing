@@ -32,6 +32,16 @@ function s.initial_effect(c)
 	e3:SetOperation(s.disop)
 	e3:SetReset(RESET_PHASE+PHASE_END)
 	c:RegisterEffect(e3)
+	--to hand
+    local e4=Effect.CreateEffect(c)
+    e4:SetCategory(CATEGORY_TOHAND)
+    e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+    e4:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+    e4:SetCode(EVENT_DESTROYED)
+    e4:SetCondition(s.thcon)
+    e4:SetTarget(s.thtg)
+    e4:SetOperation(s.thop)
+    c:RegisterEffect(e4)
 end
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	if rp==tp or not re:IsHasProperty(EFFECT_FLAG_CARD_TARGET) then return false end
@@ -63,4 +73,24 @@ function s.discon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateEffect(ev)
+end
+function s.thcon(e,tp,eg,ep,ev,re,r,rp)
+    return bit.band(r,REASON_EFFECT+REASON_BATTLE)~=0 and e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD)
+end
+function s.thfilter(c,ec)
+    return c:IsLevel(9) and c:IsAbleToHand() 
+        and c:GetOriginalAttribute()~=ec:GetOriginalAttribute() 
+        and c:GetOriginalRace()~=ec:GetOriginalRace()
+end
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+    if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_GRAVE,0,1,nil,e:GetHandler()) end
+    Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_GRAVE)
+end
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
+    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+    local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.thfilter),tp,LOCATION_GRAVE,0,1,1,nil,e:GetHandler())
+    if #g>0 then
+        Duel.SendtoHand(g,nil,REASON_EFFECT)
+        Duel.ConfirmCards(1-tp,g)
+    end
 end
