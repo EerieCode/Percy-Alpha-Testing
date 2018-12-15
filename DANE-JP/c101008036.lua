@@ -32,6 +32,10 @@ function s.atkval(e,c)
     local g=Duel.GetMatchingGroup(s.atkfilter,e:GetHandlerPlayer(),LOCATION_MZONE,LOCATION_MZONE,nil,c)
     return g:GetSum(Card.GetLink)*500
 end
+function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
+    if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,2,REASON_COST) end
+    e:GetHandler():RemoveOverlayCard(tp,2,2,REASON_COST)
+end
 function s.spfilter(c,e,tp,ec)
     local zone=ec:GetToBeLinkedZone(c,tp)
     return zone~=0 and c:IsType(TYPE_LINK) and c:IsRace(RACE_CYBERSE) and c:GetLink()==4 
