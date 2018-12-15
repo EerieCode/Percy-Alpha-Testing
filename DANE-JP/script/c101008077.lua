@@ -26,16 +26,18 @@ end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	if not Duel.NegateEffect(ev) then return end
 	local g=Duel.GetMatchingGroup(s.filter,tp,0,LOCATION_HAND+LOCATION_DECK,nil,re:GetHandler():GetOriginalCode())
-	local hg=Duel.GetFieldGroup(tp,0,LOCATION_HAND)
+	local hg=Duel.GetMatchingGroup(Card.IsAbleToRemove,tp,0,LOCATION_HAND,nil)
 	local rc=0
 	if #g>0 and Duel.SelectYesNo(1-tp,aux.Stringid(id,0)) then
+		Duel.BreakEffect()
 		Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_REMOVE)
 		local sg=g:Select(1-tp,1,1,nil)
 		rc=Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
 	end
-	if rc==0 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
+	if rc==0 and #hg>0 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
+		Duel.BreakEffect()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-		local sg=hg:Select(tp,1,1,nil)
+		local sg=hg:g:RandomSelect(tp,1)
 		Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
 	end
 end
