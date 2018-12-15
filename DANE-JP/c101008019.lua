@@ -9,7 +9,7 @@ function s.initial_effect(c)
 	e1:SetCategory(CATEGORY_DISABLE+CATEGORY_DESTROY)
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EVENT_CHAINING)
-	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL+EFFECT_FLAG_SET_AVAILABLE)
+	e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCondition(s.discon)
 	e1:SetCost(s.discost)
@@ -24,12 +24,12 @@ function s.initial_effect(c)
 	e2:SetOperation(s.flipop)
 	c:RegisterEffect(e2)
 	--disable
-	local e3=Effect.CreateEffect(e:GetHandler())
+	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e3:SetCode(EVENT_CHAIN_SOLVING)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetCondition(s.discon)
-	e3:SetOperation(s.disop)
+	e3:SetCondition(s.discon2)
+	e3:SetOperation(s.disop2)
 	e3:SetReset(RESET_PHASE+PHASE_END)
 	c:RegisterEffect(e3)
 	--to hand
@@ -68,10 +68,10 @@ end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1)
 end
-function s.discon(e,tp,eg,ep,ev,re,r,rp)
+function s.discon2(e,tp,eg,ep,ev,re,r,rp)
 	return re:IsActiveType(TYPE_MONSTER) and rp==1-tp and e:GetHandler():GetFlagEffect(id)~=0
 end
-function s.disop(e,tp,eg,ep,ev,re,r,rp)
+function s.disop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateEffect(ev)
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
