@@ -24,7 +24,7 @@ function s.initial_effect(c)
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,1))
 	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e3:SetRange(LOCATION_GRAVE)
 	e3:SetCode(EVENT_PHASE+PHASE_STANDBY)
 	e3:SetCondition(s.spcon)
@@ -42,7 +42,7 @@ function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,PLAYER_ALL,1)
 end
 function s.drop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Draw(tp,e:GetLabel(),REASON_EFFECT)
+	Duel.Draw(tp,1,REASON_EFFECT)
 	Duel.Draw(1-tp,1,REASON_EFFECT)
 end
 
@@ -69,29 +69,12 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and Duel.SpecialSummon(c,1,tp,tp,false,false,POS_FACEUP)~=0 then
-		local e2=Effect.CreateEffect(e:GetHandler())
-		e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		e2:SetCode(EVENT_PHASE+PHASE_END)
-		e2:SetCountLimit(1)
-		e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-		e2:SetLabel(Duel.GetTurnCount()+1)
-		e2:SetLabelObject(c)
-		e2:SetCondition(s.descon)
-		e2:SetOperation(s.desop)
-		Duel.RegisterEffect(e2,tp)
-		
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_LEAVE_FIELD_REDIRECT)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		e1:SetReset(RESET_EVENT+0x47e0000)
+		e1:SetValue(LOCATION_REMOVED)
+		c:RegisterEffect(e1,true)
 	end
-end
-function s.descon(e,tp,eg,ep,ev,re,r,rp)
-	local tc=e:GetLabelObject()
-	if tc:GetFlagEffect(id+100)~=0 then
-		return Duel.GetTurnCount()==e:GetLabel()
-	else
-		e:Reset()
-		return false
-	end
-end
-function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=e:GetLabelObject()
-	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 end
