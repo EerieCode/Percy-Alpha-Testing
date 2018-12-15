@@ -91,11 +91,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			fop(ce,e,tp,tc,mat2)
 		end
 		tc:CompleteProcedure()
-		if Duel.GetTurnPlayer()==tp then
-			e2:SetLabel(Duel.GetTurnCount()+2)
-		else
-			e2:SetLabel(Duel.GetTurnCount()+1)
-		end
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		e1:SetCode(EVENT_PHASE+PHASE_END)
