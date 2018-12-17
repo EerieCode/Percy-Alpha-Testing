@@ -4,8 +4,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
-	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsLinkSetCard,0x39),2)
-	--change the setcode in the line above to match "Cursed Eyes"
+	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsLinkSetCard,0x226),2)
   	--effect gain
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -56,7 +55,7 @@ end
 function s.descond(e)
 	local c=e:GetHandler()
 	local eg=c:GetEquipGroup()
-	return #eg>0 and eg:IsExists(Card.IsCode,1,nil,22046459)
+	return #eg>0 and eg:IsExists(Card.IsCode,1,nil,100412032)
 	--this needs the update for the Cursed equip spell it should check, this one is Megamorph
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
