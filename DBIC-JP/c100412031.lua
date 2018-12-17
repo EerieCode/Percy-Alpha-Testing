@@ -56,14 +56,17 @@ function s.descond(e)
 	local c=e:GetHandler()
 	local eg=c:GetEquipGroup()
 	return #eg>0 and eg:IsExists(Card.IsCode,1,nil,100412032)
-	--this needs the update for the Cursed equip spell it should check, this one is Megamorph
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(1-tp) and chkc:IsOnField() end
 	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
-	e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END+RESET_SELF_TURN,0,2)
+	if Duel.GetCurrentPhase()==PHASE_STANDBY then
+		e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_STANDBY,0,2,Duel.GetTurnCount())
+	else
+		e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_STANDBY,0,1)
+	end
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
@@ -73,7 +76,8 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.discond(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():GetFlagEffect(id)~=0
+	local label=e:GetHandler():GetFlagEffectLabel(id)
+	return label and label~=Duel.GetTurnCount()
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
@@ -82,11 +86,12 @@ function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.ngtfilt(c,e)
 	local lg=e:GetHandler():GetLinkedGroup()
-	return c:IsType(TYPE_EFFECT) and lg:IsContains(c)
+	return c:IsType(TYPE_EFFECT) and c:IsFaceup() and not c:IsDisabled() and lg:IsContains(c)
 end
 function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	local lg=e:GetHandler():GetLinkedGroup()
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	Duel.Hint(HINT_SELECTMSG,tp,560)
+	--!system 560 Select
 	local g=Duel.SelectMatchingCard(tp,s.ngtfilt,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil,e,lg)
 	if g:GetCount()>0 then
 		local tc=g:GetFirst()

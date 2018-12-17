@@ -2,7 +2,7 @@
 --Cursed Eye of Selen
 --scripted by Naim
 local s,id=GetID()
-function c100412032.initial_effect(c)
+function s.initial_effect(c)
 	aux.AddEquipProcedure(c,nil,aux.FilterBoolFunction(Card.IsSetCard,0x226))
 	--battle indestructable
 	local e1=Effect.CreateEffect(c)
@@ -43,7 +43,7 @@ function c100412032.initial_effect(c)
     c:RegisterEffect(e5)
 	--set
 	local e6=Effect.CreateEffect(c)
-	e6:SetDescription(aux.Stringid(99004583,0))
+	e6:SetDescription(aux.Stringid(id,1))
 	e6:SetType(EFFECT_TYPE_IGNITION)
 	e6:SetRange(LOCATION_GRAVE)
 	e6:SetCountLimit(1,id)
