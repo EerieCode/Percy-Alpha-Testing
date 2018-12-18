@@ -1,4 +1,5 @@
---Pendulum of the Soul
+--魂のペンデュラム
+--Pendulum of Souls
 --scripted started by andré
 local s,id=GetID()
 function s.initial_effect(c)
@@ -35,7 +36,7 @@ function s.initial_effect(c)
 	e4:SetTarget(s.iatarget)
 	e4:SetValue(s.iavalue)
 	c:RegisterEffect(e4)
-	--additional pendulum summon because lul
+	--additional pendulum summon
 	local e5=Effect.CreateEffect(c)
 	e5:SetDescription(aux.Stringid(id,3))
 	e5:SetType(EFFECT_TYPE_IGNITION)
@@ -64,7 +65,7 @@ function s.cpsoperation(e,tp,eg,ep,ev,re,r,rp)
 	for tc in aux.Next(tg) do
 		Duel.HintSelection(Group.FromCards(tc))
 		local scale = s.getscale(tc)
-		local opt = (scale == 1) and 1 or 2
+		local opt = (scale <= 1) and 1 or 2
 		if opt == 2 then
 			opt = Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,2))
 		else
@@ -123,7 +124,7 @@ function s.checkop(e,tp)
 	local lpz=Duel.GetFieldCard(tp,LOCATION_PZONE,0)
 	if lpz~=nil and lpz:GetFlagEffect(id)<=0 then
 		local e1=Effect.CreateEffect(e:GetHandler())
-		e1:SetDescription(aux.Stringid(id,3))
+		e1:SetDescription(aux.Stringid(id,4))
 		e1:SetType(EFFECT_TYPE_FIELD)
 		e1:SetCode(EFFECT_SPSUMMON_PROC_G)
 		e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
