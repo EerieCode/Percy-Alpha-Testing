@@ -86,7 +86,7 @@ function s.cpsoperation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.acotcfilter(c,tp)
-	return c:IsType(TYPE_PENDULUM) and c:IsControler(tp) and c:IsSummonType(SUMMON_TYPE_PENDULUM)
+	return c:IsType(TYPE_PENDULUM) and c:GetSummonPlayer() == tp and c:IsSummonType(SUMMON_TYPE_PENDULUM)
 end
 function s.acotccondition(e,tp,eg,ep,ev,re,r,rp)
 	return eg and eg:IsExists(s.acotcfilter,1,nil,tp)
