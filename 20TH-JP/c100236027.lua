@@ -40,6 +40,7 @@ function s.initial_effect(c)
 	e5:SetDescription(aux.Stringid(id,3))
 	e5:SetType(EFFECT_TYPE_IGNITION)
 	e5:SetRange(LOCATION_SZONE)
+	e5:SetCondition(s.apscondition)
 	e5:SetCost(s.apscost)
 	e5:SetOperation(s.apsoperation)
 	c:RegisterEffect(e5)
@@ -120,7 +121,7 @@ function s.apsoperation(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.checkop(e,tp)
 	local lpz=Duel.GetFieldCard(tp,LOCATION_PZONE,0)
-	if lpz~=nil and lpz:GetFlagEffect(29432356)<=0 then
+	if lpz~=nil and lpz:GetFlagEffect(id)<=0 then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetDescription(aux.Stringid(id,3))
 		e1:SetType(EFFECT_TYPE_FIELD)
@@ -132,7 +133,7 @@ function s.checkop(e,tp)
 		e1:SetValue(SUMMON_TYPE_PENDULUM)
 		e1:SetReset(RESET_PHASE+PHASE_END)
 		lpz:RegisterEffect(e1)
-		lpz:RegisterFlagEffect(29432356,RESET_PHASE+PHASE_END,0,1)
+		lpz:RegisterFlagEffect(id,RESET_PHASE+PHASE_END,0,1)
 	end
 end
 function s.pencon(e,c,og)
@@ -214,9 +215,9 @@ function s.penop(e,tp,eg,ep,ev,re,r,rp,c,sg,og)
 		end
 	end
 	if sg:GetCount()>0 then
-	Duel.Hint(HINT_CARD,0,id)
-	Duel.RegisterFlagEffect(tp,29432356,RESET_PHASE+PHASE_END+RESET_SELF_TURN,0,1)
-	Duel.HintSelection(Group.FromCards(c))
-	Duel.HintSelection(Group.FromCards(rpz))
+		Duel.Hint(HINT_CARD,0,id)
+		Duel.RegisterFlagEffect(tp,29432356,RESET_PHASE+PHASE_END+RESET_SELF_TURN,0,1)
+		Duel.HintSelection(Group.FromCards(c))
+		Duel.HintSelection(Group.FromCards(rpz))
 	end
 end
