@@ -49,7 +49,7 @@ function s.cfilter(c,e,tp,ft,zone)
 	local lv=c:GetLevel()
 	return (c:IsSetCard(0xc2) or ((c:GetLevel()==7 or c:GetLevel()==8) and c:IsRace(RACE_DRAGON))) 
 		and c:IsType(TYPE_SYNCHRO) and lv>0 and c:IsAbleToRemoveAsCost() and ft>0
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0,TYPES_TOKEN,c:GetAttack(),c:GetDefense(),lv,c:GetRace(),c:GetAttribute())
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0,TYPE_TOKEN,c:GetAttack(),c:GetDefense(),lv,c:GetRace(),c:GetAttribute())
 end
 function s.tktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
