@@ -49,30 +49,31 @@ function s.cfilter(c,e,tp,ft,zone)
 	local lv=c:GetLevel()
 	return (c:IsSetCard(0xc2) or ((c:GetLevel()==7 or c:GetLevel()==8) and c:IsRace(RACE_DRAGON))) 
 		and c:IsType(TYPE_SYNCHRO) and lv>0 and c:IsAbleToRemoveAsCost() and ft>0
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0,TYPE_TOKEN+TYPE_MONSTER+TYPE_NORMAL,c:GetAttack(),c:GetDefense(),lv,c:GetRace(),c:GetAttribute())
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0,TYPE_TOKEN+TYPE_MONSTER+TYPE_NORMAL,c:GetAttack(),c:GetDefense(),lv,c:GetRace(),c:GetAttribute()) and Duel.GetMZoneCount(tp,nil,tp,LOCATION_REASON_TOFIELD,zone)>0
 end
 function s.tktg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
+	local ft, zone = Duel.GetLocationCount(tp,LOCATION_MZONE), e:GetHandler():GetLinkedZone()&0x1f
 	if chk==0 then
 		if e:GetLabel()~=100 then return false end
 		e:SetLabel(0)
-		return ft>-1 and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_EXTRA,0,1,nil,e,tp,ft)
+		return ft>-1 and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_EXTRA,0,1,nil,e,tp,ft,zone)
 	end
 	e:SetLabel(0)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,ft)
+	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,ft,zone)
 	local tc=g:GetFirst()
 	Duel.Remove(tc,POS_FACEUP,REASON_COST)
 	Duel.SetTargetCard(tc)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function s.tkop(e,tp,eg,ep,ev,re,r,rp)
+	local zone = e:GetHandler():GetLinkedZone()&0x1f
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsFaceup() and tc:IsRelateToEffect(e) 
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0,TYPE_TOKEN+TYPE_MONSTER+TYPE_NORMAL,tc:GetAttack(),tc:GetDefense(),tc:GetLevel(),tc:GetRace(),tc:GetAttribute()) then
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0,TYPE_TOKEN+TYPE_MONSTER+TYPE_NORMAL,tc:GetAttack(),tc:GetDefense(),tc:GetLevel(),tc:GetRace(),tc:GetAttribute()) and Duel.GetMZoneCount(tp,nil,tp,LOCATION_REASON_TOFIELD,zone)>0 then
 		local token=Duel.CreateToken(tp,id+100)
-		Duel.SpecialSummonStep(token,0,tp,tp,false,false,POS_FACEUP)
+		Duel.SpecialSummonStep(token,0,tp,tp,false,false,POS_FACEUP,zone)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_SET_BASE_ATTACK)
@@ -96,7 +97,7 @@ function s.tkop(e,tp,eg,ep,ev,re,r,rp)
 		e5:SetValue(tc:GetAttribute())
 		token:RegisterEffect(e5)
 		Duel.SpecialSummonComplete()
-	end	
+	end 
 end
 function s.tgfilter(c)
 	return c:IsFaceup() and c:IsCode(id+100)
