@@ -62,7 +62,7 @@ function s.tktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
 	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,ft)
 	local tc=g:GetFirst()
-	Duel.Remove(tc,REASON_COST,POS_FACEUP)
+	Duel.Remove(tc,POS_FACEUP,REASON_COST)
 	Duel.SetTargetCard(tc)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
