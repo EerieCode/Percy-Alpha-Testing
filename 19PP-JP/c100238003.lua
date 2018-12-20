@@ -56,11 +56,11 @@ function s.tktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
 		if e:GetLabel()~=100 then return false end
 		e:SetLabel(0)
-		return ft>-1 and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil,e,tp,ft)
+		return ft>-1 and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_EXTRA,0,1,nil,e,tp,ft)
 	end
 	e:SetLabel(0)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_MZONE,0,1,1,nil,e,tp,ft)
+	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,ft)
 	local tc=g:GetFirst()
 	Duel.Remove(tc,REASON_COST,POS_FACEUP)
 	Duel.SetTargetCard(tc)
@@ -95,7 +95,8 @@ function s.tkop(e,tp,eg,ep,ev,re,r,rp)
 		e5:SetCode(EFFECT_CHANGE_ATTRIBUTE)
 		e5:SetValue(tc:GetAttribute())
 		token:RegisterEffect(e5)
-	end
+		Duel.SpecialSummonComplete()
+	end	
 end
 function s.tgfilter(c)
 	return c:IsFaceup() and c:IsCode(id+100)
