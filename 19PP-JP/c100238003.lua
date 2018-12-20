@@ -1,6 +1,7 @@
 --決闘竜 デュエル・リンク・ドラゴン
 --Duel Link Dragon
 --Scripted by AlphaKretin
+--Currently unimplementable - needs to check token can be summoned to pointed zone
 local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
