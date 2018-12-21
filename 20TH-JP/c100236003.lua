@@ -19,14 +19,34 @@ function s.drcon(e,tp,eg,ep,ev,re,r,rp)
 	local mg=g and g:GetMaxGroup(Card.GetAttack)
 	return Duel.GetLP(tp)<Duel.GetLP(1-tp) and mg and mg:IsExists(Card.IsControler,1,nil,1-tp)
 end
-
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>2 end
+	if chk==0 then
+		local g=Duel.GetMatchingGroup(aux.NOT(Card.IsPublic),tp,LOCATION_DECK,0,nil)
+		--if it can be revealed, aka, convulsion of nature is not there
+		return Duel.IsPlayerCanDraw(tp,1)
+			and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>2
+			and g:GetClassCount(Card.GetCode)>=3 --if at least 3 cards with different names
+	end
 	Duel.SetTargetPlayer(tp)
 	Duel.SetTargetParam(1)
 	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
 end
 function s.drop(e,tp,eg,ep,ev,re,r,rp,chk)
+	local g=Duel.GetMatchingGroup(aux.NOT(Card.IsPublic),tp,LOCATION_DECK,0,nil)
+	if g:GetClassCount(Card.GetCode)>=3 then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
+		local sg1=g:Select(tp,1,1,nil)
+		g:Remove(Card.IsCode,nil,sg1:GetFirst():GetCode())
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
+		local sg2=g:Select(tp,1,1,nil)
+		g:Remove(Card.IsCode,nil,sg2:GetFirst():GetCode())
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
+		local sg3=g:Select(tp,1,1,nil)
+		sg1:Merge(sg2)
+		sg1:Merge(sg3)
+		Duel.ConfirmCards(1-tp,sg1)
+		Duel.ShuffleDeck(tp)
+	end
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	Duel.Draw(p,d,REASON_EFFECT)
 end
