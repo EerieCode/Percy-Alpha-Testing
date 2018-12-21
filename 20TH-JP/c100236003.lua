@@ -1,6 +1,6 @@
 --運命のドロー
 --Draw of Destiny
---Scripted by AlphaKretin and [whoever finished it]
+--Scripted by AlphaKretin, Naim and andré
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate
@@ -46,15 +46,20 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp,chk)
 		sg1:Merge(sg2)
 		sg1:Merge(sg3)
 		Duel.ConfirmCards(1-tp,sg1)
-		--Duel.SortDecktop(tp,tp,3)
-		Duel.SendtoDeck(sg1,nil,0,REASON_EFFECT)
+		Duel.ShuffleDeck(tp)
+		while (#sg1>0) do
+			dg=sg1:RandomSelect(tp,1)
+			sg1:Sub(dg)
+			Duel.MoveSequence(dg:GetFirst(),0)
+		end
 		Duel.BreakEffect()
 		Duel.Draw(p,d,REASON_EFFECT)
 	end
+	if not e:IsHasType(EFFECT_TYPE_ACTIVATE) then return end
 	--set limit (from Left Arm offerings)
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_OATH)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e1:SetCode(EFFECT_CANNOT_SSET)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	e1:SetTargetRange(1,0)
