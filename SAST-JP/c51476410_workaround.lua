@@ -28,99 +28,99 @@ function s.initial_effect(c)
 	e2:SetTarget(s.atktg)
 	e2:SetOperation(s.atkop)
 	c:RegisterEffect(e2)
-	--workaround
-	if not ClockLizardSubstituteGroup then
-		ClockLizardSubstituteGroup = Group.CreateGroup()
-		ClockLizardSubstituteGroup:KeepAlive()
-		local ge1=Effect.CreateEffect(c)
-		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge1:SetCode(EVENT_ADJUST)
-		ge1:SetOperation(s.subop)
-		Duel.RegisterEffect(ge1,0)
-	end
-	local isexist=Duel.IsExistingMatchingCard
-		Duel.IsExistingMatchingCard=function(f,tp,int_s,int_o,count,ex,...)
-		local arg={...}
-		if arg~=nil then
-			return isexist(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
-		else
-			return isexist(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
-		end
-	end
-	local isexisttg=Duel.IsExistingTarget
-		Duel.IsExistingTarget=function(f,tp,int_s,int_o,count,ex,...)
-		local arg={...}
-		if arg~=nil then
-			return isexisttg(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
-		else
-			return isexisttg(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
-		end
-	end
-	local getmatchg=Duel.GetMatchingGroup
-		Duel.GetMatchingGroup=function(f,tp,int_s,int_o,ex,...)
-		local arg={...}
-		if arg~=nil then
-			return getmatchg(f,tp,int_s,int_o,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
-		else
-			return getmatchg(f,tp,int_s,int_o,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
-		end
-	end
-	local getfg=Duel.GetFieldGroup
-		Duel.GetFieldGroup=function(tp,int_s,int_o)
-		return getfg(tp,int_s,int_o)-ClockLizardSubstituteGroup
-	end
-	local getfgc=Duel.GetFieldGroupCount
-		Duel.GetFieldGroupCount=function(tp,int_s,int_o)
-		return #Duel.GetFieldGroup(tp,int_s,int_o)
-	end
-	local getmatchgc=Duel.GetMatchingGroupCount
-		Duel.GetMatchingGroupCount=function(f,tp,int_s,int_o,ex,...)
-		local arg={...}
-		return #Duel.GetMatchingGroup(f,tp,int_s,int_o,ex,arg)
-	end
-	local getfmatch=Duel.GetFirstMatchingCard
-		Duel.GetFirstMatchingCard=function(f,tp,int_s,int_o,ex,...)
-		local arg={...}
-		return Duel.GetMatchingGroup(f,tp,int_s,int_o,ex,arg):GetFirst()
-	end
-	local selmatchc=Duel.SelectMatchingCard
-		Duel.SelectMatchingCard=function(sp,f,tp,int_s,int_o,min,max,ex, ...)
-		local arg={...}
-		if arg~=nil then
-			return selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
-		else
-			return selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
-		end
-	end
-	local gettgc=Duel.GetTargetCount
-		Duel.GetTargetCount=function(f,tp,int_s,int_o,ex,...)
-		local arg={...}
-		return #Duel.GetTarget(f,tp,int_s,int_o,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,arg)
-	end
-	local seltg=Duel.SelectTarget
-		Duel.SelectTarget=function(sp,f,tp,int_s,int_o,min,max,ex, ...)
-		local arg={...}
-		if arg~=nil then
-			local sel=selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
-			Duel.SetTargetCard(sel)
-			return sel
-		else
-			local sel=selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
-			Duel.SetTargetCard(sel)
-			return sel
-		end
-	end
+    --workaround
+    if not ClockLizardSubstituteGroup then
+        ClockLizardSubstituteGroup = Group.CreateGroup()
+        ClockLizardSubstituteGroup:KeepAlive()
+        local ge1=Effect.CreateEffect(c)
+        ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+        ge1:SetCode(EVENT_ADJUST)
+        ge1:SetOperation(s.subop)
+        Duel.RegisterEffect(ge1,0)
+    end
+    local isexist=Duel.IsExistingMatchingCard
+        Duel.IsExistingMatchingCard=function(f,tp,int_s,int_o,count,ex,...)
+        local arg={...}
+        if arg~=nil then
+            return isexist(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
+        else
+            return isexist(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
+        end
+    end
+    local isexisttg=Duel.IsExistingTarget
+        Duel.IsExistingTarget=function(f,tp,int_s,int_o,count,ex,...)
+        local arg={...}
+        if arg~=nil then
+            return isexisttg(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
+        else
+            return isexisttg(f,tp,int_s,int_o,count,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
+        end
+    end
+    local getmatchg=Duel.GetMatchingGroup
+        Duel.GetMatchingGroup=function(f,tp,int_s,int_o,ex,...)
+        local arg={...}
+        if arg~=nil then
+            return getmatchg(f,tp,int_s,int_o,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
+        else
+            return getmatchg(f,tp,int_s,int_o,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
+        end
+    end
+    local getfg=Duel.GetFieldGroup
+        Duel.GetFieldGroup=function(tp,int_s,int_o)
+        return getfg(tp,int_s,int_o)-ClockLizardSubstituteGroup
+    end
+    local getfgc=Duel.GetFieldGroupCount
+        Duel.GetFieldGroupCount=function(tp,int_s,int_o)
+        return #Duel.GetFieldGroup(tp,int_s,int_o)
+    end
+    local getmatchgc=Duel.GetMatchingGroupCount
+        Duel.GetMatchingGroupCount=function(f,tp,int_s,int_o,ex,...)
+        local arg={...}
+        return #Duel.GetMatchingGroup(f,tp,int_s,int_o,ex,table.unpack(arg))
+    end
+    local getfmatch=Duel.GetFirstMatchingCard
+        Duel.GetFirstMatchingCard=function(f,tp,int_s,int_o,ex,...)
+        local arg={...}
+        return Duel.GetMatchingGroup(f,tp,int_s,int_o,ex,table.unpack(arg)):GetFirst()
+    end
+    local selmatchc=Duel.SelectMatchingCard
+        Duel.SelectMatchingCard=function(sp,f,tp,int_s,int_o,min,max,ex, ...)
+        local arg={...}
+        if arg~=nil then
+            return selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
+        else
+            return selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
+        end
+    end
+    local gettgc=Duel.GetTargetCount
+        Duel.GetTargetCount=function(f,tp,int_s,int_o,ex,...)
+        local arg={...}
+        return gettgc(f,tp,int_s,int_o,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
+    end
+    local seltg=Duel.SelectTarget
+        Duel.SelectTarget=function(sp,f,tp,int_s,int_o,min,max,ex, ...)
+        local arg={...}
+        if arg~=nil then
+            local sel=selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup,table.unpack(arg))
+            Duel.SetTargetCard(sel)
+            return sel
+        else
+            local sel=selmatchc(sp,f,tp,int_s,int_o,min,max,ex and ClockLizardSubstituteGroup+ex or ClockLizardSubstituteGroup)
+            Duel.SetTargetCard(sel)
+            return sel
+        end
+    end
 end
 function s.subop(e,tp,eg,ep,ev,re,r,rp,chk)
-	for p=0,1 do
-		if Duel.IsExistingMatchingCard(Card.IsCode,p,0xff,0,1,nil,alias)
-			and Duel.GetFieldGroupCount(p,LOCATION_EXTRA,0)==0
-			and not ClockLizardSubstituteGroup:IsExists(Card.IsControler,1,nil,p) then
-			local sub=Duel.CreateToken(p,alias)
-			ClockLizardSubstituteGroup:AddCard(sub)
-			Duel.Sendto(sub,LOCATION_EXTRA,REASON_RULE)
-		end
-	end
+    for p=0,1 do
+        if Duel.IsExistingMatchingCard(Card.IsCode,p,0xff,0,1,nil,alias)
+            and Duel.GetFieldGroupCount(p,LOCATION_EXTRA,0)==0
+            and not ClockLizardSubstituteGroup:IsExists(Card.IsControler,1,nil,p) then
+            local sub=Duel.CreateToken(p,alias)
+            ClockLizardSubstituteGroup:AddCard(sub)
+            Duel.Sendto(sub,LOCATION_EXTRA,REASON_RULE)
+        end
+    end
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsReleasable() end
