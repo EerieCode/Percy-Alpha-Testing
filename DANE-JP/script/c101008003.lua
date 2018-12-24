@@ -1,4 +1,4 @@
---
+--転生炎獣フェネック
 --Salamangreat Fennec
 --Scripted by AlphaKretin
 local s,id=GetID()
