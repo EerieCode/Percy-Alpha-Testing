@@ -30,7 +30,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.cfilter(c,tp)
-	return c:IsControler(tp) and c:IsRace(RACE_CYBERSE) and c:IsSummonLocation(LOCATION_EXTRA) 
+	return c:GetPreviousControler()==tp and c:IsRace(RACE_CYBERSE) and c:GetSummonLocation()==LOCATION_EXTRA 
 		and (c:IsReason(REASON_BATTLE) or (c:IsReason(REASON_EFFECT) and c:GetReasonPlayer()==1-tp))
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
@@ -41,7 +41,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 end
-function s.sptg(e,tp,eg,ep,ev,re,r,rp)
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)~=0 then
 		local e1=Effect.CreateEffect(c)
@@ -54,11 +54,11 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
-	local rc=c:GetReasonCard()
-	return r==REASON_LINK and rc:IsRace(RACE_CYBERSE) and rc:IsLinkAbove(2)
+	local c=e:GetHandler()
+	return c:IsLocation(LOCATION_GRAVE) and r==REASON_LINK and c:IsRace(RACE_CYBERSE) and c:GetReasonCard():IsLinkAbove(2)
 end
 function s.thfilter(c)
-	return ((c:IsSetCard(0x119) and c:GetType()==TYPE_SPELL and c:IsAbleToHand()
+	return c:IsSetCard(0x119) and c:GetType()==TYPE_SPELL and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
