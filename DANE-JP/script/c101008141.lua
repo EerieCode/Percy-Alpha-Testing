@@ -54,9 +54,9 @@ end
 function s.dmgop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) and tc:IsControler(1-tp) then
-		local atk=tc:GetBaseAttack()
-		if atk<0 then atk=0 end
 		if Duel.Destroy(tc,REASON_EFFECT)~=0 then
+			local atk=tc:GetBaseAttack()
+			if atk<0 then atk=0 end
 			Duel.Damage(1-tp,atk,REASON_EFFECT)
 		end
 	end
