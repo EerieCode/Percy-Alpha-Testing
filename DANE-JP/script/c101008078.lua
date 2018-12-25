@@ -38,7 +38,7 @@ function s.initial_effect(c)
 	e4:SetTarget(aux.PersistentTargetFilter)
 	c:RegisterEffect(e4)
 	--cannot activate
-	local e5=Effect.CreateEffect(e:GetHandler())
+	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_FIELD)
 	e5:SetCode(EFFECT_CANNOT_TRIGGER)
 	e5:SetRange(LOCATION_SZONE)
@@ -71,10 +71,10 @@ end
 function s.tg(e,c)
 	return e:GetHandlerPlayer()
 end
-function s.descon2(e,tp,eg,ep,ev,re,r,rp)
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetHandler():GetFirstCardTarget()
 	return tc and eg:IsContains(tc)
 end
-function s.desop2(e,tp,eg,ep,ev,re,r,rp)
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Destroy(e:GetHandler(),REASON_EFFECT)
 end
