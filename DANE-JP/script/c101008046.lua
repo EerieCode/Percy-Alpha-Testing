@@ -74,7 +74,8 @@ function s.cfilter(c,tp,zone)
         and c:IsPreviousLocation(LOCATION_MZONE) and bit.extract(zone,seq)~=0
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-    return rp~=tp and eg:IsExists(s.cfilter,1,nil,tp,e:GetHandler():GetLinkedZone())
+	local zone=e:GetHandler():GetLinkedZone()
+    return eg:IsExists(s.cfilter,1,nil,tp,zone)
 end
 function s.spfilter(c,e,tp,attr)
     return c:IsSetCard(0xdc) and c:GetOriginalAttribute() & attr ~=0
@@ -84,7 +85,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
     local g=eg:Filter(s.cfilter,nil,tp,e:GetHandler():GetLinkedZone())
     local attr=0
     for tc in aux.Next(g) do
-        attr=attr & tc:GetOriginalAttribute()
+        attr=attr | tc:GetOriginalAttribute()
     end
     if chk==0 then
         return attr~=0 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
