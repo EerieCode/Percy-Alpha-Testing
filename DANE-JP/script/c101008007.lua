@@ -25,7 +25,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
 	e1:SetCode(EFFECT_CANNOT_BE_LINK_MATERIAL)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
 	e1:SetValue(s.synlimit)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+	e1:SetReset(RESET_EVENT+0xff0000)
 	c:RegisterEffect(e1)
 end
 function s.synlimit(e,c)
