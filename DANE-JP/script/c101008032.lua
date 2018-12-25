@@ -4,7 +4,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
-	aux.AddFusionProcMix(c,true,true,aux.FilterBoolFunctionEx(Card.IsType,TYPE_LINK),3)
+	aux.AddFusionProcMixN(c,true,true,aux.FilterBoolFunctionEx(Card.IsType,TYPE_LINK),3)
 	aux.AddContactFusion(c,s.contactfil,s.contactop,s.splimit)
 	--attack all
 	local e1=Effect.CreateEffect(c)
@@ -25,7 +25,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.splimit(e,se,sp,st)
-	return e:GetHandler():GetLocation()~=LOCATION_EXTRA 
+	return bit.band(st,SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION or e:GetHandler():GetLocation()~=LOCATION_EXTRA 
 end
 function s.contactfil(tp)
 	return Duel.GetReleaseGroup(tp)
@@ -44,7 +44,7 @@ end
 function s.descfilter(c,lk)
 	return c:IsType(TYPE_LINK) and c:GetLink()==lk and c:IsAbleToRemoveAsCost()
 end
-function s.descost(e,tp,eg,ep,ev,re,r,rp)
+function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=e:GetHandler():GetBattleTarget()
 	if chk==0 then return tc and tc:IsType(TYPE_LINK) and Duel.IsExistingMatchingCard(s.descfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,nil,tc:GetLink()) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
