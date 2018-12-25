@@ -32,7 +32,7 @@ function s.initial_effect(c)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	local at=Duel.GetAttacker()
-	return at:IsSummonType(SUMMON_TYPE_SPECIAL) not at:IsControler(tp)
+	return at:IsSummonType(SUMMON_TYPE_SPECIAL) and not at:IsControler(tp)
 end
 function s.cfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x103) and c:IsType(TYPE_MONSTER) and c:IsAbleToHandAsCost()
