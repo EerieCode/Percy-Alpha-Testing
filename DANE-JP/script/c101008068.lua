@@ -34,9 +34,10 @@ function s.initial_effect(c)
 		e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		e3:SetCode(EVENT_SSET)
 		e3:SetOperation(s.operation)
-		Duel.RegisterEffect(e3,0)
+		--Duel.RegisterEffect(e3,0)
 	end
 end
+s.act_turn=true
 function s.tgfilter(c)
 	return c:IsSetCard(0x103) and c:IsType(TYPE_MONSTER) and c:IsAbleToGrave()
 end
@@ -75,8 +76,22 @@ function s.disop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Destroy(eg,REASON_EFFECT)
 	end
 end
+function s.actcon(e)
+	return e:GetHandler():GetFlagEffect(id)~=0
+end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
-	for ec in aux.Next(eg:Filter(Card.IsCode,nil,id)) do
+	local g=eg:Filter(Card.IsCode,nil,id)
+	Debug.Message("Group count: "..#g)
+	for ec in aux.Next(g) do
+		if not re then
+			Debug.Message("No associated effect from re")
+		end
+		if not ec:GetReasonCard() then
+			Debug.Message("No associated card")
+		end
+		if not ec:GetReasonEffect() then
+			Debug.Message("No associated effect from function")
+		end
 		local e0=Effect.CreateEffect(ec)
 		e0:SetType(EFFECT_TYPE_SINGLE)
 		e0:SetCode(EFFECT_TRAP_ACT_IN_SET_TURN)
