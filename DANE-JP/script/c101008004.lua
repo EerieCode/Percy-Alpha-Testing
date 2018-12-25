@@ -30,7 +30,7 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
     if c:IsRelateToEffect(e) and Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)~=0
-        and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and eg:FilterCount(s.spcfilter,nil)>
+        and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and eg:FilterCount(s.spcfilter,nil)>1
         and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0,0x4011,0,0,1,RACE_DRAGON,ATTRIBUTE_DARK)
         and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
         Duel.BreakEffect()
