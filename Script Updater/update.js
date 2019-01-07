@@ -65,7 +65,8 @@ const CONST_MAP = {
     "1295111": "CARD_SALAMANGREAT_SANCTUARY",
     "100235086": "CARD_PSYFRAME_LAMBDA",
     "49036338": "CARD_PSYFRAME_DRIVER",
-    "100235056": "CARD_FIRE_FIST_EAGLE"
+    "100235056": "CARD_FIRE_FIST_EAGLE",
+    "80280737": "CARD_ASSAULT_MODE"
 };
 
 // updates new constants such as reset sums and common card IDs
@@ -73,6 +74,22 @@ async function updateConstants(file) {
     for (const key in CONST_MAP) {
         const reg = new RegExp(key, "g");
         file = file.replace(reg, CONST_MAP[key]);
+    }
+    return file;
+}
+
+const RegisterFlagRegex = i => new RegExp(":RegisterEffect\\((.+?),false," + i + "\\)", "g");
+
+const REGISTER_FLAG_MAP = {
+    1: "REGISTER_FLAG_DETACH_XMATERIAL",
+    2: "REGISTER_FLAG_CARDIAN_SPSUMMON",
+    4: "REGISTER_FLAG_THUNDRA_DISCARD"
+};
+
+async function updateRegisterFlags(file) {
+    for (const key in REGISTER_FLAG_MAP) {
+        const reg = RegisterFlagRegex(key);
+        file = file.replace(reg, ":RegisterEffect($1,false," + REGISTER_FLAG_MAP[key] + ")");
     }
     return file;
 }
@@ -101,7 +118,7 @@ const fs = require("fs").promises;
 
 const IN_DIR = "./script/";
 const OUT_DIR = "./newscript/";
-const UPDATE_FUNCS = [updateGetID, updateConstants, updateOperators]; // order of ID/constants matters if updating a card with an ID that is a constant
+const UPDATE_FUNCS = [updateGetID, updateConstants, updateOperators, updateRegisterFlags]; // order of ID/constants matters if updating a card with an ID that is a constant
 
 async function updateScript(fileName) {
     let file = await fs.readFile(IN_DIR + fileName, "utf8");
@@ -119,14 +136,15 @@ fs.readdir(IN_DIR)
         let yet = false;
         for (const fileName of files) {
             //console.log("Updating " + fileName + "!"); // disabled to prevent slowdown with many files
-            updateScript(fileName); // don't await, handle multiple files at once
-            if (!yet) {
-                i++;
-                if (i++ > thresh) {
-                    console.log("Halfway there!");
-                    yet = true;
+            updateScript(fileName).then(() => {
+                if (!yet) {
+                    i++;
+                    if (i++ > thresh) {
+                        console.log("Halfway there!");
+                        yet = true;
+                    }
                 }
-            }
+            }); // don't await, handle multiple files at once
         }
         console.log("Started all updates!");
     })
