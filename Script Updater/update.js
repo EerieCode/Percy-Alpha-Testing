@@ -114,22 +114,35 @@ async function updateOperators(file) {
     return file;
 }
 
-const fs = require("fs").promises;
+const fs = require("fs");
 
 const IN_DIR = "./script/";
 const OUT_DIR = "./newscript/";
 const UPDATE_FUNCS = [updateGetID, updateConstants, updateOperators, updateRegisterFlags]; // order of ID/constants matters if updating a card with an ID that is a constant
 
-async function updateScript(fileName) {
-    let file = await fs.readFile(IN_DIR + fileName, "utf8");
-    for (const func of UPDATE_FUNCS) {
-        file = await func(file, fileName);
-    }
-    await fs.writeFile(OUT_DIR + fileName, file, "utf8");
+function updateScript(fileName) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(IN_DIR + fileName, "utf8", async (err, file) => {
+            if (err) {
+                return reject(err);
+            }
+            for (const func of UPDATE_FUNCS) {
+                file = await func(file, fileName);
+            }
+            fs.writeFile(OUT_DIR + fileName, file, "utf8", e => {
+                if (e) {
+                    return reject(e);
+                }
+                resolve();
+            });
+        });
+    });
 }
 
-fs.readdir(IN_DIR)
-    .then(files => {
+fs.readdir(IN_DIR, (err, files) => {
+    if (err) {
+        console.error(err);
+    } else {
         console.log("Starting script update!");
         let i = 0;
         const thresh = files.length / 2;
@@ -147,5 +160,5 @@ fs.readdir(IN_DIR)
             }); // don't await, handle multiple files at once
         }
         console.log("Started all updates!");
-    })
-    .catch(console.error);
+    }
+});
