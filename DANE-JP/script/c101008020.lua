@@ -1,5 +1,5 @@
 --妖醒龍ラルバウール
---Fairy Dragon Larvawall
+--Fairy Dragon Larvalaur
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
