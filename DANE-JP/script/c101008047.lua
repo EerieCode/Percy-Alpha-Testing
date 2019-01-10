@@ -36,9 +36,9 @@ function s.initial_effect(c)
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_SINGLE)
 	e4:SetCode(EVENT_TO_GRAVE)
-	e4:SetCondition(s.scondition)
-	e4:SetTarget(s.starget)
-	e4:SetOperation(s.soperation)
+	e4:SetCondition(s.tdcondition)
+	e4:SetTarget(s.tdtarget)
+	e4:SetOperation(s.tdoperation)
 	c:RegisterEffect(e4)
 end
 function s.condition(e)
@@ -67,14 +67,14 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 		c:RegisterEffect(e1)
 	end
 end
-function s.scondition(e,tp,eg,ep,ev,re,r,rp)
+function s.tdcondition(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return c:IsLocation(LOCATION_GRAVE) and c:IsSummonType(SUMMON_TYPE_LINK) and rp~=tp
 end
-function s.starget(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.tdtarget(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToDeck,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
 end
-function s.soperation(e,tp,eg,ep,ev,re,r,rp)
+function s.tdoperation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
 	local g=Duel.SelectMatchingCard(tp,Card.IsAbleToDeck,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
 	if #g>0 then
