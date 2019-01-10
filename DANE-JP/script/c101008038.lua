@@ -5,7 +5,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:SetSPSummonOnce(id)
 	--xyz summon
-	aux.AddXyzProcedure(c,nil,8,2,s.ovfilter,aux.Stringid(id,0),3)
+	aux.AddXyzProcedure(c,nil,8,2,s.ovfilter,aux.Stringid(id,0),2)
 	c:EnableReviveLimit()
 	--on summon
 	local e1=Effect.CreateEffect(c)
@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e1:SetProperty(EFFECT_FLAG_DELAY)
 	e1:SetTarget(s.target)
-	e1:SetOpreation(s.operation)
+	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
 	--destroy replace
 	local e2=Effect.CreateEffect(c)
@@ -31,14 +31,15 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return s.tgtg(e,tp,eg,ep,ev,re,r,rp,0) or s.mattg(e,tp,eg,ep,ev,re,r,rp,0) end
 	local sel
 	if s.tgtg(e,tp,eg,ep,ev,re,r,rp,0) and s.mattg(e,tp,eg,ep,ev,re,r,rp,0) then
-		sel=Duel.SelectOption(tp,aux.Stringid(id,0),aux.Stringid(id,1))
+		sel=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,2))
 	elseif s.tgtg(e,tp,eg,ep,ev,re,r,rp,0) then
 		sel=0
+		Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,1))
 	else 
 		sel=1
+		Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,2))
 	end
 	e:SetLabel(sel)
-	Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(aux.Stringid(id,sel+1)))
 	if sel==0 then
 		s.tgtg(e,tp,eg,ep,ev,re,r,rp,1)
 	else
@@ -53,7 +54,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMarchingCard(Card.IsAbleToGrave,tp,0,LOCATION_ONFIELD,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToGrave,tp,0,LOCATION_ONFIELD,1,nil) end
 	e:SetCategory(CATEGORY_TOGRAVE)
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,0,0)
 end
@@ -69,7 +70,7 @@ end
 function s.mattg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:IsType(TYPE_XYZ) 
-		and Duel.IsExistingTarget(s.mtfilter,tp,LOCATION_REMOVED,0,1,nil) end
+		and Duel.IsExistingMatchingCard(s.mtfilter,tp,LOCATION_REMOVED,0,1,nil) end
 	e:SetCategory(0)
 end
 function s.matop(e,tp,eg,ep,ev,re,r,rp)
@@ -83,7 +84,7 @@ function s.repfilter(c,tp)
 	return c:IsControler(tp) and c:IsLocation(LOCATION_ONFIELD)
 		and c:IsReason(REASON_BATTLE+REASON_EFFECT) and not c:IsReason(REASON_REPLACE)
 end
-function s.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	local g=c:GetLinkedGroup()
 	if chk==0 then return eg:IsExists(s.repfilter,1,nil,tp) end
