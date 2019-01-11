@@ -21,10 +21,10 @@ function s.initial_effect(c)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_CHAIN_UNIQUE+EFFECT_FLAG_DELAY)
 	e2:SetCountLimit(1,id+100)
-	e2:SetCondition(aux.exccon)
+	e2:SetCondition(s.spcon2)
 	e2:SetRange(LOCATION_GRAVE)
-	e2:SetTarget(c60018643.attg)
-	e2:SetOperation(c60018643.atop)
+	e2:SetTarget(s.attg)
+	e2:SetOperation(s.atop)
 	c:RegisterEffect(e2)
 end
 function s.cfilter(c)
@@ -43,8 +43,11 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if not c:IsRelateToEffect(e) then return end
 	Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
 end
-function s.afilter(c,e,tp)
-	return c:IsType(TYPE_XYZ) and c:IsCanBeEffectTarget(e)
+function s.afilter(c)
+	return c:IsType(TYPE_XYZ) and c:IsFaceup() 
+end
+function s.spcon2(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.cfilter,1,nil) and aux.exccon(e) 
 end
 function s.attg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.thcfilter(chkc) end
