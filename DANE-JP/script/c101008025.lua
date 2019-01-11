@@ -57,7 +57,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetLabelObject(e3)
 end
 function s.filter(c,sp)
-	return c:IsFaceup() and c:IsLocation(LOCATION_MZONE) and c:GetSummonPlayer()==sp
+	return c:IsFaceup() and c:IsType(TYPE_EFFECT) and c:IsLocation(LOCATION_MZONE) and c:GetSummonPlayer()==sp
 end
 function s.reccon1(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.filter,1,nil,1-tp)
