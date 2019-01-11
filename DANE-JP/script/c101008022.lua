@@ -34,6 +34,16 @@ function s.initial_effect(c)
 	e3:SetOperation(s.desop2)
 	c:RegisterEffect(e3)
 end
+
+function s.rescon(sg,e,tp,mg)
+	return aux.ChkfMMZ(1)(sg,e,tp,mg) and sg:IsExists(s.atchk1,1,nil,sg)
+end
+function s.atchk1(c,sg)
+	return c:IsAttribute(ATTRIBUTE_FIRE) and sg:FilterCount(Card.IsAttribute,c,ATTRIBUTE_WIND)==1
+end
+function s.spfilter(c,att)
+	return c:IsAttribute(att) and c:IsAbleToRemoveAsCost() and aux.SpElimFilter(c,true)
+end
 function s.spcon(e,c)
 	if c==nil then return true end
 	local tp=c:GetControler()
