@@ -1,4 +1,4 @@
---
+--モルトシュラーク
 --Mortschlag
 --scripted by Naim
 local s,id=GetID()
