@@ -54,6 +54,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	e3:SetOperation(s.recop2)
 	e3:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e3,tp)
+	e2:SetLabelObject(e3)
 end
 function s.filter(c,sp)
 	return c:IsFaceup() and c:IsLocation(LOCATION_MZONE) and c:GetSummonPlayer()==sp
@@ -78,19 +79,18 @@ function s.regcon(e,tp,eg,ep,ev,re,r,rp)
 		and Duel.GetCurrentPhase()&PHASE_MAIN1+PHASE_MAIN2+PHASE_BATTLE>0
 end
 function s.regop(e,tp,eg,ep,ev,re,r,rp)
+	local g=eg:Filter(s.filter,nil,1-tp)
 	Duel.RegisterFlagEffect(tp,id,RESET_CHAIN,0,1)
+	e:GetLabelObject():SetLabel(g:GetSum(Card.GetAttack))
 end
 function s.reccon2(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFlagEffect(tp,id)>0 
 end
 function s.recop2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ResetFlagEffect(tp,id)
-	local g=eg:Filter(s.filter,nil,e,tp)
-	if g:GetCount()>0 then
-		local sum=g:GetSum(Card.GetAttack)
-		if Duel.Recover(tp,sum,REASON_EFFECT)==0 then 
-			Duel.RegisterFlagEffect(tp,id+100,RESET_PHASE+PHASE_END,0,1)
-		end
+	local rec=e:GetLabel()
+	if Duel.Recover(tp,rec,REASON_EFFECT)==0 then
+		Duel.RegisterFlagEffect(tp,id+100,RESET_PHASE+PHASE_END,0,1)
 	end
 end
 function s.damcon(e,tp,eg,ep,ev,re,r,rp)
@@ -100,4 +100,3 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	local lp=Duel.GetLP(tp)
 	Duel.SetLP(tp,lp/2)
 end
-
