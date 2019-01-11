@@ -20,10 +20,11 @@ function s.initial_effect(c)
     e2:SetCode(EVENT_FREE_CHAIN)
     e2:SetRange(LOCATION_GRAVE)
     e2:SetCountLimit(1,id)
-    e2:SetCost(aux.bfgcost)
+    e2:SetCost(s.thcost)
     e2:SetTarget(s.thtg)
     e2:SetOperation(s.thop)
     c:RegisterEffect(e2)
+    Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,s.sumfilter)
 end
 function s.cfilter(c)
     return c:IsFaceup() and c:IsSetCard(0x11b) and c:IsType(TYPE_LINK)
@@ -43,6 +44,25 @@ function s.negop(e,tp,eg,ep,ev,re,r,rp)
     if Duel.NegateActivation(ev) and re:GetHandler():IsRelateToEffect(re) then
         Duel.Remove(eg,POS_FACEUP,REASON_EFFECT)
     end
+end
+function s.sumfilter(c)
+    return c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_DARK)
+end
+function s.thcost(e,tp,eg,ep,ev,re,r,rp)
+    if chk==0 then return aux.bfgcost(e,tp,eg,ep,ev,re,r,rp,0) 
+        and Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0 end
+    aux.bfgcost(e,tp,eg,ep,ev,re,r,rp,1)
+    local e1=Effect.CreateEffect(e:GetHandler())
+    e1:SetType(EFFECT_TYPE_FIELD)
+    e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_OATH)
+    e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+    e1:SetReset(RESET_PHASE+PHASE_END)
+    e1:SetTargetRange(1,0)
+    e1:SetTarget(s.splimit)
+    Duel.RegisterEffect(e1,tp)
+end
+function s.splimit(e,c)
+    return not (c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_DARK))
 end
 function s.thfilter(c)
     return c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_DARK) and c:IsAbleToHand()
