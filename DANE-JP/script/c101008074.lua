@@ -48,7 +48,7 @@ end
 function s.sumfilter(c)
     return c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_DARK)
 end
-function s.thcost(e,tp,eg,ep,ev,re,r,rp)
+function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return aux.bfgcost(e,tp,eg,ep,ev,re,r,rp,0) 
         and Duel.GetCustomActivityCount(id,tp,ACTIVITY_SPSUMMON)==0 end
     aux.bfgcost(e,tp,eg,ep,ev,re,r,rp,1)
