@@ -1,4 +1,4 @@
---
+--亡龍の旋律
 --Lost Dragon's Strain
 --scripted by Naim
 local s,id=GetID()
