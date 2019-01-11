@@ -29,6 +29,7 @@ function s.adcon(e,tp,eg,ep,ev,re,r,rp)
 	return bc and bc:IsFaceup() and bit.band(bc:GetSummonType(),SUMMON_TYPE_SPECIAL)==SUMMON_TYPE_SPECIAL
 end
 function s.adop(e,tp,eg,ep,ev,re,r,rp)
+	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local ec=e:GetHandler():GetEquipTarget()
 	local bc=ec:GetBattleTarget()
 	if bc:IsRelateToBattle() then
