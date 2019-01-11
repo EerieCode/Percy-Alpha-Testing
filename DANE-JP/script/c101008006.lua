@@ -49,7 +49,9 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)>0 then
+	if tc:IsRelateToEffect(e) and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)>0
+		and e:GetHandler():IsRelateToEffect(e) then
+		Duel.BreakEffect()
 		Duel.SendtoHand(e:GetHandler(),tp,REASON_EFFECT)
 	end
 end
