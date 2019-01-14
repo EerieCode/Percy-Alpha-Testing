@@ -47,7 +47,7 @@ function s.winop(e,tp,eg,ep,ev,re,r,rp)
 	local rc=des:GetReasonCard()
 	return des:GetPreviousRaceOnField()&RACE_FIEND==RACE_FIEND
 		and des:GetPreviousAttributeOnField()&ATTRIBUTE_DARK==ATTRIBUTE_DARK 
-		and des:IsControler(des:GetOwner()) and rc:IsRelateToBattle() 
+		and des:IsOwner(1-tp) and rc:IsRelateToBattle() 
 		and rc==e:GetHandler() and rc:GetSummonType()==SUMMON_TYPE_ADVANCE+1
 end
 function s.ttcon(e,c,minc)
