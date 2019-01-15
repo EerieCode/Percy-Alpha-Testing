@@ -16,6 +16,8 @@ Updates applied by this script
 Updates known not to be applied by this script:
 - English name in comment under Japanese name
 - Card.IsRitualMonster/IsRitualSpell functions
+- aux.FilterFaceupFunction function
+- Card.IsSequence, IsOriginalName, IsOriginalNameRule, IsSummonPlayer, IsPreviousControler, and IsHasLevel functions
 - Listed names
 - Listed counters added
 - Old cards that could use SelectUnselect (e.g. Dried Winds destroy, Block Dragon summon)
