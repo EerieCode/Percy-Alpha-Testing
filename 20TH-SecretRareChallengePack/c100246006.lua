@@ -1,6 +1,5 @@
---Infinite Ignition Goliath
---無限起動 ゴライアス
---scripted by CCM
+-- Infinite Ignition Goliath
+-- 無限起動 ゴライアス
 local s,id=GetID()
 function s.initial_effect(c)
 	--Link summon method
@@ -18,7 +17,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 	-- give effect
 	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_XMATERIAL+EFFECT_TYPE_SINGLE)
+	e2:SetType(EFFECT_TYPE_XMATERIAL)
 	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
