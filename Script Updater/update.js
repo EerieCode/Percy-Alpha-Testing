@@ -78,12 +78,12 @@ async function updateConstants(file) {
     return file;
 }
 
-const RegisterFlagRegex = i => new RegExp(":RegisterEffect\\((.+?),false," + i + "\\)", "g");
+const RegisterFlagRegex = i => new RegExp(":RegisterEffect\\((.+?),(?:false|true)," + i + "\\)", "g");
 
 const REGISTER_FLAG_MAP = {
-    1: "REGISTER_FLAG_DETACH_XMATERIAL",
-    2: "REGISTER_FLAG_CARDIAN_SPSUMMON",
-    4: "REGISTER_FLAG_THUNDRA_DISCARD"
+    1: "REGISTER_FLAG_DETACH_XMAT",
+    2: "REGISTER_FLAG_CARDIAN",
+    4: "REGISTER_FLAG_THUNDRA"
 };
 
 async function updateRegisterFlags(file) {
