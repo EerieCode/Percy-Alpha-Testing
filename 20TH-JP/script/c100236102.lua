@@ -33,22 +33,22 @@ function s.initial_effect(c)
 	e4:SetCode(EFFECT_MATERIAL_CHECK)
 	e4:SetValue(s.valcheck)
 	c:RegisterEffect(e4)
-	--give atk effect only when  summon
+	--give atk/def effect only when summonned by its method
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE)
 	e5:SetCode(EFFECT_SUMMON_COST)
 	e5:SetOperation(s.facechk)
-	e5:SetLabelObject(e1)
+	e5:SetLabelObject(e4)
 	c:RegisterEffect(e5)
 end
 function s.winop(e,tp,eg,ep,ev,re,r,rp)
 	local WIN_REASON_EXODIA_GUARD = 0x1f
 	local des=eg:GetFirst()
 	local rc=des:GetReasonCard()
-	return des:GetPreviousRaceOnField()&RACE_FIEND==RACE_FIEND
-		and des:GetPreviousAttributeOnField()&ATTRIBUTE_DARK==ATTRIBUTE_DARK 
-		and des:IsOwner(1-tp) and rc:IsRelateToBattle() 
-		and rc==e:GetHandler() and rc:GetSummonType()==SUMMON_TYPE_ADVANCE+1
+	if (des:GetPreviousRaceOnField()&RACE_FIEND==RACE_FIEND and des:GetPreviousAttributeOnField()&ATTRIBUTE_DARK==ATTRIBUTE_DARK 
+		and des:GetOwner()==(1-tp) and rc:IsRelateToBattle() and rc==e:GetHandler() and rc:GetSummonType()==SUMMON_TYPE_ADVANCE+1)
+		then
+		Duel.Win(tp,WIN_REASON_EXODIA_GUARD) end
 end
 function s.ttcon(e,c,minc)
 	if c==nil then return true end
@@ -76,7 +76,7 @@ function s.valcheck(e,c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_SET_ATTACK)
 		e1:SetValue(atk)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE-RESET_TOFIELD)
 		c:RegisterEffect(e1)
 		local e2=e1:Clone()
 		e2:SetCode(EFFECT_SET_DEFENSE)
