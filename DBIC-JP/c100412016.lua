@@ -1,4 +1,4 @@
---
+--ウイッチクラフト・シュミッタ
 --Witchcraft Scimitta
 --scripted by Naim
 local s,id=GetID()
