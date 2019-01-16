@@ -39,7 +39,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 		and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		e:SetCategory(CATEGORY_DRAW+CATEGORY_REMOVE)
 		s.drcost(e,tp,eg,ep,ev,re,r,rp,1)
-		s.drtarget(e,tp,eg,ep,ev,re,r,rp,1)
+		s.drtg(e,tp,eg,ep,ev,re,r,rp,1)
 		e:SetOperation(s.drop)
 	else
 		e:SetCategory(0)
@@ -58,7 +58,7 @@ end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) end
 	Duel.SetTargetPlayer(tp)
-	Duel.SetTargetParam(2)
+	Duel.SetTargetParam(1)
 	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
 end
 function s.drop(e,tp,eg,ep,ev,re,r,rp)
