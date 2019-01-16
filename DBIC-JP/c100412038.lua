@@ -51,7 +51,7 @@ function s.cfilter1(c)
 	return c:IsFaceup() and c:IsSetCard(0x226)
 end
 function s.cfilter2(c,sp,cg)
-	return GetSummonPlayer() == sp and c:IsLocation(LOCATION_MZONE) and c:IsPosition(POS_FACEUP_ATTACK)
+	return c:GetSummonPlayer() == sp and c:IsLocation(LOCATION_MZONE) and c:IsPosition(POS_FACEUP_ATTACK)
 		and cg:IsExists(s.cfilter3,1,nil,c)
 end
 function s.cfilter3(c,sc)
@@ -67,8 +67,8 @@ end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local g = Duel.GetMatchingGroup(s.cfilter1,tp,LOCATION_MZONE,0,nil)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.filter(chkc,eg,1 - tp,g) end
-	if chk == 0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil,eg,1 - tp,g) end
-	local g = Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil,eg)
+	if chk == 0 then return Duel.IsExistingTarget(s.filter,tp,0,LOCATION_MZONE,1,nil,eg,1 - tp,g) end
+	local g = Duel.SelectTarget(tp,s.filter,tp,0,LOCATION_MZONE,1,1,nil,eg,1 - tp,g)
 	Duel.SetOperationInfo(0,CATEGORY_CONTROL,1,g,tp,0)
 end
 function s.tgop(e,tp,eg,ep,ev,re,r,rp)
