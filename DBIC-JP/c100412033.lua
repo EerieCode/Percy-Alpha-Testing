@@ -17,7 +17,6 @@ function s.initial_effect(c)
 	e2:SetCode(EVENT_PRE_DAMAGE_CALCULATE)
 	e2:SetCountLimit(1)
 	e2:SetCondition(s.atkcon)
-	e2:SetCost(s.atkcost)
 	e2:SetOperation(s.atkop)
 	c:RegisterEffect(e2)
 	--search

@@ -10,7 +10,6 @@ function s.initial_effect(c)
 	e1:SetCountLimit(1,id+EFFECT_COUNT_CODE_OATH)
 	e1:SetTarget(s.target)
 	c:RegisterEffect(e1)
-	
 	--remove
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_REMOVE)
@@ -22,7 +21,6 @@ function s.initial_effect(c)
 	e2:SetTarget(s.rmtg)
 	e2:SetOperation(s.rmop)
 	c:RegisterEffect(e2)
-	
 	--to hand
 	local e3=Effect.CreateEffect(c)
 	e3:SetCategory(CATEGORY_TOGRAVE)
@@ -35,7 +33,6 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_names={CARD_CURSED_EYE_SELENE}
-
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	if s.drcost(e,tp,eg,ep,ev,re,r,rp,0) and s.drtg(e,tp,eg,ep,ev,re,r,rp,0)
@@ -68,8 +65,6 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp)
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	Duel.Draw(p,d,REASON_EFFECT)
 end
-
-
 function s.rmcon(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetAttacker()
 	local bc=Duel.GetAttackTarget()
@@ -88,13 +83,11 @@ end
 function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local bc=e:GetLabelObject()
-	if bc:IsRelateToBattle() and bc:IsControler(1-tp) 
-	then 
-		Duel.Remove(bc,0,REASON_EFFECT+REASON_TEMPORARY)~=0 		
+	if bc:IsRelateToBattle() and bc:IsControler(1-tp) then 
+		Duel.Remove(bc,0,REASON_EFFECT+REASON_TEMPORARY)		
 	end
 end
-
-function s.tgcon(e,tp,eg,ep,ev,re,r,rp)
+function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return c:IsReason(REASON_EFFECT) and c:IsPreviousLocation(LOCATION_SZONE)
 end

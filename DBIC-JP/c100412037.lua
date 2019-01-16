@@ -11,8 +11,8 @@ function s.initial_effect(c)
 	e1:SetCountLimit(1,id+EFFECT_COUNT_CODE_OATH)
 	e1:SetHintTiming(0,0x1e0)
 	e1:SetCondition(s.condition)
-	e1:SetTarget(c4333086.target)
-	e1:SetOperation(c4333086.activate)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 end
 s.listed_names={CARD_CURSED_EYE_SELENE}
@@ -29,7 +29,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() and chkc:IsAbleToHand() end
 	local fc=Duel.IsExistingMatchingCard(s.evilcond,tp,LOCATION_SZONE,0,1,nil)
 	local ct=1
-	if fc then ct=2
+	if fc then ct=2 end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RTOHAND)
 	local g=Duel.SelectTarget(tp,Card.IsAbleToHand,tp,LOCATION_MZONE,LOCATION_MZONE,1,ct,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,g:GetCount(),0,0)

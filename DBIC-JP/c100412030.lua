@@ -27,7 +27,7 @@ function s.spcon(e,c)
 	if c==nil then return true end
 	local tp=c:GetControler()
 	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(aux.FaceupFilterFunction(Card.IsSetCard,0x226),tp,LOCATION_MZONE,0,1,nil)
+		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x226),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.tgfilter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsSetCard(0x226) and c:IsAbleToGrave()
