@@ -94,7 +94,7 @@ async function updateRegisterFlags(file) {
     return file;
 }
 
-const GET_COUNT = /(\S+?):GetCount\(\)/g;
+const GET_COUNT = /([a-zA-Z0-9]+?):GetCount\(\)/g;
 const BIT_BAND = /bit\.band\((.+?),(.+?)\)/g;
 const BIT_BOR = /bit\.bor\((.+?),(.+?)\)/g;
 const BIT_BXOR = /bit\.bxor\((.+?),(.+?)\)/g;
