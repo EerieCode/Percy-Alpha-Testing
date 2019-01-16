@@ -2,7 +2,7 @@
 --妬絶の呪眼
 local s,id=GetID()
 function s.initial_effect(c)
-		--Activate
+	--Activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_DESTROY)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
@@ -27,6 +27,7 @@ function s.evilcond(c)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() and chkc:IsAbleToHand() end
+	if chk==0 then return Duel.IsExistingTarget(Card.IsAbleToHand,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 	local fc=Duel.IsExistingMatchingCard(s.evilcond,tp,LOCATION_SZONE,0,1,nil)
 	local ct=1
 	if fc then ct=2 end
