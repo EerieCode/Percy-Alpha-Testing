@@ -21,6 +21,7 @@ Updates known not to be applied by this script:
 - Listed names
 - Listed counters added
 - Old cards that could use SelectUnselect (e.g. Dried Winds destroy, Block Dragon summon)
+- EFFECT_FLAG_CLIENT_HINT for lingering player effects
 
 Update for the next core
 - Un-hardcode continuous trap "Use effect now"
