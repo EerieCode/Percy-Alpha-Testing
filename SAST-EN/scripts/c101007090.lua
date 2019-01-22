@@ -8,10 +8,18 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCountLimit(1,id+EFFECT_COUNT_CODE_OATH)
+	e1:SetCondition(s.condition)
 	e1:SetCost(s.cost)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
+end
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+	for _,te in ipairs({Duel.GetPlayerEffect(tp,EFFECT_LPCOST_CHANGE)}) do
+		local val=te:GetValue()
+		if val(te,e,tp,1000)~=1000 then return false end
+	end
+	return true
 end
 function s.filter1(c,e,tp)
 	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x122) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:IsCanBeEffectTarget(e)
@@ -33,7 +41,11 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	end
 	local n = Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) and 1 or math.min(fg,ft)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,0))
-	local pay = Duel.AnnounceLevel(tp,1,n)
+	local pay_list = {}
+	for p = 1, n do
+		if Duel.CheckLPCost(tp,1000*p) then table.insert(pay_list, p) end
+	end
+	local pay = Duel.AnnounceNumber(tp,table.unpack(pay_list))
 	Duel.PayLPCost(tp,pay*1000)
 	local sg = aux.SelectUnselectGroup(g,e,tp,pay,pay,aux.dncheck,1,tp,HINTMSG_SPSUMMON)
 	Duel.SetTargetCard(sg)
