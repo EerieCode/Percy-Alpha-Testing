@@ -61,7 +61,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local sg = g1:Filter(Card.IsRelateToEffect,nil,e)
 	if #sg > ft1 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		sg = sg:Select(tp,ft1,ft1)
+		sg = sg:Select(tp,ft1,ft1,nil)
 	end
 	local count = Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
 	if count > 0 then
