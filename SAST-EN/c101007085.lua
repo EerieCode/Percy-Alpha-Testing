@@ -66,6 +66,7 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if ty & TYPE_TRAP ~=0 then Duel.SetOperationInfo(0,CATEGORY_TODECK,nil,1,1-tp,LOCATION_ONFIELD) end
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local ty=e:GetLabel()
 	if ty & TYPE_MONSTER ~=0 then
 		if c:IsFaceup() and c:IsRelateToEffect(e) then
