@@ -58,7 +58,11 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local g1, ft1 = Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS), Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if ft1 <= 0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local sg = g1:FilterSelect(tp,Card.IsRelateToEffect,ft1,ft1,nil,e)
+	local sg = g1:Filter(Card.IsRelateToEffect,nil,e)
+	if #sg > ft1 then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+		sg = sg:Select(tp,ft1,ft1)
+	end
 	local count = Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
 	if count > 0 then
 		local g2, ft2 = Duel.GetMatchingGroup(s.filter2,tp,0,LOCATION_GRAVE,nil,e,1-tp), Duel.GetLocationCount(1-tp,LOCATION_MZONE)
