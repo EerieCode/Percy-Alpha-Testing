@@ -27,11 +27,11 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2,false,REGISTER_FLAG_DETACH_XMAT)
 end
 function s.xyztg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return #(Duel.GetDecktopCount(1-tp,1))==1 end
+	if chk==0 then return #(Duel.GetDecktopGroup(1-tp,1))==1 end
 end
 function s.xyzop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local g=Duel.GetDecktopCount(1-tp,1)
+	local g=Duel.GetDecktopGroup(1-tp,1)
 	if c:IsRelateToEffect(e) and #g==1 then
 		Duel.Overlay(c,g)
 	end
@@ -56,7 +56,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 	e:SetLabel(lb & 0x7)
 	Duel.SendtoGrave(sg,REASON_COST)
-	Duel.RaiseSingleEvent(sg,EVENT_DETACH_MATERIAL,e,0,0,0,0)
+	Duel.RaiseSingleEvent(c,EVENT_DETACH_MATERIAL,e,0,0,0,0)
 end
 function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
