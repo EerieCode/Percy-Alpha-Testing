@@ -57,7 +57,7 @@ end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local g1, ft1 = Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS), Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if ft1 <= 0 then return end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft1 = 1 end
 	local sg = g1:Filter(Card.IsRelateToEffect,nil,e)
 	if #sg > ft1 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
@@ -67,6 +67,9 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if count > 0 then
 		local g2, ft2 = Duel.GetMatchingGroup(s.filter2,tp,0,LOCATION_GRAVE,nil,e,1-tp), Duel.GetLocationCount(1-tp,LOCATION_MZONE)
 		if ft2 > 0 and Duel.SelectYesNo(1-tp,aux.Stringid(id,1)) then
+			Duel.BreakEffect()
+			if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft2 = 1 end
+			Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_SPSUMMON)
 			sg = g2:Select(1-tp,ft2,ft2,nil)
 			Duel.SpecialSummon(sg,0,1-tp,1-tp,false,false,POS_FACEUP)
 		end
