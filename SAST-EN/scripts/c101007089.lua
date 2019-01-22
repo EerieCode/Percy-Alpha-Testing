@@ -37,7 +37,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,0,LOCATION_DECK)
 end
 function s.thfilter(c)
-	return c:IsAbleToHand() and c:IsType(TYPE_SPELL+TYPE_TRAP)
+	return c:GetType()==TYPE_SPELL or c:GetType()==TYPE_TRAP
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local ct=Duel.GetMatchingGroupCount(s.ctfilter,tp,LOCATION_MZONE,0,e:GetHandler())
@@ -45,12 +45,16 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetDecktopGroup(tp,ct)
 	if g:GetCount()>0 then
 		Duel.DisableShuffleCheck()
-		if g:IsExists(s.thfilter,1,nil) and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
+		if g:IsExists(s.thfilter,1,nil) then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 			local sg=g:FilterSelect(tp,s.thfilter,1,1,nil)
-			Duel.SendtoHand(sg,nil,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,sg)
-			Duel.ShuffleHand(tp)
+				if sg:GetFirst():IsAbleToHand() then
+					Duel.SendtoHand(sg,nil,REASON_EFFECT)
+					Duel.ConfirmCards(1-tp,sg)
+					Duel.ShuffleHand(tp)
+				else
+					Duel.SendtoGrave(sg,REASON_RULE)
+				end
 			g:Sub(sg)
 			Duel.SendtoGrave(g,REASON_EFFECT+REASON_REVEAL)
 		end
