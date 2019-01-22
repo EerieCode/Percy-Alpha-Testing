@@ -1,5 +1,5 @@
 -- 
--- Super Ant-Kaiju War Machine Mecha-Thunder-King
+-- Super Anti-Kaiju War Machine Mecha-Thunder-King
 local s,id=GetID()
 function s.initial_effect(c)
 	c:SetUniqueOnField(1,0,aux.FilterBoolFunction(Card.IsSetCard,0xd3),LOCATION_MZONE)
@@ -49,8 +49,7 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST+REASON_DISCARD)
 end
 function s.rmfilter(c,e,tp)
-	local p=c:GetControler()
-	return c:IsFaceup() and c:IsSetCard(0xd3) and c:IsAbleToRemove()
+	return c:IsFaceup() and c:IsSetCard(0xd3) and c:IsAbleToRemove() and c:GetOwner()~=e:GetHandler():GetControler()
 	and Duel.IsExistingMatchingCard(s.spfilter,p,LOCATION_GRAVE,0,1,nil,e,tp)
 end
 function s.spfilter(c,e,tp)
