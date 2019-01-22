@@ -52,7 +52,7 @@ function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil)
 end
-function s.onwerfil(c,e)
+function s.ownerfil(c,e)
 	return c:GetOwner()~=e:GetHandlerPlayer()
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
@@ -60,7 +60,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	if not c:IsRelateToEffect(e) then return end
 	local tc=Duel.GetFirstTarget()
 	local value=tc:GetOverlayCount()*300
-	if tc:UpdateAttack(value,nil,c)==value and tc:GetOverlayGroup():IsExists(s.onwerfil,1,nil,e) then
+	if tc:UpdateAttack(value,nil,c)==value and tc:GetOverlayGroup():IsExists(s.ownerfil,1,nil,e) then
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_DIRECT_ATTACK)
