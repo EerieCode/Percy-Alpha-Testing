@@ -6,7 +6,6 @@ function s.initial_effect(c)
 	--xyz material
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetType(EFFECT_TYPE_QUICK_O)
 	e1:SetCode(EVENT_FREE_CHAIN)
@@ -52,7 +51,7 @@ function s.matop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.cfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x84) and c:IsType(TYPE_XYZ)
+	return c:IsFaceup() and c:IsType(TYPE_XYZ)
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Group.CreateGroup()
@@ -64,9 +63,6 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVEXYZ)
 	local sg=g:Select(tp,1,1,nil)
 	Duel.SendtoGrave(sg,REASON_COST)
-end
-function s.cfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x84) and c:IsType(TYPE_XYZ)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
