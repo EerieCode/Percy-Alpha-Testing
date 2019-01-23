@@ -27,13 +27,13 @@ function Auxiliary.MaleficSummonCondition(cd,loc)
 				if c==nil then return true end
 				return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
 					and (Duel.IsExistingMatchingCard(Auxiliary.MaleficSummonFilter,c:GetControler(),loc,0,1,nil,cd)
-					or Duel.IsExistingMatchingCard(Auxiliary.MaleficSummonSubstitute,c:GetControler(),LOCATION_HAND+LOCATION_GRAVE,0,1,nil))
+					or Duel.IsExistingMatchingCard(Auxiliary.MaleficSummonSubstitute,c:GetControler(),LOCATION_ONFIELD+LOCATION_GRAVE,0,1,nil))
 			end
 end
 function Auxiliary.MaleficSummonOperation(cd,loc)
 	return	function(e,tp,eg,ep,ev,re,r,rp,c)
 				local g=Duel.GetMatchingGroup(Auxiliary.MaleficSummonFilter,tp,loc,0,nil,cd)
-				g:Merge(Duel.GetMatchingGroup(Auxiliary.MaleficSummonSubstitute,tp,LOCATION_HAND+LOCATION_GRAVE,0,nil)
+				g:Merge(Duel.GetMatchingGroup(Auxiliary.MaleficSummonSubstitute,tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,nil)
 				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
 				local tc=g:Select(tp,1,1,nil):GetFirst()
 				Duel.Remove(tc,POS_FACEUP,REASON_COST)
