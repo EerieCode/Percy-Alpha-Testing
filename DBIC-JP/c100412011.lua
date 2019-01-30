@@ -4,8 +4,8 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
-    aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_XYZ),3)
-    --immune
+	aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_XYZ),3)
+	--immune
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_UNCOPYABLE)
@@ -60,8 +60,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=tg:Filter(s.spfilter,nil,e,tp):GetFirst()
 	if tc and tc:IsRelateToEffect(e) and tc:IsLocation(LOCATION_GRAVE) 
 		and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)~=0 then
-		local oc=tg:Filter(s.mtfilter,nil,e,tp):GetFirst()
-		Debug.Message(oc:IsControler(1-tp))
+		local oc=tg:Filter(s.mtfilter,tc,e,tp):GetFirst()
 		if oc and oc:IsControler(1-tp) and oc:IsRelateToEffect(e) then
 			local og=oc:GetOverlayGroup()
 			if #og>0 then
