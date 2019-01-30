@@ -1,7 +1,6 @@
 --無限起動キャンサークレーン
---Infinite Ignition Cancercrane
+--Infinite Ignition Cancer Crane
 --Scripted by AlphaKretin
-local CARD_INFIGNIT_MYSTERY
 local s,id=GetID()
 function s.initial_effect(c)
 	--special summon
@@ -27,7 +26,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
 end
-s.listed_names={CARD_INFIGNIT_MYSTERY}
+--s.listed_names={CARD_INFIGNIT_MYSTERY}
 function s.cfilter(c,ft,tp)
 	return c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_EARTH)
 		and (ft>0 or (c:IsControler(tp) and c:GetSequence()<5)) and (c:IsControler(tp) or c:IsFaceup())
