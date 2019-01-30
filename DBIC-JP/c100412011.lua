@@ -60,7 +60,8 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=tg:Filter(s.spfilter,nil,e,tp):GetFirst()
 	if tc and tc:IsRelateToEffect(e) and tc:IsLocation(LOCATION_GRAVE) 
 		and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)~=0 then
-		local oc=tg:Filter(s.mtfilter):GetFirst()
+		local oc=tg:Filter(s.mtfilter,nil,e,tp):GetFirst()
+		Debug.Message(oc:IsControler(1-tp))
 		if oc and oc:IsControler(1-tp) and oc:IsRelateToEffect(e) then
 			local og=oc:GetOverlayGroup()
 			if #og>0 then
