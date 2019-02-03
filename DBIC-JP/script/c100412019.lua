@@ -1,6 +1,6 @@
 --ウィッチクラフトマスター・ヴェール
 --Witchcraft Master Verre
---scripted by 
+--scripted by Naim
 local s,id=GetID()
 function s.initial_effect(c)
 	--Increase ATK
@@ -29,11 +29,12 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	local a=Duel.GetAttacker()
-	if not a:IsControler(tp) then
-		a=Duel.GetAttackTarget()
-	end
-	return a and a:IsRace(RACE_SPELLCASTER) and Duel.GetCurrentPhase()==PHASE_DAMAGE_CAL
+	local tc=Duel.GetAttacker()
+	local bc=Duel.GetAttackTarget()
+	if not bc then return false end
+	if bc:IsControler(1-tp) then bc=tc end
+	e:SetLabelObject(bc)
+	return bc:IsFaceup() and bc:IsRace(RACE_SPELLCASTER) and Duel.GetCurrentPhase()==PHASE_DAMAGE_CAL
 end
 function s.rvfilt(c)
 	return c:IsType(TYPE_SPELL) and not c:IsPublic()
@@ -45,9 +46,8 @@ function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.rvfilt,tp,LOCATION_HAND,0,1,nil) end
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetAttacker()
-	if tc:IsControler(1-tp) then tc=Duel.GetAttackTarget() end
-	if tc:IsRelateToBattle() then
+	local tc=e:GetLabelObject()
+	if tc:IsRelateToBattle() and tc:IsFaceup() and tc:IsControler(tp) then
 		local sg=Duel.GetMatchingGroup(s.rvfilt,tp,LOCATION_HAND,0,nil)
 		local g=aux.SelectUnselectGroup(sg,e,tp,1,99,s.rescon,1,tp,HINTMSG_SELECT)
 		if #g>0 then
