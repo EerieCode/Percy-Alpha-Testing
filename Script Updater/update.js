@@ -4,12 +4,11 @@
  * For usage and notes, see the readme.
  */
 
-const EXTRACT_S = /c\d+/g; // the "s", or cID.
-const GET_ID_LOCATION = /(\r|\n|\r\n)function s\.initial_effect\(c\)/; // the location to insert the GetID() function, before the initial effect declaration
-const GET_ID = /GetID\(\)/; // checks if script already has a GetID() call
-
 // replaces the "cID" and card's ID with the s,id from the new GetID() function
 async function updateGetID(file, fileName) {
+    const EXTRACT_S = /c\d+/g; // the "s", or cID.
+    const GET_ID_LOCATION = /(\r|\n|\r\n)function s\.initial_effect\(c\)/; // the location to insert the GetID() function, before the initial effect declaration
+    const GET_ID = /GetID\(\)/; // checks if script already has a GetID() call
     const sResult = EXTRACT_S.exec(fileName);
     if (!sResult) {
         // e.g. utility, constant, do not modify - though those shouldn't be run through this anyway
@@ -97,16 +96,15 @@ async function updateRegisterFlags(file) {
     return file;
 }
 
-const GET_COUNT = /([a-zA-Z0-9]+?):GetCount\(\)/g;
-const BIT_BAND = /bit\.band\((.+?),(.+?)\)/g;
-const BIT_BOR = /bit\.bor\((.+?),(.+?)\)/g;
-const BIT_BXOR = /bit\.bxor\((.+?),(.+?)\)/g;
-const BIT_LSHIFT = /bit\.lshift\((.+?),(.+?)\)/g;
-const BIT_RSHIFT = /bit\.rshift\((.+?),(.+?)\)/g;
-const BIT_NOT = /bit\.not\((.+?)\)/g; // apparently unused
-
 // updates new operators like Group metamethods and lua 5.3 bitwise operators
 async function updateOperators(file) {
+    const GET_COUNT = /([a-zA-Z0-9]+?):GetCount\(\)/g;
+    const BIT_BAND = /bit\.band\((.+?),(.+?)\)/g;
+    const BIT_BOR = /bit\.bor\((.+?),(.+?)\)/g;
+    const BIT_BXOR = /bit\.bxor\((.+?),(.+?)\)/g;
+    const BIT_LSHIFT = /bit\.lshift\((.+?),(.+?)\)/g;
+    const BIT_RSHIFT = /bit\.rshift\((.+?),(.+?)\)/g;
+    const BIT_NOT = /bit\.not\((.+?)\)/g; // apparently unused
     file = file.replace(GET_COUNT, "#$1");
     file = file.replace(BIT_BAND, "($1&$2)");
     file = file.replace(BIT_BOR, "($1|$2)");
@@ -122,7 +120,6 @@ const fs = require("fs");
 const IN_DIR = "./script/";
 const OUT_DIR = "./newscript/";
 const UPDATE_FUNCS = [updateGetID, updateConstants, updateOperators, updateRegisterFlags]; // order of ID/constants matters if updating a card with an ID that is a constant
-
 function updateScript(fileName) {
     return new Promise((resolve, reject) => {
         fs.readFile(IN_DIR + fileName, "utf8", async (err, file) => {
@@ -150,18 +147,24 @@ fs.readdir(IN_DIR, (err, files) => {
         let i = 0;
         const thresh = files.length / 2;
         let yet = false;
+        const promises = [];
         for (const fileName of files) {
             //console.log("Updating " + fileName + "!"); // disabled to prevent slowdown with many files
-            updateScript(fileName).then(() => {
-                if (!yet) {
-                    i++;
-                    if (i++ > thresh) {
-                        console.log("Halfway there!");
-                        yet = true;
+            promises.push(
+                updateScript(fileName).then(() => {
+                    if (!yet) {
+                        i++;
+                        if (i++ > thresh) {
+                            console.log("Halfway there!");
+                            yet = true;
+                        }
                     }
-                }
-            }); // don't await, handle multiple files at once
+                })
+            ); // don't await, handle multiple files at once
         }
         console.log("Started all updates!");
+        Promise.all(promises).then(() => {
+            console.log("Done!");
+        });
     }
 });
