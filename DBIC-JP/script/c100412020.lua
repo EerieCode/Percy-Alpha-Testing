@@ -1,4 +1,4 @@
---ウィッチクラフト・クリエイション
+--* ウィッチクラフト・クリエイション
 --Witchcraft Creation
 --Scripted by AlphaKretin
 local s,id=GetID()
@@ -24,7 +24,7 @@ function s.initial_effect(c)
     e2:SetOperation(s.thop)
     c:RegisterEffect(e2)
 end
-function s.tgfilter(c)
+function s.thfilter(c)
     return c:IsSetCard(0x228) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
