@@ -55,7 +55,24 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+		tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+		e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+		e1:SetCode(EVENT_PHASE+PHASE_END)
+		e1:SetCondition(s.descon)
+		e1:SetOperation(s.desop)
+		e1:SetReset(RESET_PHASE+PHASE_END)
+		e1:SetCountLimit(1)
+		e1:SetLabelObject(tc)
+		Duel.RegisterEffect(e1,tp)
 	end
+end
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetLabelObject():GetFlagEffect(id)~=0
+end
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.SendtoGrave(e:GetLabelObject(),REASON_EFFECT)
 end
 function s.regcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
