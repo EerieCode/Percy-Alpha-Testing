@@ -18,7 +18,7 @@ function Auxiliary.WitchcraftDiscardCost(f,minc,maxc)
 				if chk==0 then return Duel.IsExistingMatchingCard(f,tp,LOCATION_HAND,0,minc,nil) or Duel.IsExistingMatchingCard(Auxiliary.WitchcraftDiscardFilter,tp,LOCATION_ONFIELD,0,1,nil) end
 				local g=Duel.GetMatchingGroup(f,tp,LOCATION_HAND,0,nil)
 				g:Merge(Duel.GetMatchingGroup(Auxiliary.WitchcraftDiscardFilter,tp,LOCATION_ONFIELD,0,nil))
-				local sg=Auxiliary.SelectUnselectGroup(g,e,tp,1,maxc,Auxiliary.WitchcraftDiscardGroup(minc),1,tp,HINTMSG_DISCARD)
+				local sg=Auxiliary.SelectUnselectGroup(g,e,tp,1,maxc,Auxiliary.WitchcraftDiscardGroup(minc),1,tp,aux.Stringid(100412024,2))
 				if sg:IsExists(Card.IsHasEffect,1,nil,100412024) then
 					local id=sg:GetFirst():GetOriginalCode()
 					Duel.SendtoGrave(sg,REASON_COST)
