@@ -1,6 +1,5 @@
 --ウイッチクラフト・
---Witchcraft ???
---Based off a leak in Maxut comments that predicted Potoly perfectly
+--Witchcraft Bittle
 --scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
