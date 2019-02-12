@@ -1,4 +1,4 @@
---
+--超接地展開
 --Outrigger Expand
 --Scripted by AlphaKretin
 local s,id=GetID()

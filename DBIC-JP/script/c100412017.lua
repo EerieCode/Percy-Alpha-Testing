@@ -1,5 +1,5 @@
---ウイッチクラフト・
---Witchcraft Eidel
+--ウイッチクラフト・エーデル
+--Witchcraft Edel
 --scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)

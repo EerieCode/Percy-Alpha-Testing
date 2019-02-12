@@ -1,5 +1,5 @@
---ウイッチクラフト・
---Witchcraft Bittle
+--ウイッチクラフト・ウィッチクラフト・ピットレ
+--Witchcraft Pittore
 --scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
