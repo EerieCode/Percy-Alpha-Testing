@@ -1,4 +1,4 @@
---ウイッチクラフト・ウィッチクラフト・ピットレ
+--ウィッチクラフト・ピットレ
 --Witchcraft Pittore
 --scripted by AlphaKretin
 local s,id=GetID()
