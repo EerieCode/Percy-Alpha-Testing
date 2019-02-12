@@ -40,7 +40,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
     end
 end
 function s.thcon2(e,tp,eg,ep,ev,re,r,rp)
-    return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x228),tp,LOCATION_MZONE,0,1,nil)
+    return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x228),tp,LOCATION_MZONE,0,1,nil) and Duel.GetTurnPlayer()==tp
 end
 function s.thtg2(e,tp,eg,ep,ev,re,r,rp,chk)
     local c=e:GetHandler()
