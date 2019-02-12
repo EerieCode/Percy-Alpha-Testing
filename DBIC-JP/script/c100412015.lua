@@ -61,7 +61,7 @@ function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
 end
 function s.tgfilter(c)
-	c:IsSetCard(0x228) and c:IsAbleToGrave()
+	return c:IsSetCard(0x228) and c:IsAbleToGrave()
 end
 function s.drop(e,tp,eg,ep,ev,re,r,rp)
     if Duel.Draw(tp,1,REASON_EFFECT)>0 then
