@@ -75,9 +75,8 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp)
     	if #g>0 then
     		Duel.SendtoGrave(g,nil,REASON_EFFECT)
     	else
-    		local sg=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
-        	local dg=sg:RandomSelect(tp,1)
-        	Duel.SendtoGrave(dg,REASON_EFFECT+REASON_DISCARD)
+    		local g2=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
+    		Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
     	end
     end
 end
