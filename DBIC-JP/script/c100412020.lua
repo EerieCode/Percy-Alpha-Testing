@@ -19,9 +19,9 @@ function s.initial_effect(c)
     e2:SetCode(EVENT_PHASE+PHASE_END)
     e2:SetRange(LOCATION_GRAVE)
     e2:SetCountLimit(1,id)
-    e2:SetCondition(s.thcon)
-    e2:SetTarget(s.thtg)
-    e2:SetOperation(s.thop)
+    e2:SetCondition(s.thcon2)
+    e2:SetTarget(s.thtg2)
+    e2:SetOperation(s.thop2)
     c:RegisterEffect(e2)
 end
 function s.thfilter(c)
@@ -39,15 +39,15 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
         Duel.ConfirmCards(1-tp,g)
     end
 end
-function s.thcon(e,tp,eg,ep,ev,re,r,rp)
+function s.thcon2(e,tp,eg,ep,ev,re,r,rp)
     return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x228),tp,LOCATION_MZONE,0,1,nil)
 end
-function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.thtg2(e,tp,eg,ep,ev,re,r,rp,chk)
     local c=e:GetHandler()
     if chk==0 then return c:IsAbleToHand() end
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,c,1,tp,LOCATION_GRAVE)
 end
-function s.thop(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.thop2(e,tp,eg,ep,ev,re,r,rp,chk)
     local c=e:GetHandler()
     if c:IsRelateToEffect(e) then
         Duel.SendtoHand(c,tp,REASON_EFFECT)
