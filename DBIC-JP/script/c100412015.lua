@@ -73,7 +73,7 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp)
     		Duel.SendtoGrave(g,nil,REASON_EFFECT)
     	else
     		local g2=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
-    		Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
+    		Duel.Remove(g2,POS_FACEUP,REASON_EFFECT)
     	end
     end
 end
