@@ -24,7 +24,7 @@ function s.initial_effect(c)
 	--replace discard effect
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
-	e3:SetCode(100412025)
+	e3:SetCode(100412024)
 	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e3:SetRange(LOCATION_SZONE)
 	e3:SetCondition(s.con)
