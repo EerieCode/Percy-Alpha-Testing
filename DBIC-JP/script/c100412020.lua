@@ -1,4 +1,4 @@
---* ウィッチクラフト・クリエイション
+--ウィッチクラフト・クリエイション
 --Witchcraft Creation
 --Scripted by AlphaKretin
 local s,id=GetID()
