@@ -44,7 +44,7 @@ s.listed_names={39910367}
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
     if re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsActiveType(TYPE_SPELL) and re:GetHandler()~=c then
-        c:AddCounter(0x1,1)
+        c:AddCounter(COUNTER_SPELL,1)
     end
 end
 function s.cfilter(c,tp)
