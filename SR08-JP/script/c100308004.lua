@@ -4,7 +4,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	c:SetSPSummonOnce(id)
-	c:EnableCounterPermit(COUNTER_SPELL)
+	c:EnableCounterPermit(COUNTER_SPELL,LOCATION_PZONE+LOCATION_MZONE)
 	aux.EnablePendulumAttribute(c)
 	--Add counter (self)
     local e1=Effect.CreateEffect(c)
@@ -44,23 +44,23 @@ function s.initial_effect(c)
 	e4:SetOperation(s.ctop2)
 	c:RegisterEffect(e4)
 	--counter check
-	local e0=Effect.CreateEffect(c)
-	e0:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e0:SetCode(EVENT_DESTROY)
-	e0:SetOperation(s.ctchk)
-	e0:SetLabel(0)
-	c:RegisterEffect(e0)
-	--pendulum
 	local e5=Effect.CreateEffect(c)
-	e5:SetDescription(aux.Stringid(id,2))
-	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e5:SetProperty(EFFECT_FLAG_DELAY)
-	e5:SetCode(EVENT_DESTROYED)
-	e5:SetLabelObject(e0)
-	e5:SetCondition(s.pencon)
-	e5:SetTarget(s.pentg)
-	e5:SetOperation(s.penop)
+	e5:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e5:SetCode(EVENT_DESTROY)
+	e5:SetOperation(s.ctchk)
+	e5:SetLabel(0)
 	c:RegisterEffect(e5)
+	--pendulum
+	local e6=Effect.CreateEffect(c)
+	e6:SetDescription(aux.Stringid(id,2))
+	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e6:SetProperty(EFFECT_FLAG_DELAY)
+	e6:SetCode(EVENT_DESTROYED)
+	e6:SetLabelObject(e5)
+	e6:SetCondition(s.pencon)
+	e6:SetTarget(s.pentg)
+	e6:SetOperation(s.penop)
+	c:RegisterEffect(e6)
 end
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
@@ -69,24 +69,26 @@ function s.ctop(e,tp,eg,ep,ev,re,r,rp)
     end
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
 	if chk==0 then return c:IsCanRemoveCounter(tp,COUNTER_SPELL,3,REASON_COST) end
 	c:RemoveCounter(tp,COUNTER_SPELL,3,REASON_COST)
 end
-function s.spfilter(c)
+function s.spfilter(c,e,tp)
 	return c:IsCanAddCounter(COUNTER_SPELL,1,false,LOCATION_MZONE) and c:IsAttackAbove(1000) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) 
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>1 and c:IsCanBeSpecialSummoned(e,0,tp,false,false) 
-		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil) and not Duel.IsPlayerEffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) end
+		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) and not Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,2,0,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if not c:IsRelateToEffect(e) or not c:IsCanBeSpecialSummoned(e,0,tp,false,false) or
-		not Duel.GetLocationCount(tp,LOCATION_MZONE)>1 or Duel.IsPlayerEffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then
-		return end
-	local g=Duel.SelectMatchingCard(tp,s.spfilter,LOCATION_DECK,0,1,1,nil)
+	if not c:IsRelateToEffect(e)
+		or not c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		or Duel.GetLocationCount(tp,LOCATION_MZONE)>1
+		or Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then return end
+	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 	if #g>0 then
 		g:AddCard(c)
 		if Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)==2 then
