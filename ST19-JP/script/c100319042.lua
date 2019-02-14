@@ -34,7 +34,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
         e1:SetCode(EVENT_BATTLE_DESTROYING)
         e1:SetCondition(aux.bdocon)
         e1:SetOperation(s.drop)
-        c:RegisterEffect(e1)
+        tc:RegisterEffect(e1)
     end
 end
 function s.drop(e,tp,eg,ep,ev,re,r,rp)
