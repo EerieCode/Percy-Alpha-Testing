@@ -126,14 +126,15 @@ function s.pencon(e,tp,eg,ep,ev,re,r,rp)
 	return r&REASON_EFFECT+REASON_BATTLE~=0 and c:IsPreviousLocation(LOCATION_MZONE) and c:IsFaceup()
 end
 function s.pentg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckLocation(tp,LOCATION_PZONE,0) or Duel.CheckLocation(tp,LOCATION_PZONE,1) end
+	local ct=e:GetLabelObject():GetLabel()
+	if chk==0 then return (Duel.CheckLocation(tp,LOCATION_PZONE,0) or Duel.CheckLocation(tp,LOCATION_PZONE,1))
+		and (ct<1 or c:IsCanAddCounter(COUNTER_SPELL,ct,LOCATION_PZONE)) end
 end
 function s.penop(e,tp,eg,ep,ev,re,r,rp)
 	if not Duel.CheckLocation(tp,LOCATION_PZONE,0) and not Duel.CheckLocation(tp,LOCATION_PZONE,1) then return false end
 	local c=e:GetHandler()
 	local ct=e:GetLabelObject():GetLabel()
-	if c:IsRelateToEffect(e) and Duel.MoveToField(c,tp,tp,LOCATION_PZONE,POS_FACEUP,true)
-		and ct>0 and c:IsCanAddCounter(COUNTER_SPELL,ct) and Duel.SelectYesNo(aux.Stringid(id,3)) then
+	if c:IsRelateToEffect(e) and Duel.MoveToField(c,tp,tp,LOCATION_PZONE,POS_FACEUP,true) then
 		Duel.BreakEffect()
 		c:AddCounter(COUNTER_SPELL,ct)
 	end
