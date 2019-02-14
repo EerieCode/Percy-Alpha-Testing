@@ -26,7 +26,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
     local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
     if #g>0 and Duel.SendtoHand(g,nil,REASON_EFFECT)>0 then
         Duel.ConfirmCards(1-tp,g)
-        local ct=Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsCode,id,75014062),tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil)
+        local ct=Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsCode,id,75014062),tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,nil)
         local cg=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsCanAddCounter,COUNTER_SPELL,1),tp,LOCATION_ONFIELD,0,nil)
         if ct>0 and #cg>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
             Duel.BreakEffect()
