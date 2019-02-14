@@ -84,10 +84,10 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if not c:IsRelateToEffect(e)
-		or not c:IsCanBeSpecialSummoned(e,0,tp,false,false)
-		or Duel.GetLocationCount(tp,LOCATION_MZONE)>1
-		or Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then return end
+	    if not c:IsRelateToEffect(e)
+        or not c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+        or not (Duel.GetLocationCount(tp,LOCATION_MZONE)>1)
+        or Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then return end
 	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
 	if #g>0 then
 		g:AddCard(c)
@@ -129,8 +129,7 @@ function s.pencon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.pentg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ct=e:GetLabelObject():GetLabel()
-	if chk==0 then return (Duel.CheckLocation(tp,LOCATION_PZONE,0) or Duel.CheckLocation(tp,LOCATION_PZONE,1))
-		and (ct<1 or c:IsCanAddCounter(COUNTER_SPELL,ct,LOCATION_PZONE)) end
+	if chk==0 then return (Duel.CheckLocation(tp,LOCATION_PZONE,0) or Duel.CheckLocation(tp,LOCATION_PZONE,1))	end
 end
 function s.penop(e,tp,eg,ep,ev,re,r,rp)
 	if not Duel.CheckLocation(tp,LOCATION_PZONE,0) and not Duel.CheckLocation(tp,LOCATION_PZONE,1) then return false end
