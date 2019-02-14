@@ -4,7 +4,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	c:SetSPSummonOnce(id)
-	c:EnableCounterPermit(COUNTER_SPELL)
+	c:EnableCounterPermit(COUNTER_SPELL,LOCATION_PZONE+LOCATION_MZONE)
 	aux.EnablePendulumAttribute(c)
 	--Add counter (self)
 	local e1=Effect.CreateEffect(c)
@@ -71,10 +71,11 @@ function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.spcost1(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
 	if chk==0 then return c:IsCanRemoveCounter(tp,COUNTER_SPELL,3,REASON_COST) end
 	c:RemoveCounter(tp,COUNTER_SPELL,3,REASON_COST)
 end
-function s.spfilter(c)
+function s.spfilter(c,e,tp)
 	return c:IsCanAddCounter(COUNTER_SPELL,1,false,LOCATION_MZONE) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) 
 end
 function s.sptg1(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -82,20 +83,21 @@ function s.sptg1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>1 
 		and Duel.GetLocationCountFromEx(tp)>0
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false) 
-		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(s.spfilter),tp,LOCATION_EXTRA,0,1,nil) and not Duel.IsPlayerEffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) end
+		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(s.spfilter),tp,LOCATION_EXTRA,0,1,nil,e,tp) and not Duel.IsPlayerEffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,2,0,0)
 end
 function s.spop1(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) or not c:IsCanBeSpecialSummoned(e,0,tp,false,false) 
-		or not Duel.GetLocationCount(tp,LOCATION_MZONE)>1 
-		or not Duel.GetLocationCountFromEx(tp)>0
+		or not (Duel.GetLocationCount(tp,LOCATION_MZONE)>1)
+		or not (Duel.GetLocationCountFromEx(tp)>0)
 		or Duel.IsPlayerEffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then
 		return end
-	local g=Duel.SelectMatchingCard(tp,aux.FilterFaceupFunction(s.spfilter),LOCATION_EXTRA,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,aux.FilterFaceupFunction(s.spfilter),LOCATION_EXTRA,0,1,1,nil,e,tp)
 	if #g>0 then
 		if Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)==1
 			and Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)==1 then
+			Duel.BreakEffect()
 			g:AddCard(c)
 			g:ForEach(Card.AddCounter,COUNTER_SPELL,1)
 		end
