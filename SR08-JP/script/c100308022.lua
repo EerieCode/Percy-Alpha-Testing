@@ -1,5 +1,5 @@
 --魔力統轄
---Spell Power Condensation
+--Spell Power Control
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
