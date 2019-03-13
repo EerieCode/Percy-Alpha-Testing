@@ -23,7 +23,7 @@ end
 function s.filter(c,e,tp,mg)
 	return mg:IsContains(c) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chk)
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local mat=Group.CreateGroup()
 	for tc in aux.Next(eg:Filter(s.cfilter,nil,tp)) do
 		mat = mat + tc:GetMaterial()
