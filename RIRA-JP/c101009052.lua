@@ -25,7 +25,7 @@ function s.initial_effect(c)
 	--to grave
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(id,0))
-	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e4:SetCode(EVENT_DESTROYED)
 	e4:SetProperty(EFFECT_FLAG_DELAY)
 	e4:SetCondition(s.indcon)
