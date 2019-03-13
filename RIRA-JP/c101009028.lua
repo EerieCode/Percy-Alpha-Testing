@@ -43,13 +43,13 @@ function s.thcon2(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.filter(c,tp)
-	return c:IsAbleToHand() and ( (c:IsControler(1-tp) and c:IsLocation(LOCATION_ONFIELD)) or (c:IsControler(tp) and c:IsLocation(LOCATION_GRAVE) and c:IsType(TYPE_SPELL) and c:IsSetCard(0x128)) )
+	return c:IsAbleToHand() and (c:IsControler(1-tp) or (c:IsType(TYPE_SPELL) and c:IsSetCard(0x128)))
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_ONFIELD+LOCATION_GRAVE) and s.filter(chkc) end
-	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,0,LOCATION_ONFIELD+LOCATION_GRAVE,1,nil,tp) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_GRAVE,LOCATION_ONFIELD,1,nil,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RTOHAND)
-	local g=Duel.SelectMatchingCard(tp,s.filter,tp,0,LOCATION_ONFIELD+LOCATION_GRAVE,1,1,nil,tp)
+	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_GRAVE,LOCATION_ONFIELD,1,1,nil,tp)
 	e:SetLabelObject(g)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,0,0)
 end
