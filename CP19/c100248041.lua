@@ -1,5 +1,5 @@
---Ｂ・Ｆ－降魔弓のハマ 
--- Battlewasp – Hama the Conquering Bow
+--B・F－降魔弓のハマ 
+--Battlewasp – Hama the Conquering Bow
 local s,id=GetID()
 function s.initial_effect(c)
 	--double atk
@@ -15,35 +15,33 @@ function s.initial_effect(c)
 	e2:SetCode(EFFECT_MATERIAL_CHECK)
 	e2:SetValue(s.valcheck)
 	e2:SetLabelObject(e1)
-	c:RegisterEffect(e2)
-	
+	c:RegisterEffect(e2)	
 	--atk
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetCategory(CATEGORY_ATKCHANGE)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
-	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e1:SetCode(EVENT_BATTLE_DAMAGE)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetCountLimit(1,id)
-	e1:SetCondition(s.atcon)
-	e1:SetTarget(s.attg)
-	e1:SetOperation(s.atop)
-	c:RegisterEffect(e1)
-	--Damage
 	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(id,1))
-	e3:SetCategory(CATEGORY_DAMAGE)
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e3:SetCode(EVENT_PHASE+PHASE_BATTLE)
+	e3:SetDescription(aux.Stringid(id,0))
+	e3:SetCategory(CATEGORY_ATKCHANGE)
+	e3:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e3:SetCode(EVENT_BATTLE_DAMAGE)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetCountLimit(1,id+100)
-	e3:SetCondition(s.damcon)
-	e3:SetTarget(s.damtg)
-	e3:SetOperation(s.damop)
+	e3:SetCountLimit(1,id)
+	e3:SetCondition(s.atcon)
+	e3:SetTarget(s.attg)
+	e3:SetOperation(s.atop)
 	c:RegisterEffect(e3)
-	
+	--Damage
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,1))
+	e4:SetCategory(CATEGORY_DAMAGE)
+	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e4:SetCode(EVENT_PHASE+PHASE_BATTLE)
+	e4:SetRange(LOCATION_MZONE)
+	e4:SetCountLimit(1,id+100)
+	e4:SetCondition(s.damcon)
+	e4:SetTarget(s.damtg)
+	e4:SetOperation(s.damop)
+	c:RegisterEffect(e4)	
 	if not s.global_check then
 		s.global_check=true
 		s[0]=true
@@ -59,8 +57,7 @@ function s.initial_effect(c)
 		ge2:SetCountLimit(1)
 		ge2:SetOperation(s.clear)
 		Duel.RegisterEffect(ge2,0)
-	end
-	
+	end	
 end
 function s.valcheck(e,c)
 	local g=c:GetMaterial()
@@ -81,8 +78,6 @@ function s.tnop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetReset(RESET_EVENT+0x1fe0000)
 	c:RegisterEffect(e1)
 end
-
-
 function s.atcon(e,tp,eg,ep,ev,re,r,rp)
 	return ep~=tp
 end
@@ -104,7 +99,6 @@ function s.atop(e,tp,eg,ep,ev,re,r,rp)
 			sc=g:GetNext()
 		end
 end
-
 function s.damcon(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.GetTurnPlayer()==tp and s[0]
 end
