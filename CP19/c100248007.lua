@@ -54,7 +54,7 @@ function s.recop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.sumcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2
+	return (Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2) and e:GetHandler():GetType()==TYPE_TRAP+TYPE_CONTINUOUS
 end
 function s.costfilter(c)
 	return c:IsSetCard(0x8) 
