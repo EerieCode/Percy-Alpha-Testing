@@ -20,7 +20,7 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_CHAINING)
 	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	e2:SetRange(LOCATION_GRAVE)
+	e2:SetRange(LOCATION_HAND+LOCATION_GRAVE)
 	e2:SetCountLimit(1,id+100)
 	e2:SetCondition(s.negcon)
 	e2:SetCost(aux.bfgcost)
@@ -66,11 +66,13 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.negfilter(c,tp)
+	Debug.Message(c:IsNonEffectMon())
 	return c:IsFaceup() and c:IsNonEffectMon() and c:IsControler(tp)
 end
 function s.negcon(e,tp,eg,ep,ev,re,r,rp)
 	if not (rp==1-tp and re:IsHasProperty(EFFECT_FLAG_CARD_TARGET)) then return false end
 	local g=Duel.GetChainInfo(ev,CHAININFO_TARGET_CARDS)
+	Debug.Message(g:IsExists(s.negfilter,1,nil,tp))
 	return g and g:IsExists(s.negfilter,1,nil,tp) and Duel.IsChainNegatable(ev)
 end
 function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk)
