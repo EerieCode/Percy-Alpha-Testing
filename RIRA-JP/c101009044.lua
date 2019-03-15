@@ -1,3 +1,4 @@
+--天威の龍仙女
 --Tianwei Dragon Sage
 local s,id=GetID()
 function s.initial_effect(c)
@@ -21,6 +22,7 @@ function s.initial_effect(c)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_ATKCHANGE)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetCode(EVENT_ATTACK_ANNOUNCE)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1,id+100)
@@ -58,7 +60,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 end
 function s.aclimit(e,re,tp)
-	return (re:IsPreviousLocation(LOCATION_EXTRA) and not re:IsSetCard(0x22d)) and not re:GetHandler():IsImmuneToEffect(e)
+	return (re:GetHandler():IsPreviousLocation(LOCATION_EXTRA) and not re:GetHandler():IsSetCard(0x22d)) and not re:GetHandler():IsImmuneToEffect(e)
 end
 
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
@@ -67,10 +69,10 @@ function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return tc and tc:IsFaceup() and tc:IsControler(tp) and not tc:IsType(TYPE_EFFECT)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsOnField() and s.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,0,LOCATION_ONFIELD,1,nil) end
+	if chkc then return chkc:IsOnField() and chkc:IsControler(1-tp) end
+	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,s.filter,tp,0,LOCATION_ONFIELD,1,1,nil)
+	local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
