@@ -14,7 +14,7 @@ function s.initial_effect(c)
 	e2:SetCode(EFFECT_IMMUNE_EFFECT)
 	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e2:SetRange(LOCATION_FZONE)
-	e2:SetTarget(aux.TargetBoolFunction(aux.NOT(Card.IsType,TYPE_EFFECT)))
+	e2:SetTarget(aux.TargetBoolFunction(Card.IsNonEffectMon))
 	e2:SetValue(s.immfilter)
 	c:RegisterEffect(e2)
 	--draw
@@ -30,7 +30,7 @@ function s.initial_effect(c)
 	e3:SetOperation(s.drop)
 	c:RegisterEffect(e3)
 end
-function s.efilter(e,te)
+function s.immfilter(e,te)
 	return te:IsActiveType(TYPE_MONSTER)
 end
 function s.drfilter(c,tp)
@@ -38,7 +38,7 @@ function s.drfilter(c,tp)
 end
 function s.drcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.drfilter,1,nil,tp)
-		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(aux.NOT(Card.IsType,TYPE_EFFECT)),tp,LOCATION_MZONE,0,1,nil)
+		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsNonEffectMon),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,2) end
