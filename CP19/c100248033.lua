@@ -31,7 +31,7 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	c:RemoveOverlayCard(tp,1,1,REASON_COST)
 end
 function s.spfilter(c)
-	return c:IsRace(RACE_DRAGON) and c:IsSetCard(0x48)
+	return c:IsRace(RACE_DRAGON) and c:IsSetCard(0x48) and not c:IsCode(id)
 end
 function s.spchk(c,e,tp)
 	if not c:IsCanBeSpecialSummoned(e,0,tp,false,false) then return false end
