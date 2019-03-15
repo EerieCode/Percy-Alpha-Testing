@@ -45,8 +45,9 @@ function s.atcon(e,tp,eg,ep,ev,re,r,rp)
 	return (a:IsControler(tp) and not a:IsType(TYPE_EFFECT)) or (b:IsControler(tp) and not b:IsType(TYPE_EFFECT))
 end
 function s.atop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetAttacker():IsControler(tp) then local tc=Duel.GetAttackTarget()
-		elseif Duel.GetAttackTarget():IsControler(tp) then local tc=Duel.GetAttacker()
+	local tc
+	if Duel.GetAttacker():IsControler(tp) then tc=Duel.GetAttackTarget()
+	elseif Duel.GetAttackTarget():IsControler(tp) then tc=Duel.GetAttacker()
 	end
 	if tc:IsFaceup() and tc:IsRelateToBattle() then
 		local e1=Effect.CreateEffect(e:GetHandler())
