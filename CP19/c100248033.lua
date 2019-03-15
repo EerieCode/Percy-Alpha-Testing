@@ -1,12 +1,9 @@
---龍影神ドラッグラビオン
---Number 97: Dragravion
---Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
 	--xyz summon
-    aux.AddXyzProcedure(c,nil,8,2)
-    c:EnableReviveLimit()
-    --cannot be target
+	aux.AddXyzProcedure(c,nil,8,2)
+	c:EnableReviveLimit()
+	--cannot be target
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
@@ -37,37 +34,25 @@ function s.spchk(c,e,tp)
 	if not c:IsCanBeSpecialSummoned(e,0,tp,false,false) then return false end
 	if c:IsLocation(LOCATION_EXTRA) then
 		return Duel.GetLocationCountFromEx(tp)>0
-	end --else if c:IsLocation(LOCATION_GRAVE) then
+	end
 	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 end
 function s.rescon(sg,e,tp,mg)
-	return sg:IsExists(s.spchk,1,nil,e,tp)
+	return sg:IsExists(s.spchk,1,nil,e,tp) and sg:GetClassCount(Card.GetCode) == 2
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_EXTRA+LOCATION_GRAVE,0,nil)
-	if chk==0 then return aux.SelectUnselectGroup(g,e,tp,2,2,card.rescon,chk) end
+	if chk==0 then return aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,chk) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,g,1,0,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e1:SetTargetRange(1,0)
-	e1:SetReset(RESET_PHASE+PHASE_END)
-	Duel.RegisterEffect(e1,tp)
-	local e2=Effect.CreateEffect(e:GetHandler())
-	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
-	e2:SetDescription(aux.Stringid(id,1))
-	e2:SetReset(RESET_PHASE+PHASE_END)
-	e2:SetTargetRange(1,0)
-	Duel.RegisterEffect(e2,tp)	
+	local c=e:GetHandler() 
 	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_EXTRA+LOCATION_GRAVE,0,nil)
-	if aux.SelectUnselectGroup(g,e,tp,2,2,card.rescon,0) then
-		local sg=aux.SelectUnselectGroup(g,e,tp,2,2,card.rescon,1,tp,HINTMSG_SPSUMMON)
-		local tg=sg:Filter(s.spchk,nil):Select(tp,1,1,nil)
+	if aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,0) then
+		local sg=aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,1,tp,HINTMSG_SPSUMMON)
+		local tg=sg:Filter(s.spchk,nil,e,tp):Select(tp,1,1,nil)
 		if Duel.SpecialSummon(tg,0,tp,tp,false,false,POS_FACEUP)~=0 then
-			local oc=sg:Sub(tg)
+			local oc=sg-tg
 			local tc=tg:GetFirst()
 			Duel.Overlay(tc,oc)
 			--cannot attack
@@ -81,6 +66,19 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.RegisterEffect(e3,tp)
 		end
 	end
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetTargetRange(1,0)
+	e1:SetReset(RESET_PHASE+PHASE_END)
+	Duel.RegisterEffect(e1,tp)
+	local e2=Effect.CreateEffect(c)
+	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetReset(RESET_PHASE+PHASE_END)
+	e2:SetTargetRange(1,0)
+	Duel.RegisterEffect(e2,tp) 
 end
 function s.atktg(e,c)
 	return e:GetLabelObject()~=c
