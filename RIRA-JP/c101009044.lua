@@ -1,4 +1,4 @@
---Skyforce Dragoness
+--Tianwei Dragon Sage
 local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetType(EFFECT_TYPE_IGNITION)
-	e1:SetCountLimit(1)
+	e1:SetCountLimit(1,id)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCost(s.spcost)
 	e1:SetTarget(s.sptg)
@@ -23,6 +23,7 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_ATTACK_ANNOUNCE)
 	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1,id+100)
 	e2:SetCondition(s.descon)
 	e2:SetTarget(s.destg)
 	e2:SetOperation(s.desop)
