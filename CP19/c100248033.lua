@@ -20,11 +20,13 @@ function s.initial_effect(c)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1,id)
 	e2:SetCost(s.spcost)
 	e2:SetTarget(s.sptg)
 	e2:SetOperation(s.spop)
-	c:RegisterEffect(e2)
+	c:RegisterEffect(e2,false,1)
 end
+s.xyz_number=97
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:CheckRemoveOverlayCard(tp,1,REASON_COST) end
@@ -41,7 +43,7 @@ function s.spchk(c,e,tp)
 	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 end
 function s.rescon(sg,e,tp,mg)
-	return sg:IsExists(s.spchk,1,nil,e,tp) and sg:GetClassCount(Card.GetCode) == 2
+	return sg:IsExists(s.spchk,1,nil,e,tp) and sg:GetClassCount(Card.GetCode)==#sg
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_EXTRA+LOCATION_GRAVE,0,nil)
