@@ -19,7 +19,7 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetRange(LOCATION_HAND+LOCATION_GRAVE)
 	e2:SetCode(EVENT_DESTROYED)
-	e2:SetCountLimit(1,id)
+	e2:SetCountLimit(1,id+100)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetCost(aux.bfgcost)
 	e2:SetTarget(s.destg)
@@ -43,11 +43,8 @@ end
 function s.cfilter(c,e,tp)
 	return c:IsReason(REASON_BATTLE+REASON_EFFECT) and c:IsPreviousLocation(LOCATION_MZONE) and c:GetPreviousControler()==tp and c:IsPreviousPosition(POS_FACEUP) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
-function s.desfilter(c)
-	return c:IsFaceup() and c:IsRace(RACE_WYRM) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
-end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsControler(tp) and s.desfilter(chkc) end
+	if chkc then return s.cfilter(chkc,e,tp) end
 	if chk==0 then return eg:IsExists(s.cfilter,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=eg:FilterSelect(tp,s.cfilter,1,1,nil,e,tp)
@@ -62,7 +59,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)~=0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) 
 		and Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_MZONE,nil) then
-		local des=Duel.IsExistingMatchingCard(tp,aux.TRUE,tp,0,LOCATION_MZONE,1,1,nil)
+		local des=Duel.SelectMatchingCard(tp,aux.TRUE,tp,0,LOCATION_MZONE,1,1,nil)
 		if #des>0 then
 			Duel.Destroy(des,REASON_EFFECT)
 		end
