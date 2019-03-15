@@ -16,12 +16,11 @@ function s.initial_effect(c)
 	--ss and destroy
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_DESTROY)
-	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TRIGGER_O)
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetRange(LOCATION_HAND+LOCATION_GRAVE)
 	e2:SetCode(EVENT_DESTROYED)
 	e2:SetCountLimit(1,id)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e2:SetCondition(s.descon)
 	e2:SetCost(aux.bfgcost)
 	e2:SetTarget(s.destg)
 	e2:SetOperation(s.desop)
@@ -51,7 +50,7 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and s.desfilter(chkc) end
 	if chk==0 then return eg:IsExists(s.cfilter,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=eg:Duel.FilterSelect(tp,s.cfilter,1,1,nil,e,tp)
+	local g=eg:FilterSelect(tp,s.cfilter,1,1,nil,e,tp)
 	Duel.SetTargetCard(g:GetFirst())
 	if g:GetFirst():IsLocation(LOCATION_GRAVE) then
 		Duel.SetOperationInfo(0,CATEGORY_LEAVE_GRAVE,g,1,0,0)
