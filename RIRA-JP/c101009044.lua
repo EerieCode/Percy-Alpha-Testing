@@ -46,7 +46,7 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)~=0 then
-		local e1=Effect.CreateEffect(c)
+		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_FIELD)
 		e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 		e1:SetCode(EFFECT_CANNOT_ACTIVATE)
