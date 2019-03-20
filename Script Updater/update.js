@@ -30,12 +30,13 @@ async function updateGetID(file, fileName) {
         file = file.replace(iPHReg, "id+100");
     }
     const getIDResult = GET_ID_LOCATION.exec(file);
-    if (getIDResult === null && !GET_ID.test(file)) {
+    const getIDtest = !GET_ID.test(file);
+    if (getIDResult === null && getIDtest) {
         console.log("Failed to find location to insert GetID() in " + fileName + "! May need to be inserted manually!");
     } else {
         const initialEffect = getIDResult[0]; // whole match needs to be reinserted with the additions
         const newLine = getIDResult[1]; // capture group is newline, keep consistent with source when inserting
-        if (!GET_ID.test(file)) {
+        if (getIDtest) {
             file = file.replace(GET_ID_LOCATION, newLine + "local s,id=GetID()" + initialEffect);
         }
     }
