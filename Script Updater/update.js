@@ -10,7 +10,7 @@ async function updateGetID(file, fileName) {
     const GET_ID_LOCATION = /(\r|\n|\r\n)function s\.initial_effect\(c\)/; // the location to insert the GetID() function, before the initial effect declaration
     const GET_ID = /GetID\(\)/; // checks if script already has a GetID() call
     const sResult = EXTRACT_S.exec(fileName);
-    if (!sResult) {
+    if (!sResult || GET_ID.test(file)) {
         // e.g. utility, constant, do not modify - though those shouldn't be run through this anyway
         return file;
     }
@@ -30,8 +30,7 @@ async function updateGetID(file, fileName) {
         file = file.replace(iPHReg, "id+100");
     }
     const getIDResult = GET_ID_LOCATION.exec(file);
-    const getIDtest = !GET_ID.test(file);
-    if (getIDResult === null && getIDtest) {
+    if (getIDResult === null) {
         console.log("Failed to find location to insert GetID() in " + fileName + "! May need to be inserted manually!");
     } else {
         const initialEffect = getIDResult[0]; // whole match needs to be reinserted with the additions
