@@ -31,13 +31,20 @@ async function updateGetID(file, fileName) {
     }
     const getIDResult = GET_ID_LOCATION.exec(file);
     if (getIDResult === null) {
-        console.log("Failed to find location to insert GetID() in " + fileName + "! May need to be inserted manually!");
+        // File starts with function declaration
+        const ALTERNATE_LOCATION = /function s\.initial_effect\(c\)(\r|\n|\r\n)/;
+        const newResult = ALTERNATE_LOCATION.exec(file);
+        if (newResult !== null) {
+            const initialEffect = newResult[0]; // whole match needs to be reinserted with the additions
+            const newLine = newResult[1]; // capture group is newline, keep consistent with source when inserting
+            file = file.replace(ALTERNATE_LOCATION, "local s,id=GetID()" + newLine + initialEffect);
+        } else {
+            console.log("Something's really wrong with " + fileName + "!");
+        }
     } else {
         const initialEffect = getIDResult[0]; // whole match needs to be reinserted with the additions
         const newLine = getIDResult[1]; // capture group is newline, keep consistent with source when inserting
-        if (getIDtest) {
-            file = file.replace(GET_ID_LOCATION, newLine + "local s,id=GetID()" + initialEffect);
-        }
+        file = file.replace(GET_ID_LOCATION, newLine + "local s,id=GetID()" + initialEffect);
     }
     return file;
 }
