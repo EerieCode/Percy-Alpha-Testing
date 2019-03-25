@@ -44,7 +44,7 @@ function s.initial_effect(c)
 	e4:SetTarget(aux.TargetBoolFunction(Card.IsType,TYPE_XYZ))
 	c:RegisterEffect(e4)
 	local e5=e4:Clone()
-	e5:SetCode(EFFECT_SET_LEVEL)
+	e5:SetCode(EFFECT_CHANGE_LEVEL)
 	e5:SetValue(0)
 	c:RegisterEffect(e5)
 end
