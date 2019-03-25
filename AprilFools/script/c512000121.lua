@@ -1,5 +1,5 @@
---Pot of Desires (DN)
 --強欲で貪欲な壺
+--Pot of Desires (DN)
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate

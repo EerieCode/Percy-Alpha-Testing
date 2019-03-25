@@ -1,5 +1,5 @@
---Terraforming (DN)
 --テラ・フォーミング
+--Terraforming (DN)
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate

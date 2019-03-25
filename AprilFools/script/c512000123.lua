@@ -1,5 +1,5 @@
---Raigeki (DN)
 --サンダー・ボルト
+--Raigeki (DN)
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate
