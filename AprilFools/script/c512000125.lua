@@ -265,11 +265,8 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	
 	--
 	local c=e:GetHandler()
-	
-	local res
-	repeat
-		res=Duel.GetRandomNumber(1,5)
-	until res~=5 or Duel.GetLocationCount(1-tp,LOCATION_SZONE)>0
+	local maxran=Duel.GetLocationCount(1-tp,LOCATION_SZONE)>0 and 5 or 4
+	local res=Duel.GetRandomNumber(1,maxran)
 	c:CancelToGrave(true)
 	if res==1 then
 		Duel.SendtoHand(c,nil,REASON_EFFECT)
