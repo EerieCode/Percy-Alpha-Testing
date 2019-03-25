@@ -265,7 +265,11 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	
 	--
 	local c=e:GetHandler()
-	local res=Duel.GetRandomNumber(1,5)
+	
+	local res
+	repeat
+		res=Duel.GetRandomNumber(1,5)
+	until res~=5 or Duel.GetLocationCount(1-tp,LOCATION_SZONE)>0
 	c:CancelToGrave(true)
 	if res==1 then
 		Duel.SendtoHand(c,nil,REASON_EFFECT)
@@ -278,7 +282,8 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	elseif res==4 then
 		Duel.SendtoDeck(c,1-tp,2,REASON_EFFECT)
 	else
-		Duel.SSet(tp,c,1-tp)
+		Duel.MoveToField(c,tp,1-tp,LOCATION_SZONE,POS_FACEDOWN,false)
+		Duel.RaiseEvent(c,EVENT_SSET,e,REASON_EFFECT,tp,tp,0)
 	end
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
