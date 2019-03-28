@@ -2,7 +2,7 @@
 --Stardust Milk
 --Scripted by AlphaKretin
 local s,id=GetID()
-local CTR_CALC
+local CTR_CALC=0xfc
 function s.initial_effect(c)
 	c:EnableCounterPermit(CTR_CALC)
 	aux.AddEquipProcedure(c,nil,s.eqfilter)
