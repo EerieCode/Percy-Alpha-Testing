@@ -46,7 +46,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,chk)
             local sg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_MZONE,0,nil,e,tp)
             local codes={44095762,62279055,61740673}
             local rg=Duel.GetMatchingGroup(s.rvfilter,tp,LOCATION_SZONE,0,nil,codes)
-            while #sg>0 and #rg>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) do
+            while #sg>0 and #rg>0 and Duel.SelectYesNo(tp,aux.Stringid(512,1)) do
                 Duel.BreakEffect()
                 Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
                 local rc=rg:Select(tp,1,1,nil):GetFirst()

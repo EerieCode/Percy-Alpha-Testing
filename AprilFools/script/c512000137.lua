@@ -21,7 +21,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CODE)
     local ac=Duel.AnnounceCard(tp)
     local codes={ac}
-    while (#codes<=5 and Duel.SelectYesNo(tp,aux.Stringid(id,0))) do
+    while (#codes<=5 and Duel.SelectYesNo(tp,aux.Stringid(512,2))) do
         local filter={}
         for _,code in ipairs(codes) do
             table.insert(filter,code)
