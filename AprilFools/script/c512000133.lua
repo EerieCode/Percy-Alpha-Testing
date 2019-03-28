@@ -18,11 +18,12 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
     return Duel.IsExistingMatchingCard(Card.IsLink,tp,LOCATION_MZONE,0,1,nil,4)
 end
 function s.GetZones(c,tp)
-    local g=Duel.GetFieldGroup(tp,LOCATION_MZONE)
+    local g=Duel.GetFieldGroup(tp,LOCATION_MZONE,0)
     local zone=0
     for tc in aux.Next(g) do
-        zone=zone|c:GetToBeLinkedZone(tc,tp,true,true)
+        zone=zone|tc:GetToBeLinkedZone(tc,tp,true,true)
     end
+    return zone
 end
 function s.spfilter(c,e,tp)
     local zone=s.GetZones(c,tp)
@@ -37,7 +38,7 @@ function s.rvfilter(c,codes)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-    local g=Duel.SelectMatchingCard(s.spfilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp)
+    local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_EXTRA,0,1,1,nil,e,tp)
     if #g>0 then
         local tc=g:GetFirst()
         local zone=s.GetZones(tc,tp)

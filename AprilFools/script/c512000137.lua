@@ -19,7 +19,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
         return g:FilterCount(Card.IsAbleToHand,nil)>0
     end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CODE)
-    local ac=Duel.Duel.AnnounceCard(tp)
+    local ac=Duel.AnnounceCard(tp)
     local codes={ac}
     while (#codes<=5 and Duel.SelectYesNo(tp,aux.Stringid(id,0))) do
         local filter={}
@@ -44,7 +44,7 @@ function s.operation(codes)
             Duel.ConfirmCards(tp,g)
             Duel.Recover(tp,#g,REASON_EFFECT)
             --forbidden
-            local e1=Effect.CreateEffect(c)
+            local e1=Effect.CreateEffect(e:GetHandler())
             e1:SetType(EFFECT_TYPE_FIELD)
             e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
             e1:SetCode(EFFECT_FORBIDDEN)
