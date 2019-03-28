@@ -12,26 +12,30 @@ function s.initial_effect(c)
     e1:SetTarget(s.target)
     c:RegisterEffect(e1)
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then
-        if not Duel.IsPlayerCanDiscardDeck(tp,3) then return false end
-        local g=Duel.GetDecktopGroup(tp,3)
-        return g:FilterCount(Card.IsAbleToHand,nil)>0
-    local fil={}
+function s.filter(codes)
+    if #codes==1 then
+        return {codes[1],OPCODE_ISCODE,OPCODE_NOT}
     end
+    local fil={}
+    for i = 1, #codes do
+        table.insert(fil, codes[i])
+        table.insert(fil,OPCODE_ISCODE)
+        if i > 1 then
+                table.insert(fil,OPCODE_OR)
+        end
+        if i > 1 and i == #codes then
+            table.insert(fil,OPCODE_NOT)
+        end
+    end
+    return fil
+end
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+    if chk==0 then return true end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CODE)
     local ac=Duel.AnnounceCard(tp)
     local codes={ac}
     while (#codes<=5 and Duel.SelectYesNo(tp,aux.Stringid(512,2))) do
-        local filter={}
-        for _,code in ipairs(codes) do
-            table.insert(filter,code)
-            table.insert(filter,OPCODE_OR)
-        end
-        table.remove(filter)
-        table.insert(filter,OPCODE_ISCODE)
-        table.insert(filter,OPCODE_NOT)
-        s.announce_filter=filter
+        s.announce_filter=s.filter(codes)
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CODE)
         local ac2=Duel.AnnounceCardFilter(tp,table.unpack(s.announce_filter))
         table.insert(codes,ac2)
