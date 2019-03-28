@@ -66,5 +66,5 @@ function s.cedop2(e,tp,eg,ep,ev,re,r,rp)
     end
 end
 function s.chlimit(re,rp,tp)
-    return rp~=tp
+    return rp==tp
 end
