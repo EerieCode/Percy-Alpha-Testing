@@ -12,6 +12,8 @@ function s.initial_effect(c)
     e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
     e0:SetCode(EVENT_CHAINING)
     e0:SetRange(LOCATION_SZONE)
+	e0:SetCondition(s.countcond)
+	e0:SetCountLimit(1)
     e0:SetOperation(aux.chainreg)
     c:RegisterEffect(e0)
     local e1=Effect.CreateEffect(c)
@@ -40,6 +42,9 @@ function s.initial_effect(c)
 end
 function s.eqfilter(c)
 	return c:IsRace(RACE_DRAGON) and c:IsType(TYPE_SYNCHRO) and c:IsLevelAbove(8)
+end
+function s.countcond(e,tp,eg,ep,ev,re,r,rp)
+	return rp~=tp
 end
 function s.acop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
