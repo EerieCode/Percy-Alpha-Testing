@@ -42,19 +42,19 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,chk)
     if #g>0 then
         local tc=g:GetFirst()
         local zone=s.GetZones(tc,tp)
-        if Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP,tp,zone)~=0 then
-            local sg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_MZONE,0,nil,e,tp)
+        if Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP,zone)~=0 then
+            local sg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_EXTRA,0,nil,e,tp)
             local codes={44095762,62279055,61740673}
             local rg=Duel.GetMatchingGroup(s.rvfilter,tp,LOCATION_SZONE,0,nil,codes)
             while #sg>0 and #rg>0 and Duel.SelectYesNo(tp,aux.Stringid(512,1)) do
                 Duel.BreakEffect()
                 Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
                 local rc=rg:Select(tp,1,1,nil):GetFirst()
-                Duel.ConfirmCards(rc,1-tp)
+                Duel.ConfirmCards(1-tp,rc)
                 Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
                 local sc=sg:Select(tp,1,1,nil):GetFirst()
                 local szone=s.GetZones(sc,tp)
-                Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP,tp,szone)
+                Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP,szone)
                 --remove code from table
                 local newCodes={}
                 local n=#codes
@@ -65,7 +65,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,chk)
                 end
                 codes=newCodes
                 rg=Duel.GetMatchingGroup(s.rvfilter,tp,LOCATION_SZONE,0,nil,codes)
-                sg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_MZONE,0,nil,e,tp)
+                sg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_EXTRA,0,nil,e,tp)
             end
         end
     end
