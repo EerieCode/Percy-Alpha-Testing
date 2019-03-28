@@ -58,7 +58,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.cedop(e,tp,eg,ep,ev,re,r,rp)
-    Duel.SetChainLimitTillChainEnd(s.chlimitg)
+    Duel.SetChainLimitTillChainEnd(s.chlimit)
 end
 function s.cedop2(e,tp,eg,ep,ev,re,r,rp)
     if Duel.CheckEvent(EVENT_SPSUMMON_SUCCESS) then
