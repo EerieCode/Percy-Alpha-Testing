@@ -34,7 +34,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CODE)
     local ac=Duel.AnnounceCard(tp)
     local codes={ac}
-    while (#codes<=5 and Duel.SelectYesNo(tp,aux.Stringid(512,2))) do
+    while (#codes<=4 and Duel.SelectYesNo(tp,aux.Stringid(512,2))) do
         s.announce_filter=s.filter(codes)
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CODE)
         local ac2=Duel.AnnounceCardFilter(tp,table.unpack(s.announce_filter))
