@@ -1,4 +1,4 @@
---紫眼の黄金龍
+--紫眼の黄金竜
 --Purple-Eyes Golden Dragon
 --Scripted by AlphaKretin
 local s,id=GetID()
