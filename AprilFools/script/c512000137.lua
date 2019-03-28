@@ -17,6 +17,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
         if not Duel.IsPlayerCanDiscardDeck(tp,3) then return false end
         local g=Duel.GetDecktopGroup(tp,3)
         return g:FilterCount(Card.IsAbleToHand,nil)>0
+    local fil={}
     end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CODE)
     local ac=Duel.AnnounceCard(tp)
