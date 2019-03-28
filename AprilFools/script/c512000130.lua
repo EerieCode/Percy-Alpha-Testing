@@ -1,4 +1,4 @@
---完璧な手札！
+--完璧な手札だ！
 --My Hand is Perfect!
 --Scripted by AlphaKretin
 local CARD_CYBERSE_WIZARD=36033786
