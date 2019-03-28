@@ -13,7 +13,6 @@ function s.initial_effect(c)
     e0:SetCode(EVENT_CHAINING)
     e0:SetRange(LOCATION_SZONE)
 	e0:SetCondition(s.countcond)
-	e0:SetCountLimit(1)
     e0:SetOperation(aux.chainreg)
     c:RegisterEffect(e0)
     local e1=Effect.CreateEffect(c)
@@ -48,7 +47,8 @@ function s.countcond(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.acop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-    if c:GetFlagEffect(1)>0 then
+    if c:GetFlagEffect(1)>0 and c:GetFlagEffect(id)==0 then
+    	c:RegisterFlagEffect(id,RESET_PHASE+PHASE_END,0,0)
         c:AddCounter(CTR_CALC,1)
     end
 end

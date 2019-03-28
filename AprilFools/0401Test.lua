@@ -27,7 +27,7 @@ Debug.AddCard(43096270,0,0,LOCATION_HAND,0,POS_FACEDOWN)
 Debug.AddCard(24094653,0,0,LOCATION_HAND,0,POS_FACEDOWN)
 --]]
 
---Stardust Milk - gains more than 1 counter if stuff are chained
+--Stardust Milk - works
 --[[
 Debug.AddCard(512000129,0,0,LOCATION_HAND,0,POS_FACEDOWN)
 Debug.AddCard(44508094,0,0,LOCATION_MZONE,0,POS_FACEUP_ATTACK)
