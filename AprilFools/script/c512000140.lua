@@ -38,7 +38,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 	--add spell/set trap from the banlist
 	local e5=Effect.CreateEffect(c)
-	e5:SetDescription(aux.Stringid(id,0))
+	e5:SetDescription(aux.Stringid(1040,7))
 	e5:SetRange(LOCATION_FZONE)
 	e5:SetTargetRange(LOCATION_FZONE,LOCATION_FZONE)
 	e5:SetProperty(EFFECT_FLAG_BOTH_SIDE)
@@ -92,7 +92,7 @@ function s.target1(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(tp,0,CATEGORY_TOHAND,nil,1,tp,nil)
 end
 function s.oper1(e,tp,eg,ep,ev,re,r,rp)
-	local f1=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,2))
+	local f1=Duel.SelectOption(tp,aux.Stringid(1040,10),aux.Stringid(1040,11))
 	if f1==0 then
 		local num=Duel.GetRandomNumber(1,#ban_spell)
 		add_spell_id=ban_spell[num]
@@ -104,7 +104,7 @@ function s.oper1(e,tp,eg,ep,ev,re,r,rp)
 		add_trap_id=ban_trap[num]
 		g2=Duel.CreateToken(tp,add_trap_id)
 			if Duel.CheckLocation(tp,LOCATION_SZONE,nil) then
-				f2=Duel.SelectOption(tp,aux.Stringid(id,3),aux.Stringid(id,4))
+				f2=Duel.SelectOption(tp,aux.Stringid(1040,8),aux.Stringid(1040,9))
 					if f2==0 then
 					Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
 					Duel.MoveToField(g2,tp,tp,LOCATION_SZONE,POS_FACEDOWN,true)

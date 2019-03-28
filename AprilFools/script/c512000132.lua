@@ -16,7 +16,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsPlayerCanDraw(tp,1) and Duel.IsPlayerCanDraw(1-tp,1) end
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-    if Duel.SelectYesNo(1-tp,aux.Stringid(512,0)) then
+    if Duel.SelectYesNo(1-tp,aux.Stringid(1040,0)) then
         Duel.Damage(tp,1000,REASON_EFFECT)
         Duel.Damage(1-tp,1000,REASON_EFFECT)
     else

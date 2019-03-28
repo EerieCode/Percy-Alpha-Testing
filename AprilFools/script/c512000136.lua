@@ -5,7 +5,7 @@ local s,id=GetID()
 function s.initial_effect(c)
     --{broww of dork world}
     local e1=Effect.CreateEffect(c)
-    e1:SetDescription(aux.Stringid(512,6))
+    e1:SetDescription(aux.Stringid(1040,6))
     e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
     e1:SetCode(EVENT_SUMMON_SUCCESS)
     e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
