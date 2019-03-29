@@ -48,3 +48,8 @@ function s.bantg(codes)
 		return c:IsCode(table.unpack(codes))
 	end
 end
+table.merge=table.merge or function(t1,t2)
+	for i=1,#t2 do
+		table.insert(t1,t2[i])
+	end
+end
