@@ -195,7 +195,7 @@ function s.oper1(e,tp,eg,ep,ev,re,r,rp)
 		add_trap_id=ban_trap[num]
 		g2=Duel.CreateToken(tp,add_trap_id)
 			if Duel.CheckLocation(tp,LOCATION_SZONE,nil) then
-				f2=Duel.SelectOption(tp,aux.Stringid(1040,12),aux.Stringid(1040,13))
+				local f2=Duel.SelectOption(tp,aux.Stringid(1040,12),aux.Stringid(1040,13))
 					if f2==0 then
 					Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
 					Duel.MoveToField(g2,tp,tp,LOCATION_SZONE,POS_FACEDOWN,true)
