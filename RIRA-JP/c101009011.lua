@@ -59,7 +59,11 @@ function c101009011.initial_effect(c)
 	c:RegisterEffect(e6)
 	local e7=e6:Clone()
 	e7:SetCode(EVENT_TO_DECK)
-	e7:SetCondition(s.atkcond2)
+	--[[e7:SetCondition(s.atkcond2)
+		This condition makes so it doesn't
+		trigger if the card is sent to the Extra deck
+		currently, it will.
+	--]]
 	c:RegisterEffect(e7)
 	--return itself to hand
 	local e8=Effect.CreateEffect(c)
