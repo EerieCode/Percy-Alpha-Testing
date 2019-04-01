@@ -10,6 +10,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetCode(EVENT_SUMMON_SUCCESS)
 	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
+	e1:SetCountLimit(1,id)
 	e1:SetCondition(s.thcon)
 	e1:SetTarget(s.thtg)
 	e1:SetOperation(s.thop)
@@ -21,8 +22,9 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetCountLimit(1,id+100)
 	e2:SetTarget(s.actg)
-	e2:SetTarget(s.acop)
+	e2:SetOperation(s.acop)
 	c:RegisterEffect(e2)
 	--return
 	local e3=Effect.CreateEffect(c)
@@ -34,18 +36,18 @@ function s.initial_effect(c)
 end
 s.listed_names={62681049,79861914}
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FaceupFilterFunction(Card.IsSetCard,0xb3),tp,LOCATION_ONFIELD,0,1,e:GetHandler())
+	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0xb3),tp,LOCATION_ONFIELD,0,1,e:GetHandler())
 end
 function s.thfilter(c)
 	return c:IsSetCard(0xb3) and c:IsType(TYPE_PENDULUM) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
 	if #g>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
@@ -78,7 +80,7 @@ function s.acop(e,tp,eg,ep,ev,re,r,rp)
 			if cost then cost(te,tep,eg,ep,ev,re,r,rp,1) end
 			local tc=Duel.GetFirstTarget()
 			if tc:IsRelateToEffect(e) then
-				Duel.SendtoDeck(tp,nil,2,REASON_EFFECT)
+				Duel.SendtoDeck(tc,nil,2,REASON_EFFECT)
 			end
 		end
 	end
