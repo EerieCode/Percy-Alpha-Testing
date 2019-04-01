@@ -70,5 +70,5 @@ end
 function s.tdop(e,tp,eg,ep,ev,re,r,rp)
 	local g=e:GetLabelObject()
 	local tg=g:Filter(s.tdfilter,nil,e:GetLabel())
-	Duel.SendToDeck(tg,nil,2,REASON_EFFECT)
+	Duel.SendtoDeck(tg,nil,2,REASON_EFFECT)
 end
