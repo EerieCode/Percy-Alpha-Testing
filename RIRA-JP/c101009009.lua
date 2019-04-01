@@ -57,7 +57,7 @@ function s.tgfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0xb3) and c:IsAbleToDeck()
 end
 function s.acfilter(c,tp)
-	return c:IsCode(62681049,79861914) and c:GetActivateEffect():IsActivatable(tp)
+	return c:IsCode(62681049,79861914) and not c:IsForbidden() --and c:GetActivateEffect():IsActivatable(tp)
 end
 function s.actg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and s.tgfilter(chkc) end
@@ -74,10 +74,12 @@ function s.acop(e,tp,eg,ep,ev,re,r,rp)
 	if #ag>0 then
 		local ac=ag:GetFirst()
 		if Duel.MoveToField(ac,tp,tp,LOCATION_SZONE,POS_FACEUP,true) then
-			local te=ac:GetActivateEffect()
+			--[[local te=ac:GetActivateEffect()
 			local tep=ac:GetControler()
 			local cost=te:GetCost()
 			if cost then cost(te,tep,eg,ep,ev,re,r,rp,1) end
+			removed, reason: uncertain if this effect byopasses costs and activation requirements
+			--]]
 			local tc=Duel.GetFirstTarget()
 			if tc:IsRelateToEffect(e) then
 				Duel.SendtoDeck(tc,nil,2,REASON_EFFECT)
