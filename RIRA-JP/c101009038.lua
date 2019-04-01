@@ -66,10 +66,11 @@ function s.lvop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(1)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
 	c:RegisterEffect(e1)
-	if c:GetLevel()==lvl+1 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
+	local g=Duel.GetMatchingGroup(s.filter,tp,0,LOCATION_MZONE,nil)
+	if c:GetLevel()==lvl+1 and #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-		local rg=Duel.SelectMatchingCard(tp,s.filter,tp,0,LOCATION_MZONE,1,1,nil)
-		if rg:GetCount()>0 then
+		local rg=g:Select(tp,1,1,nil)
+		if #rg>0 then
 			Duel.BreakEffect()
 			Duel.Remove(rg,POS_FACEUP,REASON_EFFECT)
 		end
