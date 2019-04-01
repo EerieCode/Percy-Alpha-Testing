@@ -28,6 +28,7 @@ function s.initial_effect(c)
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(id,1))
 	e4:SetCategory(CATEGORY_REMOVE)
+	e4:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e4:SetType(EFFECT_TYPE_IGNITION)
 	e4:SetRange(LOCATION_MZONE)
 	e4:SetCountLimit(1,id)
@@ -53,29 +54,39 @@ function s.lvop(e,tp,eg,ep,ev,re,r,rp)
 	c:RegisterEffect(e1)
 end
 function s.rmfilter(c)
-	return c:IsRace(RACE_SPELLCASTER) and c:IsAbleToRemove()
+	return c:IsRace(RACE_SPELLCASTER) and c:IsAbleToRemove() and (c:IsFaceup() or c:IsLocation(LOCATION_HAND))
 end
 function s.lvfilter(c)
 	return c:IsFaceup() and c:IsHasLevel() and c:IsSetCard(0x31) and Duel.IsExistingMatchingCard(s.rmfilter,tp,LOCATION_MZONE+LOCATION_GRAVE+LOCATION_HAND,0,1,c)
 end
 function s.rmtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.lvfilter(chkc) end
-	if chk==0 then return Duel.IsExistingMatchingTarget(s.lvfilter,tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingTarget(s.lvfilter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,s.lvfilter,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,1,0,0)
 end
 function s.rmop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	local rg=Duel.SelectMatchingCard(tp,s.rmfilter,tp,LOCATION_MZONE+LOCATION_HAND+LOCATION_GRAVE,0,1,99,tc)
+	local ch=Duel.SelectOption(tp,aux.Stringid(id,0),aux.Stringid(id,1))
+	local rg
+	if ch==0 then
+		rg=Duel.SelectMatchingCard(tp,s.rmfilter,tp,LOCATION_MZONE+LOCATION_HAND+LOCATION_GRAVE,0,1,99,tc)
+	elseif ch==1 then
+		rg=Duel.SelectMatchingCard(tp,s.rmfilter,tp,LOCATION_MZONE+LOCATION_HAND+LOCATION_GRAVE,0,1,tc:GetLevel()-1,tc)
+	end
 	if #rg>0 then
 		local ct=Duel.Remove(rg,POS_FACEUP,REASON_EFFECT)
-		if #ct>0 and tc:IsFaceup() and tc:IsRelateToEffect(e) then
+		if ct>0 and tc:IsFaceup() and tc:IsRelateToEffect(e) then
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_UPDATE_LEVEL)
 			e1:SetValue(ct)
 			e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+			if ch==1 then
+				ct=-ct
+			end
+			e1:SetValue(ct)
 			tc:RegisterEffect(e1)
 		end
 	end
