@@ -16,6 +16,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.filter(c)
+	if not (c:IsAttackAbove(0) and c:IsDefenseAbove(0)) then return false end
 	local total=c:GetBaseAttack()+c:GetBaseDefense()
 	return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,total)
 end
