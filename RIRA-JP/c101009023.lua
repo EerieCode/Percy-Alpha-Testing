@@ -1,4 +1,4 @@
-
+--ビック・バイパー Ｔ３０１
 --Vic Viper T301
 --scripted by Larry126
 local s,id=GetID()
@@ -27,9 +27,7 @@ end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
-	if d and a:GetControler()~=d:GetControler() then
-		if a:IsControler(tp) then return a:IsFaceup() else return d:IsFaceup() end
-	else return false end
+	return d and a:GetControler()~=d:GetControler() and (a:IsControler(tp) and a:IsFaceup() or d:IsControler(tp) and d:IsFaceup())
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
