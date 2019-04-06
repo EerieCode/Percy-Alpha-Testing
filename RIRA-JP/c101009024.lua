@@ -27,7 +27,7 @@ end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
-	return d and a:GetControler()~=d:GetControler() and (a:IsControler(tp) or d:IsControler(tp) and d:IsFaceup())
+	return d and a:GetControler()~=d:GetControler() and (a:IsControler(tp) and a:IsFaceup() or d:IsControler(tp) and d:IsFaceup())
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
