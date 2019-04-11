@@ -7,6 +7,7 @@ function s.initial_effect(c)
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_ACTIVATE)
     e1:SetCode(EVENT_FREE_CHAIN)
+    e1:SetTarget(s.target)
     c:RegisterEffect(e1)
     --Cannot target
     local e2=Effect.CreateEffect(c)
@@ -35,6 +36,19 @@ function s.initial_effect(c)
 	e4:SetTarget(s.thtg)
 	e4:SetOperation(s.thop)
 	c:RegisterEffect(e4)
+end
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	if s.thcost(e,tp,eg,ep,ev,re,r,rp,0) and s.thtg(e,tp,eg,ep,ev,re,r,rp,0)
+		and Duel.SelectYesNo(tp,94) then
+		e:SetCategory(CATEGORY_TOHAND+CATEGORY_DAMAGE)
+		s.thcost(e,tp,eg,ep,ev,re,r,rp,1)
+		s.thtg(e,tp,eg,ep,ev,re,r,rp,1)
+		e:SetOperation(s.thop)
+	else
+		e:SetCategory(0)
+		e:SetOperation(nil)
+	end
 end
 function s.atkval(tp)
 	local g=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsRace,RACE_WINDBEAST),tp,LOCATION_MZONE,0,nil)
