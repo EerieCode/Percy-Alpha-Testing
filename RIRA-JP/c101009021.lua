@@ -1,5 +1,5 @@
 --烈風の覇者シムルグ
---Simorgh, Lord of Gales
+--Simorgh, Lord of the Storms
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
@@ -16,8 +16,10 @@ function s.initial_effect(c)
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,0))
     e2:SetCategory(CATEGORY_TODECK)
-    e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+    e2:SetType(EFFECT_TYPE_QUICK_O)
     e2:SetCode(EVENT_CHAINING)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1,id)
     e2:SetCondition(s.tdcon)
     e2:SetCost(s.tdcost)
     e2:SetTarget(s.tdtg)
@@ -30,6 +32,7 @@ function s.initial_effect(c)
     e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
     e3:SetCode(EVENT_BATTLE_DESTROYED)
     e3:SetRange(LOCATION_GRAVE)
+	e3:SetCountLimit(1,id+100)
     e3:SetCondition(s.thcon)
     e3:SetTarget(s.thtg)
     e3:SetOperation(s.thop)
@@ -42,7 +45,7 @@ function s.ctval(e,re,rp)
 	return re:IsActiveType(TYPE_SPELL+TYPE_TRAP) and rp~=e:GetHandlerPlayer()
 end
 function s.tdcon(e,tp,eg,ep,ev,re,r,rp)
-    return re:IsHasType(EFFECT_TYPE_ACTIVATE)
+	return re:IsActiveType(TYPE_SPELL+TYPE_TRAP)
 end
 function s.cfilter(c)
 	return c:IsRace(RACE_WINDBEAST) and c:IsAttribute(ATTRIBUTE_WIND)
@@ -54,14 +57,12 @@ function s.tdcost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_ONFIELD) and chkc:IsControler(1-tp) and chkc:IsAbleToDeck() end
-	if chk==0 then return e:GetHandler():IsRelateToEffect(e) 
-		and Duel.IsExistingMatchingCard(Card.IsAbleToDeck,tp,0,LOCATION_ONFIELD,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToDeck,tp,0,LOCATION_ONFIELD,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
 	local g=Duel.SelectTarget(tp,Card.IsAbleToDeck,tp,0,LOCATION_ONFIELD,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,#g,0,0)
 end
 function s.tdop(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) then
 		Duel.SendtoDeck(tc,nil,2,REASON_EFFECT)
