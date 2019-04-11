@@ -50,21 +50,23 @@ end
 function s.cfilter(c)
 	return c:IsFaceup() and c:IsAbleToGraveAsCost() and c:IsSetCard(0x22e) and c:IsLevelAbove(7)
 end
-function s.rescon(sg,e,tp,mg)
-	return sg:GetClassCount(Card.GetOriginalAttribute)==#sg
+function s.rescon(sg,e,tp,mg) 
+	return sg:GetClassCount(Card.GetOriginalAttribute)==#sg and Duel.IsExistingMatchingCard(Card.IsAbleToHand,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,sg+e:GetHandler()) 
 end
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	local c=e:GetHandler()
-	local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
-	if chk==0 then return c:IsAbleToGraveAsCost() and aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,0) end
-	local tg=aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,1,tp,HINTMSG_TOGRAVE)
-	tg:AddCard(c)
-	Duel.SendtoGrave(tg,REASON_COST)
+    e:SetLabel(100)
+    return true
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToHand,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
-	local g=Duel.GetMatchingGroup(Card.IsAbleToHand,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
-	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,#g,0,0)
+    local c=e:GetHandler()
+    local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
+    if chk==0 then return e:GetLabel()==100 and c:IsAbleToGraveAsCost() and aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,0) end
+    local tg=aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,1,tp,HINTMSG_TOGRAVE)
+    tg:AddCard(c)
+    Duel.SendtoGrave(tg,REASON_COST)
+    e:SetLabel(0)
+    local g=Duel.GetMatchingGroup(Card.IsAbleToHand,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
+    Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,#g,0,0)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsAbleToHand,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
