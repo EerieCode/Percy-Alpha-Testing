@@ -1,5 +1,5 @@
---
---
+--招神鳥シムルグ
+--Simorgh, Bird of Summoning
 --scripted by Larry126
 local s,id=GetID()
 function s.initial_effect(c)
@@ -10,8 +10,8 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_SINGLE)
 	e1:SetCode(EVENT_SUMMON_SUCCESS)
 	e1:SetCountLimit(1,id)
-	e1:SetTarget(s.target)
-	e1:SetOperation(s.operation)
+	e1:SetTarget(s.thtg)
+	e1:SetOperation(s.thop)
 	c:RegisterEffect(e1)
 	--Special Summon
 	local e2=Effect.CreateEffect(c)
@@ -28,14 +28,14 @@ end
 function s.thfilter(c)
 	return c:IsSetCard(0x22e) and not c:IsCode(id) and c:IsAbleToHand()
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
-	if g:GetCount()>0 then
+	if #g>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end
@@ -58,7 +58,7 @@ function s.ssop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_LEAVE_FIELD_REDIRECT)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-		e1:SetReset(RESET_EVENT+0x47e0000)
+		e1:SetReset(RESET_EVENT+RESETS_REDIRECT)
 		e1:SetValue(LOCATION_REMOVED)
 		c:RegisterEffect(e1,true)
 	end
