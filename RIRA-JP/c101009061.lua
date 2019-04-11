@@ -54,16 +54,16 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.rvfilter(c)
-	return c:IsRace(RACE_WINDBEAST) and IsLevelAbove(1) and not c:IsPublic()
+	return c:IsRace(RACE_WINDBEAST) and c:IsLevelAbove(2) and not c:IsPublic()
 end
 function s.hfilter(c,code)
-	return c:IsCode(code) and IsLevelAbove(1)
+	return c:IsCode(code) and c:IsLevelAbove(2)
 end
 function s.rvtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.rvfilter,tp,LOCATION_HAND,0,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.rvfilter,tp,LOCATION_HAND,0,1,nil) end
 end
 function s.rvop(e,tp,eg,ep,ev,re,r,rp)
-	if not Duel.IsExistingMatchingCard(s.rvfilter,tp,LOCATION_HAND,0,nil) then return end
+	local c=e:GetHandler()
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
 	local g=Duel.SelectMatchingCard(tp,s.rvfilter,tp,LOCATION_HAND,0,1,1,nil)
 	Duel.ConfirmCards(1-tp,g)
