@@ -43,7 +43,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
         if #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
             Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
             local sg=g:Select(tp,1,1,nil)
-			Duel.BreakEffect()
+            Duel.BreakEffect()
             Duel.SendtoDeck(sg,nil,0,REASON_EFFECT)
         end
     end
