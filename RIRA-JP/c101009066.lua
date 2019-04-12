@@ -28,7 +28,7 @@ function s.tcheck(c,sg,cg,tps)
         if ct&ty~=0 and ct&tps~=0 then
             local mg=cg:Clone()
             mg:AddCard(c)
-            if sg:IsExists(s.tcheck,1,mg,sg,mg,tps-ty) then return true
+            if sg:IsExists(s.tcheck,1,mg,sg,mg,tps-ty) then return true end
         end
     end
     return false
@@ -38,7 +38,7 @@ function s.check(sg,e,tp,mg)
     if aux.ChkfMMZ(1)(sg,e,tp,mg) then loc=loc+LOCATION_MZONE end
     if Duel.GetLocationCountFromEx(tp,tp,sg)>0 then loc=loc+LOCATION_EXTRA end
     return #sg==6 and sg:GetClassCount(Card.GetOriginalRace)==1 and loc~=0 
-        and Duel.IsExistingMatchingCard(s.spfilter,tp,loc,0,1,nil,e,tp,sg:GetFirst():GetOriginalRace()))
+        and Duel.IsExistingMatchingCard(s.spfilter,tp,loc,0,1,nil,e,tp,sg:GetFirst():GetOriginalRace())
         and sg:IsExists(s.tcheck,1,nil,sg,Group.CreateGroup(),TYPE_FULL)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
