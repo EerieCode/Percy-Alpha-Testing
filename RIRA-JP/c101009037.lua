@@ -21,7 +21,7 @@ end
 function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return false end
 	local _,val=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,nil):GetMaxGroup(Card.GetLevel)
-	if not val then return false end
+	if not val or val<2 then return false end
 	local lv=math.max(val-1,6)
 	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil,lv) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINGMSG_LVRANK)
