@@ -41,7 +41,7 @@ function s.spcfilter(c)
 end
 function s.spcon(e,c)
     if c==nil then return true end
-    local g=Duel.GetMatchingGroup(s.spcfilter,tp,,LOCATION_MZONE+LOCATION_GRAVE,LOCATION_MZONE+LOCATION_GRAVE,nil)
+    local g=Duel.GetMatchingGroup(s.spcfilter,0,LOCATION_MZONE+LOCATION_GRAVE,LOCATION_MZONE+LOCATION_GRAVE,nil)
     return g:GetClassCount(Card.GetCode)>=8
 end
 function s.spcost(e,c,tp)
