@@ -1,5 +1,5 @@
 --泥仕合
---Draw Game
+--This Match Is A Draw
 --scripted by andré
 local s,id=GetID()
 function s.initial_effect(c)
