@@ -37,7 +37,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 function s.spcfilter(c)
-	return c:IsType(TYPE_LINK) and c:IsLocation(LOCATION_GRAVE) or c:IsFaceup()
+	return c:IsType(TYPE_LINK) and (c:IsLocation(LOCATION_GRAVE) or c:IsFaceup())
 end
 function s.spcon(e,c)
 	if c==nil then return true end
@@ -45,7 +45,7 @@ function s.spcon(e,c)
 	return g:GetClassCount(Card.GetCode)>=8
 end
 function s.spcost(e,c,tp)
-	return Duel.GetActivityCount(tp,ACTIVITY_SPECIAL_SUMMON)==0
+	return Duel.GetActivityCount(tp,ACTIVITY_SPSUMMON)==0
 end
 function s.spcop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
