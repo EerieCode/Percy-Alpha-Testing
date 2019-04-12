@@ -5,15 +5,15 @@ local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
 	--special summon
-    local e1=Effect.CreateEffect(c)
-    e1:SetType(EFFECT_TYPE_FIELD)
-    e1:SetCode(EFFECT_SPSUMMON_PROC)
-    e1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
-    e1:SetRange(LOCATION_HAND)
-    e1:SetCondition(s.spcon)
-    c:RegisterEffect(e1)
-    --cannot negate
-    local e2=Effect.CreateEffect(c)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_SPSUMMON_PROC)
+	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetCondition(s.spcon)
+	c:RegisterEffect(e1)
+	--cannot negate
+	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
 	e2:SetCode(EFFECT_CANNOT_DISABLE_SPSUMMON)
 	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
@@ -40,9 +40,9 @@ function s.spcfilter(c)
 	return c:IsType(TYPE_LINK) and c:IsLocation(LOCATION_GRAVE) or c:IsFaceup()
 end
 function s.spcon(e,c)
-    if c==nil then return true end
-    local g=Duel.GetMatchingGroup(s.spcfilter,0,LOCATION_MZONE+LOCATION_GRAVE,LOCATION_MZONE+LOCATION_GRAVE,nil)
-    return g:GetClassCount(Card.GetCode)>=8
+	if c==nil then return true end
+	local g=Duel.GetMatchingGroup(s.spcfilter,0,LOCATION_MZONE+LOCATION_GRAVE,LOCATION_MZONE+LOCATION_GRAVE,nil)
+	return g:GetClassCount(Card.GetCode)>=8
 end
 function s.spcost(e,c,tp)
 	return Duel.GetActivityCount(tp,ACTIVITY_SPECIAL_SUMMON)==0
