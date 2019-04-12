@@ -19,15 +19,16 @@ function s.filter(c,lv)
 	return c:IsFaceup() and c:GetLevel()>lv and Duel.IsExistingTarget(Card.IsHasLevel,tp,LOCATION_MZONE,0,1,c)
 end
 function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,nil)
-	local _,lv=g:GetMaxGroup(Card.GetLevel)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil,lv-1) end
+	if chkc then return false end
+	local _,val=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,nil):GetMaxGroup(Card.GetLevel)
+	if not val then return false end
+	local lv=math.max(val-1,6)
+	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil,lv) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINGMSG_LVRANK)
-	local lv=Duel.AnnounceLevel(tp,1,lv-1)
-	Duel.SetTargetParam(lv)
+	local dlv=Duel.AnnounceLevel(tp,1,lv)
+	Duel.SetTargetParam(dlv)
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,0))
-	local g1=Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil)
+	local g1=Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil,dlv)
 	e:SetLabelObject(g1:GetFirst())
 	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,1))
 	local g2=Duel.SelectTarget(tp,Card.IsHasLevel,tp,LOCATION_MZONE,0,1,1,g1)
@@ -37,11 +38,11 @@ function s.lvop(e,tp,eg,ep,ev,re,r,rp)
 	local lv=Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM)
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
 		local tc=e:GetLabelObject()
-		if tc and tc:IsFaceup() and tc:IsRelateToEffect(e) and tc:UpdateLevel(-lv,RESET_EVENT+RESETS_STANDARD,c)~=0 then
+		if tc and tc:IsFaceup() and tc:IsRelateToEffect(e) and tc:UpdateLevel(-lv,nil,c)~=0 then
 			local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS):RemoveCard(tc)
 			local tc2=g:GetFirst()
 			if tc2 and tc2:IsFaceup() and tc2:IsRelateToEffect(e) then
-				 tc2:UpdateLevel(lv,RESET_EVENT+RESETS_STANDARD,c)
+				 tc2:UpdateLevel(lv,nil,c)
 			end
 		end
 	end
