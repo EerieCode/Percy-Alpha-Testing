@@ -41,7 +41,8 @@ function s.spcfilter(c)
 end
 function s.spcon(e,c)
     if c==nil then return true end
-    return Duel.IsExistingMatchingCard(s.spcfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,LOCATION_MZONE+LOCATION_GRAVE,8,nil)
+    local g=Duel.GetMatchingGroup(s.spcfilter,tp,,LOCATION_MZONE+LOCATION_GRAVE,LOCATION_MZONE+LOCATION_GRAVE,nil)
+    return g:GetClassCount(Card.GetCode)>=8
 end
 function s.spcost(e,c,tp)
 	return Duel.GetActivityCount(tp,ACTIVITY_SPECIAL_SUMMON)==0
