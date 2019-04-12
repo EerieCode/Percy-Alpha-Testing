@@ -1,5 +1,5 @@
---
---
+--ランリュウ
+--Storm Dragon
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
@@ -36,7 +36,7 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsReason(REASON_DESTROY) and e:GetHandler():IsReason(REASON_BATTLE+REASON_EFFECT)
 end
 function s.filter(c,e,tp)
-	return c:IsAttack(1500) and c:IsDefense(200) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:GetAttack()==1500 and c:GetDefense()==200 and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
