@@ -14,16 +14,15 @@ function s.initial_effect(c)
     c:RegisterEffect(e1)
 end
 function s.cfilter(c,tp)
-    return c:IsType(TYPE_MONSTER) and (c:IsFaceup() or not c:IsLocation(LOCATION_MZONE))
-        and c:IsLevelAbove(1) and c:IsAbleToRemoveAsCost() 
-        and aux.SpElimFilter(c,true) and Duel.GetMZoneCount(tp,c)>0
+    return c:IsType(TYPE_MONSTER) and aux.SpElimFilter(c,false,true)
+        and c:IsLevelAbove(1) and c:IsAbleToRemoveAsCost() and Duel.GetMZoneCount(tp,c)>0
         and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0,0x21,0,0,c:GetLevel(),RACE_SPELLCASTER,ATTRIBUTE_LIGHT)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,nil,tp) end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-    local tc=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,1,nil,tp)
-    e:SetLabel(tc:GetLevel())
+    local tc=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,1,1,nil,tp):GetFirst()
+	e:SetLabel(tc:GetLevel())
     Duel.Remove(tc,POS_FACEUP,REASON_COST)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -43,7 +42,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
         e1:SetType(EFFECT_TYPE_SINGLE)
         e1:SetCode(EFFECT_CHANGE_LEVEL)
         e1:SetValue(lv)
-        e1:SetReset(RESET_EVENT+0x1fe0000)
+        e1:SetReset(RESET_EVENT+RESETS_STANDARD)
         c:RegisterEffect(e1)
     end
     Duel.SpecialSummonComplete()
