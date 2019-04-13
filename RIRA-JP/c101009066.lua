@@ -24,7 +24,7 @@ end
 function s.tcheck(c,sg,cg,tps)
     if tps==0 then return true end
     local ct=c:GetOriginalType()
-    for _,ty in {TYPE_FUSION,TYPE_RITUAL,TYPE_SYNCHRO,TYPE_XYZ,TYPE_PENDULUM,TYPE_LINK } do
+    for _,ty in ipairs({TYPE_FUSION,TYPE_RITUAL,TYPE_SYNCHRO,TYPE_XYZ,TYPE_PENDULUM,TYPE_LINK}) do
         if ct&ty~=0 and ct&tps~=0 then
             local mg=cg:Clone()
             mg:AddCard(c)
