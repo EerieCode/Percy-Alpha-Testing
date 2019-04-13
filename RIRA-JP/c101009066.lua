@@ -35,7 +35,7 @@ function s.tcheck(c,sg,cg,tps)
 end
 function s.check(sg,e,tp,mg)
     local loc=0
-    if aux.ChkfMMZ(1)(sg,e,tp,mg) then loc=loc+LOCATION_MZONE end
+    if aux.ChkfMMZ(1)(sg,e,tp,mg) then loc=loc+LOCATION_DECK end
     if Duel.GetLocationCountFromEx(tp,tp,sg)>0 then loc=loc+LOCATION_EXTRA end
     return #sg==6 and sg:GetClassCount(Card.GetOriginalRace)==1 and loc~=0 
         and Duel.IsExistingMatchingCard(s.spfilter,tp,loc,0,1,nil,e,tp,sg:GetFirst():GetOriginalRace())
