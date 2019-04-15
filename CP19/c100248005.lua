@@ -23,6 +23,7 @@ function s.initial_effect(c)
 	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetRange(LOCATION_SZONE)
 	e2:SetCountLimit(1,id+100)
+	e2:SetHintTiming(0,TIMING_MAIN_END)
 	e2:SetCondition(s.spcon)
 	e2:SetCost(s.spcost)
 	e2:SetTarget(s.sptg)
@@ -62,6 +63,7 @@ function s.recop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2
+		and e:GetHandler():GetType()==TYPE_TRAP+TYPE_CONTINUOUS
 end
 function s.costfilter(c,ft,tp)
 	return c:IsSetCard(0x5008) and (ft>0 or (c:IsControler(tp) and c:GetSequence()<5)) and (c:IsControler(tp) or c:IsFaceup())
