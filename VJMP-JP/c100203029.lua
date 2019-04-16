@@ -1,4 +1,4 @@
---
+--ラスタライガー
 --Luster Liger
 --Scripted by Hatter
 local s,id=GetID()
@@ -25,13 +25,17 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1,id+100)
 	e2:SetCost(s.descost)
+	e2:SetTarget(s.destg)
 	e2:SetOperation(s.desop)
 	c:RegisterEffect(e2)
 end
+function s.atkfilter(c)
+	return c:IsType(TYPE_LINK) and c:GetAttack()>0
+end
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsType(TYPE_MONSTER) end
-	if chk==0 then return Duel.IsExistingTarget(aux.FilterBoolFunction(Card.IsType,TYPE_MONSTER),tp,LOCATION_GRAVE,LOCATION_GRAVE,1,nil) end
-	Duel.SelectTarget(tp,aux.FilterBoolFunction(Card.IsType,TYPE_MONSTER),tp,LOCATION_GRAVE,LOCATION_GRAVE,1,1,nil)
+	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and s.atkfilter(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(s.atkfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,nil) end
+	Duel.SelectTarget(tp,s.atkfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,1,nil)
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -41,7 +45,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(tc:GetAttack())
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 		c:RegisterEffect(e1)
 	end
 end
@@ -52,11 +56,17 @@ end
 function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
 	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.cfilter,1,false,false,nil) end 
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
 	local cg=Duel.SelectReleaseGroupCost(tp,s.cfilter,1,#g,false,false,nil)
 	e:SetLabel(#cg)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,nil,#cg,0,0)
+	Duel.Release(sg,REASON_COST)
 end
-function s.atkop(e,tp,eg,ep,ev,re,r,rp)
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end 
+	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,e:GetLabel(),0,0)
+end
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
 	local n=e:GetLabel()
 	if n>#g then n=#g end
