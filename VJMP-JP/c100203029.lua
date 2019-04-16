@@ -59,7 +59,7 @@ function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
 	local cg=Duel.SelectReleaseGroupCost(tp,s.cfilter,1,#g,false,false,nil,e)
 	e:SetLabel(#cg)
-	Duel.Release(sg,REASON_COST)
+	Duel.Release(cg,REASON_COST)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end 
