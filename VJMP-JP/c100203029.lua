@@ -55,9 +55,9 @@ function s.cfilter(c,e)
 end
 function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
-	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.cfilter,1,false,false,nil) end 
+	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.cfilter,1,false,false,nil,e) end 
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
-	local cg=Duel.SelectReleaseGroupCost(tp,s.cfilter,1,#g,false,false,nil)
+	local cg=Duel.SelectReleaseGroupCost(tp,s.cfilter,1,#g,false,false,nil,e)
 	e:SetLabel(#cg)
 	Duel.Release(sg,REASON_COST)
 end
