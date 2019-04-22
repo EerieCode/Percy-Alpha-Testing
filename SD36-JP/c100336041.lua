@@ -1,13 +1,20 @@
 --トポロジック・ゼロヴォロス
 --Topologic Zerovoros
---Scripted by AlphaKretin[, workaround by edo9300]
+--Scripted by AlphaKretin and andré
 local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
 	aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_EFFECT),2)
 	c:EnableReviveLimit()
-	--summon restriction
-	--workaround goes here
+	--force zone
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_FORCE_MZONE)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetTargetRange(1,0)
+	e1:SetValue(s.znval)
+	c:RegisterEffect(e1)
 	--atk
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
@@ -44,6 +51,9 @@ function s.initial_effect(c)
 	e5:SetOperation(s.spop)
 	e5:SetLabelObject(e4)
 	c:RegisterEffect(e5)
+end
+function s.znval(e)
+	return ~(e:GetHandler():GetLinkedZone()&0x60)
 end
 function s.atkval(e,c)
 	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_REMOVED,LOCATION_REMOVED)*200
