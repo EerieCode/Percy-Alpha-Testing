@@ -58,7 +58,7 @@ end
 function s.atkval(e,c)
 	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_REMOVED,LOCATION_REMOVED)*200
 end
-function s.descon(e,tp,eg,ep,ev,re,r,rp)
+function s.rmcon(e,tp,eg,ep,ev,re,r,rp)
 	if eg:IsContains(e:GetHandler()) then return false end
 	local g=Duel.GetMatchingGroup(Card.IsType,tp,LOCATION_MZONE,LOCATION_MZONE,nil,TYPE_LINK)
 	for tc in aux.Next(g) do
