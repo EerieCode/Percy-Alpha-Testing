@@ -10,14 +10,14 @@ function s.initial_effect(c)
 	--workaround goes here
 	--atk
 	local e2=Effect.CreateEffect(c)
-    e2:SetType(EFFECT_TYPE_SINGLE)
-    e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-    e2:SetRange(LOCATION_MZONE)
-    e2:SetCode(EFFECT_UPDATE_ATTACK)
-    e2:SetValue(s.atkval)
-    c:RegisterEffect(e2)
-    --banish
-    local e3=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetCode(EFFECT_UPDATE_ATTACK)
+	e2:SetValue(s.atkval)
+	c:RegisterEffect(e2)
+	--banish
+	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,0))
 	e3:SetCategory(CATEGORY_DESTROY)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
@@ -46,15 +46,15 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 end
 function s.atkval(e,c)
-    return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_REMOVED,LOCATION_REMOVED)*200
+	return Duel.GetFieldGroupCount(c:GetControler(),LOCATION_REMOVED,LOCATION_REMOVED)*200
 end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
-    if eg:IsContains(e:GetHandler()) then return false end
-    local g=Duel.GetMatchingGroup(Card.IsType,tp,LOCATION_MZONE,LOCATION_MZONE,nil,TYPE_LINK)
-    for tc in aux.Next(g) do
-        if eg:IsExists(aux.zptfilter(nil),1,nil,tc) then return true end
-    end
-    return false
+	if eg:IsContains(e:GetHandler()) then return false end
+	local g=Duel.GetMatchingGroup(Card.IsType,tp,LOCATION_MZONE,LOCATION_MZONE,nil,TYPE_LINK)
+	for tc in aux.Next(g) do
+		if eg:IsExists(aux.zptfilter(nil),1,nil,tc) then return true end
+	end
+	return false
 end
 function s.rmtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
