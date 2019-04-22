@@ -90,11 +90,11 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetRange(LOCATION_MZONE)
 		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
 		e2:SetValue(s.efilter)
-		c:RegisterEffect(e2)
+		tc:RegisterEffect(e2)
 	end
 end
 function s.attg(e,c)
-	return c:IsSummonType(SUMMON_TYPE_SPECIAL) and c:GetSummonLocation()==LOCATION_EXTRA
+	return not (c:IsSummonType(SUMMON_TYPE_SPECIAL) and c:GetSummonLocation()==LOCATION_EXTRA)
 end
 function s.atlimit(e,c)
 	return c==e:GetHandler()
