@@ -130,11 +130,48 @@ async function updateOperators(file) {
     return file;
 }
 
+// adds a list of listed card IDs to the file
+async function updateListedNames(file) {
+    const codeRegs = [/IsCode\(([0-9A-Z_]+)\)/g, /IsEnvironment\(([0-9A-Z_]+)\)/g, /IsOriginalCode\(([0-9A-Z_]+)\)/g, /IsOriginalCodeRule\(([0-9A-Z_]+)\)/g];
+    const codes = [];
+    for (const reg of codeRegs) {
+        while ((result = reg.exec(data)) !== null) {
+            if (codes.indexOf(result) < 0) {
+                codes.push(result[1]);
+            }
+        }
+    }
+    if (codes.length > 0) {
+        const listString = "s.listed_names={" + codes.join(",") + "}"
+        const lines = file.split(/\r\n|\r|\n/);
+        let insInd = -1;
+        let listInd = -1;
+        for (let i = 0; i < lines.length; i++) {
+            if (lines[i] === "end" && insInd < 0) {
+                insInd = i;
+            }
+            if (lines[i].includes("listed_names")) {
+                listInd = i;
+                break;
+            }
+        }
+        if (listInd > -1) {
+            lines[listInd] = listStr;
+        } else if (insInd > -1) {
+            lines.splice(insInd + 1, 0, listStr);
+        } else {
+            lines.push(listStr);
+        }
+        return lines.join("\r\n");
+    }
+    return file;
+}
+
 const fs = require("fs");
 
 const IN_DIR = "./script/";
 const OUT_DIR = "./newscript/";
-const UPDATE_FUNCS = [updateGetID, updateConstants, updateOperators, updateRegisterFlags]; // order of ID/constants matters if updating a card with an ID that is a constant
+const UPDATE_FUNCS = [updateGetID, updateConstants, updateOperators, updateRegisterFlags, updateListedNames]; // order of ID/constants matters if updating a card with an ID that is a constant
 function updateScript(fileName) {
     return new Promise((resolve, reject) => {
         fs.readFile(IN_DIR + fileName, "utf8", async (err, file) => {
