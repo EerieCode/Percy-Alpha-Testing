@@ -2,12 +2,12 @@
 --Duelist Kingdom
 --Scripted by AlphaKretin
 local s,id=GetID()
-function s.intial_effect(c)
+function s.initial_effect(c)
 	aux.EnableExtraRule(c,s)
 	if not s.global_check then
-        s.global_check = true
-        --no direct
-        local e1=Effect.CreateEffect(c)
+	s.global_check = true
+	--no direct
+	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(EFFECT_CANNOT_DIRECT_ATTACK)
 	e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
@@ -16,7 +16,7 @@ function s.intial_effect(c)
 	--summon face-up defense
 	local EFFECT_LIGHT_INTERVENTION=EFFECT_DEVINE_LIGHT
 	local e2=Effect.CreateEffect(c)
-    	e2:SetType(EFFECT_TYPE_FIELD)
+	e2:SetType(EFFECT_TYPE_FIELD)
 	e2:SetCode(EFFECT_LIGHT_INTERVENTION)
 	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e2:SetTargetRange(1,1)
@@ -38,20 +38,22 @@ function s.intial_effect(c)
 	e5:SetCode(EVENT_DESTROYED)
 	e5:SetOperation(s.damop)
 	Duel.RegisterEffect(e5,0)
-    end
+	end
 end
 function s.ntcon(e,c,minc)
 	if c==nil then return true end
 	return minc==0 and Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
 end
+function s.damfilter(c,p)
+	return c:IsPreviousControler(p) and c:IsReason(REASON_EFFECT)
+end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	for p=0,1 do
-		local pg=eg:Filter(Card.IsPreviousControler,nil,p)
-			if #pg>0 then
-				local sum=pg:GetSum(Card.GetPreviousAttackOnField)
-				if sum>0 then
-					Duel.Damage(p,sum,REASON_EFFECT)
-				end
+		local pg=eg:Filter(s.damfilter,nil,p)
+		if #pg>0 then
+			local sum=pg:GetSum(Card.GetPreviousAttackOnField)
+			if sum>0 then
+				Duel.Damage(p,sum/2,REASON_EFFECT)
 			end
 		end
 	end
