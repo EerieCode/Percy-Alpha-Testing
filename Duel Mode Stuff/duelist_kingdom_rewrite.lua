@@ -51,9 +51,9 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	for p=0,1 do
 		local pg=eg:Filter(s.damfilter,nil,p)
 		if #pg>0 then
-			local sum=pg:GetSum(Card.GetPreviousAttackOnField)
+			local sum=pg:GetSum(Card.GetPreviousAttackOnField)//2
 			if sum>0 then
-				Duel.Damage(p,sum/2,REASON_EFFECT)
+				Duel.Damage(p,sum,REASON_EFFECT)
 			end
 		end
 	end
