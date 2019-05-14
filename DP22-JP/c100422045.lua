@@ -1,10 +1,11 @@
--- 捕食植物トリフィオヴェルトゥム
--- Predaplant Triphyovertum 
+--捕食植物トリフィオヴェルトゥム
+--Predaplant Triphyovertum 
 local s,id=GetID()
 function s.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
 	aux.AddFusionProcMixN(c,true,true,s.ffilter,3)
+	--atk up
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
@@ -21,7 +22,6 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1,id)
 	e2:SetCondition(s.discon)
-	e2:SetCost(s.discost)
 	e2:SetTarget(s.distg)
 	e2:SetOperation(s.disop)
 	c:RegisterEffect(e2)
@@ -47,12 +47,11 @@ function s.atkval(e,c)
 	local g=Duel.GetMatchingGroup(s.vfilter,c:GetControler(),LOCATION_MZONE,LOCATION_MZONE,c)
 	return g:GetSum(Card.GetBaseAttack)
 end
-
 function s.disfilter(c,loc)
 	return c:GetSummonLocation()==loc
 end
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
-	return tp~=ep and Duel.GetCurrentChain()==0 and eg:IsExists(s.disfilter,1,nil,LOCATION_EXTRA)
+	return tp~=ep and Duel.GetCurrentChain()==0 and eg:IsExists(s.disfilter,1,nil,LOCATION_EXTRA) and e:GetHandler():IsSummonType(SUMMON_TYPE_FUSION)
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
@@ -63,7 +62,6 @@ function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateSummon(eg)
 	Duel.Destroy(eg,REASON_EFFECT)
 end
-
 function s.cfilter(c)
 	return c:IsFaceup() and c:GetCounter(COUNTER_PREDATOR)>0
 end
@@ -72,12 +70,10 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
+		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	if not Duel.IsExistingMatchingCard(s.cfilter,tp,0,LOCATION_MZONE,1,nil) then return end
-	local c=e:GetHandler()
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) then
 		Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
