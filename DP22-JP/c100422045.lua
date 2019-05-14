@@ -1,4 +1,5 @@
--- Predator Plant Triphyovertum 
+-- 捕食植物トリフィオヴェルトゥム
+-- Predaplant Triphyovertum 
 local s,id=GetID()
 function s.initial_effect(c)
 	--fusion material
@@ -42,7 +43,7 @@ end
 function s.vfilter(c)
 	return c:IsFaceup() and c:GetCounter(COUNTER_PREDATOR)>0
 end
-function s.val(e,c)
+function s.atkval(e,c)
 	local g=Duel.GetMatchingGroup(s.vfilter,c:GetControler(),LOCATION_MZONE,LOCATION_MZONE,c)
 	return g:GetSum(Card.GetBaseAttack)
 end
