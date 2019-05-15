@@ -35,7 +35,7 @@ function s.initial_effect(c)
 	e4:SetOperation(s.desop)
 	c:RegisterEffect(e4)
 end
-s.material_setcode={0x8,0x3008}
+s.material_setcode={0x8,0x6008}
 s.dark_calling=true
 function s.splimit(e,se,sp,st)
 	return st==SUMMON_TYPE_FUSION+0x10
