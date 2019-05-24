@@ -45,7 +45,7 @@ function s.ntcon(e,c,minc)
 	return minc==0 and Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
 end
 function s.damfilter(c,p)
-	return c:IsPreviousControler(p) and c:IsReason(REASON_EFFECT)
+	return c:IsPreviousControler(p) and c:IsPreviousLocation(LOCATION_MZONE) and c:IsReason(REASON_EFFECT)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	for p=0,1 do
