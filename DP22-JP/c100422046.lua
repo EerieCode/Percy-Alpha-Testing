@@ -44,7 +44,9 @@ function s.spop1(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.spcon2(e,tp,eg,ep,ev,re,r,rp)
-	return rp~=tp
+	local c=e:GetHandler()
+	return c:IsReason(REASON_BATTLE)
+		or (rp~=tp and c:IsReason(REASON_EFFECT) and c:GetPreviousControler()==tp)
 end
 function s.spfilter(c,e,tp)
 	return c:IsAttribute(ATTRIBUTE_DARK) and c:IsRace(RACE_DRAGON+RACE_PLANT) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
