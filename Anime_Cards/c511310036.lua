@@ -6,10 +6,11 @@ local SET_ALLURE_QUEEN=0x14
 function s.initial_effect(c)
 	--workaround for e4
 	local e0=Effect.CreateEffect(c)
-	e0:SetType(EFFECT_TYPE_CONTINUOUS)
-	e0:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE)
-	e0:SetRange(0xff)
-	e0:SetCode(EVENT_STARTUP)
+	e0:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+    e0:SetCode(EVENT_ADJUST)
+    e0:SetCountLimit(1)
+    e0:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_NO_TURN_RESET)
+    e0:SetRange(0xff)
 	e0:SetOperation(s.regop)
 	c:RegisterEffect(e0)
 	--Activate
@@ -39,7 +40,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 	--special summon
 	local e5=Effect.CreateEffect(c)
-	e5:SetDescription(aux.Stringid(id,0)) --needs changing
+	e5:SetDescription(aux.Stringid(122520,0))
 	e5:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e5:SetCode(EVENT_SUMMON_SUCCESS)

@@ -37,7 +37,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 	--special summon
 	local e5=Effect.CreateEffect(c)
-	e5:SetDescription(aux.Stringid(id,0)) --needs changing
+	e5:SetDescription(aux.Stringid(122520,0)) --needs changing
 	e5:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e5:SetType(EFFECT_TYPE_IGNITION)
 	e5:SetRange(LOCATION_SZONE)
@@ -62,37 +62,40 @@ function s.eqgroup(tp)
 	local og=Group.CreateGroup()
 	local tg=Duel.GetMatchingGroup(s.oaqfilter,tp,LOCATION_MZONE,0,nil)
 	for tc in aux.Next(tg) do
-		og:Merge(tc:GetEquipGroup():Filter(s.eqfilter,nil,tc:GetOriginalCode()))
+		local eg=tc:GetEquipGroup()
+		eg:Filter(s.eqfilter,nil,tc:GetOriginalCode())
+		og:Merge(eg)
 	end
 	return og
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	local g=s.eqgroup(tp):Filter(Card.IsAbleToGraveAsCost,nil)
+	local g=s.eqgroup(tp)
+	g:Filter(Card.IsAbleToGraveAsCost,nil)
 	if chk==0 then return #g>0 end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local tg=g:Select(tp,1,1,nil)
 	Duel.SendtoGrave(tg,REASON_COST)
 end
-function s.spfilter(c)
+function s.spfilter(c,e,tp)
 	return c:IsSetCard(SET_ALLURE_QUEEN) and c:IsHasLevel() and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.rescon(sg,e,tp,mg)
 	return aux.ChkfMMZ(#sg)(sg,e,tp,mg) and sg:GetClassCount(Card.GetCode)==#sg
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_GRAVE,0,nil)
+	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_GRAVE,0,nil,e,tp)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 end
-	local ct=math.min(ft,#g)
+	local ct=math.min(ft,g:GetClassCount(Card.GetCode))
 	if chk==0 then return ct>0 and 
 		aux.SelectUnselectGroup(g,e,tp,ct,ct,s.rescon,chk) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,ct,0,LOCATION_GRAVE)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_GRAVE,0,nil)
+	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_GRAVE,0,nil,e,tp)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 end
-	local ct=math.min(ft,#g)
+	local ct=math.min(ft,g:GetClassCount(Card.GetCode))
 	if ct<1 then return end
 	local sg=aux.SelectUnselectGroup(g,e,tp,ct,ct,s.rescon,1,tp,HINTMSG_SPSUMMON)
 	if #sg>0 then
