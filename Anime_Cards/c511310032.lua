@@ -85,7 +85,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 end
 	local ct=math.min(ft,#g)
 	if chk==0 then return ct>0 and 
-		aux.SelectUnselectGroup(g, e, tp, ct, ct, s.rescon, chk) end
+		aux.SelectUnselectGroup(g,e,tp,ct,ct,s.rescon,chk) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,ct,0,LOCATION_GRAVE)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)

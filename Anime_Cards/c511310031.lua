@@ -58,13 +58,14 @@ function s.regop(e)
 	s.global_check = true
 	local g=Duel.GetMatchingGroup(Card.IsOriginalSetCard,tp,0xff,0xff,nil,SET_ALLURE_QUEEN)
 	for tc in aux.Next(g) do
-		local eff=tc:GetCardEffect(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-		if eff then
+		local effs={tc:GetCardEffect(id)}
+		for _,teh in ipairs(effs) do
+			local eff=teh:GetLabelObject()
 			local e1=eff:Clone()
 			e1:SetType(EFFECT_TYPE_IGNITION)
 			e1:SetCode(nil)
 			e1:SetCondition(s.igcon)
-			c:RegisterEffect(e1)
+			tc:RegisterEffect(e1)
 		end
 	end
 end
