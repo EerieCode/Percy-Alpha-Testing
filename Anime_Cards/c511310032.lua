@@ -5,11 +5,11 @@ local s,id=GetID()
 local SET_ALLURE_QUEEN=0x14
 function s.initial_effect(c)
 	--Activate
-    local e1=Effect.CreateEffect(c)
-    e1:SetType(EFFECT_TYPE_ACTIVATE)
-    e1:SetCode(EVENT_FREE_CHAIN)
-    c:RegisterEffect(e1)
-    --atk
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetCode(EVENT_FREE_CHAIN)
+	c:RegisterEffect(e1)
+	--atk
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD)
 	e2:SetCode(EFFECT_UPDATE_ATTACK)
@@ -27,25 +27,25 @@ function s.initial_effect(c)
 	e3:SetCondition(s.atkcon)
 	c:RegisterEffect(e3)
 	--choose atk
-    local e4=Effect.CreateEffect(c)
-    e4:SetType(EFFECT_TYPE_FIELD)
-    e4:SetCode(EFFECT_PATRICIAN_OF_DARKNESS)
-    e4:SetRange(LOCATION_SZONE)
-    e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-    e4:SetTargetRange(0,1)
-    e3:SetCondition(s.atkcon)
-    c:RegisterEffect(e4)
-    --special summon
-    local e5=Effect.CreateEffect(c)
-    e5:SetDescription(aux.Stringid(id,0)) --needs changing
-    e5:SetCategory(CATEGORY_SPECIAL_SUMMON)
-    e5:SetType(EFFECT_TYPE_IGNITION)
-    e5:SetRange(LOCATION_SZONE)
-    e5:SetCountLimit(1,id)
-    e5:SetCost(s.spcost)
-    e5:SetTarget(s.sptg)
-    e5:SetOperation(s.spop)
-    c:RegisterEffect(e5)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_FIELD)
+	e4:SetCode(EFFECT_PATRICIAN_OF_DARKNESS)
+	e4:SetRange(LOCATION_SZONE)
+	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e4:SetTargetRange(0,1)
+	e3:SetCondition(s.atkcon)
+	c:RegisterEffect(e4)
+	--special summon
+	local e5=Effect.CreateEffect(c)
+	e5:SetDescription(aux.Stringid(id,0)) --needs changing
+	e5:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e5:SetType(EFFECT_TYPE_IGNITION)
+	e5:SetRange(LOCATION_SZONE)
+	e5:SetCountLimit(1,id)
+	e5:SetCost(s.spcost)
+	e5:SetTarget(s.sptg)
+	e5:SetOperation(s.spop)
+	c:RegisterEffect(e5)
 end
 function s.eqfilter(c,code)
 	return c:GetFlagEffect(code)~=0
@@ -77,7 +77,7 @@ function s.spfilter(c)
 	return c:IsSetCard(SET_ALLURE_QUEEN) and c:IsHasLevel() and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.rescon(sg,e,tp,mg)
-    return aux.ChkfMMZ(#sg)(sg,e,tp,mg) and sg:GetClassCount(Card.GetCode)==#sg
+	return aux.ChkfMMZ(#sg)(sg,e,tp,mg) and sg:GetClassCount(Card.GetCode)==#sg
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_GRAVE,0,nil)

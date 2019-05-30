@@ -71,8 +71,8 @@ function s.indop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.SelectYesNo(tp,aux.Stringid(id,1)) then --needs changing
 		Duel.BreakEffect()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-        local dg=Duel.SelectMatchingCard(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
-        Duel.Destroy(dg,REASON_EFFECT)
+		local dg=Duel.SelectMatchingCard(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
+		Duel.Destroy(dg,REASON_EFFECT)
 	end
 	tg:DeleteGroup()
 end
