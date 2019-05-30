@@ -14,6 +14,7 @@ function s.initial_effect(c)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetRange(LOCATION_MZONE)
+	e1:SetCondition(s.atkcon)
 	e1:SetValue(s.atkval)
 	c:RegisterEffect(e1)
 	--indes
@@ -32,7 +33,9 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_names={CARD_ALLURE_PALACE}
-s.aqfilter=aux.
+function s.atkcon(e)
+	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK)
+end
 function s.atkval(e,c)
 	local g=e:GetHandler():GetLinkedGroup():Filter(aux.FilterFaceupFunction(Card.IsSetCard,SET_ALLURE_QUEEN),nil)
 	return g:GetSum(Card.GetAttack)
