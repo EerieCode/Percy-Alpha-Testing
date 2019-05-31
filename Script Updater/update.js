@@ -396,7 +396,7 @@ async function updateListedNames(file) {
     const codeRegs = [/IsCode\(([0-9A-Z_]+)\)/g, /IsEnvironment\(([0-9A-Z_]+)\)/g, /IsOriginalCode\(([0-9A-Z_]+)\)/g, /IsOriginalCodeRule\(([0-9A-Z_]+)\)/g];
     const codes = [];
     for (const reg of codeRegs) {
-        while ((result = reg.exec(data)) !== null) {
+        while ((result = reg.exec(file)) !== null) {
             if (codes.indexOf(result) < 0) {
                 codes.push(result[1]);
             }
