@@ -403,7 +403,7 @@ async function updateListedNames(file) {
         }
     }
     if (codes.length > 0) {
-        const listString = "s.listed_names={" + codes.join(",") + "}"
+        const listString = "s.listed_names={" + codes.filter((v,i,s) => s.indexOf(v)===i).join(",") + "}"
         const lines = file.split(/\r\n|\r|\n/);
         let insInd = -1;
         let listInd = -1;
