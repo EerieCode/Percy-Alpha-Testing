@@ -348,9 +348,9 @@ const SIMPLE_MAP = {
 
 // updates simple find-replaces such as new constants and renamed functions with the same params
 async function updateSimple(file) {
-    for (const key in CONST_MAP) {
+    for (const key in SIMPLE_MAP) {
         const reg = new RegExp(key, "g");
-        file = file.replace(reg, CONST_MAP[key]);
+        file = file.replace(reg, SIMPLE_MAP[key]);
     }
     return file;
 }
