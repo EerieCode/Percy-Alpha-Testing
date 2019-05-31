@@ -417,11 +417,11 @@ async function updateListedNames(file) {
             }
         }
         if (listInd > -1) {
-            lines[listInd] = listStr;
+            lines[listInd] = listString;
         } else if (insInd > -1) {
-            lines.splice(insInd + 1, 0, listStr);
+            lines.splice(insInd + 1, 0, listString);
         } else {
-            lines.push(listStr);
+            lines.push(listString);
         }
         return lines.join("\r\n");
     }
