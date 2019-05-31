@@ -9,16 +9,16 @@ You can edit the expected names of the folders in constants around line 100-110i
 
 Updates applied by this script
 - GetID()
-- New constants, including RegisterEffect flags
+- Renamed functions and new constants, including RegisterEffect flags
 - # for Group Size
 - Lua 5.3 Bitwise operators
+- Listed names
 
 Updates known not to be applied by this script:
 - English name in comment under Japanese name
 - Card.IsRitualMonster/IsRitualSpell functions
 - aux.FilterFaceupFunction function
 - Card.IsSequence, IsOriginalName, IsOriginalNameRule, IsSummonPlayer, IsPreviousControler, and IsHasLevel functions
-- Listed names
 - Listed counters added
 - Old cards that could use SelectUnselect (e.g. Dried Winds destroy, Block Dragon summon)
 - EFFECT_FLAG_CLIENT_HINT for lingering player effects
