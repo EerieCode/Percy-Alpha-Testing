@@ -1,5 +1,6 @@
 -- 覇王城 
 -- Supreme King Castle
+local s,id=GetID()
 function s.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -50,7 +51,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
 	local ct=e:GetLabel()*200
 	if tc:IsRelateToBattle() and tc:IsFaceup() and tc:IsControler(tp) then
-		local e1=Effect.CreateEffect(c)
+		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(ct)
