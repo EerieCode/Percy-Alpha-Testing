@@ -12,7 +12,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_DESTROY)
 	e1:SetRange(LOCATION_GRAVE+LOCATION_HAND)
 	e1:SetCountLimit(1,id)
-	e1:SetCondition(s.spcon
+	e1:SetCondition(s.spcon)
 	e1:SetCost(s.spcost)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
