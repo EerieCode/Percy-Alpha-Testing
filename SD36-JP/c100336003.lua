@@ -33,9 +33,13 @@ function s.cfilter(c,tp)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local g=eg:Filter(s.cfilter,nil,tp)
-	g:KeepAlive()
-	e:SetLabelObject(g)
-	return #g>0
+	if #g>0 then
+		g:KeepAlive()
+		e:SetLabelObject(g)
+		return true
+	else 
+		return false
+	end
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
@@ -63,7 +67,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_GRAVE,0,1,1,nil,tc,e,tp)
 		if #g>0 then
-			Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+			Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 		end
 	end
 end
