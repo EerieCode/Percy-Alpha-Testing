@@ -12,9 +12,9 @@ Debug.AddCard(32912040,0,0,LOCATION_HAND,0,POS_FACEDOWN)
 Debug.AddCard(2273734,0,0,LOCATION_HAND,0,POS_FACEDOWN)
 --Monster Zones
 Debug.AddCard(75878039,0,0,LOCATION_MZONE,1,1,true)
-Debug.AddCard(75878039,0,0,LOCATION_MZONE,1,1,true)
+Debug.AddCard(75878039,0,0,LOCATION_MZONE,2,1,true)
 --Spell & Trap Zones
 Debug.AddCard(5851097,0,0,LOCATION_SZONE,1,10)
-Debug.AddCard(59305593,0,0,LOCATION_SZONE,2,)
+Debug.AddCard(59305593,0,0,LOCATION_SZONE,2,10)
 Debug.ReloadFieldEnd()
 aux.BeginPuzzle()
