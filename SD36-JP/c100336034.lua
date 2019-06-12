@@ -1,6 +1,6 @@
 --ガンスリンガー・エクスキューション
 --Gunslinger Execution
---Scripted by Eerie Code
+--Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
 	--activate
