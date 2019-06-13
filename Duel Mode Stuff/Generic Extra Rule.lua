@@ -1,14 +1,3 @@
-function Auxiliary.EnableExtraRule(c,card)
-    local e1=Effect.CreateEffect(c)
-    e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-    e1:SetCode(EVENT_ADJUST)
-    e1:SetCountLimit(1)
-    e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_NO_TURN_RESET)
-    e1:SetRange(0xff)
-    e1:SetOperation(Auxiliary.EnableExtraRuleOperation(card))
-    c:RegisterEffect(e1)
-end
-
 function Auxiliary.EnableExtraRule(c,card,init)
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
