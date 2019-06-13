@@ -3,9 +3,9 @@
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
-	aux.EnableExtraRule(c,s)
-	if not s.global_check then
-	s.global_check = true
+	aux.EnableExtraRule(c,s,s.init)
+end
+function s.init(c)
 	--no direct
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
@@ -38,7 +38,6 @@ function s.initial_effect(c)
 	e5:SetCode(EVENT_DESTROYED)
 	e5:SetOperation(s.damop)
 	Duel.RegisterEffect(e5,0)
-	end
 end
 function s.ntcon(e,c,minc)
 	if c==nil then return true end
