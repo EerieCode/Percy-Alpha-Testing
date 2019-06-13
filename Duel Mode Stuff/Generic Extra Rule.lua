@@ -5,11 +5,11 @@ function Auxiliary.EnableExtraRule(c,card,init)
     e1:SetCountLimit(1)
     e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_NO_TURN_RESET)
     e1:SetRange(0xff)
-    e1:SetOperation(Auxiliary.EnableExtraRuleOperation(c,card,init))
+    e1:SetOperation(Auxiliary.EnableExtraRuleOperation(card,init))
     c:RegisterEffect(e1)
 end
 
-function Auxiliary.EnableExtraRuleOperation(c,card,init)
+function Auxiliary.EnableExtraRuleOperation(card,init)
     return function(e,tp,eg,ep,ev,re,r,rp)
         local c = e:GetHandler()
         local tp = c:GetControler()
