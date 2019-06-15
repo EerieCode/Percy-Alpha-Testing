@@ -48,7 +48,8 @@ function s.spop1(e,tp,eg,ep,ev,re,r,rp)
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
     local tc=c:GetEquipGroup():FilterSelect(tp,s.spfilter1,1,1,nil,e,tp):GetFirst()
     if tc and Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP) then
-        tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1,c:GetFieldID())
+		local fid=c:GetFieldID()
+        tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1,fid)
         local e1=Effect.CreateEffect(c)
         e1:SetType(EFFECT_TYPE_SINGLE)
         e1:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
@@ -64,12 +65,14 @@ function s.spop1(e,tp,eg,ep,ev,re,r,rp)
         local e3=Effect.CreateEffect(c)
         e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
         e3:SetCode(EVENT_PHASE+PHASE_END)
-		e3:SetRange(LOCATION_MZONE)
+		e3:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
         e3:SetCountLimit(1)
+		e3:SetLabel(fid)
         e3:SetLabelObject(tc)
+		e3:SetCondition(s.eqcon)
         e3:SetOperation(s.eqop)
-        e3:SetReset(RESET_PHASE+PHASE_END)
-        c:RegisterEffect(e3)
+        Duel.RegisterEffect(e3,tp)
+		c:CreateEffectRelation(e3)
         Duel.SpecialSummonComplete()
     end
 end
@@ -79,14 +82,32 @@ end
 function s.eqval(ec,c,tp)
     return ec:IsSetCard(0x12b)
 end
+function s.eqcon(e,tp,eg,ep,ev,re,r,rp)
+	local tc=e:GetLabelObject()
+	if not tc or tc:GetFlagEffectLabel(id)~=e:GetLabel() then
+		e:Reset()
+		return false
+	else return true end
+end
 function s.eqop(e,tp,eg,ep,ev,re,r,rp,chk)
-    if Duel.GetLocationCount(tp,LOCATION_SZONE)<=0 then return end
     Duel.Hint(HINT_CARD,PLAYER_ALL,id)
     local c=e:GetHandler()
     local tc=e:GetLabelObject()
-    if c:IsFaceup() and c:IsRelateToEffect(e) and tc and tc:GetFlagEffectLabel(id)==c:GetFieldID() then
-        aux.EquipByEffectAndLimitRegister(c,e,tp,tc)
+    if c:IsFaceup() and c:IsRelateToEffect(e) and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 then
+        Duel.Equip(tp,tc,c,true)
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_EQUIP_LIMIT)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+		e1:SetValue(s.eqlimit)
+		e1:SetLabelObject(c)
+		tc:RegisterEffect(e1)
+	else
+		Duel.SendtoGrave(tc,REASON_RULE)
     end
+end
+function s.eqlimit(e,c)
+    return c==e:GetLabelObject()
 end
 function s.spfilter2(c,e,tp)
     return c:IsSetCard(0x12b) and c:IsLinkBelow(3) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
