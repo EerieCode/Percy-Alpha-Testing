@@ -41,7 +41,7 @@ function s.econ(e)
 	return e:GetHandler():GetSequence()>4
 end
 function s.efilter(e,te)
-	return te:GetOwner()~=e:GetOwner()
+	return te:IsActiveType(TYPE_MONSTER) and te:GetOwnerPlayer()~=e:GetHandlerPlayer()
 end
 function s.imcon(e)
 	local ph=Duel.GetCurrentPhase()
