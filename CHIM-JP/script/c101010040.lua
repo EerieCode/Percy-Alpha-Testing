@@ -1,6 +1,6 @@
 --海晶乙女クリスタルハート
 --Marincess Crystal Heart
---Scripted by AlphaKretin
+--Scripted by Larry126 and AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
@@ -26,14 +26,15 @@ function s.initial_effect(c)
 	e2:SetValue(s.imval)
 	c:RegisterEffect(e2)
 	--protect battle
-	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e2:SetCode(EVENT_BE_BATTLE_TARGET)
-	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e2:SetCondition(s.damcon)
-	e2:SetOperation(s.damop)
-	c:RegisterEffect(e2)
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,0))
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetCode(EVENT_BE_BATTLE_TARGET)
+	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e3:SetCondition(s.damcon)
+	e3:SetTarget(s.damtg)
+	e3:SetOperation(s.damop)
+	c:RegisterEffect(e3)
 end
 function s.econ(e)
 	return e:GetHandler():GetSequence()>4
@@ -46,45 +47,47 @@ function s.imcon(e)
 	return (ph==PHASE_DAMAGE or ph==PHASE_DAMAGE_CAL)
 end
 function s.imtg(e,c)
-	local a=Duel.GetAttacker()
-	local d=Duel.GetAttackTarget()
-	local tc=e:GetHandler()
-	return a and d and (a==c and d==tc) or (a==tc and d==c)
+	local tc=e:GetHandler():GetBattleTarget()
+	return tc and tc:IsControler(1-tp) and tc:IsFaceup()
 end
 function s.imval(e,te)
-    return te:GetOwner()~=e:GetOwner()
-end
-function s.damfilter(c,tg)
-	return tg:IsContains(c) and c:IsSetCard(0x12b)
+	return te:GetOwner()~=e:GetOwner()
 end
 function s.damcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return eg:IsContains(c) or eg:IsExists(s.damfilter,1,nil,c:GetLinkedGroup())
+	local tc=eg:GetFirst()
+	e:SetLabelObject(tc)
+	return tc:IsFaceup() and tc:IsLocation(LOCATION_MZONE)
+		and (tc==c or tc:IsSetCard(0x12b) and c:GetLinkedGroup():IsContains(tc))
 end
-function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil) end
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-    local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,nil)
-    Duel.SendtoGrave(g,REASON_COST)
+function s.damcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,nil)
+	Duel.SendtoGrave(g,REASON_COST)
+end
+function s.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	e:GetLabelObject():CreateEffectRelation(e)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local tc=Duel.GetAttackTarget()
-	if tc and tc:IsRelateToEffect(e) then
-		local e1=Effect.CreateEffect(c)
-        e1:SetType(EFFECT_TYPE_SINGLE)
-        e1:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
-        e1:SetValue(1)
-        e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_DAMAGE)
-        tc:RegisterEffect(e1)
+	local tc=e:GetLabelObject()
+	if tc and tc:IsRelateToEffect(e) and tc:IsRelateToBattle() then
+		tc:ReleaseEffectRelation(e)
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+		e1:SetValue(1)
+		e1:SetReset(RESET_PHASE+PHASE_DAMAGE)
+		tc:RegisterEffect(e1)
 	end
-	local e2=Effect.CreateEffect(c)
-    e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-    e2:SetCode(EVENT_PRE_BATTLE_DAMAGE)
-    e2:SetOperation(s.damop)
-    e2:SetReset(RESET_PHASE+PHASE_DAMAGE)
-    Duel.RegisterEffect(e2,tp)
+	local e2=Effect.CreateEffect(e:GetHandler())
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e2:SetCode(EVENT_PRE_BATTLE_DAMAGE)
+	e2:SetOperation(s.damop)
+	e2:SetReset(RESET_PHASE+PHASE_DAMAGE)
+	Duel.RegisterEffect(e2,tp)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
-    Duel.ChangeBattleDamage(tp,0)
+	Duel.ChangeBattleDamage(tp,0)
 end
