@@ -20,7 +20,7 @@ function s.initial_effect(c)
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetType(EFFECT_TYPE_QUICK_O)
-	e2:SetRange(LOCATION_HAND)
+	e2:SetRange(LOCATION_GRAVE)
 	e2:SetCode(EVENT_BATTLE_START)
 	e2:SetCountLimit(1,id+100)
 	e2:SetCondition(s.damcon)
@@ -51,15 +51,28 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) and Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)~=0 then
-		Duel.HalfBattleDamage(tp)
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_FIELD)
+		e1:SetRange(LOCATION_MZONE)
+		e1:SetCode(EVENT_PRE_BATTLE_DAMAGE)
+		e1:SetCondition(s.dcon)
+		e1:SetOperation(s.dop)
+		e1:SetReset(RESET_PHASE+PHASE_DAMAGE)
+		Duel.RegisterEffect(e1,tp)
 	end
+end
+function s.dcon(e,tp,eg,ep,ev,re,r,rp)
+	return ep==tp
+end
+function s.dop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.HalfBattleDamage(ep)
 end
 function s.damcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetAttacker()~=tp
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	--avoid damage
-	local e1=Effect.CreateEffect(c)
+	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(EFFECT_CHANGE_DAMAGE)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_AVAILABLE_BD)
