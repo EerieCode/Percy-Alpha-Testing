@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCountLimit(1,id)
 	e1:SetTarget(s.thtg)
-	e1:SetOperation(s.tgop)
+	e1:SetOperation(s.thop)
 	c:RegisterEffect(e1)
 	--special summon
 	local e2=Effect.CreateEffect(c)
