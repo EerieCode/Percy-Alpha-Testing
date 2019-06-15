@@ -8,7 +8,7 @@ function s.initial_effect(c)
     e1:SetType(EFFECT_TYPE_SINGLE)
     e1:SetCode(EFFECT_UPDATE_ATTACK)
     e1:SetValue(s.atkval)
-    e1:RegisterEffect(e1)
+    c:RegisterEffect(e1)
     --link summon
     local e2=Effect.CreateEffect(c)
     e2:SetType(EFFECT_TYPE_IGNITION)
