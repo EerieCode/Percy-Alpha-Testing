@@ -1,5 +1,5 @@
+--海晶乙女シーエンジェル
 --Marincess Sea Angel
-
 local s,id=GetID()
 function s.initial_effect(c)
 c:EnableReviveLimit()
@@ -23,9 +23,9 @@ c:EnableReviveLimit()
 	c:RegisterEffect(e1)
 	
 end
+s.listed_series={0x12b}
 function s.mfilter(c,lc,sumtype,tp)
 	return c:IsLinkSetCard(0x12b) and c:IsLevelBelow(4)
-end
 end
 function s.regcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK)

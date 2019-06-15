@@ -19,6 +19,7 @@ function s.initial_effect(c)
     e2:SetCondition(s.actcon)
     c:RegisterEffect(e2)
 end
+s.listed_series={0x12b}
 function s.filter(c,e,tp)
 	return c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousControler()==tp and c:IsPreviousLocation(LOCATION_MZONE)
 		and c:IsPreviousSetCard(0x12b) and c:GetPreviousTypeOnField()&TYPE_LINK==TYPE_LINK

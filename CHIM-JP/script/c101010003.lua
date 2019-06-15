@@ -1,4 +1,4 @@
---[JP name]
+--海晶乙女ブルータン
 --Marincess Blue Tongue
 --Logical Nonsense
 
@@ -34,6 +34,7 @@ function s.initial_effect(c)
 	e3:SetOperation(s.thop)
 	c:RegisterEffect(e3)
 end
+s.listed_series={0x12b}
 	--Check for "Marincess" monster, besides same name
 function s.tgfilter(c)
 	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x12b) and not c:IsCode(id) and c:IsAbleToGrave()
@@ -47,7 +48,7 @@ end
 function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,s.tgfilter,tp,LOCATION_DECK,0,1,1,nil)
-	if g:GetCount()>0 then
+	if #g>0 then
 		Duel.SendtoGrave(g,REASON_EFFECT)
 	end
 end

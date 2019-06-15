@@ -1,5 +1,5 @@
---Marincess Mandarin 
-
+--海晶乙女マンダリン
+--Marincess Mandarin
 local s,id=GetID()
 function s.initial_effect(c)
 	--special summon
@@ -13,6 +13,7 @@ function s.initial_effect(c)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 end
+s.listed_series={0x12b}
 function s.spfiltercon(c)
 	return c:IsFaceup() and c:IsSetCard(0x12b)
 end

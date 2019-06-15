@@ -36,6 +36,7 @@ function s.initial_effect(c)
 	e3:SetOperation(s.damop)
 	c:RegisterEffect(e3)
 end
+s.listed_series={0x12b}
 function s.econ(e)
 	return e:GetHandler():GetSequence()>4
 end
