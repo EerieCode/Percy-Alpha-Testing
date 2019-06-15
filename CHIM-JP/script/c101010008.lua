@@ -70,7 +70,7 @@ function s.spcon2(e,tp,eg,ep,ev,re,r,rp)
 		and not re:GetHandler():IsCode(id)
 end
 function s.spfilter(c,e,tp)
-	return c:IsSetCard(0x230) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
+	return c:IsSetCard(0x230) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE) and not c:IsCode(id)
 end
 function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
