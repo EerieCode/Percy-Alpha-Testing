@@ -1,77 +1,83 @@
---海晶乙女クラウンテイル
---Marincess Crown Tail
---scripted by AlphaKretin
+--海晶乙女ブルータン
+--Marincess Blue Tongue
+--Logical Nonsense
+
+--Substitute ID
 local s,id=GetID()
+
 function s.initial_effect(c)
-	--special summon
+	--Send 1 "Marincess" monster from deck to GY when NS
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetCode(EVENT_PRE_DAMAGE_CALCULATE)
-	e1:SetRange(LOCATION_HAND)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_TOGRAVE)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e1:SetProperty(EFFECT_FLAG_DELAY)
+	e1:SetCode(EVENT_SUMMON_SUCCESS)
 	e1:SetCountLimit(1,id)
-	e1:SetCondition(s.spcon)
-	e1:SetCost(aux.spcost)
-	e1:SetTarget(s.sptg)
-	e1:SetOperation(s.spop)
+	e1:SetTarget(s.tgtg)
+	e1:SetOperation(s.tgop)
 	c:RegisterEffect(e1)
-	--reduce damage
-	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,1))
-	e2:SetType(EFFECT_TYPE_QUICK_O)
-	e2:SetRange(LOCATION_HAND)
-	e2:SetCode(EVENT_BATTLE_START)
-	e2:SetCountLimit(1,id+100)
-	e2:SetCondition(s.damcon)
-	e2:SetCost(aux.bfgcost)
-	e2:SetOperation(s.damop)
+	local e2=e1:Clone()
+	--Same as above, but when SS
+	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e2)
+	--Excavate deck
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,1))
+	e3:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e3:SetProperty(EFFECT_FLAG_DELAY)
+	e3:SetCode(EVENT_BE_MATERIAL)
+	e3:SetCountLimit(1,id+100)
+	e3:SetCondition(s.thcon)
+	e3:SetTarget(s.thtg)
+	e3:SetOperation(s.thop)
+	c:RegisterEffect(e3)
 end
 s.listed_series={0x12b}
-function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	local a=Duel.GetAttacker()
-	local d=Duel.GetAttackTarget()
-	return a and d
+	--Check for "Marincess" monster, besides same name
+function s.tgfilter(c)
+	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x12b) and not c:IsCode(id) and c:IsAbleToGrave()
 end
-function s.cfilter(c)
-	return c:IsSetCard(0x12b) and c:IsAbleToGraveAsCost()
+	--Activation legality
+function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.tgfilter,tp,LOCATION_DECK,0,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,tp,LOCATION_DECK)
 end
-function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,e:GetHandler()) end
+	--Sending a "Marincess" from deck to GY
+function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,e:GetHandler())
-	Duel.SendtoGrave(g,REASON_COST)
-end
-function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
-end
-function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) and Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)~=0 then
-		Duel.HalfBattleDamage(tp)
+	local g=Duel.SelectMatchingCard(tp,s.tgfilter,tp,LOCATION_DECK,0,1,1,nil)
+	if #g>0 then
+		Duel.SendtoGrave(g,REASON_EFFECT)
 	end
 end
-function s.damcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetAttacker()~=tp
+	--If used for a WATER link monster
+function s.thcon(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	return c:IsLocation(LOCATION_GRAVE) and r==REASON_LINK and c:GetReasonCard():IsAttribute(ATTRIBUTE_WATER)
 end
-function s.damop(e,tp,eg,ep,ev,re,r,rp)
-	--avoid damage
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_CHANGE_DAMAGE)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_AVAILABLE_BD)
-	e1:SetTargetRange(1,0)
-	e1:SetValue(s.damval)
-	e1:SetReset(RESET_PHASE+PHASE_END)
-	Duel.RegisterEffect(e1,tp)
+	--Activation legality
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=3 end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,0,LOCATION_DECK)
 end
-function s.damfilter(c)
-	return c:IsType(TYPE_LINK) and c:IsSetCard(0x12b)
+	--Check for "Marincess" card
+function s.thfilter(c)
+	return c:IsSetCard(0x12b) and c:IsAbleToHand()
 end
-function s.damval(e,re,val,r,rp,rc)
-	local ct=Duel.GetMatchingGroup(s.damfilter,tp,LOCATION_GRAVE,0,nil):GetSum(Card.GetLink)*1000
-	if val<=ct then return 0 else return val end
+	--Excavate top 3 cards
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
+	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
+	Duel.ConfirmDecktop(p,3)
+	local g=Duel.GetDecktopGroup(p,3)
+	if g:GetCount()>0 and g:IsExists(s.thfilter,1,nil) and Duel.SelectYesNo(p,aux.Stringid(id,1)) then
+		Duel.Hint(HINT_SELECTMSG,p,HINTMSG_ATOHAND)
+		local sg=g:FilterSelect(p,s.thfilter,1,1,nil)
+		Duel.SendtoHand(sg,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-p,sg)
+		Duel.ShuffleHand(p)
+	end
+	Duel.ShuffleDeck(p)
 end

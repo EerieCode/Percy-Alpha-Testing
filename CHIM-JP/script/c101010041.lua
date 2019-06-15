@@ -36,6 +36,7 @@ function s.spfilter1(c,e,tp)
     return c:IsSetCard(0x12b) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg1(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
     if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
         and c:GetEquipGroup():IsExists(s.spfilter1,1,nil,e,tp) and c:GetFlagEffect(id)==0 end
     Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_SZONE)
@@ -63,9 +64,11 @@ function s.spop1(e,tp,eg,ep,ev,re,r,rp)
         local e3=Effect.CreateEffect(c)
         e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
         e3:SetCode(EVENT_PHASE+PHASE_END)
+		e3:SetRange(LOCATION_MZONE)
         e3:SetCountLimit(1)
-        e3:SetLabelObject(e3)
+        e3:SetLabelObject(tc)
         e3:SetOperation(s.eqop)
+        e3:SetReset(RESET_PHASE+PHASE_END)
         c:RegisterEffect(e3)
         Duel.SpecialSummonComplete()
     end

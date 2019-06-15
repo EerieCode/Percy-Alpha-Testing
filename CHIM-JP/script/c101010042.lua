@@ -13,15 +13,15 @@ c:EnableReviveLimit()
 	e1:SetOperation(s.regop)
 	c:RegisterEffect(e1)
 	--search
-	e2:SetDescription(aux.Stringid(id))
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
 	e2:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_SINGLE)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e2:SetTarget(s.tg)
 	e2:SetOperation(s.op)
-	c:RegisterEffect(e1)
-	
+	c:RegisterEffect(e2)
 end
 s.listed_series={0x12b}
 function s.mfilter(c,lc,sumtype,tp)
@@ -52,8 +52,8 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.GetMatchingCard(s.filter,tp,LOCATION_DECK,0,nil)
-	if g:GetCount()>0 then
+	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil)
+	if #g>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end

@@ -57,10 +57,10 @@ function s.matchk(e,c)
     end
 end
 function s.atkval(e,c)
-    return 200+c:GetEquipGroup():FilterCount(Card.IsSetCard,nil,0x12b)*300
+    return 200+c:GetEquipGroup():FilterCount(Card.IsSetCard,nil,0x12b)*600
 end
 function s.etarget(e,c)
-    return c:IsFaceup() c:GetSequence()>=5 and c:GetFlagEffect(id)~=0 and c:IsSummonType(SUMMON_TYPE_LINK)
+    return c:IsFaceup() and c:GetSequence()>=5 and c:GetFlagEffect(id)~=0 and c:IsSummonType(SUMMON_TYPE_LINK)
 end
 function s.efilter(e,re)
     return e:GetOwnerPlayer()~=re:GetOwnerPlayer()
@@ -81,8 +81,8 @@ end
 function s.eqop(e,tp,eg,ep,ev,re,r,rp)
     if not e:GetHandler():IsRelateToEffect(e) then return end
     local ft=Duel.GetLocationCount(tp,LOCATION_SZONE)
-    local tc=eg:Filter(s.eqcfilter,nil):GetFirst()
-    if ft<1 or not tc or not tc:IsRelateToEffect(e) or not tc:IsFaceup() then return end
+    local tc=eg:Filter(s.eqcfilter,nil,tp):GetFirst()
+    if ft<1 or not tc or not tc:IsFaceup() then return end
     local g=aux.SelectUnselectGroup(Duel.GetMatchingGroup(aux.NecroValleyFilter(s.eqfilter),tp,LOCATION_GRAVE,0,nil),e,tp,1,math.min(ft,3),aux.dncheck,1,tp,HINTMSG_EQUIP)
     for eqc in aux.Next(g) do
         Duel.Equip(tp,eqc,tc,true,true)
