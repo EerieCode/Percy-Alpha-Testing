@@ -34,6 +34,9 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_series={0x230}
+function s.cfilter(c,tp)
+	return c:IsSetCard(0x230) and c:IsSummonType(SUMMON_TYPE_LINK) and c:GetSummonPlayer()==tp
+end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)
 end
@@ -69,7 +72,4 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
-end
-function s.cfilter(c,tp)
-	return c:IsFaceup() and c:IsSetCard(0x230) and c:IsSummonType(SUMMON_TYPE_LINK) and c:GetSummonPlayer()==tp
 end

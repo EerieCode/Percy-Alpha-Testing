@@ -8,9 +8,11 @@ function s.initial_effect(c)
     --link summon
     local e1=Effect.CreateEffect(c)
     e1:SetDescription(aux.Stringid(id,0))
-    e1:SetType(EFFECT_TYPE_IGNITION)
-    e1:SetRange(LOCATION_MZONE)
+	e1:SetType(EFFECT_TYPE_QUICK_O)
+	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetRange(LOCATION_MZONE)
     e1:SetCountLimit(1,id)
+	e1:SetCondition(s.linkcond)
     e1:AddHakaiLinkEffect(aux.FilterBoolFunction(Card.IsAttribute,ATTRIBUTE_DARK),aux.FilterBoolFunction(Card.IsSummonType,SUMMON_TYPE_SPECIAL))
     c:RegisterEffect(e1)
     --special summon
@@ -28,6 +30,10 @@ end
 s.listed_series={0x1230}
 function s.lcheck(g,lc,sumtype,tp)
     return g:IsExists(Card.IsLinkSetCard,1,nil,0x1230)
+end
+function s.linkcond(e,tp,eg,ep,ev,re,r,rp)
+	local ph=Duel.GetCurrentPhase()
+	return Duel.GetTurnPlayer()~=tp and (ph==PHASE_MAIN1 or ph==PHASE_MAIN2)
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
     return bit.band(r,REASON_EFFECT+REASON_BATTLE)~=0 and e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD)
