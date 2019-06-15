@@ -29,10 +29,9 @@ function s.initial_effect(c)
 	--destroy!!
 	local e3=e1:Clone()
 	e3:SetDescription(aux.Stringid(id,0))
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e3:SetCode(EVENT_PHASE+PHASE_END)
-	e3:SetRange(LOCATION_MZONE)
+	e3:SetCondition(aux.TRUE)
 	e3:SetCountLimit(1,id+200)
 	c:RegisterEffect(e3)
 end
