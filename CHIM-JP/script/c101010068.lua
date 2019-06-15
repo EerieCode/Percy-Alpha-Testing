@@ -49,9 +49,11 @@ function s.retcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp and Duel.GetTurnCount()~=e:GetLabel()
 end
 function s.retop(e,tp,eg,ep,ev,re,r,rp)
-	for c in aux.Next(e:GetLabelObject()) do
+	local g=e:GetLabelObject()
+	for c in aux.Next(g) do
 		Duel.ReturnToField(c)
 	end
+	g:DeleteGroup()
 end
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
@@ -60,8 +62,7 @@ function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local g=Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_ATKCHANGE,g,1,0,e:GetLabelObject():GetSum(Card.GetLink)*300)
 end
-function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsFaceup() and tc:IsRelateToEffect(e) then
 		local e1=Effect.CreateEffect(e:GetHandler())
