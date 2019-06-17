@@ -13,8 +13,8 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetCountLimit(1,id)
 	e1:SetCondition(aux.bdcon)
-	e1:SetTarget(s.target)
-	e1:SetOperation(s.operation)
+	e1:SetTarget(s.destg)
+	e1:SetOperation(s.desop)
 	c:RegisterEffect(e1)
 	--search
 	local e2=Effect.CreateEffect(c)
@@ -29,21 +29,20 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 s.listed_series={0x231}
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDestructable,tp,0,LOCATION_ONFIELD,2,nil) end
-	local g=Duel.GetMatchingGroup(Card.IsDestructable,tp,0,LOCATION_ONFIELD,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsOnField() end
+	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,2,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,g:GetCount(),0,0)
 end
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Card.IsDestructable,tp,0,LOCATION_ONFIELD,nil)
-	if g:GetCount()>1 then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-		local sg=g:Select(tp,2,2,nil)
-		Duel.HintSelection(sg)
-		Duel.Destroy(sg,REASON_EFFECT)
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
+	local tg=g:Filter(Card.IsRelateToEffect,nil,e)
+	if tg:GetCount()>0 then
+		Duel.Destroy(tg,REASON_EFFECT)
 	end
 end
-
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	return ( c:IsReason(REASON_BATTLE) or (c:IsReason(REASON_EFFECT) and rp==1-tp) ) 
