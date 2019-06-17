@@ -93,8 +93,10 @@ end
 function s.xyzfilter(c,mg)
 	return c:IsSetCard(0x231) and c:IsXyzSummonable(mg,3,3)
 end
-function s.xrescon(sg,e,tp,mg)
-	return exg:IsExists(Card.IsXyzSummonable,1,nil,sg,3,3)
+function s.xrescon(exg)
+	return function(sg,e,tp,mg)
+		return exg:IsExists(Card.IsXyzSummonable,1,nil,sg,3,3)
+	end
 end
 function s.xyztg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return false end
@@ -104,8 +106,8 @@ function s.xyztg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		and not Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT)
 		and Duel.GetLocationCount(tp,LOCATION_MZONE)>2
 		and Duel.GetLocationCountFromEx(tp)>0
-		and aux.SelectUnselectGroup(mg,e,tp,3,3,s.xrescon,0) end
-	local sg=aux.SelectUnselectGroup(g,e,tp,3,3,s.xrescon,chk,tp,HINTMSG_SPSUMMON)
+		and aux.SelectUnselectGroup(mg,e,tp,3,3,s.xrescon(exg),0) end
+	local sg=aux.SelectUnselectGroup(g,e,tp,3,3,s.xrescon(exg),chk,tp,HINTMSG_SPSUMMON)
 	Duel.SetTargetCard(sg)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,sg,3,0,0)
 end
