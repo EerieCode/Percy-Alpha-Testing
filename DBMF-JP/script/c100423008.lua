@@ -38,7 +38,7 @@ function s.econ(e)
 	return e:GetHandler():GetSequence()>4
 end
 function s.efilter(e,te)
-	return not te:IsSetCard(0x231)
+	return not te:GetHandler():IsSetCard(0x231)
 end
 function s.dcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

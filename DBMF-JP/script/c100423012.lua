@@ -57,7 +57,7 @@ function s.syntg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local sg1=mg:FilterSelect(tp,s.smatfilter,1,1,nil)
 	sg1:GetFirst():RegisterFlagEffect(id,RESET_CHAIN,0,0)
-	local sg2=aux.SelectUnselectGroup(g,e,tp,2,2,s.srescon(c,exg),chk,tp,HINTMSG_SPSUMMON)
+	local sg2=aux.SelectUnselectGroup(mg,e,tp,2,2,s.srescon(c,exg),chk,tp,HINTMSG_SPSUMMON)
 	sg1:Merge(sg2)
 	Duel.SetTargetCard(sg1)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,sg1,3,0,0)
@@ -107,7 +107,7 @@ function s.xyztg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		and Duel.GetLocationCount(tp,LOCATION_MZONE)>2
 		and Duel.GetLocationCountFromEx(tp)>0
 		and aux.SelectUnselectGroup(mg,e,tp,3,3,s.xrescon(exg),0) end
-	local sg=aux.SelectUnselectGroup(g,e,tp,3,3,s.xrescon(exg),chk,tp,HINTMSG_SPSUMMON)
+	local sg=aux.SelectUnselectGroup(mg,e,tp,3,3,s.xrescon(exg),chk,tp,HINTMSG_SPSUMMON)
 	Duel.SetTargetCard(sg)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,sg,3,0,0)
 end

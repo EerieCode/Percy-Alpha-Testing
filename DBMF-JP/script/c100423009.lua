@@ -55,19 +55,21 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if ft<ct then ct=ft end
 	local sel=0
 	while ft>0 do
-		if hand and (sel&0x1==0) and Duel.SelectYesNo(aux.Stringid(id,1)) then
+		if hand and (sel&0x1==0) and ft>0 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
+			ft=ft-1
 			sel=sel+0x1
 			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,1))
 		end
-		if mon and (sel&0x2==0) and Duel.SelectYesNo(aux.Stringid(id,2)) then
+		if mon and (sel&0x2==0) and ft>0 and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
+			ft=ft-1
 			sel=sel+0x2
 			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,2))
 		end
-		if st and (sel&0x4==0) and Duel.SelectYesNo(aux.Stringid(id,3)) then
+		if st and (sel&0x4==0) and ft>0 and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
+			ft=ft-1
 			sel=sel+0x4
 			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,3))
 		end
-		ft=ft-1
 	end
 	e:SetLabel(sel)
 end
@@ -80,7 +82,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		s.monop(e,tp,eg,ep,ev,re,r,rp)
 	end
 	if (sel&0x4==0x4) then
-		s.setop(e,tp,eg,ep,ev,re,r,rp)
+		s.stop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.handtg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -107,11 +109,11 @@ function s.stfilter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToGrave()
 end
 function s.sttg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.stfilter,tp,0,LOCATION_MZONE,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.stfilter,tp,0,LOCATION_SZONE,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,0,0)
 end
-function s.monop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.SelectMatchingCard(tp,s.stftiler,tp,0,LOCATION_MZONE,1,1,nil)
+function s.stop(e,tp,eg,ep,ev,re,r,rp)
+	local g=Duel.SelectMatchingCard(tp,s.stftiler,tp,0,LOCATION_SZONE,1,1,nil)
 	if #g>0 then
 		Duel.SendtoGrave(g,REASON_EFFECT)
 	end
