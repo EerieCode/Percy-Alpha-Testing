@@ -36,7 +36,7 @@ end
 function s.synfilter(c,tun,mg)
 	return c:IsSetCard(0x231) and c:IsSynchroSummonable(tun,mg)
 end
-function s.smatfilter(c,e,tp,exg)
+function s.smatfilter(c,e,tp,exg,mg)
 	return aux.SelectUnselectGroup(mg,e,tp,2,2,s.srescon(c,exg),0)
 end
 function s.srescon(c,exg)
@@ -53,9 +53,9 @@ function s.syntg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		and not Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT)
 		and Duel.GetLocationCount(tp,LOCATION_MZONE)>2
 		and Duel.GetLocationCountFromEx(tp)>0
-		and mg:IsExists(s.smatfilter,1,nil,e,tp,exg) end
+		and mg:IsExists(s.smatfilter,1,nil,e,tp,exg,mg) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local sg1=mg:FilterSelect(tp,s.smatfilter,1,1,nil,e,tp,exg)
+	local sg1=mg:FilterSelect(tp,s.smatfilter,1,1,nil,e,tp,exg,mg)
 	sg1:GetFirst():RegisterFlagEffect(id,RESET_CHAIN,0,0)
 	local sg2=aux.SelectUnselectGroup(mg,e,tp,2,2,s.srescon(c,exg),chk,tp,HINTMSG_SPSUMMON)
 	sg1:Merge(sg2)
@@ -83,7 +83,7 @@ function s.synop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.BreakEffect()
 	local tun=g:Filter(Card.GetFlagEffect,nil,id):GetFirst()
 	g:RemoveCard(tun)
-	local syng=Duel.GetMatchingGroup(s.synfilter,tp,LOCATION_EXTRA,0,tun,g)
+	local syng=Duel.GetMatchingGroup(s.synfilter,tp,LOCATION_EXTRA,0,nil,tun,mg)
 	if #syng>0 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local syn=syng:Select(tp,1,1,nil):GetFirst()
