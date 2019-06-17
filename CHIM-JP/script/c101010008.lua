@@ -1,5 +1,5 @@
 --破械童子アルハ
---Destruchine Child Arha
+--Hakai Douji Arha
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
@@ -33,11 +33,11 @@ function s.desfilter(c,tp)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsOnField() end
-    if chk==0 then return Duel.IsExistingTarget(s.desfilter,tp,LOCATION_ONFIELD,0,1,nil,tp)
-    	and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-    local g=Duel.SelectTarget(tp,s.desfilter,tp,LOCATION_ONFIELD,0,1,1,nil)
-    Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+	if chk==0 then return Duel.IsExistingTarget(s.desfilter,tp,LOCATION_ONFIELD,0,1,nil,tp)
+		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectTarget(tp,s.desfilter,tp,LOCATION_ONFIELD,0,1,1,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
@@ -53,14 +53,14 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e1,tp)
 	local e2=Effect.CreateEffect(c)
 	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
-	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetDescription(aux.Stringid(id,2))
 	e2:SetReset(RESET_PHASE+PHASE_END)
 	e2:SetTargetRange(1,0)
-	Duel.RegisterEffect(e2,tp)	
-    if tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)~=0 
-    	and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and c:IsRelateToEffect(e) then
-        Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP) 
-    end
+	Duel.RegisterEffect(e2,tp)  
+	if tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)~=0 
+		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and c:IsRelateToEffect(e) then
+		Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP) 
+	end
 end
 function s.splimit(e,c,sump,sumtype,sumpos,targetp)
 	return not c:IsRace(RACE_FIEND)
@@ -70,7 +70,7 @@ function s.spcon2(e,tp,eg,ep,ev,re,r,rp)
 		and not re:GetHandler():IsCode(id)
 end
 function s.spfilter(c,e,tp)
-	return c:IsSetCard(0x230) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
+	return c:IsSetCard(0x230) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE) and not c:IsCode(id)
 end
 function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

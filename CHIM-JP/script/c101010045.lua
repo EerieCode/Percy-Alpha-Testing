@@ -1,5 +1,5 @@
 --破械雙王神ライゴウ
---Destruchine Twin-King God Raigou
+--Hakai Souohshin Raigou
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
@@ -21,22 +21,22 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 	--destroy!
 	local e2=e1:Clone()
-	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY+EFFECT_FLAG_DAMAGE_STEP)
 	e2:SetCountLimit(1,id+100)
 	e2:SetCondition(s.descon2)
 	c:RegisterEffect(e2)
 	--destroy!!
 	local e3=e1:Clone()
-	e3:SetDescription(aux.Stringid(id,2))
-	e3:SetCode(EVENT_PHASE+PHASE_END)
+	e3:SetDescription(aux.Stringid(id,0))
 	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e3:SetCode(EVENT_PHASE+PHASE_END)
+	e3:SetCondition(aux.TRUE)
 	e3:SetCountLimit(1,id+200)
-	e3:SetCondition(nil)
 	c:RegisterEffect(e3)
 end
 function s.lcheck(g,lc,sumtype,tp)
-    return g:IsExists(Card.IsType,1,nil,TYPE_LINK,lc,sumtype,tp)
+	return g:IsExists(Card.IsType,1,nil,TYPE_LINK,lc,sumtype,tp)
 end
 function s.cfilter(c)
 	return c:IsReason(REASON_EFFECT) and c:IsPreviousLocation(LOCATION_ONFIELD)

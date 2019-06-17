@@ -1,10 +1,8 @@
 --海晶乙女ブルータン
 --Marincess Blue Tongue
 --Logical Nonsense
-
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Send 1 "Marincess" monster from deck to GY when NS
 	local e1=Effect.CreateEffect(c)
