@@ -2,7 +2,7 @@
 --Zanki Induction
 --Scripted by AlphaKretin
 local s,id=GetID()
-function c59197169.initial_effect(c)
+function s.initial_effect(c)
     --activate
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_ACTIVATE)
