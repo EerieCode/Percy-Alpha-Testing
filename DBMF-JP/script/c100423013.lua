@@ -40,7 +40,7 @@ function s.smatfilter(c,e,tp,exg)
 	return aux.SelectUnselectGroup(mg,e,tp,2,2,s.srescon(c,exg),0)
 end
 function s.srescon(c,exg)
-	return function(sg,e,tp,mg,c,exg)
+	return function(sg,e,tp,mg)
 		return exg:IsExists(Card.IsSynchroSummonable,1,nil,c,sg)
 	end
 end
