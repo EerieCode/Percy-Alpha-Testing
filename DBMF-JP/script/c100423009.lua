@@ -55,15 +55,15 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if ft<ct then ct=ft end
 	local sel
 	while ft>0 do
-		if hand and sel&0x1=0 and Duel.SelectYesNo(aux.Stringid(id,1)) then
+		if hand and (sel&0x1==0) and Duel.SelectYesNo(aux.Stringid(id,1)) then
 			sel=sel+0x1
 			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,1))
 		end
-		if mon and sel&0x2=0 and Duel.SelectYesNo(aux.Stringid(id,2)) then
+		if mon and (sel&0x2==0) and Duel.SelectYesNo(aux.Stringid(id,2)) then
 			sel=sel+0x2
 			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,2))
 		end
-		if st and sel&0x4=0 and Duel.SelectYesNo(aux.Stringid(id,3)) then
+		if st and (sel&0x4==0) and Duel.SelectYesNo(aux.Stringid(id,3)) then
 			sel=sel+0x4
 			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,3))
 		end
@@ -73,13 +73,13 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local sel=e:GetLabel()
-	if sel&0x1==0x1 then
+	if (sel&0x1==0x1) then
 		s.handop(e,tp,eg,ep,ev,re,r,rp)
 	end
-	if sel&0x2==0x2 then
+	if (sel&0x2==0x2) then
 		s.monop(e,tp,eg,ep,ev,re,r,rp)
 	end
-	if sel&0x4==0x4 then
+	if (sel&0x4==0x4) then
 		s.setop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
