@@ -55,7 +55,7 @@ function s.syntg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		and Duel.GetLocationCountFromEx(tp)>0
 		and mg:IsExists(s.smatfilter,1,nil,e,tp,exg) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local sg1=mg:FilterSelect(tp,s.smatfilter,1,1,nil)
+	local sg1=mg:FilterSelect(tp,s.smatfilter,1,1,nil,e,tp,exg)
 	sg1:GetFirst():RegisterFlagEffect(id,RESET_CHAIN,0,0)
 	local sg2=aux.SelectUnselectGroup(mg,e,tp,2,2,s.srescon(c,exg),chk,tp,HINTMSG_SPSUMMON)
 	sg1:Merge(sg2)
