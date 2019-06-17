@@ -53,7 +53,7 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if st then ct=ct+1 end
 	local ft=e:GetLabel()
 	if ft<ct then ct=ft end
-	local sel
+	local sel=0
 	while ft>0 do
 		if hand and (sel&0x1==0) and Duel.SelectYesNo(aux.Stringid(id,1)) then
 			sel=sel+0x1

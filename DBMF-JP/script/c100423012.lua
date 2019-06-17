@@ -14,7 +14,7 @@ function s.initial_effect(c)
     e2:SetCode(EFFECT_UPDATE_ATTACK)
     e2:SetRange(LOCATION_SZONE)
     e2:SetTargetRange(LOCATION_MZONE,0)
-    e2:SetTarget(aux.FilterBoolFunction(Card.IsRace,RACE_CYBERSE))
+    e2:SetTarget(aux.TargetBoolFunction(Card.IsRace,RACE_CYBERSE))
     e2:SetValue(500)
     c:RegisterEffect(e2)
     --destroy
