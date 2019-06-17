@@ -54,22 +54,25 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ft=e:GetLabel()
 	if ft<ct then ct=ft end
 	local sel=0
-	while ft>0 do
-		if hand and (sel&0x1==0) and ft>0 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
-			ft=ft-1
-			sel=sel+0x1
-			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,1))
+	while ct>0 do
+		local stable={}
+		local dtable={}
+		if hand and (sel&0x1==0) then
+			table.insert(stable,0x1)
+			table.insert(dtable,aux.Stringid(id,1))
 		end
-		if mon and (sel&0x2==0) and ft>0 and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
-			ft=ft-1
-			sel=sel+0x2
-			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,2))
+		if mon and (sel&0x2==0) then
+			table.insert(stable,0x2)
+			table.insert(dtable,aux.Stringid(id,2))
 		end
-		if st and (sel&0x4==0) and ft>0 and Duel.SelectYesNo(tp,aux.Stringid(id,3)) then
-			ft=ft-1
-			sel=sel+0x4
-			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,3))
+		if st and (sel&0x4==0) then
+			table.insert(stable,0x4)
+			table.insert(dtable,aux.Stringid(id,3))
 		end
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EFFECT)
+		local op=Duel.SelectOption(tp,table.unpack(dtable))+1
+		sel=sel+stable[op]
+		ct=ct-1
 	end
 	e:SetLabel(sel)
 end
