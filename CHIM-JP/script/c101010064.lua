@@ -45,8 +45,7 @@ function s.initial_effect(c)
 	e4:SetOperation(s.dmgop)
 	c:RegisterEffect(e4)
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc) end
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return Duel.IsCanAddCounter(tp,0x201,1,c) end
 end
