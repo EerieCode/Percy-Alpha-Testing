@@ -1,4 +1,4 @@
---
+--ご隠居の大釜
 --Cauldron of the Old Man
 --scripted by Naim
 local s,id=GetID()
@@ -27,6 +27,7 @@ function s.initial_effect(c)
 	--Recover LP
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,1))
+	e3:SetCategory(CATEGORY_RECOVER)
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetRange(LOCATION_SZONE)
 	e3:SetCountLimit(1,EFFECT_COUNT_CODE_SINGLE)
@@ -36,7 +37,7 @@ function s.initial_effect(c)
 	--Inflict Damage
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(id,2))
-	e4:SetCategory(CATEGORY_REMOVE)
+	e4:SetCategory(CATEGORY_DAMAGE)
 	e4:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e4:SetType(EFFECT_TYPE_IGNITION)
 	e4:SetRange(LOCATION_SZONE)
@@ -67,6 +68,7 @@ function s.rcvtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,val)
 end
 function s.rcvop(e,tp,eg,ep,ev,re,r,rp)
+	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	Duel.Recover(p,d,REASON_EFFECT)
 end
@@ -79,6 +81,7 @@ function s.dmgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,dam)
 end
 function s.dmgop(e,tp,eg,ep,ev,re,r,rp)
+	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	Duel.Damage(p,d,REASON_EFFECT)
 end
