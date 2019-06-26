@@ -81,6 +81,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		e0:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 		e0:SetCode(EVENT_PHASE+PHASE_STANDBY)
 		e0:SetRange(LOCATION_MZONE)
+		e0:SetCountLimit(1)
 		if Duel.GetCurrentPhase()==PHASE_STANDBY then
 			e0:SetLabel(Duel.GetTurnCount())
 			e0:SetReset(RESET_PHASE+PHASE_STANDBY,2)
