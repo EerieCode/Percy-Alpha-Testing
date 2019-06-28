@@ -12,12 +12,9 @@ function s.initial_effect(c)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
 end
-function s.cfilter(c,race)
-	return c:IsFaceup() and c:IsRace(race)
-end
 function s.spfilter(c,e,tp)
 	return c:IsSetCard(0x19) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
-		and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,nil,c:GetRace())
+		and not Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsRace,c:GetRace()),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

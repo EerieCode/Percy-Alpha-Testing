@@ -44,7 +44,7 @@ function s.atktg(e,c)
 	return not s.counterfilter(c)
 end
 function s.filter1(c,e)
-	return c:IsAbleToDeck() and c:IsCanBeFusionMaterial() and not c:IsImmuneToEffect(e)
+	return c:IsType(TYPE_MONSTER) and c:IsAbleToDeck() and c:IsCanBeFusionMaterial() and not c:IsImmuneToEffect(e)
 end
 function s.filter2(c,e,tp,m,chkf)
 	return c:IsSetCard(0x19) and c:IsType(TYPE_FUSION)
