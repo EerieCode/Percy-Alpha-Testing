@@ -1,5 +1,5 @@
---
---Gladiator Beast Rush
+--猛進する剣闘獣
+--Mad Gladiator Beasts
 --scripted by Naim
 local s,id=GetID()
 function s.initial_effect(c)
