@@ -28,34 +28,38 @@ function s.thfilter(c)
     return c:IsSetCard(0xe) and c:IsAbleToHand() and not c:IsCode(id)
 end
 s.cfilter=aux.FilterFaceupFunction(Card.IsRace,RACE_THUNDER)
+function s.threscon(sg,e,tp,mg)
+    return sg:GetClassCount(Card.GetCode)==#sg
+end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
 	local ct=g:GetClassCount(Card.GetCode)
-    if chk==0 then return ct>0 and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
+	local tg=Duel.GetMatchingGroup(s.thfilter,tp,LOCATION_DECK,0,nil)
+    if chk==0 then return ct>0 and aux.SelectUnselectGroup(tg,e,tp,1,ct,s.threscon,chk) end
     Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
     local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
 	local ct=g:GetClassCount(Card.GetCode)
-	if ct>0 then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-    	local tg=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,ct,nil)
-    	if #tg>0 then
-        	Duel.SendtoHand(tg,nil,REASON_EFFECT)
-        	Duel.ConfirmCards(1-tp,tg)
+	local tg=Duel.GetMatchingGroup(s.thfilter,tp,LOCATION_DECK,0,nil)
+	if ct>0 and #tg>0 then
+    	local sg=aux.SelectUnselectGroup(tg,e,tp,1,ct,s.threscon,1,tp,HINTMSG_ATOHAND)
+    	if #sg>0 then
+        	Duel.SendtoHand(sg,nil,REASON_EFFECT)
+        	Duel.ConfirmCards(1-tp,sg)
     	end
 	end
 end
 function s.spfilter(c,e,tp)
 	return c:IsSetCard(0xe) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
-function s.rescon(sg,e,tp,mg)
+function s.sprescon(sg,e,tp,mg)
     return aux.ChkfMMZ(#sg)(sg,e,tp,mg) and sg:GetClassCount(Card.GetCode)==#sg
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND,0,nil,e,tp)
 	local ct=math.min(Duel.GetLocationCount(tp,LOCATION_MZONE),g:GetClassCount(Card.GetCode))
-	if chk==0 then return ct>0 and aux.SelectUnselectGroup(g,e,tp,ct,ct,s.rescon,chk) end
+	if chk==0 then return ct>0 and aux.SelectUnselectGroup(g,e,tp,ct,ct,s.sprescon,chk) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
