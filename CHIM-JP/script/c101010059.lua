@@ -1,6 +1,7 @@
 --アロマガーデニング
 --Aroma Gardening
 --Scripted by Eerie Code
+local s,id=GetID()
 function s.initial_effect(c)
 	--activate
 	local e1=Effect.CreateEffect(c)
