@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e1:SetCondition(s.atkcon)
-	e1:SetTarget(s.atkfilter)
+	e1:SetTarget(aux.TargetBoolFunction(Card.IsRace,RACE_PLANT))
 	c:RegisterEffect(e1)
 	--special summon from hand
 	local e2=Effect.CreateEffect(c)
@@ -40,9 +40,6 @@ end
 function s.atkcon(e)
 	local tp=e:GetHandlerPlayer()
 	return Duel.GetLP(tp)>Duel.GetLP(1-tp)
-end
-function s.atkfilter(e,c)
-	return c:IsRace(RACE_PLANT)
 end
 function s.cfilter(c,tp)
 	return c:IsRace(TYPE_PLANT) and c:IsPreviousLocation(LOCATION_MZONE) and c:GetPreviousControler()==tp
