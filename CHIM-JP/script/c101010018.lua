@@ -41,11 +41,9 @@ function s.atkcon(e)
 	local tp=e:GetHandlerPlayer()
 	return Duel.GetLP(tp)>Duel.GetLP(1-tp)
 end
-
 function s.atkfilter(e,c)
 	return c:IsRace(RACE_PLANT)
 end
-
 function s.cfilter(c,tp)
 	return c:IsRace(TYPE_PLANT) and c:IsPreviousLocation(LOCATION_MZONE) and c:GetPreviousControler()==tp
 end
@@ -55,8 +53,7 @@ end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
-	
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)	
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -66,7 +63,6 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Recover(tp,500,REASON_EFFECT)
 	end
 end
-
 function s.bancon(e,tp,eg,ep,ev,re,r,rp)
 	return ep==tp
 end
