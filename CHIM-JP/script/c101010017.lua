@@ -58,7 +58,7 @@ function s.tuncon(e,tp,eg,ep,ev,re,r,rp)
     return ep==tp
 end
 function s.tunfilter(c)
-    return c:IsFaceup() and c:IsRace(RACE_PLANT) not c:IsType(TYPE_TUNER)
+    return c:IsFaceup() and c:IsRace(RACE_PLANT) and not c:IsType(TYPE_TUNER)
 end
 function s.tuntg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.tunfilter(chkc) end
