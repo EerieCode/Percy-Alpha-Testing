@@ -112,6 +112,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		e3:SetReset(RESET_CHAIN)
 		tc:RegisterEffect(e3)
 		Duel.SpecialSummonComplete()
+		for _,oe in ipairs(oeff) do
+			oe:Reset()
+		end
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local sc=Duel.SelectMatchingCard(tp,s.lkfilter,tp,LOCATION_EXTRA,0,1,1,nil):GetFirst()
 		if sc then
@@ -124,6 +127,10 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			local e5=e4:Clone()
 			e5:SetCode(EFFECT_CANNOT_ATTACK)
 			sc:RegisterEffect(e5)
+		end
+	else
+		for _,oe in ipairs(oeff) do
+			oe:Reset()
 		end
 	end
 end
