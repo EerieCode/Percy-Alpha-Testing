@@ -48,7 +48,7 @@ function s.extramat(chk,summon_type,e,...)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	local og=Duel.GetMatchingGroup(s.filter,tp,0,LOCATION_MZONE,nil,e,tp)
+	local og=Duel.GetMatchingGroup(s.filter,tp,LOCATION_HAND,0,nil,e,tp)
 	local oeff={}
 	for oc in aux.Next(og) do
 		local e2=Effect.CreateEffect(c)
@@ -77,7 +77,7 @@ end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<1 then return end
-	local og=Duel.GetMatchingGroup(s.filter,tp,0,LOCATION_MZONE,nil,e,tp)
+	local og=Duel.GetMatchingGroup(s.filter,tp,LOCATION_HAND,0,nil,e,tp)
 	local oeff={}
 	for oc in aux.Next(og) do
 		local e0=Effect.CreateEffect(c)
