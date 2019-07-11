@@ -24,11 +24,11 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 s.listed_series={0x119}
-function s.filter(c)
+function s.filter(c,e,tp)
 	return c:IsSetCard(0x119) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.spfilter(c,e,tp)
-	return s.filter(c)
+	return s.filter(c,e,tp)
 		and Duel.IsExistingMatchingCard(s.lkfilter,tp,LOCATION_EXTRA,0,1,nil,c,tp)
 end
 function s.lkfilter(c,mc,tp)
