@@ -33,7 +33,8 @@ function s.initial_effect(c)
 end
 s.listed_names={CARD_EVIL_EYE_SELENE}
 s.listed_series={0x129}
-function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
+function s.atkcon(e)
+	local tp=e:GetHandlerPlayer()
 	return Duel.GetLP(tp)<Duel.GetLP(1-tp)
 end
 function s.atkval(e,c)
