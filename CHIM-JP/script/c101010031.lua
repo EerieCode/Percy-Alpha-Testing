@@ -38,7 +38,9 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetCondition(s.tdcon)
 		e2:SetOperation(s.tdop)
 		Duel.RegisterEffect(e2,tp)
-		if c:IsRelateToEffect(e) then Duel.SendtoDeck(c,nil,1,REASON_EFFECT) end
+		if c:IsRelateToEffect(e) then
+			Duel.SendtoDeck(c,nil,1,REASON_EFFECT)
+		end
 		Duel.SpecialSummonComplete()
 	else
 		Duel.MoveSequence(tc,1)
