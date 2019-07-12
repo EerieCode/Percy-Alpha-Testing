@@ -29,13 +29,13 @@ end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	local c=e:GetHandler()
-	if tc:IsFaceup and tc:IsRelateToEffect(e) then
-	local atk=Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)*-1000
+	if tc:IsFaceup() and tc:IsRelateToEffect(e) then
+	local atk=Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)*1000
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(-atk)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-		tc2:RegisterEffect(e1)
+		tc:RegisterEffect(e1)
 	end
 end
