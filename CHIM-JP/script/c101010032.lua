@@ -1,10 +1,8 @@
 --独法師
 --Hitori Boushi
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Cannot be normal summoned if control a monster
 	local e1=Effect.CreateEffect(c)
@@ -13,9 +11,12 @@ function s.initial_effect(c)
 	e1:SetCode(EFFECT_CANNOT_SUMMON)
 	e1:SetCondition(s.sumcon)
 	c:RegisterEffect(e1)
-	--Above, but cannot be special summoned
-	local e2=e1:Clone()
+	--spsummon condition
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
 	e2:SetCode(EFFECT_SPSUMMON_CONDITION)
+	e2:SetCondition(s.sumcon)
 	c:RegisterEffect(e2)
 	--Special summon from hand
 	local e3=Effect.CreateEffect(c)
@@ -54,11 +55,11 @@ end
 	--If monster zone available
 function s.spcon(e,c)
 	if c==nil then return true end
-	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
+	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and not s.sumcon(e)
 end
 	--If it ever happened
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(Card.IsControler,1,nil,tp)
+	return eg:IsExists(Card.IsControler,1,e:GetHandler(),tp)
 end
 	--Activation legality
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
