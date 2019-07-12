@@ -1,4 +1,4 @@
---
+--ミミックリル
 --Mimickuril
 --Scripted by Eerie Code
 local s,id=GetID()
