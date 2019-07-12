@@ -1,10 +1,8 @@
 --ブライニグル
 --Brynigle
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--ATK gain if normal summoned
 	local e1=Effect.CreateEffect(c)
@@ -59,7 +57,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 end
 	--Check for WATER monster
 function s.filter(c)
-	return c:IsAttribute(ATTRIBUTE_WATER) and c:IsFaceup
+	return c:IsAttribute(ATTRIBUTE_WATER) and c:IsFaceup()
 end
 	--Activation legality
 function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
