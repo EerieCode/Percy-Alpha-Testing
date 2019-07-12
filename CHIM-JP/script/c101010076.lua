@@ -1,12 +1,17 @@
 --超整地破砕
 --Crusher Run
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
+	--Activate
+	local e0=Effect.CreateEffect(c)
+	e0:SetDescription(aux.Stringid(id,1))
+	e0:SetType(EFFECT_TYPE_ACTIVATE)
+	e0:SetCode(EVENT_FREE_CHAIN)
+	c:RegisterEffect(e0)
 	--If EARTH machine destroyed, destroy 1 card
+	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_DESTROY)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
@@ -19,7 +24,7 @@ function s.initial_effect(c)
 	e1:SetOperation(s.desop)
 	--Set "Outrigger Expansion" or "Spin Turn"
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetDescription(aux.Stringid(id,2))
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_GRAVE)
 	e2:SetCountLimit(1,id+1)
