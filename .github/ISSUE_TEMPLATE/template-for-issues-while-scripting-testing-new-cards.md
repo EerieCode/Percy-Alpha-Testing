@@ -3,7 +3,7 @@ name: Template for issues while scripting/testing new cards
 about: Contains guidelines on how to create an issue in this repository
 title: "[Scripts]"
 labels: ''
-assignees: EerieCode, NaimSantos
+assignees: ''
 
 ---
 
