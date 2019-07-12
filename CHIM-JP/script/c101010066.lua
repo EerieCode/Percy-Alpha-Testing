@@ -25,7 +25,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local g=Duel.GetMatchingGroup(aux.NOT(Card.IsPublic),tp,0,LOCATION_HAND,nil)
 	if #g==0 then return end
-	local oc=g:RandomSelect(tp,1)
+	local oc=g:RandomSelect(tp,1):GetFirst()
 	local b=Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_HAND,0,1,nil,oc:GetType())
 		and Duel.IsPlayerCanDraw(tp,1) and c:IsRelateToEffect(e)
 	local op=1
@@ -35,7 +35,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		op=Duel.SelectOption(tp,aux.Stringid(id,1))+1
 	end
 	if op==0 then
-		local g=Duel.SelectMatchingCard(s.filter,tp,LOCATION_HAND,0,1,1,nil,oc:GetType())
+		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_HAND,0,1,1,nil,oc:GetType())
 		g:AddCard(oc)
 		if Duel.SendtoGrave(g,REASON_EFFECT+REASON_DISCARD)==2 then
 			Duel.BreakEffect()
