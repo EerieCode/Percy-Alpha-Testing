@@ -22,12 +22,13 @@ function s.initial_effect(c)
 	e2:SetLabelObject(e1)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetLocationCount(1-tp,LOCATION_MZONE,nil,LOCATION_REASON_COUNT)>0 end
-	local zone=Duel.SelectDisableField(1-tp,1,LOCATION_MZONE,LOCATION_MZONE,~(Duel.SelectDisableField(tp,1,LOCATION_MZONE,LOCATION_MZONE,0)>>16))
+	if chk==0 then return Duel.GetLocationCount(1-tp,LOCATION_MZONE,nil,LOCATION_REASON_COUNT)+Duel.GetLocationCount(tp,LOCATION_MZONE,nil,LOCATION_REASON_COUNT)>0 end
+	local zone=Duel.SelectDisableField(tp,1,LOCATION_MZONE,LOCATION_MZONE,0)
+	Duel.SelectDisableField(1-tp,1,LOCATION_MZONE,LOCATION_MZONE,~zone>>16)
 	e:SetLabel(zone)
 end
 function s.thfilter(c,tp,zone)
-	return c:IsFaceup() and c:IsType(TYPE_EFFECT) and aux.IsZone(zone,tp) and c:IsAbleToHand()
+	return c:IsFaceup() and c:IsType(TYPE_EFFECT) and aux.IsZone(c,zone,tp) and c:IsAbleToHand()
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local zone=e:GetLabelObject():GetLabel()
@@ -35,12 +36,14 @@ function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
+	local zone=e:GetLabelObject():GetLabel()
 	local g=eg:Filter(s.thfilter,nil,tp,zone)
 	g:AddCard(e:GetHandler())
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,2,0,0)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
+	local zone=e:GetLabelObject():GetLabel()
 	local g=eg:Filter(s.thfilter,nil,tp,zone)
 	if c:IsRelateToEffect(e) and c:IsAbleToHand() and #g>0 then
 		g:AddCard(c)
