@@ -39,9 +39,9 @@ function s.codefilter(c,g)
     return true
 end
 function s.rescon(g)
-	local cd=sg:GetClass(Card.GetCode)
+	local cd=g:GetClass(Card.GetCode)
     return function(sg,e,tp,mg)
-        return sg:GetClassCount(Card.GetCode)==#sg and not sg:IsExists(Card.IsCode,1,nil,table.unpack({cd})) --(s.codefilter,1,nil,g)
+        return sg:GetClassCount(Card.GetCode)==#sg and not sg:IsExists(Card.IsCode,1,nil,table.unpack(cd)) --(s.codefilter,1,nil,g)
     end
 end
 function s.spcheck(sg,tp,e)
