@@ -30,7 +30,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	return ep~=tp and Duel.GetCurrentChain()>1 and Duel.GetChainInfo(Duel.GetCurrentChain() - 1,CHAININFO_TRIGGERING_CONTROLER) == 0
+	return ep==1-tp and Duel.GetCurrentChain()>1 and Duel.GetChainInfo(Duel.GetCurrentChain() - 1,CHAININFO_TRIGGERING_CONTROLER) == tp
 		and Duel.GetChainInfo(Duel.GetCurrentChain() - 1,CHAININFO_TRIGGERING_EFFECT):GetHandler():IsSetCard(0x232)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
