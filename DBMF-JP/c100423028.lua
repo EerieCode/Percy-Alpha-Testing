@@ -39,7 +39,7 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     local g=Duel.SelectTarget(tp,aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,ct,ct,nil)
     Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,ct,0,0)
 end
-function s.desop(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
     local tg=Duel.GetTargetCards(e):Filter(Card.IsRelateToEffect,nil,e)
     if #tg>0 then
         Duel.Destroy(tg,REASON_EFFECT)
