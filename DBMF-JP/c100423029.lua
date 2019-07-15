@@ -70,10 +70,14 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
     local g=Duel.GetMatchingCard(s.spfilter,tp,LOCATION_HAND,0,nil,e,tp)
     local rg=e:GetLabelObject()
     local ct=math.min(#rg,Duel.GetLocationCount(tp,LOCATION_MZONE))
-    if not ct>0 then return end
+    if not ct>0 then 
+        rg:DeleteGroup()
+        return 
+    end
     if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ct=1 end
     local sg=aux.SelectUnselectGroup(g,e,tp,ct,ct,s.rescon(rg),1,tp,HINTMSG_SPSUMMON)
     if #sg>0 then
         Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
     end
+    rg:DeleteGroup()
 end
