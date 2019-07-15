@@ -26,6 +26,7 @@ function s.matfilter(c,tc)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckReleaseGroupCost(tp,Card.IsSetCard,1,false,s.check,nil,0x232) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
 	local g=Duel.SelectReleaseGroupCost(tp,Card.IsSetCard,1,99,false,s.check,nil,0x232)
 	Duel.Release(g,REASON_COST)
 	local og=Duel.GetOperatedGroup()
