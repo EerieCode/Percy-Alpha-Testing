@@ -28,7 +28,7 @@ function s.check(g)
 	return  function(sg,tp)
 				local codes=sg:GetClass(Card.GetCode)
 				return aux.ChkfMMZ(#sg)(sg,nil,tp) 
-					and g:Filter(aux.NOT(Card.IsCode,table.unpack(codes)),nil):GetClassCount(Card.GetCode)>=#sg
+					and g:Filter(aux.NOT(Card.IsCode),nil,table.unpack(codes)):GetClassCount(Card.GetCode)>=#sg
 			end
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -50,7 +50,7 @@ end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local rg=e:GetLabelObject()
 	local codes=rg:GetClass(Card.GetCode)
-	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_HAND,0,nil,e,tp):Filter(aux.NOT(Card.IsCode,table.unpack(codes)),nil)
+	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_HAND,0,nil,e,tp):Filter(aux.NOT(Card.IsCode),nil,table.unpack(codes))
 	local ct=math.min(#rg,Duel.GetLocationCount(tp,LOCATION_MZONE))
 	if #g>0 and ct>0 then
 		if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ct=1 end
