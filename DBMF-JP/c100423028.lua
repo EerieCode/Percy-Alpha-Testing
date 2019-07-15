@@ -44,3 +44,4 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
     if #tg>0 then
         Duel.Destroy(tg,REASON_EFFECT)
     end
+end
