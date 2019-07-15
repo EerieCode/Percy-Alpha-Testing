@@ -1,6 +1,6 @@
 --死の王 ヘル
 --Hel, Generaid of Death
---Scripted by Hel 
+--Scripted by Hel
 local s,id=GetID()
 function s.initial_effect(c)
 	c:SetUniqueOnField(1,0,id)
@@ -19,8 +19,8 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.cfilter(c,e,tp,ft)
-	return (c:IsRace(RACE_ZOMBIE)
-		and (ft>0 or (c:IsControler(tp) and c:GetSequence()<5)) and (c:IsControler(tp) or c:IsFaceup())) or (c:IsSetCard(0x232) and c:IsType(TYPE_MONSTER))
+	return (c:IsRace(RACE_ZOMBIE) or (c:IsSetCard(0x232) and c:IsType(TYPE_MONSTER)))
+		and (ft>0 or (c:IsControler(tp) and c:GetSequence()<5)) and (c:IsControler(tp) or c:IsFaceup())
 			and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,c:GetCode())
 end
 function s.spfilter(c,e,tp,code)
