@@ -23,6 +23,13 @@ end
 function s.spfilter(c,e,tp)
     return (c:IsSetCard(0x232) or c:IsRace(RACE_MACHINE)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
+function Group.GetClass(g,f,...)
+    local t={}
+    for tc in aux.Next(g) do
+        table.insert(t,f(tc,table.unpack({...})))
+    end
+    return t
+end
 function s.codefilter(c,g)
     for tc in aux.Next(g) do
         if c:IsCode(g:GetCode()) then
@@ -32,14 +39,17 @@ function s.codefilter(c,g)
     return true
 end
 function s.rescon(g)
+	local cd=sg:GetClass(Card.GetCode)
     return function(sg,e,tp,mg)
-        return sg:GetClassCount(Card.GetCode)==#sg and not sg:IsExists(s.codefilter,1,nil,g)
+        return sg:GetClassCount(Card.GetCode)==#sg and not sg:IsExists(Card.IsCode,1,nil,table.unpack({cd})) --(s.codefilter,1,nil,g)
     end
 end
 function s.spcheck(sg,tp,e)
     local g=Duel.GetMatchingCard(s.spfilter,tp,LOCATION_HAND,0,nil,e,tp)
+	local cd=sg:GetClass(Card.GetCode)
     return Duel.GetLocationCount(tp,LOCATION_MZONE)+sg:FilterCount(Card.IsInMainMZone,nil,tp)>0 
-        and aux.SelectUnselectGroup(g,e,tp,#sg,#sg,s.rescon(sg),chk)
+        --and aux.SelectUnselectGroup(g,e,tp,#sg,#sg,s.rescon(sg),chk)
+	and g:Filter(aux.NOT(Card.IsCode,table.unpack({cd})),nil):GetClassCount(Card.GetCode)>=#sg
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.cfilter,1,false,s.spcheck,nil,e) end
@@ -51,9 +61,9 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
     e:SetLabelObject(g)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-    local g=Duel.GetMatchingCard(s.spfilter,tp,LOCATION_HAND,0,nil,e,tp)
+    --local g=Duel.GetMatchingCard(s.spfilter,tp,LOCATION_HAND,0,nil,e,tp)
+    if chk==0 then return true end
     local rg=e:GetLabelObject()
-    if chk==0 then return aux.SelectUnselectGroup(g,e,tp,#rg,#rg,s.rescon(rg),chk) end
     Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,#rg,tp,LOCATION_HAND)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
