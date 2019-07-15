@@ -4,10 +4,9 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
-	c:SetUniqueOnField()
+	c:SetUniqueOnField(1,0,id)
 	aux.AddXyzProcedure(c,nil,9,2,nil,nil,99)
 	--atk/def up
-	--atk & def
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_SET_BASE_ATTACK)
@@ -58,7 +57,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.BreakEffect()
 	for _,p in pairs(ps) do
 		Duel.Hint(HINT_SELECTMSG,p,aux.Stringid(id,1))
-		local g=Duel.SelectMatchingCard(aux.TRUE,p,LOCATION_HAND+LOCATION_ONFIELD,0,1,1,nil)
+		local g=Duel.SelectMatchingCard(p,aux.TRUE,p,LOCATION_HAND+LOCATION_ONFIELD,0,1,1,c)
 		if #g>0 then
 			Duel.Overlay(c,g)
 		end
