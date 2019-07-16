@@ -2,6 +2,9 @@
 --Scripted by Naim
 local s,id=GetID()
 function s.initial_effect(c)
+	--link summon
+	aux.AddLinkProcedure(c,nil,2,2,s.lcheck)
+	c:EnableReviveLimit()
 	--search at End Phase
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
@@ -22,6 +25,9 @@ function s.initial_effect(c)
 	e2:SetTarget(aux.FilterFaceupFunction(Card.IsType,TYPE_SPELL))
 	e2:SetValue(aux.indoval)
 	c:RegisterEffect(e2)
+end
+function s.lcheck(g,lc)
+	return g:GetClassCount(Card.GetCode)==#g
 end
 function s.regcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK)
