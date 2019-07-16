@@ -1,4 +1,4 @@
---
+--ダイナレスラー・イグアノドラッカ
 --Dinowrestler Iguanadracker
 --Scripted by Hel
 local s,id=GetID()
