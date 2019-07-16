@@ -56,7 +56,7 @@ function s.spfilter(c,e,tp,code)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.cfilter,1,false,nil,nil,e,tp,ft) end
+	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.ctfilter,1,false,nil,nil,e,tp,ft) end
 	local g=Duel.SelectReleaseGroupCost(tp,s.cfilter,1,1,false,nil,nil,e,tp,ft)
 	Duel.Release(g,REASON_COST)
 	e:SetLabel(g:GetFirst():GetCode())
