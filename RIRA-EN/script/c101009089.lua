@@ -30,6 +30,7 @@ function s.initial_effect(c)
 	local e4=e3:Clone()
 	e4:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
 	e4:SetTargetRange(LOCATION_MZONE,0)
+	e4:SetTarget(s.atlimit)
 	e4:SetValue(aux.tgoval)
 	c:RegisterEffect(e4)
 end
@@ -57,15 +58,14 @@ function s.tfop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.imfilter(c)
-	return c:IsFaceup()-- and c:IsSetCard(0x233) --and c:IsAttribute(ATTRIBUTE_LIGHT)
+	return c:IsFaceup() and c:IsSetCard(0x233) and c:IsAttribute(ATTRIBUTE_LIGHT)
 end
 function s.limcond(e,tp,eg,ep,ev,re,r,rp)
-Debug.Message(Duel.IsExistingMatchingCard(s.imfilter,tp,LOCATION_MZONE,0,1,nil,tp) )
-	return Duel.IsExistingMatchingCard(s.imfilter,tp,LOCATION_MZONE,0,1,nil,tp) 
+	return Duel.IsExistingMatchingCard(s.imfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil) 
 end
-function s.atfilter(c,atk)
-	return c:IsFaceup() and c:IsSetCard(0x233) and c:GetAttack()>atk
+function s.atfilter(c,lv)
+	return c:IsFaceup() and c:IsSetCard(0x233) and c:GetLevel()>lv
 end
 function s.atlimit(e,c)
-	return c:IsFaceup() and c:IsSetCard(0x233) and Duel.IsExistingMatchingCard(s.atfilter,c:GetControler(),LOCATION_MZONE,0,1,nil,c:GetAttack())
+	return c:IsFaceup() and c:IsSetCard(0x233) and Duel.IsExistingMatchingCard(s.atfilter,c:GetControler(),LOCATION_MZONE,0,1,nil,c:GetLevel())
 end
