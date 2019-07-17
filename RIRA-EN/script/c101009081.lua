@@ -22,7 +22,7 @@ function s.initial_effect(c)
 	e2:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetTargetRange(LOCATION_SZONE,0)
-	e2:SetTarget(aux.FilterFaceupFunction(Card.IsType,TYPE_SPELL))
+	e2:SetTarget(s.imtg)
 	e2:SetValue(aux.indoval)
 	c:RegisterEffect(e2)
 end
@@ -60,4 +60,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end
+end
+function s.imtg(e,c)
+	return c:IsFaceup() and c:IsType(TYPE_SPELL)
 end
