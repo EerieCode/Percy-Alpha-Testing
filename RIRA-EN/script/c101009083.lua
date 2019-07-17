@@ -23,8 +23,11 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) and c:IsFaceup() then
-		local g=c:GetLinkedGroup():Filter(s.filter,nil)
+	local a=Duel.GetAttacker()
+	local d=Duel.GetAttackTarget()
+	if a:IsControler(1-tp) then a=Duel.GetAttackTarget() end
+	if a:IsFaceup() and a:IsRelateToBattle() and d:IsFaceup() and d:IsRelateToBattle() then
+		local g=a:GetLinkedGroup():Filter(s.filter,nil)
 		if #g==0 then return end
 		local tot=0
 		for tc in aux.Next(g) do tot=tot+math.max(tc:GetLevel(),tc:GetRank()) end
@@ -33,6 +36,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(tot*400)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_DAMAGE_CAL)
-		c:RegisterEffect(e1)
+		a:RegisterEffect(e1)
 	end
 end
