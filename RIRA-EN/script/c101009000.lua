@@ -1,7 +1,7 @@
 --Capshell
 --Scripted by Naim
 local s,id=GetID()
-function c101009000.initial_effect(c)
+function s.initial_effect(c)
 	--draw
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))

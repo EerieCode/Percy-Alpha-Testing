@@ -27,6 +27,8 @@ function s.initial_effect(c)
 	e3:SetOperation(s.damop)
 	c:RegisterEffect(e3)
 end
+s.listed_names={101009089}
+s.listed_series={0x233}
 function s.filter(c,tp)
 	return c:IsCode(101009089) and c:GetActivateEffect():IsActivatable(tp)
 end

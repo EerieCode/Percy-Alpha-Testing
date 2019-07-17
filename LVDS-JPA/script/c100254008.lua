@@ -28,6 +28,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
 end
+s.listed_series={0x11a}
 function s.cfilter(c)
 	return c:IsRace(RACE_DINOSAUR) and c:IsDiscardable() and c:IsAbleToGraveAsCost()
 end

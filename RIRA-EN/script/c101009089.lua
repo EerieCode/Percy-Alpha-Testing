@@ -34,6 +34,8 @@ function s.initial_effect(c)
 	e4:SetValue(aux.tgoval)
 	c:RegisterEffect(e4)
 end
+s.listed_names={101009090}
+s.listed_series={0x233}
 function s.filter(c,tp)
 	return c:IsCode(101009090) and c:GetActivateEffect():IsActivatable(tp)
 end

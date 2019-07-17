@@ -36,6 +36,7 @@ function s.initial_effect(c)
 	e3:SetOperation(s.desop)
 	c:RegisterEffect(e3)
 end
+s.listed_series={0x119}
 function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return not c:IsReason(REASON_REPLACE) and c:CheckRemoveOverlayCard(tp,1,REASON_EFFECT) end
@@ -49,7 +50,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 		and e:GetHandler():GetOverlayCount()==0
 end
 function s.spfilter(c,e,tp,mc,pg)
-	return c:IsType(TYPE_XYZ) and c:IsSetCard(0x107f) and mc:IsCanBeXyzMaterial(c,tp)
+	return c:IsType(TYPE_XYZ) and c:IsSetCard(0x119) and mc:IsCanBeXyzMaterial(c,tp)
 		and (#pg<=0 or pg:IsContains(mc)) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_XYZ,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
