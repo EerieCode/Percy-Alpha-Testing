@@ -24,13 +24,13 @@ function s.desfilter(c,e,tp)
         and not c:IsStatus(STATUS_DESTROY_CONFIRMED+STATUS_BATTLE_DESTROYED)
 end
 function s.cfilter(c)
-    return c:IsSetCard(0x232) or c:IsRace(RACE_BEASTWARRIOR)
+    return c:IsFaceup() and (c:IsSetCard(0x232) or c:IsRace(RACE_BEASTWARRIOR))
 end
 function s.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
     local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
     if chk==0 then return eg:IsExists(s.repfilter,1,nil,tp)
         and g:IsExists(s.desfilter,1,nil,e,tp) end
-    if Duel.SelectEffectYesNo(tp,c,96) then
+    if Duel.SelectEffectYesNo(tp,e:GetHandler(),96) then
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESREPLACE)
         local sg=g:FilterSelect(tp,s.desfilter,1,1,nil,e,tp)
         e:SetLabelObject(sg:GetFirst())

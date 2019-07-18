@@ -18,7 +18,6 @@ function s.initial_effect(c)
     e1:SetOperation(s.desop)
     c:RegisterEffect(e1)
 end
-
 function s.cfilter(c)
     return c:IsSetCard(0x232) or c:IsRace(RACE_WARRIOR)
 end
@@ -43,5 +42,11 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
     local tg=Duel.GetTargetCards(e):Filter(Card.IsRelateToEffect,nil,e)
     if #tg>0 then
         Duel.Destroy(tg,REASON_EFFECT)
+		local g=Duel.GetOperatedGroup()
+		g=g:Filter(Card.IsPreviousControler,nil,1-tp)
+		if #g>0 and Duel.IsPlayerCanDraw(1-tp,#g) and Duel.SelectYesNo(1-tp,aux.Stringid(id,0)) then
+			Duel.BreakEffect()
+			Duel.Draw(1-tp,#g,REASON_EFFECT)
+		end
     end
 end

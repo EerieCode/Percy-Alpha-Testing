@@ -3,7 +3,6 @@
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
-	c:SetUniqueOnField(1,0,id)
 	--Activate
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -23,7 +22,7 @@ function s.initial_effect(c)
     --token
 	local e3=Effect.CreateEffect(c)
 	e3:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_TOKEN)
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e3:SetRange(LOCATION_FZONE)
 	e3:SetCountLimit(1,id)
@@ -65,13 +64,13 @@ function s.tktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,ft,tp,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,ft,tp,0)
 end
-function s.activate(e,tp,eg,ep,ev,re,r,rp)
+function s.tkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if ft<=0 or not Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0x232,TYPES_TOKEN,1500,1500,4,RACE_FAIRY,ATTRIBUTE_LIGHT) then return end
 	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 end
 	for i=1,ft do
-		local token=Duel.CreateToken(tp,id+1)
+		local token=Duel.CreateToken(tp,id+100)
 		Duel.SpecialSummonStep(token,0,tp,tp,false,false,POS_FACEUP_ATTACK)
 		token:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1)
 		local e1=Effect.CreateEffect(c)

@@ -9,7 +9,7 @@ function s.initial_effect(c)
     e1:SetDescription(aux.Stringid(id,0))
     e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
     e1:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_SINGLE)
-    e1:SetProperty(EFFECT_FLAG_DELAY)
+    e1:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
     e1:SetCode(EVENT_SUMMON_SUCCESS)
     e1:SetCountLimit(1,id)
     e1:SetTarget(s.thtg)
@@ -20,7 +20,7 @@ function s.initial_effect(c)
     c:RegisterEffect(e2)
 end
 function s.thfilter(c)
-    return (c:IsRace(RACE_PLANT) or c:IsSetCard(0x232)) and c:IsAbleToHand()
+    return not c:IsCode(id) and (c:IsRace(RACE_PLANT) or c:IsSetCard(0x232)) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
