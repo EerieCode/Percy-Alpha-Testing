@@ -36,7 +36,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 function s.rescon(sg,e,tp,mg)
-	return aux.ChkfMMZ(1)(sg,e,tp,mg) and sg:GetSum(Card.GetAttack)>=10000 or sg:GetSum(Card.GetDefense)>=10000
+	return aux.ChkfMMZ(1)(sg,e,tp,mg) and sg:GetSum(Card.GetAttack)>=10000 and sg:GetSum(Card.GetDefense)>=10000
 end
 function s.spcon(e,c)
 	if c==nil then return true end
