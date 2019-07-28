@@ -32,6 +32,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.spop1)
 	c:RegisterEffect(e2)
 end
+s.listed_series={0x234}
 function s.lcheck(g,lc,tp)
 	return g:GetClassCount(Card.GetLinkCode)==#g
 end
