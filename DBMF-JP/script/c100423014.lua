@@ -40,7 +40,7 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		local c=e:GetHandler()
 		local tc=Duel.GetFirstTarget()
-		if tc:IsRelateToEffect(e) and Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP) then
+		if tc:IsRelateToEffect(e) then Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP) --[[then
 			local e1=Effect.CreateEffect(c)
 			e1:SetType(EFFECT_TYPE_SINGLE)
 			e1:SetCode(EFFECT_DISABLE)
@@ -51,8 +51,9 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 			e2:SetCode(EFFECT_DISABLE_EFFECT)
 			e2:SetReset(RESET_EVENT+RESETS_STANDARD)
 			tc:RegisterEffect(e2)
-		end
+		end]]
 		Duel.SpecialSummonComplete()
+		end
 end
 function s.spfilter2(c,e,tp)
 	return c:GetLevel()==7 and c:IsSetCard(0x235) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
