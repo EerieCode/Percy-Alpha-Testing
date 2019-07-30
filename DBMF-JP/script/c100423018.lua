@@ -49,7 +49,6 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoGrave(dg,REASON_EFFECT)
     end
 end
-
 function s.spfilter2(c,e,tp)
 	return c:GetLevel()==8 and c:IsSetCard(0x235) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
