@@ -1,5 +1,5 @@
---
---Dragon Maid Frus
+--ドラゴンメイド・フルス
+--Dragonmaid Fluss
 --Scripted by Naim
 local s,id=GetID()
 function s.initial_effect(c)

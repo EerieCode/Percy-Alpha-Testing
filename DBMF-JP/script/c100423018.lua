@@ -1,5 +1,5 @@
 --オラゴンメイド・レィルル
---Dragonmaid Tilul
+--Dragonmaid Tillroo
 local s,id=GetID()
 function s.initial_effect(c)
 	--search
@@ -28,26 +28,26 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function s.thfilter(c)
-    return not c:IsCode(id) and c:IsSetCard(0x235) and c:IsAbleToHand() and c:IsType(TYPE_MONSTER)
+	return not c:IsCode(id) and c:IsSetCard(0x235) and c:IsAbleToHand() and c:IsType(TYPE_MONSTER)
 end
 function s.disfilter(c)
 	return c:IsSetCard(0x235) and c:IsType(TYPE_MONSTER)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
-    Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-    local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
-    if #g>0 and Duel.SendtoHand(g,nil,REASON_EFFECT)>0 then
-        Duel.ConfirmCards(1-tp,g)
-        Duel.ShuffleHand(tp)
-        Duel.BreakEffect()
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
+	if #g>0 and Duel.SendtoHand(g,nil,REASON_EFFECT)>0 then
+		Duel.ConfirmCards(1-tp,g)
+		Duel.ShuffleHand(tp)
+		Duel.BreakEffect()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 		local dg=Duel.SelectMatchingCard(tp,s.disfilter,tp,LOCATION_HAND,0,1,1,nil)
 		Duel.SendtoGrave(dg,REASON_EFFECT)
-    end
+	end
 end
 function s.spfilter2(c,e,tp)
 	return c:GetLevel()==8 and c:IsSetCard(0x235) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
