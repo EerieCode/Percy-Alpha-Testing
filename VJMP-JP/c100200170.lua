@@ -61,11 +61,11 @@ function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 		Debug.Message(b)
 		c:RemoveOverlayCard(tp,sel,sel,REASON_COST)
 		if sel==2 then
-			Duel.Hint(HINT_OPPSELECTED,1-tp,aux.Stringid(id,1))
+			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,1))
 		else if sel==3 then
-			Duel.Hint(HINT_OPPSELECTED,1-tp,aux.Stringid(id,2))
+			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,2))
 		else 
-			Duel.Hint(HINT_OPPSELECTED,1-tp,aux.Stringid(id,3))
+			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,3))
 		end
 		e:SetLabel(sel)
 	end
