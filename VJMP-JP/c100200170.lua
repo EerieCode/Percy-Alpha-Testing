@@ -56,9 +56,7 @@ function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 			table.insert(selections,2)
 		end
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVEXYZ)
-		local a,b=Duel.AnnounceNumber(tp,table.unpack(selections))
-		Debug.Message(sel)
-		Debug.Message(b)
+		local sel=Duel.AnnounceNumber(tp,table.unpack(selections))
 		c:RemoveOverlayCard(tp,sel,sel,REASON_COST)
 		if sel==2 then
 			Duel.Hint(HINT_OPSELECTED,1-tp,aux.Stringid(id,1))
