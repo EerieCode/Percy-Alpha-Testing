@@ -44,51 +44,55 @@ function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if st then ct = 4 end
 	if l4 then ct = 3 end
 	if mm then ct = 2 end
-	if chk==0 then return hand or mon or st and c:CheckRemoveOverlayCard(tp,ct,REASON_COST) end
-	local selections={}
-	if st and c:CheckRemoveOverlayCard(tp,4,REASON_COST) then
-		table.insert(selections,4)
+	if chk==0 then return (hand or mon or st) and c:CheckRemoveOverlayCard(tp,ct,REASON_COST) end
+		local selections={}
+		if st and c:CheckRemoveOverlayCard(tp,4,REASON_COST) then
+			table.insert(selections,4)
+		end
+		if l4 and c:CheckRemoveOverlayCard(tp,3,REASON_COST) then
+			table.insert(selections,3)
+		end
+		if mm and c:CheckRemoveOverlayCard(tp,2,REASON_COST) then
+			table.insert(selections,2)
+		end
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVEXYZ)
+		local a,b=Duel.AnnounceNumber(tp,table.unpack(selections))
+		Debug.Message(sel)
+		Debug.Message(b)
+		c:RemoveOverlayCard(tp,sel,sel,REASON_COST)
+		if sel==2 then
+			Duel.Hint(HINT_OPPSELECTED,1-tp,aux.Stringid(id,1))
+		else if sel==3 then
+			Duel.Hint(HINT_OPPSELECTED,1-tp,aux.Stringid(id,2))
+		else 
+			Duel.Hint(HINT_OPPSELECTED,1-tp,aux.Stringid(id,3))
+		end
+		e:SetLabel(sel)
 	end
-	if l4 and c:CheckRemoveOverlayCard(tp,3,REASON_COST) then
-		table.insert(selections,3)
-	end
-	if mm and c:CheckRemoveOverlayCard(tp,2,REASON_COST) then
-		table.insert(selections,2)
-	end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVEXYZ)
-	local sel=Duel.AnnounceNumber(tp,table.unpack(selections))
-	c:RemoveOverlayCard(tp,1,sel,REASON_COST)
-	if sel==2 then
-		Duel.Hint(HINT_OPPSELECTED,1-tp,aux.Stringid(id,1))
-	else if sel==3 then
-		Duel.Hint(HINT_OPPSELECTED,1-tp,aux.Stringid(id,2))
-	else 
-		Duel.Hint(HINT_OPPSELECTED,1-tp,aux.Stringid(id,3))
-	end
-	e:SetLabel(sel)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end --legality handled in cost by necessity
-	local sel=e:GetLabel()
-	if sel==2 then
-		s.mmtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	else if sel==3 then
-		s.l4tg(e,tp,eg,ep,ev,re,r,rp,chk)
-	else 
-		s.sttg(e,tp,eg,ep,ev,re,r,rp,chk)
+		local sel=e:GetLabel()
+		if sel==2 then
+			s.mmtg(e,tp,eg,ep,ev,re,r,rp,chk)
+		else if sel==3 then
+			s.l4tg(e,tp,eg,ep,ev,re,r,rp,chk)
+		else 
+			s.sttg(e,tp,eg,ep,ev,re,r,rp,chk)
+		end
 	end
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local sel=e:GetLabel()
-	if sel==2 then
-		s.mmop(e,tp,eg,ep,ev,re,r,rp)
-	else if sel==3 then
-		s.l4op(e,tp,eg,ep,ev,re,r,rp)
-	else 
-		s.stop(e,tp,eg,ep,ev,re,r,rp)
+		if sel==2 then
+			s.mmop(e,tp,eg,ep,ev,re,r,rp)
+		else if sel==3 then
+			s.l4op(e,tp,eg,ep,ev,re,r,rp)
+		else 
+			s.stop(e,tp,eg,ep,ev,re,r,rp)
+		end
 	end
 end
-
 function s.tg(filter)
 	return function(e,tp,eg,ep,ev,re,r,rp,chk)
 		if chk==0 then return Duel.IsExistingMatchingCard(filter,tp,LOCATION_DECK,0,1,nil) end
