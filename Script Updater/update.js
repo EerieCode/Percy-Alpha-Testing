@@ -401,7 +401,7 @@ async function updateOperators(file) {
 
 // adds a list of listed card IDs to the file
 async function updateListedNames(file) {
-    const codeRegs = [/IsCode\(([0-9A-Z_]+)\)/g, /IsEnvironment\(([0-9A-Z_]+)\)/g, /IsOriginalCode\(([0-9A-Z_]+)\)/g, /IsOriginalCodeRule\(([0-9A-Z_]+)\)/g];
+    const codeRegs = [/IsCode\(([0-9A-Z_]+)\)/g, /IsEnvironment\(([0-9A-Z_]+)\)/g, /IsOriginalCode\(([0-9A-Z_]+)\)/g, /IsOriginalCodeRule\(([0-9A-Z_]+)\)/g, /\(Card\.IsCode,.+?,?([0-9A-Z_]+)\)/g, /\(Card\.IsOriginalCode,.+?,?([0-9A-Z_]+)\)/g, /\(Card\.IsOriginalCodeRule,.+?,?([0-9A-Z_]+)\)/g];
     const codes = [];
     for (const reg of codeRegs) {
         while ((result = reg.exec(file)) !== null) {
@@ -438,7 +438,7 @@ async function updateListedNames(file) {
 
 // adds a list of listed archetype codes to the file
 async function updateListedSets(file) {
-    const codeRegs = [/IsSetCard\(([0-9A-Z_]+)\)/g];
+    const codeRegs = [/IsSetCard\(([0-9A-Z_x]+)\)/g, /\(Card\.IsSetCard,.+?,?([0-9A-Z_x]+)\)/g];
     const codes = [];
     for (const reg of codeRegs) {
         while ((result = reg.exec(file)) !== null) {
