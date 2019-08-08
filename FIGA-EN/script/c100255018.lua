@@ -4,6 +4,13 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableCounterPermit(0x201)
+	--add setcode
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e0:SetCode(EFFECT_ADD_SETCODE)
+	e0:SetValue(0x7c)
+	c:RegisterEffect(e0)
 	--activate
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -49,6 +56,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e6)
 end
 s.counter_add_list={0x201}
+s.listed_series={0x79,0x7c}
 function s.ctfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x79)
 end

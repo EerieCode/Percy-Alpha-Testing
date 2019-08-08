@@ -34,14 +34,14 @@ function s.initial_effect(c)
 end
 s.listed_series={0x79,0x7c}
 function s.spcon1(e,tp,eg,ep,ev,re,r,rp)
-	return rp==tp and re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsActiveType(TYPE_CONTINUOUS) and re:IsSetCode(0x7c) and e:GetHandler():GetFlagEffect(1)>0
+	return rp==tp and re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:GetHandler():IsSetCard(0x7c) and e:GetHandler():GetFlagEffect(1)>0
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 end
 function s.spfilter(c,e,tp)
-	c:IsSetCard(0x79) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(id)
+	return c:IsSetCard(0x79) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsCode(id)
 end
 function s.splimit(e,c,tp,sumtp,sumpos)
 	return not c:IsSetCard(0x79)
@@ -72,7 +72,7 @@ function s.repfilter(c,tp)
 		and c:IsReason(REASON_EFFECT) and not c:IsReason(REASON_REPLACE)
 end
 function s.tgfilter(c)
-	c:IsFaceup() and c:IsSetCard(0x7c) and (c:IsType(TYPE_SPELL) or c:IsType(TYPE_TRAP))
+	return c:IsFaceup() and c:IsSetCard(0x7c) and c:IsType(TYPE_SPELL+TYPE_TRAP)
 end
 function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
