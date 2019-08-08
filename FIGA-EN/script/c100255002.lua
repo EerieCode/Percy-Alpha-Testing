@@ -42,6 +42,7 @@ function s.initial_effect(c)
 	e5:SetOperation(s.rdop)
 	c:RegisterEffect(e5)
 end
+s.listed_series={0x51}
 function s.spfilter(c)
 	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x51) and c:IsAbleToGraveAsCost()
 end
@@ -56,10 +57,13 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
 	Duel.SendtoGrave(g,REASON_COST)
 end
 function s.indesfil1(c)
-	return c:IsFaceup() and c:IsSetCard(0xfc) and c:IsType(TYPE_MONSTER)
+	return c:IsFaceup() and c:IsSetCard(0x51) and c:IsType(TYPE_MONSTER)
 end
 function s.indesfil2(c)
-	return c:IsFaceup() and c:GetEquipGroup():IsExists(s.indesfil1,1,nil)
+	return c:IsFaceup() and c:IsSetCard(0x51) and c:IsOriginalType(TYPE_MONSTER)
+end
+function s.indesfil2(c)
+	return c:IsFaceup() and c:GetEquipGroup():IsExists(s.indesfil2,1,nil)
 end
 function s.incon(e)
 	return Duel.IsExistingMatchingCard(s.indesfil1,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
