@@ -8,6 +8,7 @@ function s.initial_effect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_EQUIP)
 	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCountLimit(1,id)
 	e1:SetTarget(s.sptg)
@@ -24,7 +25,7 @@ function s.initial_effect(c)
 end
 s.listed_series={0x51}
 function s.eqfilter(c)
-	return c:IsRace(RACE_MACHINE) and c:IsSetCard(0x51)
+	return c:IsRace(RACE_MACHINE) and c:IsSetCard(0x51) and c:IsFaceup() and c:IsType(TYPE_MONSTER)
 end
 function s.rescon(sg,e,tp,mg)
 	return Duel.GetLocationCount(tp,LOCATION_SZONE)>=#sg and sg:GetClassCount(Card.GetCode)==#sg
@@ -37,6 +38,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
 	local tg=aux.SelectUnselectGroup(g,e,tp,1,2,s.rescon,1,tp,HINTMSG_EQUIP)
 	Duel.SetTargetCard(tg)
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_LEAVE_GRAVE,g,#g,0,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
@@ -45,6 +47,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)~=0 then
 		local ft=Duel.GetLocationCount(tp,LOCATION_SZONE)
 		local g=Duel.GetTargetCards(e)
+		g=g:Filter(Card.IsRelateToEffect,nil,e):Filter(Card.IsType,nil,TYPE_MONSTER):Filter(Card.IsSetCard,nil,0x51)
 		if ft<#g then return end
 		Duel.BreakEffect()
 		for tc in aux.Next(g) do
