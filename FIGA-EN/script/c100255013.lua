@@ -32,8 +32,9 @@ function s.initial_effect(c)
 	e3:SetValue(s.repval)
 	c:RegisterEffect(e3)
 end
+s.listed_series={0x79,0x7c}
 function s.spcon1(e,tp,eg,ep,ev,re,r,rp)
-	return rp==tp and re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsActiveType(TYPE_CONTINUOUS) and e:GetHandler():GetFlagEffect(1)>0
+	return rp==tp and re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsActiveType(TYPE_CONTINUOUS) and re:IsSetCode(0x7c) and e:GetHandler():GetFlagEffect(1)>0
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
