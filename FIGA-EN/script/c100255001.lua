@@ -22,6 +22,7 @@ function s.initial_effect(c)
 	e2:SetValue(s.atkval)
 	c:RegisterEffect(e2)
 end
+s.listed_series={0x51}
 function s.eqfilter(c)
 	return c:IsRace(RACE_MACHINE) and c:IsSetCard(0x51)
 end

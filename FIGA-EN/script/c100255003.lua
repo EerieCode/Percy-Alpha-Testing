@@ -23,9 +23,9 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 s.listed_names={100255002}
-s.listed_series={0x15}
+s.listed_series={0x51}
 function s.spfilter(c,tp)
-	return c:IsSetCard(0x15) and c:IsOriginalType(TYPE_MONSTER) and c:IsType(TYPE_EQUIP) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0x51) and c:IsOriginalType(TYPE_MONSTER) and c:IsType(TYPE_EQUIP) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_ONFIELD) and chkc:IsControler(tp) and s.spfilter(chkc) end
