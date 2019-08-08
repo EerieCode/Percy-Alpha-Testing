@@ -46,15 +46,18 @@ s.listed_series={0x51}
 function s.spfilter(c)
 	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x51) and c:IsAbleToGraveAsCost()
 end
+function s.spcheck(sg,e,tp)
+	return Duel.GetMZoneCount(tp,sg,tp)>0
+end
 function s.spcon(e,c)
 	if c==nil then return true end
-	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.spfilter,c:GetControler(),LOCATION_HAND+LOCATION_MZONE,0,2,c)
+	local g=Duel.GetMatchingGroup(s.spfilter,c:GetControler(),LOCATION_HAND+LOCATION_MZONE,0,c)
+	return aux.SelectUnselectGroup(g,e,tp,2,2,s.spcheck,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,2,2,c)
-	Duel.SendtoGrave(g,REASON_COST)
+	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,c)
+	local sg=aux.SelectUnselectGroup(g,e,tp,2,2,s.spcheck,1,tp,HINT_SELECTMSG)
+	Duel.SendtoGrave(sg,REASON_COST)
 end
 function s.indesfil1(c)
 	return c:IsFaceup() and c:IsSetCard(0x51) and c:IsType(TYPE_MONSTER)

@@ -36,6 +36,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		and aux.SelectUnselectGroup(g,e,tp,1,2,s.rescon,chk)
 		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
 	local tg=aux.SelectUnselectGroup(g,e,tp,1,2,s.rescon,1,tp,HINTMSG_EQUIP)
+	Duel.SetTargetCard(tg)
 	Duel.SetOperationInfo(0,CATEGORY_LEAVE_GRAVE,g,#g,0,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)

@@ -43,7 +43,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		Duel.BreakEffect()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-		local tc=g:Select(tp,1,1,nil)
+		local tc=g:Select(tp,1,1,nil):GetFirst()
 		aux.AddEREquipLimit(c,nil,s.eqval,s.equipop,e,nil,RESET_EVENT+RESETS_STANDARD_DISABLE)
 		s.equipop(c,e,tp,tc,true)
 	end
@@ -53,7 +53,7 @@ function s.eqval(ec,c,tp)
 end
 function s.equipop(c,e,tp,tc,chk)
 	local eff=false or chk
-	Duel.Equip(tp,tc,c,false,eff)
+	Duel.Equip(tp,tc,c,true,eff)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetProperty(EFFECT_FLAG_OWNER_RELATE)
