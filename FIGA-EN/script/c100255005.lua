@@ -38,9 +38,8 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(s.atkval)
 	c:RegisterEffect(e1)
 	c:AddMonsterAttributeComplete()
-	Duel.SpecialSummonComplete()
 	local g=Duel.GetMatchingGroup(s.eqfilter,tp,LOCATION_DECK+LOCATION_HAND,0,nil)
-	if Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
+	if Duel.SpecialSummonComplete()==1 and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 		Duel.BreakEffect()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
 		local tc=g:Select(tp,1,1,nil):GetFirst()
