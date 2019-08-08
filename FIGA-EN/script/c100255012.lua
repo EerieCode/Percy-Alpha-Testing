@@ -28,14 +28,20 @@ local e1=Effect.CreateEffect(c)
 	e3:SetOperation(s.addop)
 	c:RegisterEffect(e3)
 end
+s.listed_series={0x79,0x7c}
 function s.cfilter(c)
 	return c:IsFaceup() and (c:IsType(TYPE_SPELL) or c:IsType(TYPE_TRAP)) and c:IsSetCard(0x7c) and c:IsAbleToGraveAsCost()
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_SZONE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_SZONE,0,1,1,nil)
-	Duel.SendtoGrave(g,REASON_COST)
+	local nc=Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_SZONE,0,1,nil)
+	if chk==0 then 
+	    if Duel.IsPlayerAffectedByEffect(tp,CARD_FIRE_FIST_EAGLE) then return true else return nc end
+	end
+	if nc and not (Duel.IsPlayerAffectedByEffect(tp,CARD_FIRE_FIST_EAGLE) and Duel.SelectYesNo(tp,aux.Stringid(CARD_FIRE_FIST_EAGLE,0))) then 
+	    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	    local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_SZONE,0,1,1,nil)
+            Duel.SendtoGrave(g,REASON_COST)
+	end
 end
 function s.spfilter(c,e,tp)
 	return c:IsSetCard(0x79) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
