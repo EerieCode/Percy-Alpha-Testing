@@ -14,7 +14,7 @@ function s.initial_effect(c)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	local fc=Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)
-	return tp~=Duel.GetTurnPlayer() and fc>0 and Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsRace,RACE_MACHINE),tp,LOCATION_MZONE,0,nil)==fc
+	return fc>0 and Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsRace,RACE_MACHINE),tp,LOCATION_MZONE,0,nil)==fc
 end
 function s.filter(c)
 	return c:IsAttackPos()
