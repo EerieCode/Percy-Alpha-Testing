@@ -44,44 +44,37 @@ function s.initial_effect(c)
 end
 s.listed_series={0x51}
 function s.spfilter(c)
-	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x51) and c:IsAbleToGraveAsCost()
+	return c:IsOriginalType(TYPE_MONSTER) and c:IsSetCard(0x51) and c:IsAbleToGraveAsCost() and (c:IsFaceup() or c:IsLocation(LOCATION_HAND))
 end
 function s.spcheck(sg,e,tp)
 	return Duel.GetMZoneCount(tp,sg,tp)>0
 end
 function s.spcon(e,c)
 	if c==nil then return true end
-	local g=Duel.GetMatchingGroup(s.spfilter,c:GetControler(),LOCATION_HAND+LOCATION_MZONE,0,c)
+	local g=Duel.GetMatchingGroup(s.spfilter,c:GetControler(),LOCATION_HAND+LOCATION_ONFIELD,0,c)
 	return aux.SelectUnselectGroup(g,e,tp,2,2,s.spcheck,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
-	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,c)
+	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND+LOCATION_ONFIELD,0,c)
 	local sg=aux.SelectUnselectGroup(g,e,tp,2,2,s.spcheck,1,tp,HINT_SELECTMSG)
 	Duel.SendtoGrave(sg,REASON_COST)
 end
-function s.indesfil1(c)
-	return c:IsFaceup() and c:IsSetCard(0x51) and c:IsType(TYPE_MONSTER)
-end
-function s.indesfil2(c)
-	return c:IsFaceup() and c:IsSetCard(0x51) and c:IsOriginalType(TYPE_MONSTER)
-end
-function s.indesfil2(c)
-	return c:IsFaceup() and c:GetEquipGroup():IsExists(s.indesfil2,1,nil)
+function s.indesfil(c)
+	return c:IsFaceup() and c:IsSetCard(0x51) and c:IsOriginalType(TYPE_MONSTER) and c:IsType(TYPE_EQUIP)
 end
 function s.incon(e)
-	return Duel.IsExistingMatchingCard(s.indesfil1,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
-		or Duel.IsExistingMatchingCard(s.indesfil2,e:GetHandlerPlayer(),LOCATION_SZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x51),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
+		or Duel.IsExistingMatchingCard(s.indesfil,e:GetHandlerPlayer(),LOCATION_SZONE,0,1,nil)
 end
 function s.rdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local c=e:GetHandler()
 	if chkc then return chkc:IsOnField() and chkc~=c end
-	if chk==0 then return  Duel.IsExistingTarget(nil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,c) end
+	if chk==0 then return  Duel.IsExistingTarget(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,c) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,nil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,c)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+	local g=Duel.SelectTarget(tp,aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,c)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,LOCATION_ONFIELD)
 end
 function s.rdop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) then
 		Duel.Destroy(tc,REASON_EFFECT)
