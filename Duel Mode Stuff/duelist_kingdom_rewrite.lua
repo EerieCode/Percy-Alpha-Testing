@@ -47,7 +47,8 @@ function s.init(c)
 	local e7=Effect.CreateEffect(c)
 	e7:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e7:SetCode(EVENT_ADJUST)
-	e7:SetOperation(s.regop)
+	e7:SetCondition(s.limitcon)
+	e7:SetOperation(s.limitop)
 	Duel.RegisterEffect(e6,0)
 	--burn for destroy
 	local e8=Effect.CreateEffect(c)
@@ -57,10 +58,10 @@ function s.init(c)
 	Duel.RegisterEffect(e8,0)
 end
 function s.limitfilter(c)
-	return c:IsHasEffect(EFFECT_LIMIT_SUMMON_PROC) and c:GetFlagEffect(id)<=0
+	return c:IsHasEffect(EFFECT_LIMIT_SUMMON_PROC) and c:GetFlagEffect(id)==0
 end
 function s.limitfilter2(c)
-	return c:IsHasEffect(EFFECT_LIMIT_SET_PROC) and c:GetFlagEffect(id+1)<=0
+	return c:IsHasEffect(EFFECT_LIMIT_SET_PROC) and c:GetFlagEffect(id+1)==0
 end
 function s.limitcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.limitfilter,tp,0xff,0xff,1,nil) or Duel.IsExistingMatchingCard(s.limitfilter2,tp,0xff,0xff,1,nil)
