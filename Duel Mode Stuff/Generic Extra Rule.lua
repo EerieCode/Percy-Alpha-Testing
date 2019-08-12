@@ -16,7 +16,7 @@ function Auxiliary.EnableExtraRuleOperation(card,init)
         Duel.DisableShuffleCheck()
         Duel.SendtoDeck(c, nil, -2, REASON_RULE)
         local ct = Duel.GetMatchingGroupCount(nil, p, LOCATION_HAND + LOCATION_DECK, 0, c)
-        if ((card.global_active_check or Duel.IsDuelType(SPEED_DUEL)) and ct < 20 or ct < 40)
+        if (Duel.IsDuelType(SPEED_DUEL) and ct < 20 or ct < 40)
             and Duel.SelectYesNo(1 - p, aux.Stringid(4014, 4)) then
             Duel.Win(1 - p, 0x60)
         end
