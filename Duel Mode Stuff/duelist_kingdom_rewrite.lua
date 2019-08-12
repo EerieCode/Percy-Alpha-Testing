@@ -43,18 +43,44 @@ function s.init(c)
 	e6:SetCode(EFFECT_LIMIT_SET_PROC)
 	e6:SetTarget(s.nttg2)
 	Duel.RegisterEffect(e6,0)
-	--burn for destroy
+	--set up flags to prevent loop with above effect
 	local e7=Effect.CreateEffect(c)
 	e7:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e7:SetCode(EVENT_DESTROYED)
-	e7:SetOperation(s.damop)
-	Duel.RegisterEffect(e7,0)
+	e7:SetCode(EVENT_ADJUST)
+	e7:SetOperation(s.regop)
+	Duel.RegisterEffect(e6,0)
+	--burn for destroy
+	local e8=Effect.CreateEffect(c)
+	e8:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e8:SetCode(EVENT_DESTROYED)
+	e8:SetOperation(s.damop)
+	Duel.RegisterEffect(e8,0)
+end
+function s.limitfilter(c)
+	return c:IsHasEffect(EFFECT_LIMIT_SUMMON_PROC) and c:GetFlagEffect(id)<=0
+end
+function s.limitfilter2(c)
+	return c:IsHasEffect(EFFECT_LIMIT_SET_PROC) and c:GetFlagEffect(id+1)<=0
+end
+function s.limitcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(s.limitfilter,tp,0xff,0xff,1,nil) or Duel.IsExistingMatchingCard(s.limitfilter2,tp,0xff,0xff,1,nil)
+end
+function s.limitop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local g=Duel.GetMatchingGroup(s.limitfilter,tp,0xff,0xff,nil)
+	for tc in aux.Next(g) do
+		tc:RegisterFlagEffect(id,0,0,0)
+	end
+	local g2=Duel.GetMatchingGroup(s.limitfilter2,tp,0xff,0xff,nil)
+	for tc in aux.Next(g2) do
+		tc:RegisterFlagEffect(id+1,0,0,0)
+	end
 end
 function s.nttg(e,c)
-	return c:IsHasEffect(EFFECT_LIMIT_SUMMON_PROC)
+	return c:GetFlagEffect(id)~-0
 end
 function s.nttg2(e,c)
-	return c:IsHasEffect(EFFECT_LIMIT_SET_PROC)
+	return c:GetFlagEffect(id+1)~=0
 end
 function s.ntcon(e,c,minc)
 	if c==nil then return true end
