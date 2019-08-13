@@ -49,7 +49,7 @@ function s.init(c)
 	e7:SetCode(EVENT_ADJUST)
 	e7:SetCondition(s.limitcon)
 	e7:SetOperation(s.limitop)
-	Duel.RegisterEffect(e6,0)
+	Duel.RegisterEffect(e7,0)
 	--burn for destroy
 	local e8=Effect.CreateEffect(c)
 	e8:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -78,7 +78,7 @@ function s.limitop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.nttg(e,c)
-	return c:GetFlagEffect(id)~-0
+	return c:GetFlagEffect(id)~=0
 end
 function s.nttg2(e,c)
 	return c:GetFlagEffect(id+1)~=0
