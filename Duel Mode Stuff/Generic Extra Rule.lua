@@ -1,15 +1,15 @@
-function Auxiliary.EnableExtraRule(c,card,init)
+function Auxiliary.EnableExtraRule(c,card,init,...)
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
     e1:SetCode(EVENT_ADJUST)
     e1:SetCountLimit(1)
     e1:SetProperty(EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_NO_TURN_RESET)
     e1:SetRange(0xff)
-    e1:SetOperation(Auxiliary.EnableExtraRuleOperation(card,init))
+    e1:SetOperation(Auxiliary.EnableExtraRuleOperation(card,init,...))
     c:RegisterEffect(e1)
 end
 
-function Auxiliary.EnableExtraRuleOperation(card,init)
+function Auxiliary.EnableExtraRuleOperation(card,init,...)
     return function(e,tp,eg,ep,ev,re,r,rp)
         local c = e:GetHandler()
         local p = c:GetControler()
@@ -24,7 +24,7 @@ function Auxiliary.EnableExtraRuleOperation(card,init)
         if not card.global_active_check then
             Duel.ConfirmCards(1-p, c)
             if Duel.SelectYesNo(p,aux.Stringid(4014,5)) and Duel.SelectYesNo(1-p,aux.Stringid(4014,5)) then
-            	init(c)
+            	init(c,...)
             end
             card.global_active_check = true
         end
