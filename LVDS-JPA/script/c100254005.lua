@@ -25,6 +25,7 @@ function s.initial_effect(c)
 	Duel.AddCustomActivityCounter(id,ACTIVITY_SUMMON,s.counterfilter)
 	Duel.AddCustomActivityCounter(id,ACTIVITY_SPSUMMON,s.counterfilter)
 end
+s.listed_series={0xfb}
 function s.counterfilter(c)
 	return c:IsSetCard(0xfb)
 end
@@ -49,7 +50,6 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	e3:SetTargetRange(1,0)
 	Duel.RegisterEffect(e3,tp)
 end
-s.listed_series={0xfb}
 function s.splimit(e,c)
 	return not c:IsSetCard(0xfb)
 end
