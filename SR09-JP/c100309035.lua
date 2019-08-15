@@ -127,7 +127,7 @@ function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk)
 			and Duel.IsExistingMatchingCard(s.filter3,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp)
 	end
 	Duel.SetOperationInfo(0,CATEGORY_RELEASE,nil,1,0,0)
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_DECK)
 end
 	--Tribute 1 gemini monster, special summon a FIRE warrior, destroy a card if the tributed was in gemini state
 function s.spop2(e,tp,eg,ep,ev,re,r,rp)
@@ -146,7 +146,7 @@ function s.spop2(e,tp,eg,ep,ev,re,r,rp)
 				if #dg1>0 and Duel.SelectYesNo(tp,aux.Stringid(id,4)) then
 					Duel.BreakEffect()
 					Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-					local dg2=sg:Select(tp,1,1,nil)
+					local dg2=dg1:Select(tp,1,1,nil)
 					Duel.HintSelection(dg2)
 					Duel.Destroy(dg2,REASON_EFFECT)
 				end
