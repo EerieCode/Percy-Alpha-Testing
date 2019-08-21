@@ -17,13 +17,13 @@ function Auxiliary.EnableExtraRuleOperation(card,init,...)
         Duel.SendtoDeck(c, nil, -2, REASON_RULE)
         local ct = Duel.GetMatchingGroupCount(nil, p, LOCATION_HAND + LOCATION_DECK, 0, c)
         if (Duel.IsDuelType(SPEED_DUEL) and ct < 20 or ct < 40)
-            and Duel.SelectYesNo(1 - p, aux.Stringid(4014, 4)) then
+            and Duel.SelectYesNo(1 - p, aux.Stringid(4014, 5)) then
             Duel.Win(1 - p, 0x60)
         end
         if c:IsPreviousLocation(LOCATION_HAND) then Duel.Draw(p, 1, REASON_RULE) end
         if not card.global_active_check then
             Duel.ConfirmCards(1-p, c)
-            if Duel.SelectYesNo(p,aux.Stringid(4014,5)) and Duel.SelectYesNo(1-p,aux.Stringid(4014,5)) then
+            if Duel.SelectYesNo(p,aux.Stringid(4014,6)) and Duel.SelectYesNo(1-p,aux.Stringid(4014,6)) then
             	init(c,...)
             end
             card.global_active_check = true
@@ -31,10 +31,10 @@ function Auxiliary.EnableExtraRuleOperation(card,init,...)
     end
 end
 
---aux.Stringid(4014, 4):
+--aux.Stringid(4014, 5):
 --Your opponent has an illegal number of cards in their deck after removing the Duel Mode. Do you want to take the win (Yes) or allow this (No)?
 
---aux.Stringid(4014, 5):
+--aux.Stringid(4014, 6):
 --Do you agree to play this special Duel Mode?
 
 --Duel.Win(1 - tp, 0x60)
