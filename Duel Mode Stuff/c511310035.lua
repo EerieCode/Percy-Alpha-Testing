@@ -5,74 +5,73 @@
     Credits to pyrQ and Naim for assistance in testing.
     Credits to Larry126, Cybercatman, pyrQ and SnorlaxMonster from Yugipedia for consultation on rules and mechanics.
 ]]
-local scard, s_id = GetID()
+local s, id = GetID()
 local ADJUST_COUNT_MEAN = 75 --average number of adjusts between challenges
 local ADJUST_COUNT_VAR = 25 --number of adjusts between challenges can be mean +- this
 local DEBUG_FORCE_CHALLENGE = 0 --if not 0, will force a specific challenge for testing
-local EVENT_PEGASUS_SPEAKS = EVENT_CUSTOM + s_id
+local EVENT_PEGASUS_SPEAKS = EVENT_CUSTOM + id
 
-function scard.initial_effect(c)
+function s.initial_effect(c)
     --enable REVERSE_DECK function
     Duel.EnableGlobalFlag(GLOBALFLAG_DECK_REVERSE_CHECK)
     --Add Extra Rule procedure
-    aux.EnableExtraRule(c, scard)
-    if not scard.global_check then
-        scard.global_check = true
-        scard[0] = false
-        scard[1] = false
-        scard.adjustCount = scard.getAdjustCount()
-        --check for destroyed card this turn
-        local ge1 = Effect.CreateEffect(c)
-        ge1:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
-        ge1:SetCode(EVENT_DESTROYED)
-        ge1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
-        ge1:SetOperation(scard.checkop)
-        Duel.RegisterEffect(ge1, 0)
-        local ge2 = Effect.CreateEffect(c)
-        ge2:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
-        ge2:SetCode(EVENT_TURN_END)
-        ge2:SetCountLimit(1)
-        ge2:SetCondition(scard.clear)
-        Duel.RegisterEffect(ge2, 0)
-        --Apply challenges
-        local e3 = Effect.CreateEffect(c)
-        e3:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
-        e3:SetCode(EVENT_PEGASUS_SPEAKS)
-        e3:SetCondition(scard.chalcon)
-        e3:SetOperation(scard.chalop)
-        Duel.RegisterEffect(e3, 0)
-        local e4 = Effect.CreateEffect(c)
-        e4:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
-        e4:SetCode(EVENT_ADJUST)
-        e4:SetLabelObject(e3)
-        e4:SetCondition(scard.chalcon)
-        e4:SetOperation(scard.eventop)
-        Duel.RegisterEffect(e4, 0)
-    end
+    aux.EnableExtraRule(c, s, s.init)
+end
+function s.init(c)
+    s[0] = false
+    s[1] = false
+    s.adjustCount = s.getAdjustCount()
+    --check for destroyed card this turn
+    local ge1 = Effect.CreateEffect(c)
+    ge1:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
+    ge1:SetCode(EVENT_DESTROYED)
+    ge1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
+    ge1:SetOperation(s.checkop)
+    Duel.RegisterEffect(ge1, 0)
+    local ge2 = Effect.CreateEffect(c)
+    ge2:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
+    ge2:SetCode(EVENT_TURN_END)
+    ge2:SetCountLimit(1)
+    ge2:SetCondition(s.clear)
+    Duel.RegisterEffect(ge2, 0)
+    --Apply challenges
+    local e3 = Effect.CreateEffect(c)
+    e3:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
+    e3:SetCode(EVENT_PEGASUS_SPEAKS)
+    e3:SetCondition(s.chalcon)
+    e3:SetOperation(s.chalop)
+    Duel.RegisterEffect(e3, 0)
+    local e4 = Effect.CreateEffect(c)
+    e4:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
+    e4:SetCode(EVENT_ADJUST)
+    e4:SetLabelObject(e3)
+    e4:SetCondition(s.chalcon)
+    e4:SetOperation(s.eventop)
+    Duel.RegisterEffect(e4, 0)
 end
 
-scard.illegal = true --enables announcing illegal card names. Crucially this includes the "Yu-Gi-Oh!" token
-scard.challenges = {} --table of functions that apply the challenges
-scard.activeChallenges = {} --table of effects for lingering challenges to be reset for the challenge that does so
+s.illegal = true --enables announcing illegal card names. Crucially this includes the "Yu-Gi-Oh!" token
+s.challenges = {} --table of functions that apply the challenges
+s.activeChallenges = {} --table of effects for lingering challenges to be reset for the challenge that does so
 
-function scard.getAdjustCount()
+function s.getAdjustCount()
     return ADJUST_COUNT_MEAN + Duel.GetRandomNumber(-ADJUST_COUNT_VAR, ADJUST_COUNT_VAR)
 end
 
-function scard.eventop(e, tp)
+function s.eventop(e, tp)
     --if no challenge queued
     if e:GetLabelObject():GetLabel() == 0 then
         --if challenge already queued
         --decrement "timer" until next challenge
-        scard.adjustCount = scard.adjustCount - 1
+        s.adjustCount = s.adjustCount - 1
         --if next challenge is due
-        if scard.adjustCount <= 0 then
+        if s.adjustCount <= 0 then
             --select a random challenge
             local challenge
-            if DEBUG_FORCE_CHALLENGE > 0 and DEBUG_FORCE_CHALLENGE <= #scard.challenges then
+            if DEBUG_FORCE_CHALLENGE > 0 and DEBUG_FORCE_CHALLENGE <= #s.challenges then
                 challenge = DEBUG_FORCE_CHALLENGE
             else
-                challenge = Duel.GetRandomNumber(1, #scard.challenges)
+                challenge = Duel.GetRandomNumber(1, #s.challenges)
             end
             --announce the challenge
             Duel.SelectOption(0, aux.Stringid(5000, challenge - 1)) --if over 15 wraps to next token
@@ -82,7 +81,7 @@ function scard.eventop(e, tp)
             --raise the event for the challenge to happen
             Duel.RaiseEvent(Group.CreateGroup(), EVENT_PEGASUS_SPEAKS, e, 0, 0, 0, 0)
             --reset timer
-            scard.adjustCount = scard.getAdjustCount()
+            s.adjustCount = s.getAdjustCount()
         end
     elseif Duel.GetCurrentChain() == 0 then
         --raise the event again without changing the challenge until the challenge happenes
@@ -90,45 +89,43 @@ function scard.eventop(e, tp)
     end
 end
 
-function scard.chalcon(e, tp)
-    --set by extra rule
-    return scard.global_active_check and
-        --check challenge not already applying, to avoid recursion where events raise adjusts
-        e:GetHandler():GetFlagEffect(s_id) == 0
+function s.chalcon(e)
+    --check challenge not already applying, to avoid recursion where events raise adjusts
+    return e:GetHandler():GetFlagEffect(id) == 0
 end
 
-function scard.chalop(e, tp)
+function s.chalop(e)
     --if the game state is open or a chain is building (but not resolving)
     if Duel.GetCurrentChain() == 0 or Duel.CheckEvent(EVENT_CHAINING) then
         --register that challenge is applying to avoid recursion in challenges that raise adjusts
-        e:GetHandler():RegisterFlagEffect(s_id, 0, 0, 0)
+        e:GetHandler():RegisterFlagEffect(id, 0, 0, 0)
         local challenge = e:GetLabel()
         --clear the queue before challenge, also to avoid recursion
         e:SetLabel(0)
         local p = Duel.GetTurnPlayer()
         --apply the queued challenge
-        scard.challenges[challenge](e, p)
-        e:GetHandler():ResetFlagEffect(s_id)
+        s.challenges[challenge](e, p)
+        e:GetHandler():ResetFlagEffect(id)
     end
 end
 
 --helper function to apply custom reset to challenges
-function scard.applyNewChallengeReset(e)
+function s.applyNewChallengeReset(e)
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_CONTINUOUS + EFFECT_TYPE_FIELD)
     e1:SetCode(EVENT_PEGASUS_SPEAKS)
     e1:SetLabelObject(e)
-    e1:SetOperation(scard.resetop)
+    e1:SetOperation(s.resetop)
     Duel.RegisterEffect(e1, e:GetHandlerPlayer())
 end
 
-function scard.resetop(e)
+function s.resetop(e)
     e:GetLabelObject():Reset()
     e:Reset()
 end
 
 --helper function to "play" a card
-function scard.playCard(c, p)
+function s.playCard(c, p)
     if c and not c:IsForbidden() then
         local canSummon = Duel.GetLocationCount(p, LOCATION_MZONE) > 0
         local canPendActivate =
@@ -167,8 +164,8 @@ function scard.playCard(c, p)
     return false
 end
 
---helper function do destroy all cards that fit a filter
-function scard.destroyFilter(func, loc)
+--helper function to destroy all cards that fit a filter
+function s.destroyFilter(func, loc)
     local dg = Duel.GetMatchingGroup(func, 0, loc, loc, nil) --which player doesn't matter because we get both sides
     if #dg > 0 then
         Duel.Destroy(dg, REASON_RULE)
@@ -176,40 +173,40 @@ function scard.destroyFilter(func, loc)
 end
 
 --1: All players reveal the top card of their deck. You may play that card immediately, starting with the turn player.
-function scard.playTopCard(e, tp)
+function s.playTopCard(e, tp)
     Duel.ConfirmDecktop(tp, 1)
     local turnPlayersCard = Duel.GetDecktopGroup(tp, 1):GetFirst()
     Duel.ConfirmDecktop(1 - tp, 1)
     local nonTurnPlayersCard = Duel.GetDecktopGroup(1 - tp, 1):GetFirst()
-    scard.playCard(turnPlayersCard, tp)
-    scard.playCard(nonTurnPlayersCard, 1 - tp)
+    s.playCard(turnPlayersCard, tp)
+    s.playCard(nonTurnPlayersCard, 1 - tp)
 end
-table.insert(scard.challenges, scard.playTopCard)
+table.insert(s.challenges, s.playTopCard)
 
 --2: Both players play with their hands revealed.
-function scard.revealHands(e, tp)
+function s.revealHands(e, tp)
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetCode(EFFECT_PUBLIC)
     e1:SetTargetRange(LOCATION_HAND, LOCATION_HAND)
     Duel.RegisterEffect(e1, tp)
-    scard.applyNewChallengeReset(e1)
+    s.applyNewChallengeReset(e1)
 end
-table.insert(scard.challenges, scard.revealHands)
+table.insert(s.challenges, s.revealHands)
 
 --3: Destroy all monsters with five or more stars.
-function scard.destroyFivePlusStar(e, tp)
-    scard.destroyFilter(
+function s.destroyFivePlusStar(e, tp)
+    s.destroyFilter(
         function(c)
             return c:IsLevelAbove(5) or c:IsRankAbove(5)
         end,
         LOCATION_MZONE
     )
 end
-table.insert(scard.challenges, scard.destroyFivePlusStar)
+table.insert(s.challenges, s.destroyFivePlusStar)
 
 --4: Everyone discard a random card from their hand.
-function scard.discardRandom(e, tp)
+function s.discardRandom(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_HAND, 0)
     local sg = g:RandomSelect(tp, 1)
     Duel.SendtoGrave(sg, REASON_RULE + REASON_DISCARD)
@@ -217,26 +214,26 @@ function scard.discardRandom(e, tp)
     local sg2 = g2:RandomSelect(1 - tp, 1)
     Duel.SendtoGrave(sg2, REASON_RULE + REASON_DISCARD)
 end
-table.insert(scard.challenges, scard.discardRandom)
+table.insert(s.challenges, s.discardRandom)
 
 --5: Everyone stop and introduce yourself to the person sitting on your right.
-function scard.introduce(e, tp)
+function s.introduce(e, tp)
     --only displays a message, as handled by chalop
 end
-table.insert(scard.challenges, scard.introduce)
+table.insert(s.challenges, s.introduce)
 
 --6: Lose 500 LP for each Spell and Trap Card you control.
-function scard.loseLPForBackrow(e, tp)
+function s.loseLPForBackrow(e, tp)
     local tpLoss = Duel.GetFieldGroupCount(tp, LOCATION_SZONE, 0) * 500
     local ntpLoss = Duel.GetFieldGroupCount(tp, 0, LOCATION_SZONE) * 500
     --Happens at same time and causes draw if appropriate
     Duel.SetLP(tp, Duel.GetLP(tp) - tpLoss)
     Duel.SetLP(1 - tp, Duel.GetLP(1 - tp) - ntpLoss)
 end
-table.insert(scard.challenges, scard.loseLPForBackrow)
+table.insert(s.challenges, s.loseLPForBackrow)
 
 --7: Shuffle your hand into your deck and then draw that many cards.
-function scard.mulligan(e, tp)
+function s.mulligan(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_HAND, 0)
     if #g > 0 then
         Duel.SendtoDeck(g, nil, 2, REASON_RULE)
@@ -250,83 +247,83 @@ function scard.mulligan(e, tp)
         Duel.Draw(1 - tp, #g2, REASON_RULE)
     end
 end
-table.insert(scard.challenges, scard.mulligan)
+table.insert(s.challenges, s.mulligan)
 
 --8: Swap LP with your opponent.
-function scard.swapLP(e, tp)
+function s.swapLP(e, tp)
     local temp = Duel.GetLP(tp)
     Duel.SetLP(tp, Duel.GetLP(1 - tp))
     Duel.SetLP(1 - tp, temp)
 end
-table.insert(scard.challenges, scard.swapLP)
+table.insert(s.challenges, s.swapLP)
 
 --9: Destroy all monsters with 1500 or less ATK.
-function scard.destroy1500LessATK(e, tp)
-    scard.destroyFilter(
+function s.destroy1500LessATK(e, tp)
+    s.destroyFilter(
         function(c)
             return c:IsAttackBelow(1500)
         end,
         LOCATION_MZONE
     )
 end
-table.insert(scard.challenges, scard.destroy1500LessATK)
+table.insert(s.challenges, s.destroy1500LessATK)
 
 --10: If you had a card destroyed this turn, you may destroy one of your opponent's cards.
-function scard.paybackDestroy(e, tp)
-    if scard[tp] then
+function s.paybackDestroy(e, tp)
+    if s[tp] then
         local dc = Duel.SelectMatchingCard(tp, aux.TRUE, tp, 0, LOCATION_ONFIELD, 0, 1, nil)
         if #dc > 0 then
             Duel.Destroy(dc, REASON_RULE)
         end
     end
-    if scard[1 - tp] then
+    if s[1 - tp] then
         local dc = Duel.SelectMatchingCard(1 - tp, aux.TRUE, 1 - tp, 0, LOCATION_ONFIELD, 0, 1, nil)
         if #dc > 0 then
             Duel.Destroy(dc, REASON_RULE)
         end
     end
 end
-table.insert(scard.challenges, scard.paybackDestroy)
+table.insert(s.challenges, s.paybackDestroy)
 
-function scard.checkop(e, tp, eg)
+function s.checkop(e, tp, eg)
     for tc in aux.Next(eg) do
-        scard[tc:GetPreviousControler()] = true
+        s[tc:GetPreviousControler()] = true
     end
 end
 
-function scard.clear(e, tp)
-    scard[0] = false
-    scard[1] = false
+function s.clear(e, tp)
+    s[0] = false
+    s[1] = false
     return false
 end
 
 --11: Players cannot activate Spell Cards. (They could activate their effects.)
-function scard.noActSpell(e, tp)
+function s.noActSpell(e, tp)
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
     e1:SetCode(EFFECT_CANNOT_ACTIVATE)
     e1:SetTargetRange(1, 1)
-    e1:SetValue(scard.aclimit)
+    e1:SetValue(s.aclimit)
     Duel.RegisterEffect(e1, tp)
-    scard.applyNewChallengeReset(e1)
+    s.applyNewChallengeReset(e1)
 end
-table.insert(scard.challenges, scard.noActSpell)
+table.insert(s.challenges, s.noActSpell)
 
-function scard.aclimit(e, re, tp)
+function s.aclimit(e, re, tp)
     return re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsActiveType(TYPE_SPELL)
 end
 
 --12: Remove all cards in all graveyard from the game.
-function scard.vanishGrave(e, tp)
+function s.vanishGrave(e, tp)
     local rg = Duel.GetFieldGroup(tp, LOCATION_GRAVE, LOCATION_GRAVE)
     Duel.DisableShuffleCheck()
     Duel.SendtoDeck(rg, nil, -2, REASON_RULE)
 end
-table.insert(scard.challenges, scard.vanishGrave)
+table.insert(s.challenges, s.vanishGrave)
 
 --13: Switch the ATK and DEF of all monsters on the field.
-function scard.switchATKDEF(e, tp)
+function s.switchATKDEF(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_MZONE, LOCATION_MZONE)
     local c = e:GetHandler()
     for tc in aux.Next(g) do
@@ -335,13 +332,13 @@ function scard.switchATKDEF(e, tp)
         e1:SetCode(EFFECT_SWAP_AD)
         e1:SetReset(RESET_EVENT + RESETS_STANDARD)
         tc:RegisterEffect(e1)
-        scard.applyNewChallengeReset(e1)
+        s.applyNewChallengeReset(e1)
     end
 end
-table.insert(scard.challenges, scard.switchATKDEF)
+table.insert(s.challenges, s.switchATKDEF)
 
 --14: Turn your deck over and then draw from the new top of the deck.
-function scard.reverseDeck(e, tp)
+function s.reverseDeck(e, tp)
     local e1 = Effect.GlobalEffect()
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetCode(EFFECT_REVERSE_DECK)
@@ -352,43 +349,43 @@ function scard.reverseDeck(e, tp)
     local e2 = Effect.CreateEffect(e:GetHandler())
     e2:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
     e2:SetCode(EVENT_ADJUST)
-    e2:SetOperation(scard.drop)
+    e2:SetOperation(s.drop)
     Duel.RegisterEffect(e2, tp)
-    scard.applyNewChallengeReset(e1)
+    s.applyNewChallengeReset(e1)
 end
-table.insert(scard.challenges, scard.reverseDeck)
+table.insert(s.challenges, s.reverseDeck)
 
-function scard.drop(e, tp)
+function s.drop(e, tp)
     Duel.Draw(tp, 1, REASON_RULE)
     Duel.Draw(1 - tp, 1, REASON_RULE)
     e:Reset()
 end
 
 --15: You cannot attack unless you say "Yu-Gi-Oh!"
-function scard.attackCost(e, tp)
+function s.attackCost(e, tp)
     --attack cost
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetCode(EFFECT_ATTACK_COST)
     e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
     e1:SetTargetRange(1, 1)
-    e1:SetOperation(scard.atop)
+    e1:SetOperation(s.atop)
     Duel.RegisterEffect(e1, tp)
-    scard.applyNewChallengeReset(e1)
+    s.applyNewChallengeReset(e1)
 end
-table.insert(scard.challenges, scard.attackCost)
+table.insert(s.challenges, s.attackCost)
 
-function scard.atop(e, tp)
+function s.atop(e, tp)
     if Duel.IsAttackCostPaid() ~= 2 then
         local CARD_YUGIOH = 5000
-        scard.announce_filter = {CARD_YUGIOH, OPCODE_ISCODE}
-        Duel.AnnounceCardFilter(tp, table.unpack(scard.announce_filter))
+        s.announce_filter = {CARD_YUGIOH, OPCODE_ISCODE}
+        Duel.AnnounceCardFilter(tp, table.unpack(s.announce_filter))
         Duel.AttackCostPaid()
     end
 end
 
 --16: All monsters become Normal Monsters with no effects.
-function scard.becomeNormal(e, tp)
+function s.becomeNormal(e, tp)
     local c = e:GetHandler()
     --disable
     local e1 = Effect.CreateEffect(c)
@@ -396,7 +393,7 @@ function scard.becomeNormal(e, tp)
     e1:SetTargetRange(LOCATION_MZONE, LOCATION_MZONE)
     e1:SetCode(EFFECT_DISABLE)
     Duel.RegisterEffect(e1, tp)
-    scard.applyNewChallengeReset(e1)
+    s.applyNewChallengeReset(e1)
     --type
     local e2 = Effect.CreateEffect(c)
     e2:SetType(EFFECT_TYPE_FIELD)
@@ -404,41 +401,41 @@ function scard.becomeNormal(e, tp)
     e2:SetCode(EFFECT_CHANGE_TYPE)
     e2:SetValue(TYPE_NORMAL)
     Duel.RegisterEffect(e2, tp)
-    scard.applyNewChallengeReset(e2)
+    s.applyNewChallengeReset(e2)
 end
-table.insert(scard.challenges, scard.becomeNormal)
+table.insert(s.challenges, s.becomeNormal)
 
 --17: Destroy all cards on the field.
-function scard.destroyAll(e, tp)
-    scard.destroyFilter(aux.TRUE, LOCATION_ONFIELD)
+function s.destroyAll(e, tp)
+    s.destroyFilter(aux.TRUE, LOCATION_ONFIELD)
 end
-table.insert(scard.challenges, scard.destroyAll)
+table.insert(s.challenges, s.destroyAll)
 
 --18: Destroy all monsters.
-function scard.destroyMonster(e, tp)
-    scard.destroyFilter(aux.TRUE, LOCATION_MZONE)
+function s.destroyMonster(e, tp)
+    s.destroyFilter(aux.TRUE, LOCATION_MZONE)
 end
-table.insert(scard.challenges, scard.destroyMonster)
+table.insert(s.challenges, s.destroyMonster)
 
 --19: Destroy all Spell and Trap Cards.
-function scard.destroyBackrow(e, tp)
-    scard.destroyFilter(aux.TRUE, LOCATION_SZONE)
+function s.destroyBackrow(e, tp)
+    s.destroyFilter(aux.TRUE, LOCATION_SZONE)
 end
-table.insert(scard.challenges, scard.destroyBackrow)
+table.insert(s.challenges, s.destroyBackrow)
 
 --20: Destroy all face-up Xyz Monsters.
-function scard.destroyXyz(e, tp)
-    scard.destroyFilter(
+function s.destroyXyz(e, tp)
+    s.destroyFilter(
         function(c)
             return c:IsFaceup() and c:IsType(TYPE_XYZ)
         end,
         LOCATION_MZONE
     )
 end
-table.insert(scard.challenges, scard.destroyXyz)
+table.insert(s.challenges, s.destroyXyz)
 
 --21: Discard your hand and then draw that many cards.
-function scard.discardMulligan(e, tp)
+function s.discardMulligan(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_HAND, 0)
     if #g > 0 then
         Duel.SendtoGrave(g, REASON_RULE + REASON_DISCARD)
@@ -450,10 +447,10 @@ function scard.discardMulligan(e, tp)
         Duel.Draw(1 - tp, #g2, REASON_RULE)
     end
 end
-table.insert(scard.challenges, scard.discardMulligan)
+table.insert(s.challenges, s.discardMulligan)
 
 --22: Everyone draw the bottom card of their Deck.
-function scard.drawBottom(e, tp)
+function s.drawBottom(e, tp)
     local tc = Duel.GetFieldGroup(tp, LOCATION_DECK, 0):GetFirst() --first card in deck is bottom
     if tc then
         Duel.SendtoHand(tc, nil, REASON_RULE + REASON_DRAW)
@@ -463,10 +460,10 @@ function scard.drawBottom(e, tp)
         Duel.SendtoHand(tc2, nil, REASON_RULE + REASON_DRAW)
     end
 end
-table.insert(scard.challenges, scard.drawBottom)
+table.insert(s.challenges, s.drawBottom)
 
 --23: If you have less LP than your opponent, Special Summon one monster from your hand to the field, ignore all Summoning conditions.
-function scard.loserSpecial(e, tp)
+function s.loserSpecial(e, tp)
     local p = nil
     if Duel.GetLP(tp) < Duel.GetLP(1 - tp) then
         p = tp
@@ -477,36 +474,36 @@ function scard.loserSpecial(e, tp)
         return
     end
     Duel.Hint(HINT_SELECTMSG, p, HINTMSG_SPSUMMON)
-    local g = Duel.SelectMatchingCard(p, scard.spfilter, p, LOCATION_HAND, 0, 1, 1, nil, e, p)
+    local g = Duel.SelectMatchingCard(p, s.spfilter, p, LOCATION_HAND, 0, 1, 1, nil, e, p)
     if #g > 0 then
         Duel.SpecialSummon(g, 0, p, p, true, false, POS_FACEUP)
     end
 end
-table.insert(scard.challenges, scard.loserSpecial)
+table.insert(s.challenges, s.loserSpecial)
 
-function scard.spfilter(c, e, tp)
+function s.spfilter(c, e, tp)
     return c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e, 0, tp, true, false)
 end
 
 --24: Players cannot activate Trap Cards. (They could activate their effects.)
-function scard.noActTrap(e, tp)
+function s.noActTrap(e, tp)
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
     e1:SetCode(EFFECT_CANNOT_ACTIVATE)
     e1:SetTargetRange(1, 1)
-    e1:SetValue(scard.aclimit2)
+    e1:SetValue(s.aclimit2)
     Duel.RegisterEffect(e1, tp)
-    scard.applyNewChallengeReset(e1)
+    s.applyNewChallengeReset(e1)
 end
-table.insert(scard.challenges, scard.noActTrap)
+table.insert(s.challenges, s.noActTrap)
 
-function scard.aclimit2(e, re, tp)
+function s.aclimit2(e, re, tp)
     return re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:IsActiveType(TYPE_TRAP)
 end
 
 --25: Shuffle your Graveyard into your Deck and then put the top 15 cards of your Deck into the Graveyard.
-function scard.shuffleGrave(e, tp)
+function s.shuffleGrave(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_GRAVE, LOCATION_GRAVE)
     Duel.SendtoDeck(g, nil, 2, REASON_EFFECT)
     Duel.ShuffleDeck(tp)
@@ -514,47 +511,47 @@ function scard.shuffleGrave(e, tp)
     Duel.DiscardDeck(tp, 15, REASON_RULE)
     Duel.DiscardDeck(1 - tp, 15, REASON_RULE)
 end
-table.insert(scard.challenges, scard.shuffleGrave)
+table.insert(s.challenges, s.shuffleGrave)
 
 --You must sing your Battle Phase.
 --UNIMPLEMENTABLE
 
 --26: Destroy all Continuous Spell and Trap Cards.
-function scard.destroyCont(e, tp)
-    scard.destroyFilter(
+function s.destroyCont(e, tp)
+    s.destroyFilter(
         function(c)
             return c:IsType(TYPE_CONTINUOUS)
         end,
         LOCATION_SZONE
     )
 end
-table.insert(scard.challenges, scard.destroyCont)
+table.insert(s.challenges, s.destroyCont)
 
 --27: Destroy all monsters with 1500 or more ATK.
-function scard.destroy1500MoreATK(e, tp)
-    scard.destroyFilter(
+function s.destroy1500MoreATK(e, tp)
+    s.destroyFilter(
         function(c)
             return c:IsAttackAbove(1500)
         end,
         LOCATION_MZONE
     )
 end
-table.insert(scard.challenges, scard.destroy1500MoreATK)
+table.insert(s.challenges, s.destroy1500MoreATK)
 
 --28: Destroy all monsters with 4 or less Levels.
-function scard.destroyFourLessStar(e, tp)
-    scard.destroyFilter(
+function s.destroyFourLessStar(e, tp)
+    s.destroyFilter(
         function(c)
             return c:IsLevelBelow(4)
         end,
         LOCATION_MZONE
     )
 end
-table.insert(scard.challenges, scard.destroyFourLessStar)
+table.insert(s.challenges, s.destroyFourLessStar)
 
 --29: No monsters can be face-down, flip all face-down monsters to face up and their flip effects are negated.
 --TODO: Is there a practical difference between "flip effects negated" and "don't activate flip effects when flipped"?
-function scard.goFaceUp(e, tp)
+function s.goFaceUp(e, tp)
     local c = e:GetHandler()
     --cannot mset
     local e1 = Effect.CreateEffect(c)
@@ -563,26 +560,26 @@ function scard.goFaceUp(e, tp)
     e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
     e1:SetTargetRange(1, 1)
     Duel.RegisterEffect(e1, tp)
-    scard.applyNewChallengeReset(e1)
+    s.applyNewChallengeReset(e1)
     --cannot turn set
     local e2 = Effect.CreateEffect(c)
     e2:SetType(EFFECT_TYPE_FIELD)
     e2:SetCode(EFFECT_CANNOT_TURN_SET)
     e2:SetTargetRange(LOCATION_MZONE, LOCATION_MZONE)
     Duel.RegisterEffect(e2, tp)
-    scard.applyNewChallengeReset(e2)
-    local sg = Duel.GetMatchingGroup(scard.IsFacedown, tp, LOCATION_MZONE, LOCATION_MZONE, nil)
+    s.applyNewChallengeReset(e2)
+    local sg = Duel.GetMatchingGroup(s.IsFacedown, tp, LOCATION_MZONE, LOCATION_MZONE, nil)
     if #sg > 0 then
         Duel.ChangePosition(sg, POS_FACEUP_ATTACK, POS_FACEUP_ATTACK, POS_FACEUP_DEFENSE, POS_FACEUP_DEFENSE, true)
     end
 end
-table.insert(scard.challenges, scard.goFaceUp)
+table.insert(s.challenges, s.goFaceUp)
 
 --Shuffle your Side Deck and then draw from that instead of your Main Deck.
 --UNIMPLEMENTABLE
 
 --30: Swap monsters with your opponent. All of them.
-function scard.swapControl(e, tp)
+function s.swapControl(e, tp)
     local g1 = Duel.GetFieldGroup(tp, LOCATION_MZONE, 0)
     local g2 = Duel.GetFieldGroup(tp, 0, LOCATION_MZONE)
     if #g1 == #g2 then
@@ -606,11 +603,11 @@ function scard.swapControl(e, tp)
     Duel.SwapControl(g2, g3)
     Duel.GetControl(g1, p)
 end
-table.insert(scard.challenges, scard.swapControl)
+table.insert(s.challenges, s.swapControl)
 
 --31: Turn all monsters face-down. They cannot be flipped up this turn.
-function scard.goFaceDown(e, tp)
-    local g = Duel.GetMatchingGroup(scard.IsCanTurnSet, tp, LOCATION_MZONE, LOCATION_MZONE, nil)
+function s.goFaceDown(e, tp)
+    local g = Duel.GetMatchingGroup(Card.IsCanTurnSet, tp, LOCATION_MZONE, LOCATION_MZONE, nil)
     if #g > 0 then
         Duel.ChangePosition(g, POS_FACEDOWN_DEFENSE)
         --pos limit
@@ -619,32 +616,32 @@ function scard.goFaceDown(e, tp)
         e1:SetCode(EFFECT_CANNOT_CHANGE_POSITION)
         e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
         e1:SetTargetRange(LOCATION_MZONE, LOCATION_MZONE)
-        e1:SetTarget(aux.TargetBoolFunction(scard.IsFacedown))
+        e1:SetTarget(aux.TargetBoolFunction(s.IsFacedown))
         e1:SetReset(RESET_PHASE + PHASE_END)
         Duel.RegisterEffect(e1, tp)
     end
 end
-table.insert(scard.challenges, scard.goFaceDown)
+table.insert(s.challenges, s.goFaceDown)
 
 --32: You can only activate cards on your turn.
-function scard.noActOppTurn(e, tp)
+function s.noActOppTurn(e, tp)
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
     e1:SetCode(EFFECT_CANNOT_ACTIVATE)
     e1:SetTargetRange(1, 1)
-    e1:SetValue(scard.aclimit3)
+    e1:SetValue(s.aclimit3)
     Duel.RegisterEffect(e1, tp)
-    scard.applyNewChallengeReset(e1)
+    s.applyNewChallengeReset(e1)
 end
-table.insert(scard.challenges, scard.noActTrap)
+table.insert(s.challenges, s.noActOppTurn)
 
-function scard.aclimit3(e, re, tp)
+function s.aclimit3(e, re, tp)
     return re:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.GetTurnPlayer() ~= tp
 end
 
 --33: All duelists must discard a card at random.
-function scard.discardRandomMarik(e, tp)
+function s.discardRandomMarik(e, tp)
     local g = Duel.GetFieldGroup(tp, LOCATION_HAND, 0)
     local sg = g:RandomSelect(tp, 1)
     Duel.SendtoGrave(sg, REASON_RULE + REASON_DISCARD)
@@ -652,11 +649,11 @@ function scard.discardRandomMarik(e, tp)
     local sg2 = g2:RandomSelect(1 - tp, 1)
     Duel.SendtoGrave(sg2, REASON_RULE + REASON_DISCARD)
 end
-table.insert(scard.challenges, scard.discardRandomMarik)
+table.insert(s.challenges, s.discardRandomMarik)
 
 --34: For three turns, all monsters have "Jam" added to the ends of their names.
 --When a "Jam" monster is destroyed, you can Special Summon it back to the field in Defense Position.
-function scard.allJam(e, tp)
+function s.allJam(e, tp)
     local c = e:GetHandler()
     local e1 = Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_FIELD)
@@ -665,27 +662,27 @@ function scard.allJam(e, tp)
     e1:SetValue(0x54b)
     e1:SetReset(RESET_PHASE + PHASE_END, 3)
     Duel.RegisterEffect(e1, tp)
-    table.insert(scard.activeChallenges, e1)
+    table.insert(s.activeChallenges, e1)
     local e2 = Effect.CreateEffect(c)
     e2:SetType(EFFECT_TYPE_FIELD + EFFECT_TYPE_CONTINUOUS)
     e2:SetCode(EVENT_DESTROYED)
-    e2:SetOperation(scard.jamspop)
+    e2:SetOperation(s.jamspop)
     e2:SetReset(RESET_PHASE + PHASE_END, 3)
     Duel.RegisterEffect(e2, tp)
-    table.insert(scard.activeChallenges, e2)
+    table.insert(s.activeChallenges, e2)
 end
-table.insert(scard.challenges, scard.allJam)
+table.insert(s.challenges, s.allJam)
 
-function scard.jamspfilter(c, e)
+function s.jamspfilter(c, e)
     local p = c:GetControler()
     return c:IsPreviousSetCard(0x54b) and c:IsCanBeSpecialSummoned(e, nil, p, false, false)
 end
 
-function scard.jamspop(e, tp, eg)
+function s.jamspop(e, tp, eg)
     for tc in aux.Next(eg) do
         local p = tc:GetControler()
         if
-            scard.jamspfilter(tc, e) and
+            s.jamspfilter(tc, e) and
                 (not tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCount(p, LOCATION_MZONE) > 0) or
                 (tc:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(p) > 0) and Duel.SelectYesNo(p, 1075)
          then
@@ -695,7 +692,7 @@ function scard.jamspop(e, tp, eg)
 end
 
 --35: For three turns, duelists can activate trap cards from their hands.
-function scard.handTrap(e, tp)
+function s.handTrap(e, tp)
     local c = e:GetHandler()
     local e1 = Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_FIELD)
@@ -703,13 +700,13 @@ function scard.handTrap(e, tp)
     e1:SetTargetRange(LOCATION_HAND, LOCATION_HAND)
     e1:SetReset(RESET_PHASE + PHASE_END, 3)
     Duel.RegisterEffect(e1, tp)
-    table.insert(scard.activeChallenges, e1)
+    table.insert(s.activeChallenges, e1)
 end
-table.insert(scard.challenges, scard.handTrap)
+table.insert(s.challenges, s.handTrap)
 
 --36: By paying 1000 Life Points per monster, players may smite any number of their opponent's monsters
 --and send them to the Graveyard.
-function scard.smite(e, tp)
+function s.smite(e, tp)
     local max1 = Duel.GetLP(tp) // 1000
     local dg1 = Duel.SelectMatchingCard(tp, aux.TRUE, tp, 0, LOCATION_MZONE, 0, max1, nil)
     if #dg1 > 0 then
@@ -723,10 +720,10 @@ function scard.smite(e, tp)
         Duel.SendtoGrave(dg2, REASON_RULE)
     end
 end
-table.insert(scard.challenges, scard.smite)
+table.insert(s.challenges, s.smite)
 
 --37: Necrovalley is in effect for three turns. Cards cannot leave the Graveyard for 3 turns.
-function scard.necrovalley(e, tp)
+function s.necrovalley(e, tp)
     local c = e:GetHandler()
     --field
     local e1 = Effect.CreateEffect(c)
@@ -734,41 +731,41 @@ function scard.necrovalley(e, tp)
     e1:SetCode(EFFECT_CHANGE_ENVIRONMENT)
     e1:SetValue(CARD_NECROVALLEY)
     Duel.RegisterEffect(e1, tp)
-    table.insert(scard.activeChallenges, e1)
+    table.insert(s.activeChallenges, e1)
     --cannot remove
     local e2 = Effect.CreateEffect(c)
     e2:SetType(EFFECT_TYPE_FIELD)
     e2:SetCode(EFFECT_CANNOT_REMOVE)
     e2:SetTargetRange(LOCATION_GRAVE, LOCATION_GRAVE)
     Duel.RegisterEffect(e2, tp)
-    table.insert(scard.activeChallenges, e2)
+    table.insert(s.activeChallenges, e2)
     --necro valley
     local e3 = Effect.CreateEffect(c)
     e3:SetType(EFFECT_TYPE_FIELD)
     e3:SetCode(EFFECT_NECRO_VALLEY)
     e3:SetTargetRange(LOCATION_GRAVE, LOCATION_GRAVE)
     Duel.RegisterEffect(e3, tp)
-    table.insert(scard.activeChallenges, e3)
+    table.insert(s.activeChallenges, e3)
     local e4 = Effect.CreateEffect(c)
     e4:SetType(EFFECT_TYPE_FIELD)
     e4:SetCode(EFFECT_NECRO_VALLEY)
     e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
     e4:SetTargetRange(1, 1)
     Duel.RegisterEffect(e4, tp)
-    table.insert(scard.activeChallenges, e4)
+    table.insert(s.activeChallenges, e4)
 end
-table.insert(scard.challenges, scard.necrovalley)
+table.insert(s.challenges, s.necrovalley)
 
 --38: Choose a monster, a spell, and a trap card from your Graveyard and set them all onto your field.
 --Credit to andré for SelectUnselectLoop that handles Fields and Spell/Traps
-function scard.mimicat(e, tp)
+function s.mimicat(e, tp)
     local mzc = Duel.GetLocationCount(tp, LOCATION_MZONE)
     local szc = Duel.GetLocationCount(tp, LOCATION_SZONE)
-    local g = Duel.GetMatchingGroup(scard.graveSetFilter, tp, LOCATION_GRAVE, 0, nil, e, tp)
-    if #g > 0 and aux.SelectUnselectGroup(g, e, tp, 1, 3, scard.rescon(mzc, szc, g), 0) then
+    local g = Duel.GetMatchingGroup(s.graveSetFilter, tp, LOCATION_GRAVE, 0, nil, e, tp)
+    if #g > 0 and aux.SelectUnselectGroup(g, e, tp, 1, 3, s.rescon(mzc, szc, g), 0) then
         local sg =
-            aux.SelectUnselectGroup(g, e, tp, 1, 3, scard.rescon(mzc, szc, g),
-                1, tp, HINTMSG_SET, scard.rescon(mzc, szc, g))
+            aux.SelectUnselectGroup(g, e, tp, 1, 3, s.rescon(mzc, szc, g),
+                1, tp, HINTMSG_SET, s.rescon(mzc, szc, g))
         local sg1 = sg:Filter(Card.IsType, nil, TYPE_MONSTER)
         local sg2 = sg - sg1
         for tc in aux.Next(sg1) do
@@ -783,10 +780,10 @@ function scard.mimicat(e, tp)
     end
     mzc = Duel.GetLocationCount(1 - tp, LOCATION_MZONE)
     szc = Duel.GetLocationCount(1 - tp, LOCATION_SZONE)
-    g = Duel.GetMatchingGroup(scard.graveSetFilter, 1 - tp, LOCATION_GRAVE, 0, nil, e, 1 - tp)
-    if #g > 0 and aux.SelectUnselectGroup(g, e, 1 - tp, 1, 3, scard.rescon(mzc, szc, g), 0) then
-        local sg = aux.SelectUnselectGroup(g, e, 1 - tp, 1, 3, scard.rescon(mzc, szc, g),
-            1, 1 - tp, HINTMSG_SET, scard.rescon(mzc, szc, g))
+    g = Duel.GetMatchingGroup(s.graveSetFilter, 1 - tp, LOCATION_GRAVE, 0, nil, e, 1 - tp)
+    if #g > 0 and aux.SelectUnselectGroup(g, e, 1 - tp, 1, 3, s.rescon(mzc, szc, g), 0) then
+        local sg = aux.SelectUnselectGroup(g, e, 1 - tp, 1, 3, s.rescon(mzc, szc, g),
+            1, 1 - tp, HINTMSG_SET, s.rescon(mzc, szc, g))
         local sg1 = sg:Filter(Card.IsType, nil, TYPE_MONSTER)
         local sg2 = sg - sg1
         for tc in aux.Next(sg1) do
@@ -798,14 +795,14 @@ function scard.mimicat(e, tp)
         Duel.ConfirmCards(tp, sg)
     end
 end
-table.insert(scard.challenges, scard.mimicat)
+table.insert(s.challenges, s.mimicat)
 
-function scard.graveSetFilter(c, e, tp)
+function s.graveSetFilter(c, e, tp)
     return (c:IsType(TYPE_SPELL + TYPE_TRAP) and c:IsSSetable()) or
         (c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e, 0, tp, true, true, POS_FACEDOWN_DEFENSE))
 end
 
-function scard.rescon(mzc, szc, g)
+function s.rescon(mzc, szc, g)
     return function(sg, e, tp, mg)
         if
             mzc > 0 and g:IsExists(Card.IsType, 1, nil, TYPE_MONSTER) and
@@ -827,28 +824,28 @@ function scard.rescon(mzc, szc, g)
                 return false
             end
             if g:IsExists(Card.IsType, 1, nil, TYPE_SPELL | TYPE_TRAP) then
-                return bg:IsExists(scard.raux1, 1, nil, bg, g, true)
+                return bg:IsExists(s.raux1, 1, nil, bg, g, true)
             end
         else
             if #bg > 2 then
                 return false
             end
             if g:IsExists(Card.IsType, 1, nil, TYPE_SPELL | TYPE_TRAP) then
-                return bg:IsExists(scard.raux1, 1, nil, bg, g, false) and
+                return bg:IsExists(s.raux1, 1, nil, bg, g, false) and
                     bg:FilterCount(Card.IsType, nil, TYPE_FIELD) <= 1
             end
         end
         return true
     end
 end
-function scard.raux1(c, bg, g, mfield)
+function s.raux1(c, bg, g, mfield)
     local bool =
-        g:IsExists(scard.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP) & (~c:GetType()), not c:IsType(TYPE_FIELD), mfield)
+        g:IsExists(s.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP) & (~c:GetType()), not c:IsType(TYPE_FIELD), mfield)
     return (bool and
-        bg:IsExists(scard.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP) & (~c:GetType()), not c:IsType(TYPE_FIELD), mfield)) or
+        bg:IsExists(s.raux2, 1, c, (TYPE_SPELL | TYPE_TRAP) & (~c:GetType()), not c:IsType(TYPE_FIELD), mfield)) or
         (not bool and bg:FilterCount(aux.TRUE, c) == 0)
 end
-function scard.raux2(c, type, field, mfield)
+function s.raux2(c, type, field, mfield)
     if type == 0 then
         type = TYPE_SPELL | TYPE_TRAP
     end
@@ -860,7 +857,7 @@ function scard.raux2(c, type, field, mfield)
 end
 
 --39: Each duelist must search his or her deck for any card, add it to their hand, and shuffle their deck afterward.
-function scard.search(e, tp)
+function s.search(e, tp)
     local g = Duel.SelectMatchingCard(tp, aux.TRUE, tp, LOCATION_DECK, 0, 1, 1, nil)
     if #g > 0 then
         Duel.SendtoHand(g, nil, REASON_RULE)
@@ -872,24 +869,24 @@ function scard.search(e, tp)
         Duel.ConfirmCards(tp, g2)
     end
 end
-table.insert(scard.challenges, scard.search)
+table.insert(s.challenges, s.search)
 
 --40: All old rules become no longer in effect, and all players reveal their hands and face-down cards to their opponents.
-function scard.reset(e, tp)
-    for _, e in ipairs(scard.activeChallenges) do
+function s.reset(e, tp)
+    for _, e in ipairs(s.activeChallenges) do
         e:Reset()
     end
-    scard.activeChallenges = {}
-    local g = Duel.GetFieldGroup(tp, LOCATION_HAND + LOCATION_MZONE + LOCATION_SZONE, 0):Filter(scard.IsFacedown, nil)
+    s.activeChallenges = {}
+    local g = Duel.GetFieldGroup(tp, LOCATION_HAND + LOCATION_MZONE + LOCATION_SZONE, 0):Filter(s.IsFacedown, nil)
     Duel.ConfirmCards(1 - tp, g)
-    local g2 = Duel.GetFieldGroup(tp, 0, LOCATION_HAND + LOCATION_MZONE + LOCATION_SZONE):Filter(scard.IsFacedown, nil)
+    local g2 = Duel.GetFieldGroup(tp, 0, LOCATION_HAND + LOCATION_MZONE + LOCATION_SZONE):Filter(s.IsFacedown, nil)
     Duel.ConfirmCards(tp, g2)
 end
-table.insert(scard.challenges, scard.reset)
+table.insert(s.challenges, s.reset)
 
 --41: Choose a card in your opponent's graveyard and set it to your side of the field.
-function scard.graveSteal(e, tp)
-    local tc = Duel.SelectMatchingCard(tp, scard.graveStealFilter, tp, 0, LOCATION_GRAVE, 1, 1, nil, e, tp):GetFirst()
+function s.graveSteal(e, tp)
+    local tc = Duel.SelectMatchingCard(tp, s.graveStealFilter, tp, 0, LOCATION_GRAVE, 1, 1, nil, e, tp):GetFirst()
     if tc then
         if tc:IsType(TYPE_MONSTER) then
             Duel.MoveToField(tc2, tp, tp, LOCATION_MZONE, POS_FACEDOWN_DEFENSE, true)
@@ -899,7 +896,7 @@ function scard.graveSteal(e, tp)
         Duel.ConfirmCards(1 - tp, tc)
     end
     local tc2 =
-        Duel.SelectMatchingCard(1 - tp, scard.graveStealFilter,
+        Duel.SelectMatchingCard(1 - tp, s.graveStealFilter,
             1 - tp, 0, LOCATION_GRAVE, 1, 1, nil, e, 1 - tp):GetFirst()
     if tc2 then
         if tc2:IsType(TYPE_MONSTER) then
@@ -910,9 +907,9 @@ function scard.graveSteal(e, tp)
         Duel.ConfirmCards(tp, tc2)
     end
 end
-table.insert(scard.challenges, scard.graveSteal)
+table.insert(s.challenges, s.graveSteal)
 
-function scard.graveStealFilter(c, e, tp)
+function s.graveStealFilter(c, e, tp)
     return (c:IsType(TYPE_SPELL + TYPE_TRAP) and c:IsSSetable() and
         (Duel.GetLocationCount(tp, LOCATION_SZONE) > 0 or c:IsType(TYPE_FIELD))) or
         (c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e, 0, tp, true, true, POS_FACEDOWN_DEFENSE) and
@@ -921,7 +918,7 @@ end
 
 --42: Each duelist may draw up to two cards, but loses 1000 Life Points for each card he or she chooses to draw.
 --The turn player decides how many cards to draw first.
-function scard.costDraw(e, tp)
+function s.costDraw(e, tp)
     local ct = Duel.AnnounceLevel(tp, 0, math.min(2, Duel.GetFieldGroupCount(tp, LOCATION_DECK, 0)))
     Duel.Draw(tp, ct, REASON_RULE)
     Duel.SetLP(tp, Duel.GetLP(tp) - 1000 * ct)
@@ -929,29 +926,29 @@ function scard.costDraw(e, tp)
     Duel.Draw(1 - tp, ct, REASON_RULE)
     Duel.SetLP(1 - tp, Duel.GetLP(1 - tp) - 1000 * ct)
 end
-table.insert(scard.challenges, scard.costDraw)
+table.insert(s.challenges, s.costDraw)
 
 --43: You can only play monsters with an ATK of 1600 or higher.
-function scard.noSummonLowATK(e, tp)
+function s.noSummonLowATK(e, tp)
     local e1 = Effect.CreateEffect(e:GetHandler())
     e1:SetType(EFFECT_TYPE_FIELD)
     e1:SetCode(EFFECT_CANNOT_SUMMON)
     e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
     e1:SetTargetRange(1, 1)
-    e1:SetTarget(scard.splimit)
+    e1:SetTarget(s.splimit)
     Duel.RegisterEffect(e1, tp)
-    scard.applyNewChallengeReset(e1)
+    s.applyNewChallengeReset(e1)
     local e2 = e1:Clone()
     e2:SetCode(EFFECT_CANNOT_FLIP_SUMMON)
     Duel.RegisterEffect(e2, tp)
-    scard.applyNewChallengeReset(e2)
+    s.applyNewChallengeReset(e2)
     local e3 = e1:Clone()
     e3:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
     Duel.RegisterEffect(e3, tp)
-    scard.applyNewChallengeReset(e3)
+    s.applyNewChallengeReset(e3)
 end
-table.insert(scard.challenges, scard.noSummonLowATK)
+table.insert(s.challenges, s.noSummonLowATK)
 
-function scard.splimit(e, c, sump, sumtype, sumpos, targetp, se)
+function s.splimit(e, c, sump, sumtype, sumpos, targetp, se)
     return not c:IsAttackAbove(1600)
 end
