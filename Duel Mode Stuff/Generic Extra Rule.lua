@@ -18,7 +18,7 @@ function Auxiliary.EnableExtraRuleOperation(card,init,...)
         local ct = Duel.GetMatchingGroupCount(nil, p, LOCATION_HAND + LOCATION_DECK, 0, c)
         if (Duel.IsDuelType(SPEED_DUEL) and ct < 20 or ct < 40)
             and Duel.SelectYesNo(1 - p, aux.Stringid(4014, 5)) then
-            Duel.Win(1 - p, 0x60)
+            Duel.Win(1 - p, 0x55)
         end
         if c:IsPreviousLocation(LOCATION_HAND) then Duel.Draw(p, 1, REASON_RULE) end
         if not card.global_active_check then
@@ -32,10 +32,10 @@ function Auxiliary.EnableExtraRuleOperation(card,init,...)
 end
 
 --aux.Stringid(4014, 5):
---Your opponent has an illegal number of cards in their deck after removing the Duel Mode. Do you want to take the win (Yes) or allow this (No)?
+--Your opponent has an illegal number of cards in their deck after removing the Duel Mode Card. Do you want to disqualify them and win (Yes) or continue the Duel (No)?
 
 --aux.Stringid(4014, 6):
 --Do you agree to play this special Duel Mode?
 
---Duel.Win(1 - tp, 0x60)
--- "Victory by entering the Duel with invalid Deck" (provisional)
+--Duel.Win(1 - tp, 0x55)
+-- "Victory by entering the Duel with invalid Deck"
