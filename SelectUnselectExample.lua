@@ -1,3 +1,4 @@
+
 function s.spfilter(c,e,tp)
 	return c:IsCanBeSpecialSummoned(c,e,0,tp,false,false)
 end
