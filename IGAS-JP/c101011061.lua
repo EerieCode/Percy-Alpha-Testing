@@ -17,7 +17,7 @@ function s.initial_effect(c)
     e2:SetType(EFFECT_TYPE_IGNITION)
     e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
     e2:SetRange(LOCATION_GRAVE)
-    e2:SetCountLimit(1,id+100)
+    e2:SetCountLimit(1,id)
     e2:SetCost(aux.bfgcost)
     e2:SetTarget(s.xtg)
     e2:SetOperation(s.xop)
@@ -58,7 +58,7 @@ function s.xtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function s.xop(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetFirstTarget()
-    if not tc:IsRelateToEffect(e) or tc:IsFacedown() then return end
+    if not tc:IsRelateToEffect(e) or tc:IsImmuneToEffect(e) then return end
     local g=Duel.GetMatchingGroup(Card.IsSetCard,tp,LOCATION_GRAVE,0,e:GetHandler(),0x126)
     local sg=aux.SelectUnselectGroup(g,e,tp,3,3,s.xcheck,1,tp,HINTMSG_XMATERIAL)
     if #sg==3 then
