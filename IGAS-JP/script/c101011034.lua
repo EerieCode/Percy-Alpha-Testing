@@ -38,7 +38,7 @@ function s.initial_effect(c)
     e3:SetOperation(s.op)
     c:RegisterEffect(e3)
 end
-s.listed_series={0x234}
+s.listed_names={101011054}
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
     return e:GetHandler():IsSummonType(SUMMON_TYPE_RITUAL)
 end
