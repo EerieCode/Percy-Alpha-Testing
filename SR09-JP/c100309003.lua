@@ -84,7 +84,7 @@ function s.regop(e,tp,eg,ep,ev,re,r,rp)
 end
 	--Check for FIRE warrior or equip spell
 function s.thfilter(c)
-	return (c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE)) or (c:IsType(TYPE_EQUIP))
+	return (c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE) and not c:IsCode(id)) or (c:IsType(TYPE_EQUIP))
 		and c:IsAbleToHand()
 end
 	--Check for flag
