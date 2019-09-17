@@ -20,7 +20,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return false end
     if chk==0 then return Duel.IsExistingTarget(f1,tp,LOCATION_MZONE,0,1,nil)
         and Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil)
-        and (ft>1 or (ft>0 e:GetHandler():IsLocation(LOCATION_SZONE))) end
+        and (ft>1 or (ft>0 and e:GetHandler():IsLocation(LOCATION_SZONE))) end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
     local g=Duel.SelectTarget(tp,f1,tp,LOCATION_MZONE,0,1,1,nil)
     e:SetLabelObject(g:GetFirst())
