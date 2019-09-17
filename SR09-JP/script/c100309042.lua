@@ -47,7 +47,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
         e2:SetCode(EFFECT_DESTROY_SUBSTITUTE)
         e2:SetProperty(EFFECT_FLAG_OWNER_RELATE+EFFECT_FLAG_IGNORE_IMMUNE)
         e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-        e2:SetValue(srepval)
+        e2:SetValue(s.repval)
         oc:RegisterEffect(e2)   
         --Equip limit
         local e3=Effect.CreateEffect(c)
