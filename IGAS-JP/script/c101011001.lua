@@ -20,6 +20,7 @@ function s.initial_effect(c)
     --level
     local e3=Effect.CreateEffect(c)
     e3:SetDescription(aux.Stringid(id,1))
+    e3:SetCategory(CATEGORY_LVCHANGE)
     e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
     e3:SetType(EFFECT_TYPE_IGNITION)
     e3:SetRange(LOCATION_MZONE)
