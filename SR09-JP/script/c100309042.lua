@@ -16,10 +16,11 @@ function s.initial_effect(c)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     local f1=aux.FilterFaceupFunction(Card.IsRace,RACE_WARRIOR)
+    local ft=Duel.GetLocationCount(tp,LOCATION_SZONE)
     if chkc then return false end
     if chk==0 then return Duel.IsExistingTarget(f1,tp,LOCATION_MZONE,0,1,nil)
         and Duel.IsExistingTarget(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil)
-        and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 end
+        and (ft>1 or (ft>0 e:GetHandler():IsLocation(LOCATION_SZONE))) end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
     local g=Duel.SelectTarget(tp,f1,tp,LOCATION_MZONE,0,1,1,nil)
     e:SetLabelObject(g:GetFirst())
@@ -33,8 +34,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
     local tc=g:GetFirst()
     local oc=g:GetNext()
     if oc==e:GetLabelObject() then tc,oc=oc,tc end
-    if tc:IsFaceup() and tc:IsLocation(LOCATION_MZONE) then
-        Duel.Equip(tp,oc,tc)
+    if tc:IsFaceup() and tc:IsLocation(LOCATION_MZONE) and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 then
+        if not (oc:IsFaceup() and oc:IsLocation(LOCATION_MZONE) and oc:IsControler(1-tp)) then return end
+        if not Duel.Equip(tp,oc,tc) then return end
         --no battle damage
         local e1=Effect.CreateEffect(c)
         e1:SetType(EFFECT_TYPE_SINGLE)
