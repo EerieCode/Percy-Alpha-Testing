@@ -28,6 +28,7 @@ function s.initial_effect(c)
     e3:SetOperation(s.lvop)
     c:RegisterEffect(e3)
 end
+s.listed_series={0x234,0x235}
 function s.thfilter(c)
     return c:IsSetCard(0x235) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
