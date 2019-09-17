@@ -33,7 +33,7 @@ end
 	--Part of "@Ignister" archetype
 s.listed_series={0x234}
 	--Lists "A.I. Love Fusion"
-s.listed_names={100309053}
+s.listed_names={101011053}
 	--Look for "@Ignister" monster
 function s.filter(c)
 	return c:IsSetCard(0x234) and c:IsFaceup()
@@ -59,7 +59,7 @@ function s.tdfilter(c)
 end
 	--Check for "A.I. Love Fusion"
 function s.thfilter(c)
-	return c:IsCode(100309053) and c:IsAbleToHand()
+	return c:IsCode(101011053) and c:IsAbleToHand()
 end
 	--Activation legality
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
