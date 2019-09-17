@@ -27,6 +27,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     Duel.SelectTarget(tp,Card.IsFaceup,tp,0,LOCATION_MZONE,1,1,nil)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
+    local c=e:GetHandler()
     local g=Duel.GetTargetCards(e)
     if #g<2 then return end
     local tc=g:GetFirst()
@@ -35,22 +36,21 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
     if tc:IsFaceup() and tc:IsLocation(LOCATION_MZONE) then
         Duel.Equip(tp,tc,oc)
         --no battle damage
-        local e1=Effect.CreateEffect(e:GetHandler())
+        local e1=Effect.CreateEffect(c)
         e1:SetType(EFFECT_TYPE_SINGLE)
         e1:SetCode(EFFECT_NO_BATTLE_DAMAGE)
         e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
         tc:RegisterEffect(e1)
         --substitute
-        local e2=Effect.CreateEffect(e:GetHandler())
+        local e2=Effect.CreateEffect(tc)
         e2:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
-        e2:SetCode(EFFECT_DESTROY_REPLACE)
+        e2:SetCode(EFFECT_DESTROY_SUBSTITUTE)
+        e2:SetProperty(EFFECT_FLAG_OWNER_RELATE+EFFECT_FLAG_IGNORE_IMMUNE)
         e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-        e2:SetLabelObject(oc)
-        e2:SetTarget(s.reptg)
-        e2:SetOperation(s.repop)
-        tc:RegisterEffect(e2)   
+        e2:SetValue(srepval)
+        oc:RegisterEffect(e2)   
         --Equip limit
-        local e3=Effect.CreateEffect(e:GetHandler())
+        local e3=Effect.CreateEffect(c)
         e3:SetType(EFFECT_TYPE_SINGLE)
         e3:SetCode(EFFECT_EQUIP_LIMIT)
         e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
@@ -63,17 +63,6 @@ end
 function s.eqlimit(e,c)
     return c==e:GetLabelObject()
 end
-function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
-    local c=e:GetHandler()
-    local ec=e:GetLabelObject()
-    if chk==0 then return not c:IsReason(REASON_REPLACE) and c:IsOnField() and c:IsFaceup() 
-        and ec and c:GetEquipGroup():IsContains(ec) 
-        and ec:IsDestructable(e) and not ec:IsStatus(STATUS_DESTROY_CONFIRMED) end
-    if Duel.SelectEffectYesNo(tp,c,96) then
-        ec:SetStatus(STATUS_DESTROY_CONFIRMED,true)
-        return true
-    else return false end
-end
-function s.repop(e,tp,eg,ep,ev,re,r,rp)
-    Duel.Destroy(e:GetLabelObject(),REASON_EFFECT+REASON_REPLACE)
+function s.repval(e,re,r,rp)
+    return (r&REASON_BATTLE+REASON_EFFECT)~=0
 end
