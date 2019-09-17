@@ -34,7 +34,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
     local oc=g:GetNext()
     if oc==e:GetLabelObject() then tc,oc=oc,tc end
     if tc:IsFaceup() and tc:IsLocation(LOCATION_MZONE) then
-        Duel.Equip(tp,tc,oc)
+        Duel.Equip(tp,oc,tc)
         --no battle damage
         local e1=Effect.CreateEffect(c)
         e1:SetType(EFFECT_TYPE_SINGLE)
@@ -42,10 +42,9 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
         e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
         tc:RegisterEffect(e1)
         --substitute
-        local e2=Effect.CreateEffect(tc)
-        e2:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
+        local e2=Effect.CreateEffect(c)
+        e2:SetType(EFFECT_TYPE_EQUIP)
         e2:SetCode(EFFECT_DESTROY_SUBSTITUTE)
-        e2:SetProperty(EFFECT_FLAG_OWNER_RELATE+EFFECT_FLAG_IGNORE_IMMUNE)
         e2:SetReset(RESET_EVENT+RESETS_STANDARD)
         e2:SetValue(s.repval)
         oc:RegisterEffect(e2)   
@@ -56,7 +55,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
         e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
         e3:SetValue(s.eqlimit)
         e3:SetReset(RESET_EVENT+RESETS_STANDARD)
-        e3:SetLabelObject(ec)
+        e3:SetLabelObject(tc)
         oc:RegisterEffect(e3)
     else Duel.SendtoGrave(oc,REASON_RULE) end
 end
