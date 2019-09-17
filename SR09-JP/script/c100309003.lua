@@ -1,10 +1,8 @@
 --焔聖騎士-ローラン
 --Flame Noble Knight Roland
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Equip from hand, quick-play
 	local e1=Effect.CreateEffect(c)

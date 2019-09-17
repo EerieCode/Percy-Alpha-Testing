@@ -1,10 +1,8 @@
 --カラクリ蝦蟇 四六弐四
 --Karakuri Toad mdl 4624 “Shirokunishi”
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Must attack
 	local e1=Effect.CreateEffect(c)

@@ -1,11 +1,8 @@
 --ドヨン＠イグニスター
 --Doyon @Ignister
---Credit to Larry126
---Logical Nonsense
-
+--scripted by Logical Nonsense, credits to Larry126
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Upon normal summon, add "@Ignister" monster from GY to hand
 	local e1=Effect.CreateEffect(c)
