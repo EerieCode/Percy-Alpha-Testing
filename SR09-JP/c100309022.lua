@@ -44,8 +44,7 @@ end
 function s.nsop(e,tp,eg,ep,ev,re,r,rp)
     local tc=e:GetHandler():GetEquipTarget()
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SUMMON)
-    if tc and tc:IsRelateToEffect(e) 
-        and Duel.ChangePosition(tc,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK)~=0 then
+    if tc and Duel.ChangePosition(tc,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK)~=0 then
         local sc=Duel.SelectMatchingCard(tp,Card.IsSummonable,tp,LOCATION_HAND+LOCATION_MZONE,0,1,1,nil,true,nil):GetFirst()
         if sc then
             Duel.Summon(tp,sc,true,nil)
