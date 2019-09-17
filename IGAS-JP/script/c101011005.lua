@@ -44,8 +44,8 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
     Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
 end
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return Duel.CheckReleaseGroupCost(tp,Card.IsSetCard,1,false,nil,e:GetHandler(),0x234) end
-    local g=Duel.SelectReleaseGroupCost(tp,Card.IsSetCard,1,1,false,nil,e:GetHandler(),0x234)
+    if chk==0 then return Duel.CheckReleaseGroupCost(tp,Card.IsRace,1,false,nil,e:GetHandler(),RACE_CYBERSE) end
+    local g=Duel.SelectReleaseGroupCost(tp,Card.IsRace,1,1,false,nil,e:GetHandler(),RACE_CYBERSE)
     Duel.Release(g,REASON_COST)
     e:SetLabelObject(g:GetFirst())
 end

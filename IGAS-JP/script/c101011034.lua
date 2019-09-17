@@ -33,6 +33,7 @@ function s.initial_effect(c)
     e3:SetType(EFFECT_TYPE_QUICK_O)
     e3:SetCode(EVENT_PRE_DAMAGE_CALCULATE)
     e3:SetRange(LOCATION_MZONE)
+    e3:SetCost(s.cost)
     e3:SetCondition(s.con)
     e3:SetOperation(s.op)
     c:RegisterEffect(e3)
@@ -79,12 +80,17 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
         end
     end
 end
+function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
+    local c=e:GetHandler()
+    if chk==0 then return c:GetFlagEffect(id)==0 end
+    c:RegisterFlagEffect(id,RESET_CHAIN,0,1)
+end
 function s.con(e,tp,eg,ep,ev,re,r,rp)
     return e:GetHandler():GetBattleTarget()~=nil
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
-    local tc=e:GetBattleTarget()
+    local tc=c:GetBattleTarget()
     if tc:IsFaceup() and tc:IsRelateToBattle() then
         local e1=Effect.CreateEffect(c)
         e1:SetType(EFFECT_TYPE_SINGLE)
