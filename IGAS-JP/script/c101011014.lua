@@ -65,7 +65,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e1,tp)
 end
 function s.splimit(e,c)
-	return not c:IsRace(RACE_MACHINE) and not c:IsAttribute(ATTRIBUTE_EARTH) and c:IsLocation(LOCATION_EXTRA)
+	return (not c:IsRace(RACE_MACHINE) or not c:IsAttribute(ATTRIBUTE_EARTH)) and c:IsLocation(LOCATION_EXTRA)
 end
 function s.posop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
