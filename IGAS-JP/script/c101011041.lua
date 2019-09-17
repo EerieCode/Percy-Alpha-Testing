@@ -58,6 +58,7 @@ function s.regop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0,1)
 end
 function s.atkcon(e)
+	local ph=Duel.GetCurrentPhase()
 	local c=e:GetHandler()
 	local tc=c:GetBattleTarget()
 	return (ph==PHASE_DAMAGE or ph==PHASE_DAMAGE_CAL) and Duel.GetAttacker()==c
