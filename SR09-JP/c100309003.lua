@@ -38,6 +38,8 @@ function s.initial_effect(c)
 	e3:SetOperation(s.thop)
 	c:RegisterEffect(e3)
 end
+	--Part of "Noble Knight" archetype
+s.listed_series={0x107a}
 	--Activation legality
 function s.equiptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
