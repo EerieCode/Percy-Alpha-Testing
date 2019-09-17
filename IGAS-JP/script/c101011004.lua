@@ -47,7 +47,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
         Duel.ConfirmCards(1-tp,g)
     end
 end
-function s.rthcon(e,tp,eg,ep,ev,re,r,rp)
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetAttacker()
     local bc=Duel.GetAttackTarget()
     if tc:IsControler(1-tp) then
@@ -59,12 +59,12 @@ function s.rthcon(e,tp,eg,ep,ev,re,r,rp)
         return true
     else return false end
 end
-function s.rthtg(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return true end
     local tc=e:GetLabelObject()
     Duel.SetOperationInfo(0,CATEGORY_DESTROY,bc,1,0,0)
 end
-function s.rthop(e,tp,eg,ep,ev,re,r,rp)
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
     local tc=e:GetLabelObject()
     if tc and tc:IsControler(tp) and tc:IsRelateToBattle() then
         Duel.Destroy(tc,REASON_EFFECT)
