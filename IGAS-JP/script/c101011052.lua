@@ -1,6 +1,6 @@
 --Ａｉドリング・ボーン
 --A.I.dle Reborn
---Scripted by Larry126
+--Scripted by AlphaKretin, anime version by Larry126
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate
@@ -23,7 +23,7 @@ function s.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetCountLimit(1,id+100)
 	e2:SetCondition(s.thcon)
-	e2:SetCost(aux.bfgcost)
+	e2:SetCost(s.thcost)
 	e2:SetTarget(s.thtg)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
@@ -65,6 +65,14 @@ function s.splimit(e,c,sump,sumtype,sumpos,targetp)
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetAttackTarget()
+end
+function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return aux.bfgcost(e,tp,eg,ep,ev,re,r,rp,chk) 
+		and Duel.IsExistingMatchingCard(Card.IsAbleToRemoveAsCost,tp,LOCATION_HAND,0,1,nil)
+	aux.bfgcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
+	local g=Duel.SelectMatchingCard(tp,Card.IsAbleToRemoveAsCost,tp,LOCATION_HAND,0,1,1,nil)
+	Duel.Remove(g,POS_FACEUP,REASON_COST)
 end
 function s.thfilter(c)
 	return c:IsSetCard(0x235) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand() and not c:IsCode(id)
