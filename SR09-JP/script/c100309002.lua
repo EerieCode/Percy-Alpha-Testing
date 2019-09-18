@@ -1,5 +1,5 @@
 --昇華騎士－エクスパラディン
---Expaladin the Sublimation Knight
+--Sublime Knight - Expaladin
 --Scripted by Hel
 local s,id=GetID()
 function s.initial_effect(c)
@@ -41,8 +41,8 @@ end
 function s.eqval(ec,c,tp)
 	return ec:IsControler(tp) and ((ec:IsRace(RACE_WARRIOR) and ec:IsAttribute(ATTRIBUTE_FIRE)) or ec:IsType(TYPE_DUAL))
 end
-function s.filter(c,ec)
-	return ((ec:IsRace(RACE_WARRIOR) and ec:IsAttribute(ATTRIBUTE_FIRE)) or ec:IsType(TYPE_DUAL)) and not c:IsForbidden()
+function s.filter(c)
+	return ((c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE)) or c:IsType(TYPE_DUAL)) and not c:IsForbidden()
 end
 function s.eqtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
@@ -63,7 +63,7 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if Duel.GetLocationCount(tp,LOCATION_SZONE)<=0 or c:IsFacedown() or not c:IsRelateToEffect(e) then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil,c)
+	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK+LOCATION_HAND,0,1,1,nil)
 	local tc=g:GetFirst()
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
 		s.equipop(c,e,tp,tc)
@@ -80,8 +80,8 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local g=e:GetLabelObject():GetLabelObject()
 	return c:IsReason(REASON_BATTLE) or (rp~=tp and c:IsReason(REASON_EFFECT)) and g:IsExists(s.spfilter,1,nil)
 end
-function s.spfilter(c,e)
-	return c:IsType(TYPE_DUAL)
+function s.spfilter(c)
+	return c:GetOriginalType()&TYPE_DUAL==TYPE_DUAL
 end
 function s.spfilter2(c,e,tp)
 	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and c:IsType(TYPE_DUAL)
