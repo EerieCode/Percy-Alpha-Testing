@@ -178,7 +178,7 @@ async function updateListedNames(file) {
 
 // adds a list of listed archetype codes to the file
 async function updateListedSets(file) {
-    const codeRegs = [/IsSetCard\(([0-9A-Z_x]+)\)/g, /\(Card\.IsSetCard,.+?,?([0-9A-Z_x]+)\)/g];
+    const codeRegs = [/IsSetCard\(([0-9a-fA-Z_x]+)\)/g, /\(Card\.IsSetCard,.+?,?([0-9a-fA-Z_x]+)\)/g];
     const codes = [];
     for (const reg of codeRegs) {
         while ((result = reg.exec(file)) !== null) {
