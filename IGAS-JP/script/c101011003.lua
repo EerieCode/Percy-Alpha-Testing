@@ -1,11 +1,8 @@
 --ドヨン＠イグニスター
 --Doyon @Ignister
---Credit to Larry126
---Logical Nonsense
-
+--scripted by Logical Nonsense, credits to Larry126
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Upon normal summon, add "@Ignister" monster from GY to hand
 	local e1=Effect.CreateEffect(c)
@@ -35,8 +32,8 @@ function s.initial_effect(c)
 	e3:SetOperation(s.thop2)
 	c:RegisterEffect(e3)
 end
-	--Part of "@Ignister" archetype
-s.listed_series={0x234}
+	--List "@Ignister" and "A.I." archetypes in the card text
+s.listed_series={0x234,0x235}
 	--Check for "@Ignister" monster
 function s.thfilter(c)
 	return c:IsSetCard(0x234) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()

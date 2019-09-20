@@ -1,11 +1,9 @@
 --ドシン＠イグニスター
 --Doshin @Ignister
 --Credit to Larry126
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Special Summon from hand
 	local e1=Effect.CreateEffect(c)

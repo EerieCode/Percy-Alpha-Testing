@@ -20,6 +20,7 @@ function s.initial_effect(c)
     --level
     local e3=Effect.CreateEffect(c)
     e3:SetDescription(aux.Stringid(id,1))
+    e3:SetCategory(CATEGORY_LVCHANGE)
     e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
     e3:SetType(EFFECT_TYPE_IGNITION)
     e3:SetRange(LOCATION_MZONE)
@@ -28,6 +29,7 @@ function s.initial_effect(c)
     e3:SetOperation(s.lvop)
     c:RegisterEffect(e3)
 end
+s.listed_series={0x234,0x235}
 function s.thfilter(c)
     return c:IsSetCard(0x235) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
@@ -60,7 +62,7 @@ function s.lvop(e,tp,eg,ep,ev,re,r,rp)
         e1:SetCode(EFFECT_CHANGE_LEVEL)
         e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
         e1:SetValue(4)
-        e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+        e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
         tc:RegisterEffect(e1)
     end
 end

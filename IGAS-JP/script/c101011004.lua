@@ -20,18 +20,19 @@ function s.initial_effect(c)
     --destroy
     local e3=Effect.CreateEffect(c)
     e3:SetDescription(aux.Stringid(id,1))
-    e3:SetCategory(CATEGORY_TOHAND)
+    e3:SetCategory(CATEGORY_DESTROY)
     e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
     e3:SetCode(EVENT_BATTLE_START)
     e3:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_DAMAGE_STEP)
     e3:SetRange(LOCATION_GRAVE)
-    e3:SetCountLimit(1,id)
+    e3:SetCountLimit(1,id+100)
     e3:SetCondition(s.descon)
     e3:SetCost(aux.bfgcost)
     e3:SetTarget(s.destg)
     e3:SetOperation(s.desop)
     c:RegisterEffect(e3)
 end
+s.listed_series={0x234}
 function s.thfilter(c)
     return c:IsSetCard(0x234) and c:IsType(TYPE_MONSTER) and c:IsLevelBelow(4) and not c:IsCode(id) and c:IsAbleToHand()
 end

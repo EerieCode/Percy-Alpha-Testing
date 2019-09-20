@@ -4,14 +4,14 @@
 local s,id=GetID()
 function s.initial_effect(c)
     aux.AddEquipProcedure(c)
-    --Cannot destroy
+    --Cannot target
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_EQUIP)
     e1:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
     e1:SetValue(aux.tgoval)
     e1:SetCondition(s.indcon)
     c:RegisterEffect(e1)
-    --Cannot target
+    --Cannot destroy
     local e2=e1:Clone()
     e2:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
     e2:SetValue(1)
@@ -44,8 +44,8 @@ function s.nstg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.nsop(e,tp,eg,ep,ev,re,r,rp)
     local tc=e:GetHandler():GetEquipTarget()
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SUMMON)
     if tc and Duel.ChangePosition(tc,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,POS_FACEUP_ATTACK,POS_FACEUP_ATTACK)~=0 then
+        Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SUMMON)
         local sc=Duel.SelectMatchingCard(tp,Card.IsSummonable,tp,LOCATION_HAND+LOCATION_MZONE,0,1,1,nil,true,nil):GetFirst()
         if sc then
             Duel.Summon(tp,sc,true,nil)

@@ -76,6 +76,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
         if lc:IsType(TYPE_LINK) then
             local tg=Duel.GetMatchingGroup(s.thfilter2,tp,LOCATION_DECK,0,nil)
             if #tg>0 and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
+                Duel.BreakEffect()
                 Duel.SendtoHand(tg:Select(tp,1,1,nil),nil,REASON_EFFECT)
                 Duel.ConfirmCards(1-tp,Duel.GetOperatedGroup())
             end

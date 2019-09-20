@@ -1,10 +1,8 @@
 --焔聖騎士-ローラン
 --Flame Noble Knight Roland
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Equip from hand, quick-play
 	local e1=Effect.CreateEffect(c)
@@ -42,7 +40,7 @@ end
 s.listed_series={0x107a}
 	--Activation legality
 function s.equiptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and chkc:IsFaceup() end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
 		and Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
@@ -72,7 +70,7 @@ function s.equipop(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetType(EFFECT_TYPE_EQUIP)
 	e2:SetCode(EFFECT_UPDATE_ATTACK)
 	e2:SetValue(500)
-	e2:SetReset(RESET_EVENT+0x1fe0000)
+	e2:SetReset(RESET_EVENT+RESETS_STANDARD)
 	c:RegisterEffect(e2)
 end
 
@@ -82,12 +80,12 @@ end
 	--If sent to GY this turn, flag
 function s.regop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	c:RegisterFlagEffect(id,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
+	c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
 end
 	--Check for FIRE warrior or equip spell
 function s.thfilter(c)
-	return (c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE) and not c:IsCode(id)) or (c:IsType(TYPE_EQUIP))
-		and c:IsAbleToHand()
+	return ((c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE)) or (c:IsType(TYPE_EQUIP))
+		and c:IsAbleToHand() and not c:IsCode(id)
 end
 	--Check for flag
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
@@ -102,7 +100,7 @@ end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
-	if g:GetCount()>0 then
+	if #g>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end
