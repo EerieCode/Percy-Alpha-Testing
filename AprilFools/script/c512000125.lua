@@ -1,4 +1,4 @@
---強欲な壺
+--壺
 --Pot
 local s,id=GetID()
 function s.initial_effect(c)
