@@ -33,7 +33,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
         if #eqg>0 and ec:CheckUniqueOnField(tp) and not ec:IsForbidden() 
             and Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
             Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-            local tc=Duel.SelectMatchingCard(tp,s.eqfilter,tp,LOCATION_MZONE,0,1,1,nil,ec,tp)
+            local tc=eqg:Select(tp,1,1,nil):GetFirst()
             Duel.Equip(tp,ec,tc)
         end
     end
