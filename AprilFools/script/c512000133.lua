@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
 end
-s.listed_names={44095762,62279055,61740673}
+s.listed_names={44095762,62279055,61740673,15800838}
 s.chants={"Cringe before Hanoi's noble power!",
 "Sink into the abyss of bottomless despair!"}
 s.extraLink="This is a duel in the extreme domain! Manifest! Extra Link!"
@@ -53,7 +53,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp,chk)
 			if tc:IsExtraLinked() then Debug.Message(s.extraLink)
 			else ex=true end
 			local sg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_EXTRA,0,nil,e,tp)
-			local codes={44095762,62279055,61740673}
+			local codes={44095762,62279055,61740673,15800838}
 			local rg=Duel.GetMatchingGroup(s.rvfilter,tp,LOCATION_SZONE,0,nil,codes)
 			local i=1
 			while #sg>0 and #rg>0 and Duel.SelectYesNo(tp,aux.Stringid(1040,1)) do
