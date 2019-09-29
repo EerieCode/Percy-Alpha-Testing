@@ -14,3 +14,7 @@ Updates applied by this script
 - Lua 5.3 Bitwise operators
 - Listed names
 - Listed setcodes
+
+Known Issues:
+- Cocoon of Evolution, which has a complicated filter function that checks a group called "g2", tricks the parser and returns the "2" in "g2" instead of the card's ID at the end of the function (however the ID is also listed elsewhere in the script, and no card will ever have the ID "2").
+- Magic Formula contains a Filter Function for IsCode that lists 2 codes, the parser can only find 1.
