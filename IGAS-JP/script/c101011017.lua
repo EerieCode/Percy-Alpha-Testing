@@ -31,7 +31,7 @@ function s.initial_effect(c)
 	e4:SetRange(LOCATION_MZONE)
 	e4:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
 	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e4:SetTargetRange(1,1)
+	e4:SetTargetRange(1,0)
 	e4:SetTarget(s.sumlimit)
 	c:RegisterEffect(e4)
 end
