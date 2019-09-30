@@ -83,11 +83,10 @@ function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 	local rc=c:GetReasonCard()
 	if not rc:IsSetCard(0x48) then return end
 	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_EXTRA_ATTACK)
+	e1:SetCode(EFFECT_EXTRA_ATTACK_MONSTER)
 	e1:SetValue(1)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	rc:RegisterEffect(e1,true)
-	end
 	if not rc:IsType(TYPE_EFFECT) then
 		local e2=Effect.CreateEffect(c)
 		e2:SetType(EFFECT_TYPE_SINGLE)
