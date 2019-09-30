@@ -12,7 +12,7 @@ function s.initial_effect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetCode(EVENT_SUMMON_SUCCESS)
-	e1:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_CARD_TARGET)
+	e1:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
 	e1:SetCountLimit(1,id)
 	e1:SetCost(s.atkcost)
 	e1:SetTarget(s.atktg)
@@ -27,6 +27,7 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e3:SetCode(EVENT_BE_MATERIAL)
+	e3:SetCountLimit(1,id+100)
 	e3:SetCondition(s.mtcon)
 	e3:SetOperation(s.mtop)
 	c:RegisterEffect(e3)
@@ -48,13 +49,11 @@ function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	else
 		e:SetLabel(tc:GetLevel())
 	end
-	--e:SetLabel((tc:GetLevel() and tc:GetRank()))
 end
 	--Activation legality
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
-    if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil)
-         and Duel.IsExistingMatchingCard(s.atkcfilter,tp,LOCATION_DECK+LOCATION_EXTRA,0,1,nil) end
+    if chk==0 then return Duel.IsExistingTarget(Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
     Duel.SelectTarget(tp,Card.IsFaceup,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 end
@@ -74,7 +73,7 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 end
 	--If Xyz Summoned using this card on field
 function s.mtcon(e,tp,eg,ep,ev,re,r,rp)
-	return r==REASON_XYZ and e:GetHandler():IsPreviousLocation(LOCATION_MZONE)
+	return r==REASON_XYZ and e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD)
 end
 	--Grant double attack to "Number" Xyz
 function s.mtop(e,tp,eg,ep,ev,re,r,rp)
@@ -83,7 +82,9 @@ function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 	local rc=c:GetReasonCard()
 	if not rc:IsSetCard(0x48) then return end
 	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetCode(EFFECT_EXTRA_ATTACK_MONSTER)
+	e1:SetRange(LOCATION_MZONE)
 	e1:SetValue(1)
 	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	rc:RegisterEffect(e1,true)
