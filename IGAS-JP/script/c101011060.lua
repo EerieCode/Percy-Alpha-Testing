@@ -1,5 +1,5 @@
 --顕現する紋章
---Charge Medallion
+--Heraldry Charge
 --Logical Nonsense
 
 --Substitute ID
@@ -16,6 +16,8 @@ function s.initial_effect(c)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 end
+	--Part of "Heraldry" archetype
+s.listed_series={0x92}
 	--Cost filter
 function s.cfilter(c,ft,tp)
 	return ft>0 or (c:IsControler(tp) and c:GetSequence()<5)
