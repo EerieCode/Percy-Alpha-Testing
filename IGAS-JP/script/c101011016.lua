@@ -59,7 +59,6 @@ function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 	--ATK loss
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
 		local ct=e:GetLabel()*-200
