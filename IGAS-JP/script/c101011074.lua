@@ -50,12 +50,12 @@ function s.cfilter(c)
 	return c:IsType(TYPE_SPELL) and c:IsDiscardable()	
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetFlagEffect(tp,id)==0
+	if chk==0 then return e:GetHandler():GetFlagEffect(id)==0
 		and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DISCARD)
 	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,nil)
 	Duel.SendtoGrave(g,REASON_COST+REASON_DISCARD)
-	Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0,1)
+	e:GetHandler():RegisterFlagEffect(id,RESET_PHASE+PHASE_END,0,1)
 	if g:GetFirst():IsSetCard(0x95) then e:SetLabel(0) else e:SetLabel(1) end
 end
 function s.filter1(c,e,tp)
