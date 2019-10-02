@@ -1,10 +1,5 @@
--- Son Bou the Footman of Senka
--- Level 4 WATER Beast Warrior Effect Monster
--- 1800 ATK / 1500 DEF
--- -You can only use each of this card name's (2) and (3) effects once per turn.
--- (1) While you control another "Senka" monster, your opponent cannot target this card for attacks.<Continuous>
--- (2) You can send 1 card from your hand or field to the GY; add 1 "Senka" monster from your Deck to your hand, except "Son Bou the Footman of Senka".<Ignition>
--- (3) If you activate the effect of another "Senka" monster: You can target 1 monster your opponent controls; return it to the hand.<Trigger>
+--戦華の仲－孫謀
+--Senka Intermediary - Sun Mou
 local s,id=GetID()
 function s.initial_effect(c)
 	--no attack
@@ -51,11 +46,8 @@ end
 s.listed_names={101011008}
 s.listed_series={0x236}
 --no attack
-function s.filter(c)
-	return c:IsFaceup() and c:IsSetCard(0x236)
-end
 function s.atcon(e)
-	return Duel.IsExistingMatchingCard(s.filter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,e:GetHandler())
+	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x236),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,e:GetHandler())
 end
 --search
 function s.cfilter(c)
@@ -67,12 +59,11 @@ function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_SZONE,0,1,1,nil)
 	Duel.SendtoGrave(g,REASON_COST)
-	
 end
 function s.thfilter(c)
 	return c:IsSetCard(0x236) and not c:IsCode(101011008) and c:IsAbleToHand()
 end
-function s.thtf(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
