@@ -1,5 +1,5 @@
 --戦華の徳－劉玄
---
+--Senka Noble - Liu Xuan
 --Scripted by Larry126
 local s,id=GetID()
 function s.initial_effect(c)
@@ -37,11 +37,8 @@ function s.initial_effect(c)
 	e3:SetOperation(s.drop)
 	c:RegisterEffect(e3)
 end
-function s.cfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x236)
-end
 function s.atcon(e)
-	return Duel.IsExistingMatchingCard(s.cfilter,e:GetOwnerPlayer(),LOCATION_MZONE,0,1,e:GetHandler())
+	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x236),e:GetOwnerPlayer(),LOCATION_MZONE,0,1,e:GetHandler())
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>Duel.GetFieldGroupCount(tp,LOCATION_MZONE,0)
@@ -73,9 +70,9 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.drcon(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()
-	local at=Duel.GetAttackTarget()
+	local b=Duel.GetAttackTarget()
 	return (a:IsControler(tp) and a~=e:GetHandler() and a:IsSetCard(0x236))
-		or (at and at:IsControler(tp) and at:IsFaceup() and at~=e:GetHandler() and at:IsSetCard(0x236))
+		or (b and b:IsControler(tp) and b:IsFaceup() and b~=e:GetHandler() and b:IsSetCard(0x236))
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) end
