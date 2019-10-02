@@ -22,7 +22,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,1))
-	e3:SetCategory(CATEGORY_TOHAND)
+	e3:SetCategory(CATEGORY_DISABLE)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e3:SetCode(EVENT_CHAIN_SOLVED)
@@ -44,7 +44,7 @@ function s.thfilter(c)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_SZONE) and chkc:IsControler(tp) and s.gvfilter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.gvfilter,tp,LOCATION_MZONE,0,1,nil)
+	if chk==0 then return Duel.IsExistingTarget(s.gvfilter,tp,LOCATION_SZONE,0,1,nil)
 		and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local g=Duel.SelectTarget(tp,s.gvfilter,tp,LOCATION_SZONE,0,1,1,nil)
@@ -52,14 +52,11 @@ function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetHandler():IsRelateToEffect(e) then return end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e)
-		and Duel.SendtoGrave(tc,REASON_EFFECT)~=0 and tc:IsLocation(LOCATION_GRAVE)
-		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
+	if tc:IsRelateToEffect(e) and Duel.SendtoGrave(tc,REASON_EFFECT)~=0 and tc:IsLocation(LOCATION_GRAVE) then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 		local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
-		if g:GetCount()>0 then
+		if #g>0 then
 			Duel.SendtoHand(g,nil,REASON_EFFECT)
 			Duel.ConfirmCards(1-tp,g)
 		end
@@ -73,10 +70,10 @@ function s.negcon(e,tp,eg,ep,ev,re,r,rp)
 		and rc:IsSetCard(0x236) and rc:IsControler(tp) and c:GetFlagEffect(1)>0
 end
 function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and chkc:IsFaceup() end
-	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,0,LOCATION_MZONE,1,nil) end
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and chkc:IsType(TYPE_EFFECT) and aux.disfilter1(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(aux.disfilter1,tp,0,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local g=Duel.SelectTarget(tp,s.filter,tp,0,LOCATION_MZONE,1,1,nil)
+	local g=Duel.SelectTarget(tp,aux.disfilter1,tp,0,LOCATION_MZONE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DISABLE,g,1,0,0)
 end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
