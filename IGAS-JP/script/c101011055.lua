@@ -61,9 +61,7 @@ function s.sop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.thcfilter(c,e,tp)
 	local code=c:GetCode()
-	return c:IsSetCard(0x234) and c:IsControler(tp) 
-		and c:IsLocation(LOCATION_MZONE)
-		and c:IsCanBeEffectTarget(e)		
+	return c:IsSetCard(0x234) and c:IsControler(tp) and c:IsLocation(LOCATION_MZONE) and c:IsCanBeEffectTarget(e)		
 		and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,code)
 end
 function s.thfilter(c,code)
