@@ -1,5 +1,5 @@
 --戦華の雄－張徳
---
+--Senka Champion - Zhang De
 --Scripted by Larry126
 local s,id=GetID()
 function s.initial_effect(c)
@@ -19,26 +19,22 @@ function s.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCode(EFFECT_UPDATE_ATTACK)
-	e2:SetCondition(s.con)
+	e2:SetCondition(s.cond)
 	e2:SetValue(s.val)
 	c:RegisterEffect(e2)
-	--destroy
+	--extra attack
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,1))
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetCountLimit(1,id)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCondition(s.atkcon)
-	e3:SetCost(s.atkcost)
 	e3:SetTarget(s.atktg)
 	e3:SetOperation(s.atkop)
 	c:RegisterEffect(e3)
 end
-function s.filter(c)
-	return c:IsSetCard(0x236) and c:IsFaceup()
-end
 function s.sscon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,2,nil)
+	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x236),tp,LOCATION_MZONE,0,2,nil)
 end
 function s.sstg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -50,7 +46,7 @@ function s.ssop(e,tp,eg,ep,ev,re,r,rp)
 	if not c:IsRelateToEffect(e) then return end
 	Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
 end
-function s.con(e)
+function s.cond(e)
 	return Duel.GetTurnPlayer()==e:GetHandlerPlayer()
 end
 function s.val(e,c)
