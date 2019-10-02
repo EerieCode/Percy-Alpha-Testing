@@ -1,52 +1,47 @@
--- Rokei the Excellence of Senka
--- Level 4 WATER Beast-Warrior Effect Monster
--- 700 ATK / 2000 DEF
--- -You can only use each of this card name's (1) and (2) effects once per turn.
--- (1) You can target 1 Continuous Spell or Continuous Trap you control; send it to the GY, and if you do, add 1 "Senka" Spell/Trap with a different name from the sent card from your GY to your hand.<Ignition>
--- (2) If you activate the effect of another "Senka" monster: You can target 1 Spell/Trap your opponent controls; destroy it.<Trigger>
+--戦華の妙－魯敬
+--Senka Tactician - Lu Jing
 local s,id=GetID()
 function s.initial_effect(c)
 	--search
-	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
-	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetCountLimit(1,id)
-	e2:SetTarget(s.thtg)
-	e2:SetOperation(s.thop)
-	c:RegisterEffect(e2)
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCountLimit(1,id)
+	e1:SetTarget(s.thtg)
+	e1:SetOperation(s.thop)
+	c:RegisterEffect(e1)
 	--negate
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetCode(EVENT_CHAINING)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetOperation(aux.chainreg)
+	c:RegisterEffect(e2)
 	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-	e3:SetCode(EVENT_CHAINING)
+	e3:SetDescription(aux.Stringid(id,1))
+	e3:SetCategory(CATEGORY_TOHAND)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e3:SetCode(EVENT_CHAIN_SOLVED)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetOperation(aux.chainreg)
+	e3:SetCountLimit(1,id+1)
+	e3:SetCondition(s.descon)
+	e3:SetTarget(s.destg)
+	e3:SetOperation(s.desop)
 	c:RegisterEffect(e3)
-	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(id,1))
-	e4:SetCategory(CATEGORY_TOHAND)
-	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e4:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e4:SetCode(EVENT_CHAIN_SOLVED)
-	e4:SetRange(LOCATION_MZONE)
-	e4:SetCountLimit(1,id+1)
-	e4:SetCondition(s.descon)
-	e4:SetTarget(s.destg)
-	e4:SetOperation(s.desop)
-	c:RegisterEffect(e4)
 end
 s.listed_series={0x236}
 --search
 function s.gvfilter(c)
-	return c:IsFaceup() and c:IsType(TYPE_CONTINUOUS) and c:IsAbleToGrave()
-	and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,c:GetCode())
+	return c:IsFaceup() and c:IsType(TYPE_CONTINUOUS) and c:IsAbleToGrave()	and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,c:GetCode())
 end
 function s.thfilter(c,code)
 	return c:IsSetCard(0x236) and c:IsAbleToHand() and c:IsType(TYPE_SPELL+TYPE_TRAP) and not c:IsCode(code)
 end
-function s.thtf(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return chkc:IsLocation(LOCATION_SZONE) and chkc:IsControler(tp) and s.gvfilter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.gvfilter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
@@ -66,15 +61,13 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.SendtoHand(g,nil,REASON_EFFECT)
 			Duel.ConfirmCards(1-tp,g)
 		end
-	end
-	
+	end	
 end
 --destroy
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local rc=re:GetHandler()
-	return re:IsActiveType(TYPE_MONSTER) and rc~=c
-		and rc:IsSetCard(0x236) and rc:IsControler(tp) and c:GetFlagEffect(1)>0
+	return re:IsActiveType(TYPE_MONSTER) and rc~=c and rc:IsSetCard(0x236) and rc:IsControler(tp) and c:GetFlagEffect(1)>0
 end
 function s.desfilter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP)
