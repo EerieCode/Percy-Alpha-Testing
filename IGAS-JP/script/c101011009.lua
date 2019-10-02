@@ -43,7 +43,7 @@ function s.thfilter(c)
 	return c:IsSetCard(0x236) and c:IsAbleToHand() and c:IsType(TYPE_SPELL+TYPE_TRAP)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chkc then return chkc:IsLocation(LOCATION_ONFIELD) and chkc:IsControler(tp) and s.gvfilter(chkc) end
+	if chkc then return chkc:IsOnField() and chkc:IsControler(tp) and s.gvfilter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.gvfilter,tp,LOCATION_ONFIELD,0,1,nil)
 		and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
