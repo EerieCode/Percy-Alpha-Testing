@@ -41,9 +41,8 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 end
 s.listed_series={0x236}
-s.cfilter=aux.FilterFaceupFunction(Card.IsSetCard,0x236)
 function s.nacon(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
+	local g=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsSetCard,0x236),tp,LOCATION_MZONE,0,nil)
 	return #g>1 and g:GetClassCount(Card.GetAttribute)>1
 end
 function s.natg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -80,7 +79,7 @@ end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) then return end
-	local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
+	local g=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsSetCard,0x236),tp,LOCATION_MZONE,0,nil)
 	for tc in aux.Next(g) do
 		tc:UpdateAttack(#g*300,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,c)
 	end
