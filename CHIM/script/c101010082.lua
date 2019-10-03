@@ -7,7 +7,7 @@ function s.initial_effect(c)
 	c:EnableReviveLimit()
 	--spsummon
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(23874409,0))
+	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_HANDES)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
@@ -45,7 +45,6 @@ function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=g:Select(cp,1,1,nil)
 	Duel.SendtoGrave(sg,REASON_DISCARD+REASON_EFFECT)
 end
-
 function s.sccon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp and (Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2)
 end
