@@ -27,7 +27,6 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return true end
 	if s.lvtg(e,tp,eg,ep,ev,re,r,rp,0) and Duel.SelectYesNo(tp,94) then
 		e:SetProperty(EFFECT_FLAG_CARD_TARGET)
-		e:SetCountLimit(1,id)
 		e:SetOperation(s.lvop)
 		s.lvtg(e,tp,eg,ep,ev,re,r,rp,1)
 	else
@@ -56,8 +55,7 @@ function s.lvop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_CHANGE_LEVEL)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-		e1:SetValue(tc:GetLevel()*2)
+		e1:SetValue(tc:GetOriginalLevel()*2)
 		tc:RegisterEffect(e1)
 	end
 end
-
