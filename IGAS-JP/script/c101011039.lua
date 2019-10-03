@@ -95,11 +95,11 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local ct=Duel.GetMatchingGroup(Card.IsRitualMonster,tp,LOCATION_GRAVE,0,nil):GetClassCount(Card.GetCode)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local tg=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,ct,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,#g,1,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,#tg,1,0,0)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
     local tg=Duel.GetTargetCards(e)
-    if tg>0 then
+    if #tg>0 then
         Duel.Destroy(tg,REASON_EFFECT)
     end
 end
