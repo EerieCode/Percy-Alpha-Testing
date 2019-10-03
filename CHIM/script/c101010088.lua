@@ -38,12 +38,12 @@ end
 s.listed_series={0x131}
 s.listed_names={CARD_DREAM_MIRROR_JOY,CARD_DREAM_MIRROR_TERROR }
 function s.filter(c)
-    return c:IsSetCard(0x131) and c:IsRace(RACE_BEASTWARRIOR) and c:IsAbleToHand()
+    return c:IsSetCard(0x131) and c:IsAbleToHand()
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
     if not e:GetHandler():IsRelateToEffect(e) then return end
     local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK,0,nil)
-    if g:GetCount()>0 and Duel.SelectYesNo(tp,aux.Stringid(57103969,0)) then
+    if g:GetCount()>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
         local sg=g:Select(tp,1,1,nil)
         Duel.SendtoHand(sg,nil,REASON_EFFECT)
