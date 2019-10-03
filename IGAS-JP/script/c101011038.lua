@@ -41,11 +41,11 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST+REASON_DISCARD)
 end
 function s.filter(c,e,tp,m,ft)
-	if not c:IsSetCard(0x237) or c:IsRitualMonster()
-		or not c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_RITUAL,tp,false,true) then return false end
+	if not c:IsSetCard(0x237) or not c:IsRitualMonster()or not c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_RITUAL,tp,false,true) then
+		return false end
 	local mg=m:Filter(Card.IsCanBeRitualMaterial,c,c)
 	if ft>0 then
-		return mg:CheckWithSumGreater(Card.GetRitualLevel,c:GetLevel(),1,99,c)
+		return mg:CheckWithSumGreater(Card.GetRitualLevel,c:GetLevel(),c)
 	else
 		return ft>-1 and mg:IsExists(s.mfilterf,1,nil,tp,mg,c)
 	end
@@ -53,7 +53,7 @@ end
 function s.mfilterf(c,tp,mg,rc)
 	if c:IsControler(tp) and c:IsLocation(LOCATION_MZONE) and c:GetSequence()<5 then
 		Duel.SetSelectedCard(c)
-		return mg:CheckWithSumGreater(Card.GetRitualLevel,rc:GetLevel(),0,99,rc)
+		return mg:CheckWithSumGreater(Card.GetRitualLevel,rc:GetLevel(),rc)
 	else return false end
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -76,13 +76,13 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		local mat=nil
 		if ft>0 then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
-			mat=mg:SelectWithSumGreater(tp,Card.GetRitualLevel,tc:GetLevel(),1,99,tc)
+			mat=mg:SelectWithSumGreater(tp,Card.GetRitualLevel,tc:GetLevel(),tc)
 		else
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
 			mat=mg:FilterSelect(tp,s.mfilterf,1,1,nil,tp,mg,tc)
 			Duel.SetSelectedCard(mat)
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
-			local mat2=mg:SelectWithSumGreater(tp,Card.GetRitualLevel,tc:GetLevel(),0,99,tc)
+			local mat2=mg:SelectWithSumGreater(tp,Card.GetRitualLevel,tc:GetLevel(),tc)
 			mat:Merge(mat2)
 		end
 	tc:SetMaterial(mat)
