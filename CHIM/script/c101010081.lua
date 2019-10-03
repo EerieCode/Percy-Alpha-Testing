@@ -18,13 +18,13 @@ function s.initial_effect(c)
 end
 function s.regop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if c:IsReason(REASON_DESTROY) and c:GetReasonPlayer()==1-tp and c:IsPreviousLocation(LOCATION_SZONE) and c:IsPreviousPosition(POS_FACEDOWN) then 
+	if c:IsReason(REASON_DESTROY) and c:GetReasonPlayer()==1-tp and c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsPreviousPosition(POS_FACEDOWN) then 
 		local e1=Effect.CreateEffect(c)
 		e1:SetDescription(aux.Stringid(id,0))
-		e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_DESTROY)
+		e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_TOHAND)
 		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 		e1:SetCode(EVENT_PHASE+PHASE_END)
-		e1:SetCountLimit(1,id+1)
+		e1:SetCountLimit(1,id)
 		e1:SetRange(LOCATION_GRAVE)
 		e1:SetTarget(s.sptg2)
 		e1:SetOperation(s.spop2)
@@ -34,8 +34,9 @@ function s.regop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chk==0 then return true end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,0)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and c:IsCanBeSpecialSummoned(e,0,tp,false,false) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,LOCATION_GRAVE)
 end
 function s.thfilter(c)
 	return c:IsType(TYPE_MONSTER) and c:IsAbleToHand() and not c:IsCode(id)
@@ -46,7 +47,7 @@ function s.spop2(e,tp,eg,ep,ev,re,r,rp)
 		local g=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.thfilter),tp,LOCATION_GRAVE,0,nil)
 		if #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
 			Duel.BreakEffect()
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RTOHAND)
 			local sg=g:Select(tp,1,1,nil)
 			Duel.SendtoHand(sg,nil,REASON_EFFECT)
 			Duel.ConfirmCards(1-tp,sg)
