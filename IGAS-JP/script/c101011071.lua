@@ -26,6 +26,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return true end
 	if s.lvtg(e,tp,eg,ep,ev,re,r,rp,0) and Duel.SelectYesNo(tp,94) then
 		e:SetProperty(EFFECT_FLAG_CARD_TARGET)
+		e:SetCountLimit(1,id)
 		e:SetOperation(s.lvop)
 		s.lvtg(e,tp,eg,ep,ev,re,r,rp,1)
 	else
@@ -39,7 +40,9 @@ function s.filter(c)
 end
 function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil)
+			and Duel.GetFlagEffect(tp,id)==0 end
+	Duel.RegisterFlagEffect(tp,id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil)
 end
