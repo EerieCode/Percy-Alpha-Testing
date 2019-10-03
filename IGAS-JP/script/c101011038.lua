@@ -85,9 +85,8 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 			local mat2=mg:SelectWithSumGreater(tp,Card.GetRitualLevel,tc:GetLevel(),0,99,tc)
 			mat:Merge(mat2)
 		end
-			tc:SetMaterial(mat)
-			Duel.ReleaseRitualMaterial(mat)
-		end
+		tc:SetMaterial(mat)
+		Duel.ReleaseRitualMaterial(mat)
 		Duel.BreakEffect()
 		Duel.SpecialSummon(tc,SUMMON_TYPE_RITUAL,tp,tp,false,true,POS_FACEUP)
 		tc:CompleteProcedure()
