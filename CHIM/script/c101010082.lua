@@ -39,8 +39,8 @@ function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 	local cp=Duel.GetTurnPlayer()
-	local g=Duel.GetFieldGroup(ep,LOCATION_HAND,0,nil)
-	if g:GetCount()==0 then return end
+	local g=Duel.GetFieldGroup(cp,LOCATION_HAND,0,nil)
+	if #g==0 then return end
 	Duel.Hint(HINT_SELECTMSG,cp,HINTMSG_DISCARD)
 	local sg=g:Select(cp,1,1,nil)
 	Duel.SendtoGrave(sg,REASON_DISCARD+REASON_EFFECT)
@@ -52,7 +52,7 @@ end
 function s.sctarg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:GetFlagEffect(id)==0
-		and Duel.IsExistingMatchingCard(Card.IsSynchroSummonable,tp,LOCATION_EXTRA,0,1,nil,e:GetHandler()) end
+		and Duel.IsExistingMatchingCard(Card.IsSynchroSummonable,tp,LOCATION_EXTRA,0,1,nil,c) end
 	c:RegisterFlagEffect(id,RESET_CHAIN,0,1)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
 end
