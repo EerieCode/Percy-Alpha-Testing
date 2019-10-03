@@ -1,5 +1,5 @@
 --メガリス・ポータル
--- Megalith Portal
+--Megalith Portal
 local s,id=GetID()
 function s.initial_effect(c)
 	--activate
