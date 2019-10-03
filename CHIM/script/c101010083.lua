@@ -18,11 +18,11 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 end
 function s.costfilter(c,e,tp)
-	return c:IsFaceup() and c:IsType(TYPE_EFFECT) and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,c)
+	return c:IsType(TYPE_EFFECT) and (Duel.GetLocationCount(tp,LOCATION_MZONE)>0 or c:IsInMainMZone()) and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,c)
 end
 function s.spfilter(c,e,tp,tc)
 	return c:IsNonEffectMonster()
-		and	c:GetOriginalRace()==tc:GetOriginalRace()
+		and c:GetOriginalRace()==tc:GetOriginalRace()
 		and c:GetOriginalAttribute()==tc:GetOriginalAttribute()
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
@@ -46,7 +46,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,tc,e,tp)
+	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.spfilter,e,tp,tc),tp,LOCATION_GRAVE,0,1,1,nil)
 	if #g>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
