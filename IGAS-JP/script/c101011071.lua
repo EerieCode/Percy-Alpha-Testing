@@ -1,4 +1,4 @@
---
+--メガリス・プロモーション
 --Megalith Promotion
 --Scripted by Naim
 local s,id=GetID()
