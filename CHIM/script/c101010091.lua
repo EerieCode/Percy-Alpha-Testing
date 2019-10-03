@@ -25,7 +25,7 @@ function s.initial_effect(c)
 end
 s.listed_names={CARD_DREAM_MIRROR_JOY,CARD_DREAM_MIRROR_TERROR }
 function s.condition1(e,tp,eg,ep,ev,re,r,rp)
-    return rp~=tp and re:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.IsChainNegatable(ev)
+    return rp==1-tp and re:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.IsChainNegatable(ev)
         and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,CARD_DREAM_MIRROR_JOY),tp,LOCATION_FZONE,LOCATION_FZONE,1,nil)
 end
 function s.target1(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -41,7 +41,7 @@ function s.activate1(e,tp,eg,ep,ev,re,r,rp)
     end
 end
 function s.condition2(e,tp,eg,ep,ev,re,r,rp)
-    return tp~=ep and Duel.GetCurrentChain()==0
+    return ep==1-tp and Duel.GetCurrentChain()==0
         and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,CARD_DREAM_MIRROR_TERROR),tp,LOCATION_FZONE,LOCATION_FZONE,1,nil)
 end
 function s.target2(e,tp,eg,ep,ev,re,r,rp,chk)
