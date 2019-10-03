@@ -1,3 +1,4 @@
+--メガリス・ポータル
 -- Megalith Portal
 local s,id=GetID()
 function s.initial_effect(c)
@@ -33,7 +34,9 @@ s.listed_series={0x237}
 function s.indct(e,re,r,rp)
 	if bit.band(r,REASON_BATTLE)~=0 then
 		return 1
-	else return 0 end
+	else
+		return 0
+	end
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(Card.IsSetCard,1,nil,0x237)

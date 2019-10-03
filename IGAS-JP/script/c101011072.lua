@@ -1,4 +1,4 @@
---
+--メガリス・エマージョン
 --Megalith Emersion
 --Scripted by Naim
 local s,id=GetID()
