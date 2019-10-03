@@ -31,7 +31,6 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		e:SetCategory(CATEGORY_SPECIAL_SUMMON)
 		e:SetProperty(EFFECT_FLAG_CARD_TARGET)
 		e:SetOperation(s.spop)
-		e:SetCountLimit(1,id)
 		s.sptg(e,tp,eg,ep,ev,re,r,rp,1)
 	else
 		e:SetCategory(0)
