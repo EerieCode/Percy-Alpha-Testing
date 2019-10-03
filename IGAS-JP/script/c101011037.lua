@@ -17,11 +17,12 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 	--ritual
 	local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_QUICK_O)
-	e2:SetCountLimit(1,id)
+	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1,id)
 	e2:SetCost(s.ritcon)
 	e2:SetTarget(s.rittg)
 	e2:SetOperation(s.ritop)
@@ -78,6 +79,7 @@ function s.ritop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=tg:GetFirst()
 	if tc then
 		mg=mg:Filter(Card.IsCanBeRitualMaterial,tc,tc)
+		mg:RemoveCard(e:GetHandler())
 		if tc:IsCode(21105106) then
 			tc:ritual_custom_operation(mg)
 			local mat=tc:GetMaterial()
@@ -87,6 +89,7 @@ function s.ritop(e,tp,eg,ep,ev,re,r,rp)
 				mg=mg:Filter(tc.mat_filter,nil)
 			end
 			local mat=Group.FromCards(c)
+			
 			if c:GetRitualLevel(tc)<tc:GetLevel() then
 				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
 				mat=mat+mg:SelectWithSumGreater(tp,Card.GetRitualLevel,tc:GetLevel()-c:GetLevel(),tc)
