@@ -20,10 +20,10 @@ function s.filter0(c,e)
     return c:IsCanBeFusionMaterial() and not c:IsImmuneToEffect(e)
 end
 function s.exfilter0(c)
-    return c:IsCanBeFusionMaterial() and c:IsAbleToRemove() and aux.SpElimFilter(c)
+    return c:IsCanBeFusionMaterial() and c:IsType(TYPE_MONSTER) and c:IsAbleToRemove() and aux.SpElimFilter(c)
 end
 function s.exfilter1(c,e)
-    return c:IsCanBeFusionMaterial() and c:IsAbleToRemove() and aux.SpElimFilter(c) and not c:IsImmuneToEffect(e)
+    return c:IsCanBeFusionMaterial() and c:IsType(TYPE_MONSTER) and c:IsAbleToRemove()  and aux.SpElimFilter(c) and not c:IsImmuneToEffect(e)
 end
 function s.filter1(c,e)
     return c:IsOnField() and not c:IsImmuneToEffect(e)
@@ -37,7 +37,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
         local chkf=tp
         local mg1=Duel.GetFusionMaterial(tp):Filter(Card.IsOnField,nil)
         if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,CARD_DREAM_MIRROR_JOY),tp,LOCATION_FZONE,LOCATION_FZONE,1,nil) then
-            mg1:Merge(Duel.GetMatchingGroup(s.filter0,tp,LOCATION_HAND,0,nil,e))
+            mg1:Merge(Duel.GetMatchingGroup(s.exfilter0,tp,LOCATION_HAND,0,nil,e))
         end
         if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,CARD_DREAM_MIRROR_TERROR),tp,LOCATION_FZONE,LOCATION_FZONE,1,nil) then
             mg1:Merge(Duel.GetMatchingGroup(s.exfilter0,tp,LOCATION_GRAVE,0,nil,e))
@@ -60,7 +60,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
     local chkf=tp
     local mg1=Duel.GetFusionMaterial(tp):Filter(s.filter1,nil,e)
     if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,CARD_DREAM_MIRROR_JOY),tp,LOCATION_FZONE,LOCATION_FZONE,1,nil) then
-        mg1:Merge(Duel.GetMatchingGroup(s.filter1,tp,LOCATION_HAND,0,nil,e))
+        mg1:Merge(Duel.GetMatchingGroup(s.exfilter1,tp,LOCATION_HAND,0,nil,e))
     end
     if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,CARD_DREAM_MIRROR_TERROR),tp,LOCATION_FZONE,LOCATION_FZONE,1,nil) then
         mg1:Merge(Duel.GetMatchingGroup(s.exfilter1,tp,LOCATION_GRAVE,0,nil,e))
