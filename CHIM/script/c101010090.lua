@@ -16,11 +16,11 @@ function s.filter(c,tp)
     return c:IsType(TYPE_FIELD) and c:IsCode(CARD_DREAM_MIRROR_JOY,CARD_DREAM_MIRROR_TERROR)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-    local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK,0,nil)
+    local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK+LOCATION_HAND,0,nil)
     if chk==0 then return g:GetClassCount(Card.GetCode)>1 end
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
-    local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK,0,nil)
+    local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK+LOCATION_HAND,0,nil)
     if g:GetClassCount(Card.GetCode)<2 then return end
     Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,0))
     local tg1=g:Select(tp,1,1,nil)
@@ -29,8 +29,8 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
     local tg2=g:Select(tp,1,1,nil)
     local cs={tg1:GetFirst(),tg2:GetFirst()}
     for p=0,1 do
-        local tc=cs[p]
-        local fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+        local tc=cs[p+1]
+        local fc=Duel.GetFieldCard(p,LOCATION_SZONE,5)
         if fc then
             Duel.SendtoGrave(fc,REASON_RULE)
             Duel.BreakEffect()
