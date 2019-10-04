@@ -1,54 +1,74 @@
---Tyrant Farm
---Scripted by Naim
+--Brutal Beast Battle
+--Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e1:SetCategory(CATEGORY_DRAW+CATEGORY_TOGRAVE)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCountLimit(1,id+EFFECT_COUNT_CODE_OATH)
-	e1:SetCost(s.cost)
-	e1:SetTarget(s.target)
-	e1:SetOperation(s.activate)
-	e1:SetLabel(0)
+	e1:SetTarget(s.tgtg)
+	e1:SetOperation(s.tgop)
 	c:RegisterEffect(e1)
 end
-function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	e:SetLabel(100)
-	if chk==0 then return true end
-end
-function s.costfilter(c,e,tp)
-	return c:IsType(TYPE_EFFECT) and (Duel.GetLocationCount(tp,LOCATION_MZONE)>0 or c:IsInMainMZone()) and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,c)
-end
-function s.spfilter(c,e,tp,tc)
-	return c:IsNonEffectMonster()
-		and c:GetOriginalRace()==tc:GetOriginalRace()
-		and c:GetOriginalAttribute()==tc:GetOriginalAttribute()
-		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
-end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.spfilter(chkc,e,tp,tc) end
+s.types={TYPE_RITUAL,TYPE_FUSION,TYPE_SYNCHRO,TYPE_XYZ,TYPE_LINK}
+function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
-		if e:GetLabel()~=100 then return false end
-		e:SetLabel(0)
-		return e:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.GetLocationCount(tp,LOCATION_MZONE)>-1
-			and Duel.CheckReleaseGroupCost(tp,s.costfilter,1,false,nil,nil,e,tp)
+		for p in tp,1-tp do
+			for _,t in ipairs(s.types) do
+				if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsType,t),p,LOCATION_MZONE,0,2,nil) then
+					check[p]=true
+				end
+			end
+		end
+		return false
 	end
-	e:SetLabel(0)
-	local bg=Duel.SelectReleaseGroupCost(tp,s.costfilter,1,1,false,nil,nil,e,tp)
-	Duel.Release(bg,REASON_COST)
-	Duel.SetTargetCard(bg)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
+	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,0,0)
 end
-function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
-	local c=e:GetHandler()
-	local tc=Duel.GetFirstTarget()
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.spfilter),tp,LOCATION_GRAVE,0,1,1,nil,e,tp,tc)
-	if #g>0 then
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+function s.cancelcon(sg,e,tp,mg)
+	for _,t in ipairs(s.types) do
+		if mg:FilterCount(Card.IsType,sg,t)>1 then
+			return false 
+		end
+	end
+	return true
+end
+function s.typecount(p)
+	local ct=0
+	for _,t in ipairs(s.types) do
+		if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsType,t),p,LOCATION_MZONE,0,1,nil) then
+			ct=ct+1
+		end
+	end
+	return ct
+end
+function s.tgop(e,tp,eg,ep,ev,re,r,rp)
+	local draw={}
+	draw[0]=false
+	draw[1]=false
+	for p in tp,1-tp do
+		local g=Duel.GetMatchingGroup(Card.IsFaceup,p,LOCATION_MZONE,0,nil)
+		local check=false
+		for _,t in ipairs(s.types) do
+			if g:IsExists(Card.IsType,2,nil,t) then
+				check=true
+			end
+		end
+		if check then
+			local tg=aux.SelectUnselectGroup(g,e,tp,1,99,nil,1,tp,HINTMSG_TOGRAVE,s.cancelcon)
+			if Duel.SendtoGrave(tg,nil,REASON_EFFECT)>0 then
+				draw[p]=true
+			end
+		end
+	end
+	if draw[tp] or draw[1-tp] then
+		Duel.BreakEffect()
+		if draw[tp] then
+			Duel.Draw(tp,s.typcount(tp),REASON_EFFECT)
+		end
+		if draw[1-tp] then
+			Duel.Draw(1-tp,s.typcount(1-tp),REASON_EFFECT)
+		end
 	end
 end
