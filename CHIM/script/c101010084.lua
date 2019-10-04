@@ -28,7 +28,7 @@ function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.cancelcon(sg,e,tp,mg)
 	for _,t in ipairs(s.types) do
-		if mg:FilterCount(Card.IsType,sg,t)>1 then
+		if mg:IsExists(Card.IsType,1,nil,t) and mg:FilterCount(Card.IsType,sg,t)~=1 then
 			return false 
 		end
 	end
@@ -49,14 +49,13 @@ function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 	draw[1]=false
 	for p=tp,1-tp do
 		local g=Duel.GetMatchingGroup(Card.IsFaceup,p,LOCATION_MZONE,0,nil)
-		local check=false
 		for _,t in ipairs(s.types) do
-			if g:IsExists(Card.IsType,2,nil,t) then
-				check=true
+			if g:FilterCount(Card.IsType,nil,t)==1 then
+				g:Remove(Card.IsType,nil,t)
 			end
 		end
-		if check then
-			local tg=aux.SelectUnselectGroup(g,e,tp,1,99,nil,1,tp,HINTMSG_TOGRAVE,s.cancelcon)
+		if #g>0 then
+			local tg=aux.SelectUnselectGroup(g,e,tp,1,99,s.cancelcon,1,tp,HINTMSG_TOGRAVE,s.cancelcon)
 			if Duel.SendtoGrave(tg,nil,REASON_EFFECT)>0 then
 				draw[p]=true
 			end
