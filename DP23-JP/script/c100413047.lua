@@ -58,6 +58,6 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 	if not summoned then
 		local lp=Duel.GetLP(tp)-(1000*Duel.GetFieldGroupCount(tp,LOCATION_HAND,0))
-		Duel.SetLP(math.min(lp,0))
+		Duel.SetLP(math.max(lp,0))
 	end
 end
