@@ -1,5 +1,5 @@
 --EMポップアップ
---Performapal Popup
+--Performapal Pop-Up
 --Scripted by Eerie Code
 function s.initial_effect(c)
 	--activate
@@ -37,7 +37,7 @@ end
 function s.filter(c,e,tp,ls,rs)
 	return ((c:IsSetCard(0x98) and c:IsType(TYPE_PENDULUM)) or c:IsSetCard(0x99) or c:IsSetCard(0x9f))
 		and c:GetLevel()>ls and c:GetLevel()<rs
-		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_PENDULUM,tp,false,false)
+		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local ct=e:GetLabel()
@@ -52,7 +52,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		local lc=Duel.GetLocationCount(tp,LOCATION_MZONE)
 		if #g>0 and lc>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
 			local sg=aux.SelectUnselectGroup(g,e,tp,1,math.min(ct,lc),aux.dncheck,1,tp,HINTMSG_SPSUMMON)
-			Duel.SpecialSummon(sg,SUMMON_TYPE_PENDULUM,tp,tp,false,false,POS_FACEUP)
+			Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
 			summoned=true
 		end
 	end
