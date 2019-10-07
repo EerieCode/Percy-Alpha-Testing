@@ -32,7 +32,7 @@ function s.rFilter(c,e,tp,m,ft)
 	if c.mat_filter then
 		mg=mg:Filter(c.mat_filter,c,tp)
 	end
-	local g=mg:Filter(Card.IsCode,nil,CARD_DARK_MAGICIAN,CARD_DARK_MAGICIAN_GIRL))
+	local g=mg:Filter(Card.IsCode,nil,CARD_DARK_MAGICIAN,CARD_DARK_MAGICIAN_GIRL)
 	if ft>0 then
 		return g:IsExists(s.dmfilter,1,nil,tp,mg,c)
 	else
@@ -72,7 +72,7 @@ function s.ritualop(e,tp,eg,ep,ev,re,r,rp)
 			if tc.mat_filter then
 				mg=mg:Filter(tc.mat_filter,tc,tp)
 			end
-			local g=mg:Filter(Card.IsCode,nil,CARD_DARK_MAGICIAN,CARD_DARK_MAGICIAN_GIRL))
+			local g=mg:Filter(Card.IsCode,nil,CARD_DARK_MAGICIAN,CARD_DARK_MAGICIAN_GIRL)
 			if ft>0 then
 				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
 				local matdm=g:FilterSelect(tp,s.dmfilter,1,1,nil,tp,mg,tc)
@@ -88,7 +88,8 @@ function s.ritualop(e,tp,eg,ep,ev,re,r,rp)
 					Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
 					matdm=g:FilterSelect(tp,s.dmfilter,1,1,nil,tp,mg,tc,mat:GetFirst())
 				end
-				Duel.SetSelectedCard((mat+matdm))
+				mat:Merge(matdm)
+				Duel.SetSelectedCard(mat)
 				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
 				local mat2=mg:SelectWithSumGreater(tp,Card.GetRitualLevel,tc:GetOriginalLevel(),tc)
 				mat:Merge(mat2)
@@ -150,14 +151,14 @@ function s.fusionop(e,tp,eg,ep,ev,re,r,rp)
 		local tg=sg:Select(tp,1,1,nil)
 		local tc=tg:GetFirst()
 		if sg1:IsContains(tc) and (sg2==nil or not sg2:IsContains(tc) or not Duel.SelectYesNo(tp,ce:GetDescription())) then
-			local g=mg1:Filter(Card.IsCode,nil,CARD_DARK_MAGICIAN,CARD_DARK_MAGICIAN_GIRL):FilterSelect(s.filter3,1,nil,mg1,tc,chkf)
+			local g=mg1:Filter(Card.IsCode,nil,CARD_DARK_MAGICIAN,CARD_DARK_MAGICIAN_GIRL):FilterSelect(tp,s.filter3,1,1,nil,mg1,tc,chkf)
 			local mat1=Duel.SelectFusionMaterial(tp,tc,mg1,g,chkf)
 			tc:SetMaterial(mat1)
 			Duel.SendtoGrave(mat1,REASON_EFFECT+REASON_MATERIAL+REASON_FUSION)
 			Duel.BreakEffect()
 			Duel.SpecialSummon(tc,SUMMON_TYPE_FUSION,tp,tp,false,false,POS_FACEUP)
 		else
-			local g=mg2:Filter(Card.IsCode,nil,CARD_DARK_MAGICIAN,CARD_DARK_MAGICIAN_GIRL):FilterSelect(s.filter3,1,nil,mg2,tc,chkf)
+			local g=mg2:Filter(Card.IsCode,nil,CARD_DARK_MAGICIAN,CARD_DARK_MAGICIAN_GIRL):FilterSelect(tp,s.filter3,1,1,nil,mg2,tc,chkf)
 			local mat2=Duel.SelectFusionMaterial(tp,tc,mg2,nil,chkf)
 			local fop=ce:GetOperation()
 			fop(ce,e,tp,tc,mat2)
