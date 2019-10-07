@@ -85,7 +85,7 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 			end
 		end
 		if Duel.GetLocationCount(tp,LOCATION_SZONE)>0 then
-			Duel.SSet(tp,tc)>0 
+			Duel.SSet(tp,tc)
 			andifyoudo=true
 		end
 	end
