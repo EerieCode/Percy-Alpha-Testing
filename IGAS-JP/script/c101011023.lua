@@ -53,7 +53,7 @@ function s.setfilter(c,e,tp)
 	if c:IsType(TYPE_MONSTER) then 
 		return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEDOWN_DEFENSE)
 	elseif c:IsType(TYPE_SPELL+TYPE_TRAP) then 
-		return (c:IsType(TYPE_FIELD) or Duel.GetLocationCount(tp,LOCATION_SZONE)>0) and rc:IsSSetable()
+		return (c:IsType(TYPE_FIELD) or Duel.GetLocationCount(tp,LOCATION_SZONE)>0) and c:IsSSetable()
 	end
 	return false
 end
@@ -73,7 +73,7 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	if not tc:IsRelateToEffect(e) then return end
 	local andifyoudo=false
 	if tc:IsType(TYPE_MONSTER) then
-		if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE)>0 then
+		if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE)>0 then
 			andifyoudo=true
 		end
 	elseif tc:IsType(TYPE_SPELL+TYPE_TRAP) then
@@ -84,12 +84,13 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 				Duel.BreakEffect()
 			end
 		end
-		if Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and Duel.SSet(tp,tc)>0 then
+		if Duel.GetLocationCount(tp,LOCATION_SZONE)>0 then
+			Duel.SSet(tp,tc)>0 
 			andifyoudo=true
 		end
 	end
 	if andifyoudo then
-		local e1=Effect.CreateEffect(c)
+		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_LEAVE_FIELD_REDIRECT)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
@@ -101,7 +102,7 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 			local ct=Duel.GetMatchingGroupCount(Card.IsFacedown,tp,LOCATION_ONFIELD,0,nil)
 			local g=Duel.SelectMatchingCard(tp,Card.IsCanTurnSet,tp,0,LOCATION_MZONE,1,ct,nil)
 			Duel.HintSelection(g)
-            Duel.ChangePosition(g,POS_FACEDOWN_DEFENSE)
+            		Duel.ChangePosition(g,POS_FACEDOWN_DEFENSE)
 		end
 	end
 end
