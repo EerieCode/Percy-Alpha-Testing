@@ -51,8 +51,8 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.cfilter2(c,tp,rp)
 	local rc=c:GetReasonCard()
-	return c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousControler()~=tp and (c:IsReason(REASON_BATTLE) or (rp==tp
-		and rc:IsPreviousLocation(LOCATION_ONFIELD) and rc:IsControler(tp) and c:IsReason(REASON_EFFECT)))
+	return c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousSequence()>4 and c:GetPreviousControler()~=tp and 
+	(c:IsReason(REASON_BATTLE) or (rp==tp and rc:IsPreviousLocation(LOCATION_ONFIELD) and rc:IsControler(tp) and c:IsReason(REASON_EFFECT)))
 end
 function s.spcon2(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter2,1,nil,tp,rp)
