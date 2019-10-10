@@ -1,10 +1,8 @@
 --機巧蹄-天迦久御雷
 --Gizmek Mikazuchi, the Nuclear Emperor
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Special summon from hand
 	local e1=Effect.CreateEffect(c)
@@ -81,7 +79,7 @@ function s.eqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 	--Registered as equipped with own effect
 function s.equipop(c,e,tp,tc)
-	if not aux.EquipByEffectAndLimitRegister(c,e,tp,tc,id) then return end		
+	if not aux.EquipByEffectAndLimitRegister(c,e,tp,tc,id) then return end	  
 end
 	--Equip a monster in EMZ to this card, max 1
 function s.eqop(e,tp,eg,ep,ev,re,r,rp)
