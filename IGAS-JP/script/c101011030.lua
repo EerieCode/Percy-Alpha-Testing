@@ -31,7 +31,7 @@ function s.tkop(e,tp,eg,ep,ev,re,r,rp)
 		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0,TYPES_TOKEN,0,0,3,RACE_INSECT,ATTRIBUTE_EARTH) then
 		local token=Duel.CreateToken(tp,id+100)
 		Duel.SpecialSummonStep(token,0,tp,tp,false,false,POS_FACEUP)
-		local e1=Effect.CreateEffect(c)
+		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_FIELD)
 		e1:SetRange(LOCATION_MZONE)
 		e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
@@ -39,7 +39,7 @@ function s.tkop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetAbsoluteRange(tp,1,0)
 		e1:SetTarget(s.splimit)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-		tc:RegisterEffect(e1,true)
+		token:RegisterEffect(e1,true)
 		Duel.SpecialSummonComplete()
 	end
 end
