@@ -1,4 +1,4 @@
---
+--グラビティ・コントローラー
 --Gravity Controller
 local s,id=GetID()
 function s.initial_effect(c)
