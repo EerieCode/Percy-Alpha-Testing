@@ -1,4 +1,4 @@
---
+--イビルセラ・ルテア
 --Evilcella Lutea
 local s,id=GetID()
 function s.initial_effect(c)
@@ -21,5 +21,5 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.indcon(e)
-	return Duel.IsExistingMatchingCard(aux.TRUE,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.TRUE,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,e:GetHandler())
 end
