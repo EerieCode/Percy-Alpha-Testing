@@ -1,10 +1,8 @@
 --達磨落師
 --Daruma Otoshi
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Reduce an opponent's monster ATK to 0 for a turn
 	local e1=Effect.CreateEffect(c)

@@ -1,10 +1,8 @@
 --トランシケーダ
 --Transcicada
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Special summon token
 	local e1=Effect.CreateEffect(c)
