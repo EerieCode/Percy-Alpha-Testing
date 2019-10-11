@@ -1,5 +1,7 @@
 --クロノダイバー・タイムレコーダー
--- Time Thief Time Recorder
+--Time Thief Time Recorder
+--scripted by Naim
+local s,id=GetID()
 function s.initial_effect(c)
 	--no damage
 	local e1=Effect.CreateEffect(c)
@@ -26,7 +28,6 @@ function s.initial_effect(c)
 	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
 end
-
 function s.damcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp and (Duel.GetCurrentPhase()>=PHASE_BATTLE_START and Duel.GetCurrentPhase()<=PHASE_BATTLE)
 end
@@ -45,7 +46,7 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0,1)
 end
 function s.dcon(e,tp,eg,ep,ev,re,r,rp)
-	return ep~=tp
+	return ep==tp and Duel.GetAttacker():IsControler(1-tp)
 end
 function s.dop(e,tp,eg,ep,ev,re,r,rp)
 	local dam=Duel.GetBattleDamage(tp)
@@ -56,9 +57,7 @@ function s.dop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.cfilter(c,tp,rp)
-	return c:IsPreviousPosition(POS_FACEUP) and c:IsType(TYPE_XYZ)
-	and c:GetPreviousControler()==tp and 
-	and c:IsReason(REASON_EFFECT)
+	return c:IsPreviousPosition(POS_FACEUP) and c:IsType(TYPE_XYZ) and c:GetPreviousControler()==tp and c:IsReason(REASON_EFFECT)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp,rp)
