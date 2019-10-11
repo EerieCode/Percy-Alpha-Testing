@@ -63,7 +63,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.splimit(e,c)
-    return not c:IsLocation(LOCATION_DECK+LOCATION_EXTRA)
+    return c:IsLocation(LOCATION_DECK+LOCATION_EXTRA)
 end
 function s.tdcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnCount()==e:GetLabel()+1 and e:GetLabelObject():GetFlagEffect(id)~=0
