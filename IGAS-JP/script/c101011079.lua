@@ -51,14 +51,14 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 			e2:SetCode(EVENT_PHASE+PHASE_END)
 			e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-			e2:SetRange(LOCATION_MZONE)
-			e2:SetLabel(Duel.GetTurnCount()+1)
+			e2:SetLabel(Duel.GetTurnCount())
 			e2:SetLabelObject(sc)
 			e2:SetCountLimit(1)
 			e2:SetCondition(s.tdcon)
 			e2:SetOperation(s.tdop)
 			e2:SetReset(RESET_PHASE+PHASE_END,2)
 			Duel.RegisterEffect(e2,tp)
+			Duel.SpecialSummonComplete()
 		end
 	end
 end
@@ -66,13 +66,7 @@ function s.splimit(e,c)
     return not c:IsLocation(LOCATION_DECK+LOCATION_EXTRA)
 end
 function s.tdcon(e,tp,eg,ep,ev,re,r,rp)
-	local sc=e:GetLabelObject()
-	if sc:GetFlagEffect(id)~=0 then
-		return Duel.GetTurnCount()==e:GetLabel()
-	else
-		e:Reset()
-		return false
-	end
+	return Duel.GetTurnCount()==e:GetLabel()+1 and e:GetLabelObject():GetFlagEffect(id)~=0
 end
 function s.tdop(e,tp,eg,ep,ev,re,r,rp)
 	local sc=e:GetLabelObject()
