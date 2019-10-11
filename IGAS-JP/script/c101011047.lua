@@ -40,12 +40,12 @@ end
 s.synfilter=aux.FilterFaceupFunction(Card.IsType,TYPE_SYNCHRO)
 function s.syntg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():GetLinkedGroup():IsExists(s.synfilter,1,nil) 
-		and Duel.IsExistingMatchingCard(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil)
+		and Duel.IsExistingMatchingCard(Card.IsFaceup,tp,LOCATION_MZONE,0,1,nil) end
 end
 s.xyzfilter=aux.FilterFaceupFunction(Card.IsType,TYPE_XYZ)
 function s.xyztg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():GetLinkedGroup():IsExists(s.xyzfilter,1,nil)
-		and Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil)
+		and Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) end
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return s.rittg(e,tp,eg,ep,ev,re,r,rp,0) or s.fustg(e,tp,eg,ep,ev,re,r,rp,0)
