@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 	--coin
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(s,0))
+	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetCategory(CATEGORY_COIN+CATEGORY_TOGRAVE+CATEGORY_NEGATE+CATEGORY_CONTROL)
 	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
 	e2:SetType(EFFECT_TYPE_QUICK_O)
@@ -63,7 +63,7 @@ end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) then return end
-	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(s,1))
+	Duel.Hint(HINT_SELECTMSG,tp,aux.Stringid(id,1))
 	local coin=Duel.SelectOption(tp,60,61)
 	local res=Duel.TossCoin(rp,1)
 	if coin~=res then
