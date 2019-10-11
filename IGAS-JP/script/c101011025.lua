@@ -1,10 +1,8 @@
 --楽天禍カルクラグラ
 --Cataclysmic Cheerful Calcragra
---Logical Nonsense
-
+--scripted by Logical Nonsense
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Special summon from hand, then mill a monster
 	local e1=Effect.CreateEffect(c)
