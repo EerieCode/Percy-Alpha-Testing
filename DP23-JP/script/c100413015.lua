@@ -9,28 +9,28 @@ function s.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_EQUIP)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetRange(LOCATION_SZONE)
+	e1:SetCondition(s.tgocon)
 	e1:SetValue(s.atkval)
 	c:RegisterEffect(e1)
 	--untargetable
 	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_EQUIP+EFFECT_TYPE_FIELD)
+	e2:SetType(EFFECT_TYPE_EQUIP)
 	e2:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
 	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
 	e2:SetCondition(s.tgocon)
 	e2:SetValue(aux.tgoval)
 	c:RegisterEffect(e2)
-	--Activate field
-    local e3=Effect.CreateEffect(c)
-    e3:SetDescription(aux.Stringid(id,0))
-    e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-    e3:SetCode(EVENT_PHASE+PHASE_BATTLE_START)
-    e3:SetRange(LOCATION_SZONE)
-    e3:SetCountLimit(1,id)
-    e3:SetTarget(s.acttg)
-    e3:SetOperation(s.actop)
-    c:RegisterEffect(e3)
-    --destroy
+	--activate field
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,0))
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetCode(EVENT_PHASE+PHASE_BATTLE_START)
+	e3:SetRange(LOCATION_SZONE)
+	e3:SetCountLimit(1,id)
+	e3:SetTarget(s.acttg)
+	e3:SetOperation(s.actop)
+	c:RegisterEffect(e3)
+	--destroy
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(id,1))
 	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
@@ -44,12 +44,12 @@ end
 function s.filter(c)
 	return c:IsLevelAbove(5) and c:IsSetCard(0x8)
 end
-function s.atkval(e,c)
-	local tp=c:GetControler()
-	if Duel.GetFieldCard(tp,LOCATION_SZONE,5) then return e:GetHandler():GetBaseDefense() else return 0 end
+function s.tgocon(e)
+	return Duel.GetFieldCard(e:GetHandlerPlayer(),LOCATION_SZONE,5)
 end
-function s.tgocon(e,tp)
-	return Duel.GetFieldCard(tp,LOCATION_SZONE,5)
+function s.atkval(e,c)
+	local def=c:GetBaseDefense()
+	return def>=0 and def or 0
 end
 function s.actfilter(c,tp)
 	return c:IsType(TYPE_FIELD) and c:GetActivateEffect():IsActivatable(tp,true,true)
@@ -75,11 +75,13 @@ function s.actop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():GetEquipTarget()==eg:GetFirst() and Duel.GetTurnPlayer()==tp
+	local ec=e:GetHandler():GetEquipTarget()
+	return ec==eg:GetFirst() and ec==Duel.GetAttacker()
+		 and ec:IsStatus(STATUS_OPPO_BATTLE) and ec:IsChainAttackable()
 end
 function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return e:GetHandler():IsAbleToGraveAsCost() end
-    Duel.SendtoGrave(e:GetHandler(),REASON_COST)
+	if chk==0 then return e:GetHandler():IsAbleToGraveAsCost() end
+	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
 end
 function s.atop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChainAttack()
