@@ -13,9 +13,9 @@ function s.initial_effect(c)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)	
 end
-s.listed_series={0x107f}
+s.listed_series={0x207f}
 function s.filter(c)
-	return c:IsFaceup() and c:IsSetCard(0x107f) and c:IsType(TYPE_XYZ)
+	return c:IsFaceup() and c:IsSetCard(0x207f) and c:IsType(TYPE_XYZ)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_MZONE) and s.filter(chkc) end
@@ -46,12 +46,12 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		tc:RegisterEffect(e2)
 		--damage
 		local e3=Effect.CreateEffect(c)
-		e3:SetCategory(CATEGORY_DAMAGE)
 		e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
 		e3:SetCode(EVENT_BATTLE_DESTROYING)
-		e3:SetCondition(s.damcon)
+		e3:SetCondition(aux.bdcon)
 		e3:SetOperation(s.damop)
-		c:RegisterEffect(e3)
+		e3:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+		tc:RegisterEffect(e3)
 	end
 end
 function s.discon(e)
@@ -61,19 +61,13 @@ end
 function s.distg(e,c)
 	return e:GetHandler():GetBattleTarget()==c
 end
-function s.damcon(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local bc=c:GetBattleTarget()
-	if c:IsRelateToBattle() and bc:IsType(TYPE_MONSTER) then
-		e:SetLabelObject(bc)
-		return true
-	else return false end
-end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
-	local dam=e:GetLabelObject():GetBaseAttack()
+	local bc=e:GetHandler():GetBattleTarget()
+	if not bc then return end
+	local dam=bc:GetBaseAttack()
 	if dam<0 then dam=0 end
 	if dam>0 then
-		Duel.Hint(HINT_CARD,PLAYER_ALL,id)
+		Duel.Hint(HINT_CARD,0,id)
 		Duel.Damage(1-tp,dam,REASON_EFFECT) 
 	end
 end

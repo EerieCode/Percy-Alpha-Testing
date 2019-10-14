@@ -1,5 +1,5 @@
 --ガガガガマジシャン
---Gagagaga Magicians
+--Gagagaga Magician
 --Scripted by Hel
 local s,id=GetID()
 function s.initial_effect(c)
@@ -8,26 +8,26 @@ function s.initial_effect(c)
 	c:EnableReviveLimit()
 	--Special summon
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,1))
+	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetCountLimit(1, id)
+	e1:SetCountLimit(1,id)
 	e1:SetCost(s.spcost)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1,false,1)
 	--Xyz Material 
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,2))
+	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_DISABLE)
 	e2:SetType(EFFECT_TYPE_XMATERIAL+EFFECT_TYPE_IGNITION)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetCondition(s.ngcon)
 	e2:SetCost(s.ngcost)
 	e2:SetTarget(s.ngtg)
-	e2:SetOperation(s.ngpop)
+	e2:SetOperation(s.ngop)
 	c:RegisterEffect(e2)
 end
 s.listed_series={0x207f}
