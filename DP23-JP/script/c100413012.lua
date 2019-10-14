@@ -74,8 +74,10 @@ function s.val(e,c)
 	return Duel.GetFieldGroup(e:GetHandlerPlayer(),LOCATION_MZONE,0):GetClassCount(Card.GetAttribute)*200
 end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetAttacker()
-	return tc~=e:GetHandler() and c:IsControler(tp) and tc:IsSetCard(0x8)
+	local a=Duel.GetAttacker()
+	local at=Duel.GetAttackTarget()
+	return a~=e:GetHandler() and a:IsControler(tp) and a:IsSetCard(0x8)
+		or at and at~=e:GetHandler() and at:IsControler(tp) and at:IsFaceup() and at:IsSetCard(0x8)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() end
