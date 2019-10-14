@@ -60,13 +60,13 @@ function s.acttg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.actop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
-	local sc=Duel.SelectMatchingCard(tp,s.actfilter,tp,LOCATION_HAND+LOCATION_DECK,0,nil,tp):GetFirst()			
+	local sc=Duel.SelectMatchingCard(tp,s.actfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,1,nil,tp):GetFirst()	  
 	if sc then
 		local fc=Duel.GetFieldCard(tp,LOCATION_SZONE,5)
-    	if fc then
-        	Duel.SendtoGrave(fc,REASON_RULE)
-        	Duel.BreakEffect()
-    	end
+		if fc then
+			Duel.SendtoGrave(fc,REASON_RULE)
+			Duel.BreakEffect()
+		end
 		Duel.MoveToField(sc,tp,tp,LOCATION_SZONE,POS_FACEUP,true)
 		local te=sc:GetActivateEffect()
 		local tep=sc:GetControler()
@@ -84,6 +84,6 @@ function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToGraveAsCost() end
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
 end
-function s.atop(e,tp,eg,ep,ev,re,r,rp)
+function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ChainAttack()
 end
