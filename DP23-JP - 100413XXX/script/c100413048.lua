@@ -14,6 +14,7 @@ function s.initial_effect(c)
 	e2:SetCategory(CATEGORY_TOHAND)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e2:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e2:SetRange(LOCATION_FZONE)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
 end
@@ -21,7 +22,7 @@ function s.rmfilter(c)
 	return c:IsType(TYPE_SPELL) and c:IsAbleToRemove()
 end
 function s.rmop(e,tp,eg,ep,ev,re,r,rp)
-	local rg=Duel.CreateGroup()
+	local rg=Group.CreateGroup()
 	for p=tp,1-tp do
 		if Duel.IsExistingMatchingCard(s.rmfilter,p,LOCATION_GRAVE,0,1,nil) and Duel.SelectYesNo(p,aux.Stringid(id,1)) then
 			Duel.Hint(HINT_SELECTMSG,p,HINTMSG_REMOVE)
@@ -40,6 +41,7 @@ function s.thfilter(c)
 	return c:GetFlagEffect(id)~=0 and c:IsAbleToHand()
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local at=Duel.GetAttacker()
 	local p=1-at:GetControler()
 	if Duel.IsExistingMatchingCard(s.thfilter,p,LOCATION_REMOVED,0,1,nil) and Duel.SelectYesNo(p,aux.Stringid(id,2)) then
