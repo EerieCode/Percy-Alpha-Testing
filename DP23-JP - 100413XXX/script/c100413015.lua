@@ -41,6 +41,7 @@ function s.initial_effect(c)
 	e4:SetOperation(s.atkop)
 	c:RegisterEffect(e4)
 end
+s.listed_series={0x8}
 function s.filter(c)
 	return c:IsLevelAbove(5) and c:IsSetCard(0x8)
 end

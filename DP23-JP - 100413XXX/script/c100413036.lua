@@ -25,6 +25,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.gyop)
 	c:RegisterEffect(e1)
 end
+s.listed_series={0x8f,0x54,0x59,0x82}
 function s.filter(c,e,tp)
 	return c:IsSetCard(0x8f,0x54)
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)

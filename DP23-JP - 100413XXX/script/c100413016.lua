@@ -16,6 +16,7 @@ function s.initial_effect(c)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 end
+s.listed_series={0x8}
 function s.costfilter(c,e,tp)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	return c:IsSetCard(0x8) and c:IsFaceup() and c:IsAbleToRemoveAsCost() and aux.SpElimFilter(c,true,true)

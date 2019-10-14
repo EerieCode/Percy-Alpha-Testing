@@ -1,9 +1,5 @@
+--
 --Satellite Synchron
--- Level 2 DARK Machine Tuner Effect Monster
--- 700 ATK / 100 DEF
--- -You can only use each of this card name's (1) and (2) effects once per turn.
--- (1) If a monster(s) is Special Summoned from your GY: You can Special Summon this card from your hand.<Trigger>
--- (2) If you control or have in your GY, a Synchro Monster whose original name includes "Warrior", "Synchron", or "Stardust": You can make this card's Level become 4 until the end of this turn.<Ignition>
 local s,id=GetID()
 function s.initial_effect(c)
 	--spsummon
@@ -28,6 +24,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
 end
+s.listed_series={0x66,0xa3,0x1017}
 function s.cfilter(c,tp)
 	return c:IsPreviousLocation(LOCATION_GRAVE) and c:GetPreviousControler()==tp
 end
@@ -60,7 +57,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_CHANGE_LEVEL)
 		e1:SetValue(4)
-		e1:SetReset(RESET_EVENT+0x1ff0000+RESET_PHASE+PHASE_END)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
 		c:RegisterEffect(e1)
 	end
 end

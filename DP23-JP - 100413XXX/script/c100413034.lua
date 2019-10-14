@@ -30,7 +30,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.ngpop)
 	c:RegisterEffect(e2)
 end
-
+s.listed_series={0x207f}
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
 	e:GetHandler():RemoveOverlayCard(tp,1,1,REASON_COST)
