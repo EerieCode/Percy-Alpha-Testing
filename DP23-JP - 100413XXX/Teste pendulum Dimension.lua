@@ -1,0 +1,29 @@
+--Created using senpaizuri's Puzzle Maker (updated by Naim & Larry126)
+Debug.ReloadFieldBegin(DUEL_ATTACK_FIRST_TURN+DUEL_SIMPLE_AI,4)
+Debug.SetPlayerInfo(0,8000,0,0)
+Debug.SetPlayerInfo(1,8000,0,0)
+
+--Main Deck
+Debug.AddCard(24094653,0,0,LOCATION_DECK,0,POS_FACEDOWN)
+Debug.AddCard(48130397,0,0,LOCATION_DECK,0,POS_FACEDOWN)
+Debug.AddCard(23689697,0,0,LOCATION_DECK,0,POS_FACEDOWN)
+Debug.AddCard(84845628,0,0,LOCATION_DECK,0,POS_FACEDOWN)
+Debug.AddCard(40975574,0,0,LOCATION_DECK,0,POS_FACEDOWN)
+--Extra Deck
+Debug.AddCard(41209827,0,0,LOCATION_EXTRA,0,8)
+Debug.AddCard(74586817,0,0,LOCATION_EXTRA,0,8)
+Debug.AddCard(24094258,0,0,LOCATION_EXTRA,0,8)
+Debug.AddCard(12014404,0,0,LOCATION_EXTRA,0,8)
+--Hand
+Debug.AddCard(24094653,0,0,LOCATION_HAND,0,POS_FACEDOWN)
+--Monster Zones
+Debug.AddCard(76794549,0,0,LOCATION_MZONE,2,1,true)
+Debug.AddCard(75672051,0,0,LOCATION_MZONE,1,1,true)
+Debug.AddCard(48461764,0,0,LOCATION_MZONE,3,1,true)
+Debug.AddCard(49684352,0,0,LOCATION_MZONE,0,1,true)
+Debug.AddCard(11067666,0,0,LOCATION_MZONE,4,1,true)
+--Spell & Trap Zones
+Debug.AddCard(100413049,0,0,LOCATION_SZONE,1,10)
+Debug.AddCard(100413049,0,0,LOCATION_SZONE,2,5)
+Debug.ReloadFieldEnd()
+aux.BeginPuzzle()
