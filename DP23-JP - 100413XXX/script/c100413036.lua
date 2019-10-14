@@ -23,11 +23,11 @@ function s.initial_effect(c)
 	e2:SetCondition(s.gycon)
 	e2:SetTarget(s.gytg)
 	e2:SetOperation(s.gyop)
-	c:RegisterEffect(e1)
+	c:RegisterEffect(e2)
 end
 s.listed_series={0x8f,0x54,0x59,0x82}
 function s.filter(c,e,tp)
-	return c:IsSetCard(0x8f,0x54)
+	return (c:IsSetCard(0x8f) or c:IsSetCard(0x54))
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -45,9 +45,10 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.cfilter(c)
-	return c:IsSetCard(0x59,0x82) and not c:IsCode(id)
+	return (c:IsSetCard(0x59) or c:IsSetCard(0x82)) and not c:IsCode(id)
 end
 function s.gycon(e,tp,eg,ep,ev,re,r,rp)
+Debug.Message(Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil))
 	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
 end
 function s.gytg(e,tp,eg,ep,ev,re,r,rp,chk)
