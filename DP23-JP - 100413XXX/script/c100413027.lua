@@ -14,8 +14,12 @@ function s.initial_effect(c)
     c:RegisterEffect(e1)
 end
 function s.cfilter(c)
+	if not (c:IsFaceup() and c:IsType(TYPE_SYNCHRO)) then return false end
     local mt=c:GetMetatable()
-    return c:IsFaceup() and c:IsType(TYPE_SYNCHRO) and (mt.synchro_tuner_required>0 or s.synchro_nt_required>0)
+	local ct=0
+	if mt.synchro_tuner_required then ct=ct+mt.synchro_tuner_required end
+	if mt.synchro_nt_required then ct=ct+mt.synchro_nt_required end
+    return ct>0
 end
 function s.negcon(e,tp,eg,ep,ev,re,r,rp)
     return re:IsActiveType(TYPE_MONSTER) and Duel.IsChainNegatable(ev) and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
