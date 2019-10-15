@@ -40,7 +40,7 @@ function s.initial_effect(c)
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE)
 	e5:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
-	e5:SetValue(d.batfilter)
+	e5:SetValue(s.batfilter)
 	c:RegisterEffect(e5)
 	--maintenance
 	local e6=Effect.CreateEffect(c)
