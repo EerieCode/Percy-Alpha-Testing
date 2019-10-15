@@ -1,5 +1,5 @@
 --E・HERO ネオス・クルーガー
---Elemental HERO Neos Krueger
+--Elemental HERO Neos Kluger
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
@@ -14,7 +14,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_BATTLE_CONFIRM)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e1:SetCondition(s.damcon)
-	e1:SetTargt(s.damtg)
+	e1:SetTarget(s.damtg)
 	e1:SetOperation(s.damop)
 	c:RegisterEffect(e1)
 	--special summon
@@ -36,6 +36,7 @@ function s.damcon(e,tp,eg,ep,ev,re,r,rp)
 	return c:IsRelateToBattle() and bc and bc:IsFaceup() and bc:IsRelateToBattle() and bc:GetAttack()>0
 end
 function s.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
 	local bc=c:GetBattleTarget()
 	local dam=bc:GetAttack()
     if chk==0 then return true end
