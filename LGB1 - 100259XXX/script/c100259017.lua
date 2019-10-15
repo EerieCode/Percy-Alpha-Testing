@@ -45,6 +45,8 @@ function s.initial_effect(c)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
 end
+s.synchro_tuner_required=1
+s.synchro_nt_required=1
 function s.disfilter(c,tp)
 	return c:IsLocation(LOCATION_MZONE) and c:IsControler(tp)
 end
