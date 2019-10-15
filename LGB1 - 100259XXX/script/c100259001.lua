@@ -49,6 +49,7 @@ function s.initial_effect(c)
 end
 s.material={CARD_DARK_MAGICIAN,74677422}
 s.listed_names={CARD_DARK_MAGICIAN,74677422}
+s.material_setcode={0x3b,0x10a2}
 function s.ffilter(c,fc,sumtype,tp)
 	return c:IsFusionCode(74677422) or (c:IsRace(RACE_DRAGON,fc,sumtype,tp) and c:IsType(TYPE_EFFECT,fc,sumtype,tp))
 end
@@ -81,25 +82,21 @@ function s.regop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetTarget(s.destg)
 	e1:SetOperation(s.desop)
 	c:RegisterEffect(e1)
-	c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD-RESET_TOFIELD+RESET_PHASE+PHASE_END,0,1)
+	c:RegisterFlagEffect(label,RESET_EVENT+RESETS_STANDARD-RESET_TOFIELD+RESET_PHASE+PHASE_END,0,1)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsControler(1-tp) and chkc:IsOnField() end
-	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_MZONE,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_MZONE,1,1,nil)
+	local g=Duel.GetMatchingGroup(Card.IsDestructable,tp,0,LOCATION_MZONE,nil)
+	if chk==0 then return #g>0 end
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
-	local tc=g:GetFirst()
-	local atk=g:GetFirst():GetTextAttack()
-	if atk<0 then atk=0 end
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,atk)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsControler(1-tp) then
-		local atk=tc:GetTextAttack()
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectMatchingCard(tp,Card.IsDestructable,tp,0,LOCATION_MZONE,1,1,nil)
+	if #g>0 then
+		Duel.HintSelection(g)
+		local atk=g:GetFirst():GetTextAttack()
 		if atk<0 then atk=0 end
-		if Duel.Destroy(tc,REASON_EFFECT)~=0 and tc:IsPreviousLocation(LOCATION_MZONE) then
+		if Duel.Destroy(g:GetFirst(),REASON_EFFECT)~=0 then
 			Duel.BreakEffect()
 			Duel.Damage(1-tp,atk,REASON_EFFECT)
 		end
