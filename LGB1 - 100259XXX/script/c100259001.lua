@@ -6,18 +6,19 @@ function s.initial_effect(c)
 	--fusion material
 	c:EnableReviveLimit()
 	aux.AddFusionProcMix(c,true,true,CARD_DARK_MAGICIAN,s.ffilter)
-	--register material count
+	--register effect
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
 	e0:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e0:SetCondition(s.regcon)
-	e0:SetOperation(s.regop)
+	e0:SetOperation(s.regop) 
 	c:RegisterEffect(e0)
+	--material count check
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_MATERIAL_CHECK)
 	e1:SetValue(s.valcheck)
-	e1:SetLabelObject(e1)
+	e1:SetLabelObject(e0)
 	c:RegisterEffect(e1)
 	--Immune
 	local e2=Effect.CreateEffect(c)
@@ -54,7 +55,6 @@ end
 function s.valcheck(e,c)
 	local g=c:GetMaterial()
 	local ct=g:FilterCount(Card.IsType,nil,TYPE_NORMAL)
-	Debug.Message("ct in the valcheck = " ..tostring(ct))
 	e:GetLabelObject():SetLabel(ct)
 end
 function s.regcon(e,tp,eg,ep,ev,re,r,rp)
@@ -66,7 +66,6 @@ end
 function s.regop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local ct=e:GetLabel()
-	Debug.Message("ct in the operation = " ..tostring(ct))
 	local label=id
 	while Duel.IsExistingMatchingCard(s.chkfilter,tp,LOCATION_MZONE,0,1,nil,label) do
 		label=label+1
