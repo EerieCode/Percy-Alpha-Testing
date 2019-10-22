@@ -3,6 +3,9 @@
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
+	--fusion material
+	c:EnableReviveLimit()
+	aux.AddFusionProcMixN(c,true,true,s.ffilter,2)
 	--must first be fusion summoned
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -41,6 +44,9 @@ function s.initial_effect(c)
 	e4:SetTarget(s.thtg)
 	e4:SetOperation(s.thop)
 	c:RegisterEffect(e4)
+end
+function s.ffilter(c,fc,sumtype,sp,sub,mg,sg)
+	return not sg or sg:FilterCount(aux.TRUE,c)==0 or not sg:IsExists(Card.IsAttribute,1,c,c:GetAttribute(),fc,sumtype,sp)
 end
 function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return aux.disfilter1(chkc) and chkc:IsControler(1-tp) end
