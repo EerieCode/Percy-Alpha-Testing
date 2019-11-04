@@ -20,16 +20,13 @@ function s.initial_effect(c)
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_DRAW)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e2:SetCode(EVENT_TO_GRAVE)
+	e2:SetCode(EVENT_BE_MATERIAL)
 	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
 	e2:SetCountLimit(1,id)
+	e2:SetCondition(s.drcon)
 	e2:SetTarget(s.drtg)
 	e2:SetOperation(s.drop)
 	c:RegisterEffect(e2)
-	local e3=e2:Clone()
-	e3:SetCode(EVENT_BE_MATERIAL)
-	e3:SetCondition(s.drcon)
-	c:RegisterEffect(e3)
 end
 	--Part of "HERO" archetype
 s.listed_series={0x8}
@@ -55,11 +52,11 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
-	--If banished as fusion material for "HERO" monster
+	--If sent to GY or banished as fusion material for "HERO" monster
 function s.drcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local rc=c:GetReasonCard()
-	return c:IsLocation(LOCATION_REMOVED) and rc:IsSetCard(0x8) and r==REASON_FUSION
+	return c:IsLocation(LOCATION_GRAVE+LOCATION_REMOVED) and rc:IsSetCard(0x8) and r==REASON_FUSION
 end
 	--Activation legality
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
