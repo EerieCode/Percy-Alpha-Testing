@@ -17,20 +17,19 @@ function s.initial_effect(c)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
 	--If sent to GY or banished for "HERO" fusion, draw 2
-	local e3=Effect.CreateEffect(c)
+	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_DRAW)
-	e2:SetType(EFFECT_TYPE_TRIGGER_O)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_TO_GRAVE)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetCountLimit(1)
+	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e2:SetCountLimit(1,id)
 	e2:SetTarget(s.drtg)
 	e2:SetOperation(s.drop)
 	c:RegisterEffect(e2)
 	local e3=e2:Clone()
-	e1:SetCode(EVENT_BE_MATERIAL)
-	e2:SetCondition(s.drcon)
+	e3:SetCode(EVENT_BE_MATERIAL)
+	e3:SetCondition(s.drcon)
 	c:RegisterEffect(e3)
-end
 end
 	--Part of "HERO" archetype
 s.listed_series={0x8}
