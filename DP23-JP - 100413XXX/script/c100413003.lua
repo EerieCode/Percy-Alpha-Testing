@@ -1,5 +1,5 @@
 --魂のしもべ
---Servant of the Soul
+--Faithful Servant
 --Scripted by Larry126
 local s,id=GetID()
 function s.initial_effect(c)
@@ -45,7 +45,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.drfilter(c)
 	return (c:IsFaceup() or c:IsLocation(LOCATION_GRAVE))
-		and ((c:IsSetCard(0x239) and c:IsLocation(LOCATION_GRAVE+LOCATION_MZONE)) or c:IsCode(CARD_DARK_MAGICIAN,CARD_DARK_MAGICIAN_GIRL))
+		and ((c:IsSetCard(0x239) and c:IsType(TYPE_MONSTER)) or c:IsCode(CARD_DARK_MAGICIAN,CARD_DARK_MAGICIAN_GIRL))
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ct=Duel.GetMatchingGroup(s.drfilter,tp,LOCATION_ONFIELD+LOCATION_GRAVE,LOCATION_ONFIELD+LOCATION_GRAVE,nil):GetClassCount(Card.GetCode)
