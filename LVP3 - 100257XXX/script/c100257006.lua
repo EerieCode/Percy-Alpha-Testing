@@ -1,5 +1,5 @@
 --破壊剣士の守護絆竜
---Destruction Swordsman's Protector Whelp
+--Companion Whelp of the Destruction Swordsman
 --Logical Nonsense
 
 --Substitute ID
@@ -24,7 +24,7 @@ function s.initial_effect(c)
 	--End of Battle Phase, if opponent has no monsters, burn
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_DAMAGE)
-	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_PHASE+PHASE_BATTLE)
 	e2:SetCountLimit(1,id+100)
