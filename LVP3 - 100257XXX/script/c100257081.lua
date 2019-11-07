@@ -3,6 +3,9 @@
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
+	--Must be properly summoned before reviving
+	c:EnableReviveLimit()
+	aux.AddLinkProcedure(c,nil,2,2)
 	--splimit
     local e1=Effect.CreateEffect(c)
     e1:SetType(EFFECT_TYPE_SINGLE)
@@ -26,7 +29,7 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e3:SetProperty(EFFECT_FLAG_DELAY)
 	e3:SetCode(EVENT_BE_MATERIAL)
-	e3:SetCountLimit(1,id)
+	e3:SetCountLimit(1,id+100)
 	e3:SetCondition(s.tdcon)
 	e3:SetTarget(s.tdtg)
 	e3:SetOperation(s.tdop)
@@ -46,7 +49,7 @@ end
 function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_SZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
-	local tc=Duel.SelectMatchingCard(s.setfilter,tp,LOCATION_DECK,0,1,1,nil):GetFirst()
+	local tc=Duel.SelectMatchingCard(tp,s.setfilter,tp,LOCATION_DECK,0,1,1,nil):GetFirst()
 	if tc then
 		Duel.SSet(tp,tc)
 		Duel.ConfirmCards(1-tp,tc)
