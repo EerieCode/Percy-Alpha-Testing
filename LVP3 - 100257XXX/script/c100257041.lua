@@ -52,8 +52,6 @@ function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local rg=nil
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
 	if ft>0 then
-		rg=Duel.SelectReleaseGroupCost(tp,nil,1,1,false,nil,c)
-	else
 		rg=Duel.SelectReleaseGroupCost(tp,s.mzfilter,1,1,false,nil,c,tp)
 	end
 	rg:AddCard(c)
@@ -84,7 +82,7 @@ function s.spcon2(e,tp,eg,ep,ev,re,r,rp)
 	return not eg:IsContains(e:GetHandler()) and eg:IsExists(s.cfilter,1,nil,tp)
 end
 function s.spfilter2(c,e,tp)
-	return c:IsSetCard(0x123) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0x1123) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -92,7 +90,7 @@ function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
 end
 function s.spop2(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 or not e:GetHandler():IsRelateToEffect(e) then return end
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.spfilter2),tp,LOCATION_GRAVE,0,1,1,nil,e,tp)
 	if g:GetCount()>0 then
