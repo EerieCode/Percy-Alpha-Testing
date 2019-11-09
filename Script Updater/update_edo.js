@@ -359,6 +359,9 @@ const SIMPLE_MAP = {
     "aux.XyzCondition2": "Xyz.Condition2",
     "aux.XyzTarget2": "Xyz.Target2",
     "aux.XyzOperation2": "Xyz.Operation2"
+    "IsLinkState": "IsLinked"
+    "IsAttackable": "CanAttack"
+    "IsChainAttackable": "CanChainAttack"
 };
 
 // updates simple find-replaces such as new constants and renamed functions with the same params
