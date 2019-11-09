@@ -358,9 +358,9 @@ const SIMPLE_MAP = {
     "aux.XyzOperation": "Xyz.Operation",
     "aux.XyzCondition2": "Xyz.Condition2",
     "aux.XyzTarget2": "Xyz.Target2",
-    "aux.XyzOperation2": "Xyz.Operation2"
-    "IsLinkState": "IsLinked"
-    "IsAttackable": "CanAttack"
+    "aux.XyzOperation2": "Xyz.Operation2",
+    "IsLinkState": "IsLinked",
+    "IsAttackable": "CanAttack",
     "IsChainAttackable": "CanChainAttack"
 };
 
