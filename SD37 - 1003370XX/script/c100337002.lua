@@ -1,5 +1,5 @@
 --影霊の翼 ウェンディ
---Lee Shaddoll Wendi
+--Laishadoll Wendi
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
@@ -32,17 +32,17 @@ end
 function s.sptg(pos)
 	return function(e,tp,eg,ep,ev,re,r,rp,chk)
 		if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingTarget(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp,pos) end
+		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp,pos) end
 		Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,0,LOCATION_DECK)
 	end
 end
 function s.spop(pos)
 	return function(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local g=Duel.SelectTarget(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp,pos)
+		local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp,pos)
 		if #g>0 then
-			Duel.SpecialSummon(tc,0,tp,tp,false,false,pos)
-			Duel.ConfirmCards(1-tp,tc)
+			Duel.SpecialSummon(g,0,tp,tp,false,false,pos)
+			Duel.ConfirmCards(1-tp,g)
 		end
 	end
 end
