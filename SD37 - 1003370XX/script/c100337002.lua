@@ -1,5 +1,5 @@
 --影霊の翼 ウェンディ
---Laishadoll Wendi
+--Rishaddoll Wendi
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
