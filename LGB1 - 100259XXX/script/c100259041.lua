@@ -1,8 +1,9 @@
--- Decode Talker Heatsoul
+--デコード・トーカー・ヒートソウル
+--Decode Talker Heatsoul
 local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
-	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_CYBERSE),2,99,s.lcheck)
+	aux.AddLinkProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_CYBERSE),2,99,s.lcheck)
 	c:EnableReviveLimit()
 	--atk
 	local e1=Effect.CreateEffect(c)
@@ -25,7 +26,6 @@ function s.initial_effect(c)
 	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
 end
-s.listed_names={id}
 function s.lcheck(g,lc)
 	return g:GetClassCount(Card.GetAttribute,lc,SUMMON_TYPE_LINK,tp)==#g
 end
