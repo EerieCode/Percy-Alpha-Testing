@@ -90,14 +90,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp,chk)
 	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local tc=Duel.SelectMatchingCard(tp,nil,tp,0,LOCATION_MZONE,1,1,nil):GetFirst()
-	if tc and Duel.Destroy(tc,REASON_EFFECT)~=0 then
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-		e1:SetRange(LOCATION_MZONE)
-		e1:SetCode(EFFECT_EXTRA_ATTACK)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-		e1:SetValue(1)
-		c:RegisterEffect(e1)
+	if tc and c:IsChainAttackable() and Duel.Destroy(tc,REASON_EFFECT)~=0 then
+		Duel.ChainAttack()
 	end
 end
