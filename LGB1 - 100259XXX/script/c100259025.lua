@@ -5,7 +5,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--xyz summon
 	c:EnableReviveLimit()
-	aux.AddXyzProcedure(c,s.xyzfilter,nil,3,s.ovfilter,aux.Stringid(id,1),nil,nil,false,s.xyzcheck)
+	aux.AddXyzProcedure(c,s.xyzfilter,nil,3,s.ovfilter,aux.Stringid(id,0),nil,nil,false,s.xyzcheck)
 	--add setcode
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -26,7 +26,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 	--Negate
     local e4=Effect.CreateEffect(c)
-    e4:SetDescription(aux.Stringid(id,0))
+    e4:SetDescription(aux.Stringid(id,1))
     e4:SetCategory(CATEGORY_NEGATE+CATEGORY_CONTROL)
     e4:SetType(EFFECT_TYPE_QUICK_O)
     e4:SetCode(EVENT_CHAINING)
