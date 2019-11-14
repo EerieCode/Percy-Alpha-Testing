@@ -8,7 +8,15 @@ function s.initial_effect(c)
 	aux.AddXyzProcedure(c,nil,7,2,s.ovfilter,aux.Stringid(id,0))
 	aux.EnablePendulumAttribute(c,false)
 	--special summon
-	
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,1))
+	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetRange(LOCATION_PZONE)
+	e1:SetCountLimit(1)
+	e1:SetTarget(s.sptg)
+	e1:SetOperation(s.spop)
+	c:RegisterEffect(e1)
 	--multi attack
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
@@ -25,7 +33,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 	--pendulum
 	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(id,2))
+	e4:SetDescription(aux.Stringid(id,4))
 	e4:SetCategory(CATEGORY_DESTROY)
 	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e4:SetCode(EVENT_DESTROYED)
@@ -39,6 +47,42 @@ s.pendulum_level=7
 s.listed_series={0x23a,0x10db}
 function s.ovfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x23a) and c:IsType(TYPE_XYZ)
+end
+function s.spfilter(c,e,tp,mc,pg)
+	return c:IsFacedown() and (c:IsSetCard(0x23a) or c:IsSetCard(0x10db)) and c:IsType(TYPE_XYZ)
+		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_XYZ,tp,false,false)
+		and mc:IsCanBeXyzMaterial(c,tp) and not c:IsCode(id)
+		and (not pg or #pg<=0 or pg:IsContains(mc))
+end
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and Duel.GetLocationCountFromEx(tp)>0
+		and Duel.IsPlayerCanSpecialSummonCount(tp,2)
+		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_EXTRA,0,1,nil,e,tp,c) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_EXTRA)
+end
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if not c:IsRelateToEffect(e) or Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)==0 or Duel.GetLocationCountFromEx(tp,tp,c)<=0 then return end
+	local pg=aux.GetMustBeMaterialGroup(tp,Group.FromCards(c),tp,nil,nil,REASON_XYZ)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g=Duel.SelectMatchingCard(tp,s.filter2,tp,LOCATION_EXTRA,0,1,1,nil,e,tp,c,pg)
+	local sc=g:GetFirst()
+	if sc then
+		Duel.BreakEffect()
+		sc:SetMaterial(Group.FromCards(c))
+		Duel.Overlay(sc,Group.FromCards(c))
+		Duel.SpecialSummon(c,SUMMON_TYPE_XYZ,tp,tp,false,false,POS_FACEUP)
+		sc:CompleteProcedure()
+		local xg=Duel.GetFieldGroup(tp,LOCATION_PZONE,0)
+		if #xg==1 and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
+			Duel.BreakEffect()
+			Duel.Overlay(sc,xg)
+		end
+	end
 end
 function s.valfilter(c)
 	return c:IsType(TYPE_XYZ) and c:GetRank()==7
@@ -54,7 +98,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local ct=e:GetLabel()
 	if ct>0 then
 		local e1=Effect.CreateEffect(c)
-		e1:SetDescription(aux.Stringid(id,2))
+		e1:SetDescription(aux.Stringid(id,3))
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetProperty(EFFECT_FLAG_CLIENT_HINT)
 		e1:SetCode(EFFECT_EXTRA_ATTACK)
