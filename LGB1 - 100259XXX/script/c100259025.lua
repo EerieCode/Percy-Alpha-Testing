@@ -31,7 +31,7 @@ function s.initial_effect(c)
     e4:SetType(EFFECT_TYPE_QUICK_O)
     e4:SetCode(EVENT_CHAINING)
     e4:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-    e4:SetRange(LOCATION_HAND)
+    e4:SetRange(LOCATION_MZONE)
     e4:SetCondition(s.discon)
     e4:SetCost(s.discost)
     e4:SetTarget(s.distg)
@@ -61,13 +61,13 @@ function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return true end
     Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
     local rc=re:GetHandler()
-    if rc:IsOnField() and rc:IsRelateToEffect(re) and rc:IsAbleToChangeControler() then
+    if rc:IsOnField() and rc:IsRelateToEffect(re) and rc:IsAbleToChangeControler() and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
         Duel.SetOperationInfo(0,CATEGORY_CONTROL,eg,1,0,0)
     end
 end
 function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	local rc=re:GetHandler()
-    if Duel.NegateActivation(ev) and rc:IsOnField() and rc:IsRelateToEffect(re) and rc:IsAbleToChangeControler() then
+    if Duel.NegateActivation(ev) and rc:IsOnField() and rc:IsRelateToEffect(re) and rc:IsAbleToChangeControler() and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
         Duel.GetControl(rc,tp)
     end
 end
