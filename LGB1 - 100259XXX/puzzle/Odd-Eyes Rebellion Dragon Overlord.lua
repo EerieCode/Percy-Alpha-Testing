@@ -1,0 +1,27 @@
+--Created using senpaizuri's Puzzle Maker (updated by Naim & Larry126)
+Debug.ReloadFieldBegin(DUEL_ATTACK_FIRST_TURN+DUEL_SIMPLE_AI,4)
+Debug.SetPlayerInfo(0,8000,0,0)
+Debug.SetPlayerInfo(1,8000,0,0)
+
+--Monster Zones
+Debug.AddCard(16195942,0,0,LOCATION_MZONE,0,1,true)
+Debug.AddCard(42160203,0,0,LOCATION_MZONE,1,1,true)
+Debug.AddCard(69610326,0,0,LOCATION_MZONE,1,1,true)
+Debug.AddCard(45627618,0,0,LOCATION_MZONE,2,1,true)
+Debug.AddCard(14105623,0,0,LOCATION_MZONE,3,1,true)
+Debug.AddCard(89399912,0,0,LOCATION_MZONE,4,1,true)
+
+Debug.AddCard(94415058,0,0,LOCATION_PZONE,0,5)
+Debug.AddCard(20409757,0,0,LOCATION_PZONE,1,5)
+
+Debug.AddCard(100259033,0,0,LOCATION_EXTRA,0,8)
+Debug.AddCard(16195942,0,0,LOCATION_EXTRA,0,8)
+Debug.AddCard(62709239,0,0,LOCATION_EXTRA,0,8)
+Debug.AddCard(26692769,0,0,LOCATION_EXTRA,0,8)
+Debug.AddCard(87327776,0,0,LOCATION_EXTRA,0,8)
+Debug.AddCard(100259033,0,0,LOCATION_EXTRA,0,5)
+
+Debug.AddCard(53129443,0,0,LOCATION_HAND,0,POS_FACEDOWN)
+Debug.AddCard(05318639,0,0,LOCATION_HAND,0,POS_FACEDOWN)
+
+Debug.ReloadFieldEnd()
