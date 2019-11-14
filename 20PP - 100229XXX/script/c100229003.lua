@@ -41,7 +41,8 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
+	local ph=Duel.GetCurrentPhase()
+	return ph>PHASE_MAIN1 and ph<PHASE_MAIN2 and ph~=PHASE_DAMAGE or not Duel.IsDamageCalculated()
 end
 function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckReleaseGroup(tp,nil,1,e:GetHandler()) end
