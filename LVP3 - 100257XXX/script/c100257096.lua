@@ -13,14 +13,14 @@ function s.initial_effect(c)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetTargetRange(0,LOCATION_MZONE)
 	e1:SetCondition(s.con)
-	e1:SetValue(s.atlimit)
+	e1:SetValue(s.tg)
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
 	e2:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
 	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
 	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
-	e2:SetTarget(aux.TargetBoolFunction(aux.NOT(Card.IsNonEffectMonster)))
-	e2:SetValue(s.atlimit)
+	e2:SetTarget(s.tg)
+	e2:SetValue(aux.tgoval)
 	c:RegisterEffect(e2)
 	--Destroy
 	local e3=Effect.CreateEffect(c)
@@ -37,10 +37,12 @@ end
 function s.con(e,c)
 	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsNonEffectMonster),tp,LOCATION_MZONE,0,1,nil)
 end
-function s.atlimit(e,c)
-	return c:IsFaceup() and not c:IsNonEffectMonster()
+function s.filter(c)
+	return c:IsFaceup() and c:IsType(TYPE_MONSTER) and c:IsType(TYPE_EFFECT)
 end
-s.filter=aux.FilterFaceupFunction(aux.NOT(Card.IsNonEffectMonster)))
+function s.tg(e,c)
+	return s.filter(c)
+end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and s.filter(chkc) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
