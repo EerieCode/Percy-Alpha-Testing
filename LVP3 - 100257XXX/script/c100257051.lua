@@ -83,7 +83,7 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if b1 then
 		table.insert(stab,1)
 		table.insert(dtab,aux.Stringid(id,3))
-		Duel.Destroy(dg,REASON_EFFECT)
+		Duel.SetOperationInfo(0,CATEGORY_DESTROY,nil,1,tp,0)
 	end
 	if b2 then
 		table.insert(stab,2)
