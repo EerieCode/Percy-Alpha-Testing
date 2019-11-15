@@ -102,14 +102,16 @@ function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil) end
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,nil,1,0,0)
+	local g=Duel.GetMatchingGroup(aux.TRUE,tp,0,LOCATION_ONFIELD,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 	Duel.SetChainLimit(s.chlimit)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
 	local att=e:GetLabel()
-	if tc and tc:IsRelateToEffect(e) then
-		Duel.Destroy(tc,REASON_EFFECT)
+	local g=Duel.SelectMatchingCard(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
+	if #g>0 then
+		Duel.HintSelection(g)
+		Duel.Destroy(g,REASON_EFFECT)
 	end
 	s.attr_list[tp]=s.attr_list[tp]|att
 	for _,str in aux.GetAttributeStrings(att) do
