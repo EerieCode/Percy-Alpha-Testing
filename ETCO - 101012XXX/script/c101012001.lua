@@ -90,11 +90,11 @@ function s.lvop(e,tp,eg,ep,ev,re,r,rp)
 		c:RegisterEffect(e1)
 		local e2=e1:Clone()
 		e2:SetCode(EFFECT_SET_BASE_ATTACK)
-		e2:SetValue(c:GetBaseAttack()/2)
+		e2:SetValue(c:GetBaseAttack()//2)
 		c:RegisterEffect(e2)
 		local e3=e1:Clone()
 		e3:SetCode(EFFECT_SET_BASE_DEFENSE)
-		e3:SetValue(c:GetBaseDefense()/2)
+		e3:SetValue(c:GetBaseDefense()//2)
 		c:RegisterEffect(e3)
 	end
 end
