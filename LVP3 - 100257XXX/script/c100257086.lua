@@ -1,6 +1,7 @@
 --閃刀姫 ジーク
 --Sky Striker Ace - Sieg
 --Scripted by Hel
+local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
 	aux.AddLinkProcedure(c,nil,2,2,s.lcheck)
@@ -25,8 +26,8 @@ function s.initial_effect(c)
 	e2:SetOperation(s.tgop)
 	c:RegisterEffect(e2)
 	--+1000 atk + send to grave
-	local e2=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(id,0))
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,1))
 	e3:SetCategory(CATEGORY_TOGRAVE+CATEGORY_ATKCHANGE)
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
@@ -43,7 +44,7 @@ function s.tgcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK)
 end
 function s.tgfilter(c)
-	return c:IsFaceup() and c:isAbleToRemove() 
+	return c:IsFaceup() and c:IsAbleToRemove() 
 end
 function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.tgfilter(chkc) end
