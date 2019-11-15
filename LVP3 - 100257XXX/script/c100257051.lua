@@ -75,7 +75,7 @@ function s.svfilter(c,tp)
 end
 function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local b1=Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) and Duel.CheckReleaseGroupCost(tp,aux.TRUE,1,false,nil,nil)
-	local b2=Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) and Duel.CheckReleaseGroupCost(tp,aux.TRUE,2,false,nil,nil)
+	local b2=Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.CheckReleaseGroupCost(tp,aux.TRUE,2,false,nil,nil)
 	local b3=Duel.IsExistingMatchingCard(s.svfilter,tp,LOCATION_GRAVE,0,1,nil) and Duel.CheckReleaseGroupCost(tp,aux.TRUE,3,false,nil,nil)
 	if chk==0 then return b1 or b2 or b3 end
 	local stab={}
@@ -109,11 +109,11 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 				local dg=g:Select(tp,1,1,nil)
 				Duel.HintSelection(dg)
 				Duel.Destroy(dg,REASON_EFFECT)
-		end
-		elseif sel==2 and not Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then
+			end
+		elseif sel==2 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 			local tc=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp):GetFirst()
-			if tc then Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+			if tc then Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
 		elseif sel==3 then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 			local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.svfilter),tp,LOCATION_GRAVE,0,1,1,nil)
