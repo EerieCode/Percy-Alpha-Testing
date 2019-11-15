@@ -15,6 +15,7 @@ Debug.AddCard(12421694,0,0,LOCATION_MZONE,4,1,true)
 Debug.AddCard(31833038,0,0,LOCATION_MZONE,2,1,true)
 --Spell & Trap Zones
 Debug.AddCard(10813327,0,0,LOCATION_SZONE,2,10)
+Debug.AddCard(12989604 ,0,0,LOCATION_SZONE,3,10)
 --Monster Zones
 Debug.AddCard(75878039,1,1,LOCATION_MZONE,3,1,true)
 Debug.AddCard(55885348,1,1,LOCATION_MZONE,1,4,true)
