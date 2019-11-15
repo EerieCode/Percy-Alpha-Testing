@@ -116,7 +116,9 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		elseif sel==2 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 			local tc=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp):GetFirst()
-			if tc then Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+			if tc then
+				Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+			PHASE_END
 		elseif sel==3 then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 			local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.svfilter),tp,LOCATION_GRAVE,0,1,1,nil)
@@ -125,5 +127,4 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 				Duel.ConfirmCards(1-tp,g)
 			end
 		end
-	end
 end
