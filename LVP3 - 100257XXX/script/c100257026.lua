@@ -19,7 +19,7 @@ function s.initial_effect(c)
 	e2:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
-	e2:SetTarget(s.tgtg)
+	e2:SetTarget(s.indtg)
 	e2:SetValue(aux.tgoval)
 	c:RegisterEffect(e2)
 	--Destroy replace
@@ -50,22 +50,30 @@ function s.indtg(e,c)
 	local oc=e:GetHandler()
 	return c==oc or (c:IsRace(RACE_WINDBEAST) and oc:GetLinkedGroup():IsContains(c))
 end
-function s.desfilter(c,e)
-	return c:IsFaceup() and c:IsSetCard(0x12d) and c:IsDestructable(e) and not c:IsStatus(STATUS_DESTROY_CONFIRMED)
+function s.repfilter(c,e)
+	return c:IsFaceup() and c:IsSetCard(0x12d)
+		and c:IsDestructable(e) and not c:IsStatus(STATUS_DESTROY_CONFIRMED)
 end
 function s.desreptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chk==0 then return c:IsReason(REASON_BATTLE) and Duel.IsExistingMatchingGroup(s.desfilter,tp,LOCATION_ONFIELD,0,1,c,e) end
-	return Duel.SelectEffectYesNo(tp,c,96)
+	if chk==0 then return c:IsReason(REASON_BATTLE) and c:IsOnField() and c:IsFaceup()
+		and Duel.IsExistingMatchingCard(s.repfilter,tp,LOCATION_ONFIELD,0,1,c,e) end
+	if Duel.SelectEffectYesNo(tp,c,96) then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESREPLACE)
+		local g=Duel.SelectMatchingCard(tp,s.repfilter,tp,LOCATION_ONFIELD,0,1,1,c,e)
+		Duel.SetTargetCard(g)
+		g:GetFirst():SetStatus(STATUS_DESTROY_CONFIRMED,true)
+		return true
+	else return false end
 end
 function s.desrepop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESREPLACE)
-	local g=Duel.SelectMatchingCard(s.desfilter,tp,LOCATION_ONFIELD,0,1,1,e:GetHandler(),e)
+	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
+	g:GetFirst():SetStatus(STATUS_DESTROY_CONFIRMED,false)
 	Duel.Destroy(g,REASON_EFFECT+REASON_REPLACE)
 end
 function s.spfilter(c,e,tp)
 	local ct=Duel.GetLocationCount(0,LOCATION_SZONE)+Duel.GetLocationCount(1,LOCATION_SZONE)
-	return c:IsRace(RACE_WINDBEAST) and ct>0 and c:IsLevelBelow(ct) and c:IsCanBeSpecialSummoned(c,e,0,tp,false,false)
+	return c:IsRace(RACE_WINDBEAST) and ct>0 and c:IsLevelBelow(ct) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and 
