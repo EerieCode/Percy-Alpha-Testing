@@ -4,38 +4,36 @@
 
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Must be properly summoned before reviving
 	c:EnableReviveLimit()
 	aux.AddLinkProcedure(c,nil,2,2,s.matfilter)
 	--Card/effect on the field is activated, set an "Artifact" from hand/deck
-	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,0))
-	e2:SetType(EFFECT_TYPE_QUICK_O)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetCode(EVENT_CHAINING)
-	e2:SetCountLimit(1,id)
-	e2:SetCondition(s.setcon)
-	e2:SetTarget(s.settg)
-	e2:SetOperation(s.setop)
-	c:RegisterEffect(e2)
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetType(EFFECT_TYPE_QUICK_O)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCode(EVENT_CHAINING)
+	e1:SetCountLimit(1,id)
+	e1:SetCondition(s.setcon)
+	e1:SetTarget(s.settg)
+	e1:SetOperation(s.setop)
+	c:RegisterEffect(e1)
 	--Special summon 1 "Artifact" monster from GY in defense position
-	local e3=Effect.CreateEffect(c)
-	e3:SetDescription(aux.Stringid(id,1))
-	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e3:SetProperty(EFFECT_FLAG_DELAY)
-	e3:SetCode(EVENT_DESTROYED)
-	e3:SetCountLimit(1,id+100)
-	e3:SetCondition(s.spcon)
-	e3:SetTarget(s.sptg)
-	e3:SetOperation(s.spop)
-	c:RegisterEffect(e3)
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e2:SetProperty(EFFECT_FLAG_DELAY)
+	e2:SetCode(EVENT_DESTROYED)
+	e2:SetCountLimit(1,id+100)
+	e2:SetCondition(s.spcon)
+	e2:SetTarget(s.sptg)
+	e2:SetOperation(s.spop)
+	c:RegisterEffect(e2)
 end
 	--Part of "Artifact" archetype
 s.listed_series={0x97}
-
 	--Monsters with different names
 function s.matfilter(g,lc)
 	return g:GetClassCount(Card.GetCode)==#g
@@ -61,7 +59,6 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 	if g:GetCount()>0 then
 		local c=e:GetHandler()
 		local tc=g:GetFirst()
-		local fid=c:GetFieldID()
 		Duel.SSet(tp,tc)
 		tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,1,fid)
 		local e1=Effect.CreateEffect(c)
@@ -69,19 +66,21 @@ function s.setop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetCode(EVENT_PHASE+PHASE_END)
 		e1:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
 		e1:SetCountLimit(1)
-		e1:SetLabel(fid)
+		e1:SetLabel(Duel.GetTurnCount())
 		e1:SetLabelObject(tc)
 		e1:SetCondition(s.descon)
 		e1:SetOperation(s.desop)
-		e1:SetReset(RESET_PHASE+PHASE_END+RESET_OPPO_TURN)
+		e1:SetReset(RESET_PHASE+PHASE_END+RESET_OPPO_TURN,2)
 		Duel.RegisterEffect(e1,tp)
 		Duel.ConfirmCards(1-tp,g)
+		tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD,0,0)
 	end
 end
 	--Check for flag
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
-	return tc:GetFlagEffectLabel(id)==e:GetLabel()
+	return Duel.GetTurnCount()~=e:GetLabel() and Duel.GetTurnPlayer()~=tp
+		and tc:GetFlagEffect(id)~=0
 end
 	--Destroy the set "Artifact" card
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
