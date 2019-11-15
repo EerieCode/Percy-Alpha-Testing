@@ -83,17 +83,14 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if b1 then
 		table.insert(stab,1)
 		table.insert(dtab,aux.Stringid(id,3))
-		Duel.SetOperationInfo(0,CATEGORY_DESTROY,nil,1,tp,0)
 	end
 	if b2 then
 		table.insert(stab,2)
 		table.insert(dtab,aux.Stringid(id,4))
-		Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,0,tp,1)
 	end
 	if b3 then
 		table.insert(stab,3)
 		table.insert(dtab,aux.Stringid(id,5))
-		Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_GRAVE)
 	end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EFFECT)
 	local op=Duel.SelectOption(tp,table.unpack(dtab))+1
@@ -101,6 +98,13 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.SelectReleaseGroupCost(tp,aux.TRUE,sel,sel,false,nil,nil)
 	Duel.Release(g,REASON_COST)
 	e:SetLabel(sel)
+	if sel==1 then
+		Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+	elseif sel==2 then
+		Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,0,tp,1)
+	elseif sel==3 then
+		Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_GRAVE)
+	end
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
