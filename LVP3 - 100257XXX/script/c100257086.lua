@@ -94,15 +94,10 @@ function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,g,1,0,0)
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
-	if c:IsRelateToEffect(e) and c:IsFaceup() then
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_UPDATE_ATTACK)
-		e1:SetValue(1000)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_DISABLE)
-		c:RegisterEffect(e1)
-	end
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) then Duel.SendtoGrave(tc,REASON_EFFECT) end
+	if c:IsRelateToEffect(e) and c:IsFaceup() and c:UpdateAttack(1000)==1000 then
+		Duel.BreakEffect()
+		if tc:IsRelateToEffect(e) then Duel.SendtoGrave(tc,REASON_EFFECT) end
+	end
 end
