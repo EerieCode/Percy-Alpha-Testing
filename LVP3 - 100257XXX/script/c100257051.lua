@@ -83,14 +83,17 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if b1 then
 		table.insert(stab,1)
 		table.insert(dtab,aux.Stringid(id,3))
+		Duel.Destroy(dg,REASON_EFFECT)
 	end
 	if b2 then
 		table.insert(stab,2)
 		table.insert(dtab,aux.Stringid(id,4))
+		Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,0,tp,1)
 	end
 	if b3 then
 		table.insert(stab,3)
 		table.insert(dtab,aux.Stringid(id,5))
+		Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_GRAVE)
 	end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EFFECT)
 	local op=Duel.SelectOption(tp,table.unpack(dtab))+1
@@ -113,7 +116,7 @@ function s.op(e,tp,eg,ep,ev,re,r,rp)
 		elseif sel==2 and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 			local tc=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp):GetFirst()
-			if tc then Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP) end
+			if tc then Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 		elseif sel==3 then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 			local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.svfilter),tp,LOCATION_GRAVE,0,1,1,nil)
