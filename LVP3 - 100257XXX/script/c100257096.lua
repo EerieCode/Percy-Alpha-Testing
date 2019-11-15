@@ -38,7 +38,7 @@ function s.con(e,c)
 	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsNonEffectMonster),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.filter(c)
-	return c:IsFaceup() and c:IsType(TYPE_MONSTER) and c:IsType(TYPE_EFFECT)
+	return c:IsFaceup() and c:IsType(TYPE_EFFECT)
 end
 function s.tg(e,c)
 	return s.filter(c)
