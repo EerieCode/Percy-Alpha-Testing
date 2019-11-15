@@ -22,7 +22,7 @@ function s.initial_effect(c)
 	e2:SetTarget(s.tg)
 	e2:SetValue(aux.tgoval)
 	c:RegisterEffect(e2)
-	--Destroy
+	--Special Summon
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,0))
 	e3:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_TOKEN)
@@ -46,7 +46,7 @@ end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and s.filter(chkc) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,TOKEN_TENYI_SPIRIT,0x12c,TYPES_TOKEN,-2,0,4,RACE_WYRM,ATTRIBUTE_LIGHT)
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0x12c,TYPES_TOKEN,-2,0,4,RACE_WYRM,ATTRIBUTE_LIGHT)
 		and Duel.IsExistingTarget(s.filter,tp,0,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,s.filter,tp,0,LOCATION_MZONE,1,1,nil)
@@ -56,8 +56,8 @@ end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,TOKEN_TENYI_SPIRIT,0x12c,TYPES_TOKEN,-2,0,4,RACE_WYRM,ATTRIBUTE_LIGHT) then
-		local token=Duel.CreateToken(tp,TOKEN_TENYI_SPIRIT)
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0x12c,TYPES_TOKEN,-2,0,4,RACE_WYRM,ATTRIBUTE_LIGHT) then
+		local token=Duel.CreateToken(tp,id+100)
 		if Duel.SpecialSummonStep(token,0,tp,tp,false,false,POS_FACEUP) then
 			local e1=Effect.CreateEffect(e:GetHandler())
 			e1:SetType(EFFECT_TYPE_SINGLE)
