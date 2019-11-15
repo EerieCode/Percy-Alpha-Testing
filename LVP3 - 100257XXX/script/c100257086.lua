@@ -56,19 +56,19 @@ end
 function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 local tc=Duel.GetFirstTarget()
 	if tc:IsRelateToEffect(e) and Duel.Remove(tc,0,REASON_EFFECT+REASON_TEMPORARY)~=0 then
-		tc:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 		e1:SetCode(EVENT_PHASE+PHASE_END)
 		e1:SetCountLimit(1)
-		if Duel.GetTurnPlayer()==1-tp and Duel.GetCurrentPhase()==PHASE_END then
-			e1:SetLabel(Duel.GetTurnCount())
-			e1:SetReset(RESET_PHASE+PHASE_END+RESET_OPPO_TURN,2)
-		else
-			e1:SetLabel(0)
-			e1:SetReset(RESET_PHASE+PHASE_END+RESET_OPPO_TURN)
-		end
+		e1:SetLabel(Duel.GetTurnCount())
 		e1:SetLabelObject(tc)
+		if Duel.GetCurrentPhase()==PHASE_END and Duel.GetTurnPlayer()~=tp then
+		e1:SetLabel(Duel.GetTurnCount())
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END+RESET_OPPO_TURN,2)
+		else
+		e1:SetLabel(0)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END+RESET_OPPO_TURN)
+		end
 		e1:SetCondition(s.retcon)
 		e1:SetOperation(s.retop)
 		Duel.RegisterEffect(e1,tp)
@@ -76,12 +76,8 @@ local tc=Duel.GetFirstTarget()
 end
 function s.retcon(e,tp,eg,ep,ev,re,r,rp)
 	local tc=e:GetLabelObject()
-	if tc:GetFlagEffect(id)==0 then
-		e:Reset()
-		return false
-	else
-		return Duel.GetTurnPlayer()==1-tp and Duel.GetTurnCount()~=e:GetLabel()
-	end
+	return Duel.GetTurnCount()~=e:GetLabel() and Duel.GetTurnPlayer()~=tp
+		and tc:GetReasonEffect():GetHandler()==e:GetHandler()
 end
 function s.retop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.ReturnToField(e:GetLabelObject())
