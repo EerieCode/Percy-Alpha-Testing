@@ -108,24 +108,25 @@ end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local sel=e:GetLabel()
-	if sel==0 then
-		local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
-		if #g>0 then
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-			local dg=g:Select(tp,1,1,nil)
-			Duel.HintSelection(dg)
-			Duel.Destroy(dg,REASON_EFFECT)
+		if sel==0 then
+			local g=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
+			if #g>0 then
+				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+				local dg=g:Select(tp,1,1,nil)
+				Duel.HintSelection(dg)
+				Duel.Destroy(dg,REASON_EFFECT)
 		end
-	elseif sel==1 and not Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-		local tc=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp):GetFirst()
-		if tc then Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
-	elseif sel==0 then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-		local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.svfilter),tp,LOCATION_GRAVE,0,1,1,nil)
-		if #g>0 then
-			Duel.SendtoHand(g,nil,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,g)
+		elseif sel==1 and not Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+			local tc=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp):GetFirst()
+			if tc then Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+		elseif sel==0 then
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+			local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.svfilter),tp,LOCATION_GRAVE,0,1,1,nil)
+			if #g>0 then
+				Duel.SendtoHand(g,nil,REASON_EFFECT)
+				Duel.ConfirmCards(1-tp,g)
+			end
 		end
 	end
 end
