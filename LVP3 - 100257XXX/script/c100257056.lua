@@ -88,7 +88,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<2 then return end
 	local mg1=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.filter1),tp,LOCATION_GRAVE,0,nil,e,tp)
 	local mg2=Duel.GetMatchingGroup(s.filter2,tp,LOCATION_HAND,0,nil,e,tp)
-	local exg=Duel.GetMatchingGroup(s.xyzfilter,tp,LOCATION_EXTRA,0,nil),--mg)
+	local exg=Duel.GetMatchingGroup(s.xyzfilter,tp,LOCATION_EXTRA,0,nil)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local sg1=mg1:FilterSelect(tp,s.mfilter1,1,1,nil,mg1,exg)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
