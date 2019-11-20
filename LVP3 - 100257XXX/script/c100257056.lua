@@ -22,7 +22,7 @@ function s.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_DELAY)
 	e2:SetCountLimit(1,id)
 	e2:SetCondition(s.spcon)
-	--e2:SetTarget(s.sptg)
+	e2:SetTarget(s.sptg)
 	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
 	--destroy
@@ -58,7 +58,8 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.filter1(c,e,tp)
 	local lv=c:GetLevel()
-	return lv>0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and Duel.IsExistingMatchingCard(s.filter2,tp,LOCATION_HAND,0,1,nil,lv)
+	return lv>0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and Duel.IsExistingMatchingCard(s.filter2,tp,LOCATION_HAND,0,1,nil,e,tp,lv)
 end
 function s.filter2(c,e,tp,lv)
 	return c:GetLevel()==lv and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
@@ -72,17 +73,16 @@ end
 function s.mfilter2(c,mc,exg)
 	return exg:IsExists(Card.IsXyzSummonable,1,nil,Group.FromCards(c,mc))
 end
---function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	--local mg=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.filter1),tp,LOCATION_GRAVE+LOCATION_HAND,0,nil,e,tp)
-	--local exg=Duel.GetMatchingGroup(s.xyzfilter,tp,LOCATION_EXTRA,0,nil,mg)
-	--if chk==0 then return Duel.IsPlayerCanSpecialSummonCount(tp,2)
-		--and not Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT)
-		--and Duel.GetLocationCount(tp,LOCATION_MZONE)>1
-		--and Duel.GetLocationCountFromEx(tp,tp,g)>0
-		--and mg:IsExists(s.mfilter1,1,nil,mg,exg)
-		--and exg:GetCount()>0 end
-	--Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,2,tp,LOCATION_HAND+LOCATION_GRAVE)
---end
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	local mg=Duel.GetMatchingGroup(s.filter1,tp,LOCATION_GRAVE+LOCATION_HAND,0,nil,e,tp)
+	local exg=Duel.GetMatchingGroup(s.xyzfilter,tp,LOCATION_EXTRA,0,nil,mg)
+	if chk==0 then return not Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT)
+		and Duel.GetLocationCount(tp,LOCATION_MZONE)>1
+		and Duel.GetLocationCountFromEx(tp,tp,g)>0
+		and mg:IsExists(s.mfilter1,1,nil,mg,exg)
+		and exg:GetCount()>0 end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,2,tp,LOCATION_HAND+LOCATION_GRAVE)
+end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then return end
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<2 then return end
@@ -90,9 +90,9 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local mg2=Duel.GetMatchingGroup(s.filter2,tp,LOCATION_HAND,0,nil,e,tp)
 	local exg=Duel.GetMatchingGroup(s.xyzfilter,tp,LOCATION_EXTRA,0,nil),--mg)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	--local sg1=mg1:FilterSelect(tp,s.mfilter1,1,1,nil,mg,exg)
+	local sg1=mg1:FilterSelect(tp,s.mfilter1,1,1,nil,mg1,exg)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	--local sg2=mg2:FilterSelect(tp,s.mfilter2,1,1,nil,nil,exg)
+	local sg2=mg2:FilterSelect(tp,s.mfilter2,1,1,nil,nil,exg)
 	sg1:Merge(sg2)
 	local tc=sg1:GetFirst()
 	while tc do
