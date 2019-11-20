@@ -1,6 +1,6 @@
 --武神姫-アハシマ
 --Bujinki Ahashima
---Scripted by ahtelel
+--Scripted by ahtelel, Naim
 local s,id=GetID()
 function s.initial_effect(c)
 	Duel.EnableGlobalFlag(GLOBALFLAG_DETACH_EVENT)
