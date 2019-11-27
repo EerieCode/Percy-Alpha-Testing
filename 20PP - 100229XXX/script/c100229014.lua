@@ -17,7 +17,7 @@ function s.initial_effect(c)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 end
-	--Part of "Artifact" archetype
+	--Part of "Galaxy" archetype
 s.listed_series={0x7b}
 	--Contains "Galaxy-Eyes Photon Dragon" in text
 s.listed_names={CARD_GALAXYEYES_P_DRAGON}
