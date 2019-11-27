@@ -4,7 +4,6 @@
 
 --Substitute ID
 local s,id=GetID()
-
 function s.initial_effect(c)
 	--Tribute opponent's monster, special summon "Galaxy-Eyes Photon Dragon"
 	local e1=Effect.CreateEffect(c)
