@@ -18,25 +18,25 @@ function s.initial_effect(c)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 end
-	--Part of "Galaxy" archetype
+	--Part of "Artifact" archetype
 s.listed_series={0x7b}
 	--Contains "Galaxy-Eyes Photon Dragon" in text
 s.listed_names={CARD_GALAXYEYES_P_DRAGON}
 
 	--Check for a monster with 2000+ ATK, besides "Galaxy-Eyes Photon Dragon"
-function s.costfilter(c)
-	return c:IsAttackAbove(2000) and not c:IsCode(CARD_GALAXYEYES_P_DRAGON)
+function s.costfilter(c,ft,tp)
+	return c:IsAttackAbove(2000) and not c:IsCode(CARD_GALAXYEYES_P_DRAGON) and (ft>0 or c:GetSequence()<5)
 end
 	--Tribute cost
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	local dg=Duel.GetMatchingGroup(s.filter,tp,0,LOCATION_MZONE,nil,e)
-	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.costfilter,1,false,aux.ReleaseCheckTarget,nil,dg) end
-	local g=Duel.SelectReleaseGroupCost(tp,nil,1,1,false,aux.ReleaseCheckTarget,nil,dg)
+	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
+	if chk==0 then return ft>-1 and Duel.CheckReleaseGroupCost(tp,s.costfilter,1,false,nil,nil,ft,tp) end
+	local g=Duel.SelectReleaseGroupCost(tp,s.costfilter,1,1,false,nil,nil,ft,tp)
 	Duel.Release(g,REASON_COST)
 end
 	--Opponent's monster with 2000+ ATK and can be tributed
-function s.filter(c,e,tp) --ft
-	return c:IsAttackAbove(2000) and c:IsReleasableByEffect(e)-- and c:IsCanBeEffectTarget(e)
+function s.filter(c,e,tp)
+	return c:IsAttackAbove(2000) and c:IsReleasableByEffect(e)
 end
 	--Check for "Galaxy-Eyes Photon Dragon"
 function s.spfilter(c,e,tp)
@@ -44,11 +44,11 @@ function s.spfilter(c,e,tp)
 end
 	--Activation legality
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and s.filter(chkc) end --ft
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and s.filter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,0,LOCATION_MZONE,1,nil)
 		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE,0,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local g=Duel.SelectTarget(tp,s.filter,tp,0,LOCATION_MZONE,1,1,nil) --ft
+	local g=Duel.SelectTarget(tp,s.filter,tp,0,LOCATION_MZONE,1,1,nil)
 	Duel.SetTargetCard(g)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE)
 end
