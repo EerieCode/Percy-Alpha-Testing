@@ -10,7 +10,7 @@ function s.initial_effect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetRange(LOCATION_HAND+LOCATION_GRAVE)
+	e1:SetRange(LOCATION_HAND+LOCATION_GRAVE)
 	e1:SetCountLimit(1,id)
 	e1:SetCondition(s.spcon)
 	e1:SetTarget(s.sptg)
@@ -37,7 +37,6 @@ function s.initial_effect(c)
 end
 	--Lists "Right Hand Shark"
 s.listed_names={100229009}
-
 	--Check for "Right Hand Shark"
 function s.spfilter(c)
 	return c:IsFaceup() and c:IsCode(100229009)
@@ -45,8 +44,8 @@ end
 	--If you control "Right Hand Shark"
 function s.spcon(e,c)
 	if c==nil then return true end
-	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and
-		Duel.IsExistingMatchingCard(s.spfilter,c:GetControler(),LOCATION_ONFIELD,0,1,nil)
+	return Duel.GetLocationCount(e:GetHandler():GetControler(),LOCATION_MZONE)>0 and
+		Duel.IsExistingMatchingCard(s.spfilter,e:GetHandler():GetControler(),LOCATION_ONFIELD,0,1,nil)
 end
 	--Activation legality
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
