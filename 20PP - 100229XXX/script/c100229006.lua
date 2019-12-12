@@ -69,7 +69,8 @@ function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.lkcon(e,tp,eg,ep,ev,re,r,rp)
-	return r==REASON_LINK
+	local rc=e:GetHandler():GetReasonCard()
+	return rc:IsSetCard(0x10b) and r==REASON_LINK
 end
 function s.lkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
