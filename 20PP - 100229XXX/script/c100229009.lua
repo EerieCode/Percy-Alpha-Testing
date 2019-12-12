@@ -74,7 +74,7 @@ function s.ffilter(c)
 end
 function s.efcon(e,tp,eg,ep,ev,re,r,rp)
 	local ec=e:GetHandler():GetReasonCard()
-	return not ec:GetMaterial():IsExists(c3606728.ffilter,1,nil) and r==REASON_XYZ
+	return not ec:GetMaterial():IsExists(s.ffilter,1,nil) and r==REASON_XYZ
 end
 function s.efop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
