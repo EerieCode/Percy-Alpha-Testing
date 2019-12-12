@@ -24,7 +24,7 @@ function s.initial_effect(c)
 	e2:SetCountLimit(1,id+100)
 	e2:SetTarget(s.tgtg)
 	e2:SetOperation(s.tgop)
-	c:RegisterEffect(e1)
+	c:RegisterEffect(e2)
 	--Used as material
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
@@ -51,7 +51,7 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) then
-	 	Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE)
+		Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE)
 	end
 end
 function s.tgfilter(c)

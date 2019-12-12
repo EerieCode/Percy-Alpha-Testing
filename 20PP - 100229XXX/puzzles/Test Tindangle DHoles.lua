@@ -1,0 +1,26 @@
+--Created using senpaizuri's Puzzle Maker (updated by Naim & Larry126)
+Debug.ReloadFieldBegin(DUEL_ATTACK_FIRST_TURN+DUEL_SIMPLE_AI,4)
+Debug.SetPlayerInfo(0,8000,0,0)
+Debug.SetPlayerInfo(1,8000,0,0)
+
+--Main Deck
+Debug.AddCard(81439173,0,0,LOCATION_DECK,0,POS_FACEDOWN)
+Debug.AddCard(31759689,0,0,LOCATION_DECK,0,POS_FACEDOWN)
+Debug.AddCard(31759689,0,0,LOCATION_DECK,0,POS_FACEDOWN)
+Debug.AddCard(100229006,0,0,LOCATION_DECK,0,POS_FACEDOWN)
+Debug.AddCard(4178474,0,0,LOCATION_DECK,0,POS_FACEDOWN)
+--Extra Deck
+Debug.AddCard(75119040,0,0,LOCATION_EXTRA,0,8)
+Debug.AddCard(2857636,0,0,LOCATION_EXTRA,0,8)
+--Hand
+Debug.AddCard(100229006,0,0,LOCATION_HAND,0,POS_FACEDOWN)
+Debug.AddCard(81439173,0,0,LOCATION_HAND,0,POS_FACEDOWN)
+--Monster Zones
+Debug.AddCard(100229006,0,0,LOCATION_MZONE,1,8,true)
+Debug.AddCard(31759689,0,0,LOCATION_MZONE,2,1,true)
+Debug.AddCard(75119040,0,0,LOCATION_MZONE,3,1,true)
+Debug.AddCard(94365540,0,0,LOCATION_MZONE,4,1,true)
+--Spell & Trap Zones
+Debug.AddCard(4178474,0,0,LOCATION_SZONE,2,10)
+Debug.ReloadFieldEnd()
+aux.BeginPuzzle()
