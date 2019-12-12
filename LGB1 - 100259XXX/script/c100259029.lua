@@ -1,4 +1,4 @@
---
+--銀河眼の残光竜
 --Galaxy-Eyes Afterglow Dragon
 --Scripted by ahtelel
 local s,id=GetID()
@@ -50,7 +50,7 @@ function s.atcon(e,tp,eg,ep,ev,re,r,rp)
 		and c:IsPreviousLocation(LOCATION_OVERLAY)
 end
 function s.cfilter2(c)
-	return c:IsFaceup() and c:IsType(TYPE_XYZ)
+	return c:IsFaceup() and c:IsSetCard(0x48) and c:IsType(TYPE_XYZ)
 end
 function s.attg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsCode,tp,LOCATION_DECK+LOCATION_HAND,0,1,nil,CARD_GALAXYEYES_P_DRAGON) end
