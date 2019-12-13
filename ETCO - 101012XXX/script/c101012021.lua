@@ -71,7 +71,7 @@ function s.tg(e,c)
 	return c:IsSetCard(0x137) and c~=e:GetHandler()
 end
 function s.cfilter(c,tp)
-	return c:IsPreviousLocation(LOCATION_ONFIELD) and c:GetPreviousControler()~=tp and c:IsReason(REASON_BATTLE+REASON_EFFECT)
+	return c:IsPreviousLocation(LOCATION_ONFIELD) and c:GetPreviousControler()==1-tp and c:IsReason(REASON_BATTLE+REASON_EFFECT)
 end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)
