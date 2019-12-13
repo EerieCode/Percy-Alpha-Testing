@@ -26,23 +26,15 @@ function s.initial_effect(c)
 	e2:SetCountLimit(1,id+100)
 	e2:SetCondition(s.negcon1)
 	e2:SetCost(s.negcost)
-	e2:SetTarget(s.negtg1)
+	e2:SetTarget(s.negtg)
 	e2:SetOperation(s.negop1)
 	c:RegisterEffect(e2)
 	--Negate Monster
-	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,2))
-	e2:SetCategory(CATEGORY_NEGATE)
-	e2:SetType(EFFECT_TYPE_QUICK_O)
-	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	e2:SetCode(EVENT_CHAINING)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetCountLimit(1,id+200)
-	e2:SetCondition(s.negcon1)
-	e2:SetCost(s.negcost)
-	e2:SetTarget(s.negtg)
-	e2:SetOperation(s.negop)
-	c:RegisterEffect(e2)
+	local e3=e2:Clone()
+	e3:SetDescription(aux.Stringid(id,2))
+	e3:SetCountLimit(1,id+200)
+	e3:SetCondition(s.negcon2)
+	c:RegisterEffect(e3)
 end
 s.listed_names={40428851}
 s.listed_series={0x137}
@@ -63,10 +55,6 @@ end
 function s.negcon1(e,tp,eg,ep,ev,re,r,rp)
 	return re:IsHasType(EFFECT_TYPE_ACTIVATE) and Duel.IsChainNegatable(ev)
 end
-function s.negcon2(e,tp,eg,ep,ev,re,r,rp)
-	return re:IsActiveType(TYPE_MONSTER) and Duel.IsChainNegatable(ev)
-		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,40428851),tp,LOCATION_ONFIELD,0,1,nil)
-end
 function s.cfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x137) and c:IsType(TYPE_CONTINUOUS) and c:IsAbleToGraveAsCost()
 end
@@ -83,3 +71,9 @@ end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateActivation(ev)
 end
+function s.negcon2(e,tp,eg,ep,ev,re,r,rp)
+	return re:IsActiveType(TYPE_MONSTER) and Duel.IsChainNegatable(ev)
+		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,40428851),tp,LOCATION_ONFIELD,0,1,nil)
+end
+
+
