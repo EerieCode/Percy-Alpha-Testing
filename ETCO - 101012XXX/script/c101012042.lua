@@ -59,12 +59,12 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.spcheck(e,tp)
 	return	function(c)
-				return tc:IsCanBeSpecialSummoned(e,0,tp,false,false) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+				return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 			end
 end
 function s.spop(tp)
 	return	function(c)
-				return Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+				return Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
 			end
 end
 function s.indcon(e,tp,eg,ep,ev,re,r,rp)
