@@ -3,7 +3,7 @@
 --Scripted by Larry126
 local s,id=GetID()
 function s.initial_effect(c)
-	--atk
+	--special summon and atk
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_ATKCHANGE)

@@ -31,7 +31,6 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 	--Negate Monster
 	local e3=e2:Clone()
-	e3:SetDescription(aux.Stringid(id,2))
 	e3:SetCountLimit(1,id+200)
 	e3:SetCondition(s.negcon2)
 	c:RegisterEffect(e3)

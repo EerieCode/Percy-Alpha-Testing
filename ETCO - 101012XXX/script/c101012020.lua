@@ -35,7 +35,7 @@ function s.initial_effect(c)
 	e3:SetCondition(s.condition)
 	e3:SetValue(aux.indoval)
 	c:RegisterEffect(e3)
-	--NTR
+	--Special Summon the destroyed monster
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(id,1))
 	e4:SetCategory(CATEGORY_SPECIAL_SUMMON)
