@@ -1,5 +1,5 @@
 --宣告者の神巫
---Herald Diviner
+--Diviner of the Heralds
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
