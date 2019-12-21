@@ -46,7 +46,7 @@ function s.concon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2
 end
 function s.confilter(c,atk)
-	return c:IsFaceup() and c:GetAttack()<atk and c:IsControlerCanBeChanged()
+	return c:IsFaceup() and c:GetAttack()<=atk and c:IsControlerCanBeChanged()
 end
 function s.contg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local c=e:GetHandler()
