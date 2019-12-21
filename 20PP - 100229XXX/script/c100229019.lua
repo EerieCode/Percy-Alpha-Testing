@@ -28,7 +28,7 @@ function s.initial_effect(c)
 	local e3=e2:Clone()
 	e3:SetCode(EVENT_SUMMON_SUCCESS)
 	c:RegisterEffect(e3)
-enda
+end
 s.scfilter=aux.FilterFaceupFunction(Card.IsAttribute,ATTRIBUTE_WATER)
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.scfilter,tp,LOCATION_MZONE,LOCATION_MZONE,2,nil)
