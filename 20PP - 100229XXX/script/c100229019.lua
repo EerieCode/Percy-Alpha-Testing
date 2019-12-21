@@ -25,10 +25,13 @@ function s.initial_effect(c)
 	e2:SetTarget(s.settg)
 	e2:SetOperation(s.setop)
 	c:RegisterEffect(e2)
-end
-s.cfilter=aux.FilterFaceupFunction(Card.IsAttribute,ATTRIBUTE_WATER)
+	local e3=e2:Clone()
+	e3:SetCode(EVENT_SUMMON_SUCCESS)
+	c:RegisterEffect(e3)
+enda
+s.scfilter=aux.FilterFaceupFunction(Card.IsAttribute,ATTRIBUTE_WATER)
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,2,nil)
+	return Duel.IsExistingMatchingCard(s.scfilter,tp,LOCATION_MZONE,LOCATION_MZONE,2,nil)
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and chkc:IsFaceup() end
