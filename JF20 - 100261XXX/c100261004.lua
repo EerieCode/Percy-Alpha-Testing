@@ -32,7 +32,7 @@ end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
     local tc=Duel.GetFirstTarget()
-    if not c:IsRelateToEffect(e) or tc:IsFacedown() or not tc:IsRelateToEffect(e) then return end
+    if not c:IsRelateToEffect(e) or not tc:IsRelateToEffect(e) then return end
     local e0=Effect.CreateEffect(c)
     e0:SetType(EFFECT_TYPE_SINGLE)
     e0:SetCode(EFFECT_ATTACK_COST)
