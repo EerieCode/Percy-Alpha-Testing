@@ -1,4 +1,4 @@
---
+--変容王ヘル・ゲル
 --Morph King Stygi-Gel
 --Scripted by AlphaKretin
 local s,id=GetID()
