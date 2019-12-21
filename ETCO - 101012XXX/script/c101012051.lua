@@ -23,14 +23,14 @@ function s.initial_effect(c)
 	e2:SetCategory(CATEGORY_DESTROY)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_MZONE)
-	e2:SetCountLimit(1,id+1)
+	e2:SetCountLimit(1,id+100)
 	e2:SetTarget(s.destg)
 	e2:SetOperation(s.desop)
 	c:RegisterEffect(e2)
 end
 s.listed_series={0x23b}
-function s.lfilter(c)
-	return c:IsSetCard(0x23b,lc,SUMMON_TYPE_LINK)
+function s.lfilter(c,lc,tp)
+	return c:IsSetCard(0x23b,lc,SUMMON_TYPE_LINK,tp)
 end
 function s.lcheck(g,lc)
 	return g:IsExists(s.lfilter,1,nil,lc)
@@ -44,40 +44,47 @@ end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
     local c=e:GetHandler()
     local zones={}
-    zones[0]=c:GetLinkedZone(0)&0x1f
-    zones[1]=c:GetLinkedZone(1)&0x1f
-    if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp,tp,zones) or Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp,1-tp,zones) end
+    zones[0]=Duel.GetLinkedZone(0)&0x1f
+    zones[1]=Duel.GetLinkedZone(1)&0x1f
+    if chk==0 then return Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp,tp,zones) 
+		or Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp,1-tp,zones) end
     Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_GRAVE)
 end
 function s.rescon(zones,ft)
-    return function(sg,e,tp,mg)
-	return sg:FilterCount(s.spfilter,nil,e,tp,tp,zones)<=ft[tp] and sg:FilterCount(s.spfilter,nil,e,tp,1-tp,zones)<=ft[1-tp] and #sg<=(ft[0]+ft[1])  end
+    return	function(sg,e,tp,mg)
+				local c0=sg:FilterCount(s.spfilter,nil,e,tp,0,zones)
+				local c1=sg:FilterCount(s.spfilter,nil,e,tp,1,zones)
+				return c0<=ft[0] and c1<=ft[1] and #sg<=(ft[0]+ft[1])
+	end
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
     local ft={}
 	local zones={}
-	zones[0]=c:GetLinkedZone(0)&0x1f
-    zones[1]=c:GetLinkedZone(1)&0x1f
+	zones[0]=Duel.GetLinkedZone(0)&0x1f
+    zones[1]=Duel.GetLinkedZone(1)&0x1f
     ft[tp]=Duel.GetLocationCount(tp,LOCATION_MZONE,tp,LOCATION_REASON_TOFIELD,zones[tp])
     ft[1-tp]=Duel.GetLocationCount(tp,LOCATION_MZONE,1-tp,LOCATION_REASON_TOFIELD,zones[1-tp])
-    local g=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.spfilter),tp,LOCATION_HAND+LOCATION_GRAVE,0,nil,e,tp,tp,zones)
-    g:Merge(Duel.GetMatchingGroup(aux.NecroValleyFilter(s.spfilter),tp,LOCATION_HAND+LOCATION_GRAVE,0,nil,e,tp,1-tp,zones))
+    local g=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.spfilter),tp,LOCATION_HAND+LOCATION_GRAVE,0,nil,e,tp,tp,zones)+Duel.GetMatchingGroup(aux.NecroValleyFilter(s.spfilter),tp,LOCATION_HAND+LOCATION_GRAVE,0,nil,e,tp,1-tp,zones)
+	local sg=nil
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then 
-		local sg=aux.SelectUnselectGroup(g,e,tp,1,1,s.rescon(zones,ft),1,tp,HINTMSG_SPSUMMON)
-		else sg=aux.SelectUnselectGroup(g,e,tp,1,2,s.rescon(zones,ft),1,tp,HINTMSG_SPSUMMON)
+		sg=aux.SelectUnselectGroup(g,e,tp,1,1,s.rescon(zones,ft),1,tp,HINTMSG_SPSUMMON)
+	else 
+		sg=aux.SelectUnselectGroup(g,e,tp,1,2,s.rescon(zones,ft),1,tp,HINTMSG_SPSUMMON)
 	end
     for tc in aux.Next(sg) do
         local p
-        if s.spfilter(tc,e,tp,tp,zones) and ft[tp]>0 and s.spfilter(tc,e,tp,1-tp,zones) and ft[1-tp]>0 then
+		local b1=s.spfilter(tc,e,tp,tp,zones) and ft[tp]>0
+		local b2=s.spfilter(tc,e,tp,1-tp,zones) and ft[1-tp]>0
+        if b1 and b2 then
             p=Duel.SelectYesNo(tp,aux.Stringid(id,2)) and 1-tp or tp
-        elseif s.spfilter(tc,e,tp,tp,zones) and ft[tp]>0 then
+        elseif b1 then
             p=tp
         else
             p=1-tp
         end
-        if Duel.SpecialSummonStep(tc,0,tp,p,false,false,POS_FACEUP,zones)~=0 then
+        if Duel.SpecialSummonStep(tc,0,tp,p,false,false,POS_FACEUP,zones[p])~=0 then
             ft[p]=ft[p]-1
         end
     end
