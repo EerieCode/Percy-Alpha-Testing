@@ -1,5 +1,5 @@
 --エアー・トルピード
---Air Torpedo
+--Torpedo Take Down
 --Scripted by Larry126
 local s,id=GetID()
 function s.initial_effect(c)
@@ -20,7 +20,7 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_GRAVE)
 	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e2:SetCountLimit(1,id)
-	e2:SetCode(s.drcost)
+	e2:SetCost(s.drcost)
 	e2:SetTarget(s.drtg)
 	e2:SetOperation(s.drop)
 	c:RegisterEffect(e2)
