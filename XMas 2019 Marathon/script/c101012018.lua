@@ -1,6 +1,6 @@
 --ランタン・シャーク
 --Lantern Shark
---Scripted by AlphaKretin
+--Scripted by AlphaKretin, Eerie Code and edo9300
 local s,id=GetID()
 function s.initial_effect(c)
 	--special summon
@@ -16,6 +16,21 @@ function s.initial_effect(c)
 	local e2=e1:Clone()
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e2)
+	--xyzlv
+	local e3=Effect.CreateEffect(c)
+    e3:SetType(EFFECT_TYPE_SINGLE)
+    e3:SetCode(EFFECT_XYZ_LEVEL)
+    e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+    e3:SetRange(LOCATION_MZONE)
+    e3:SetValue(function(e)return e:GetHandler():GetLevel()<<16|3 end)
+    c:RegisterEffect(e3)
+    local e4=Effect.CreateEffect(c)
+    e4:SetType(EFFECT_TYPE_SINGLE)
+    e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+    e4:SetCode(511000189)
+    e4:SetValue(5)
+    e4:SetRange(LOCATION_MZONE)
+    c:RegisterEffect(e4)
 end
 function s.spfilter(c,e,tp)
 	return (c:IsLevel(3) or c:IsLevel(4) or c:IsLevel(5)) and c:IsAttribute(ATTRIBUTE_WATER)
@@ -33,4 +48,16 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
 	end
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,1))
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+	e1:SetTargetRange(1,0)
+	e1:SetTarget(s.splimit)
+	e1:SetReset(RESET_PHASE+PHASE_END)
+	Duel.RegisterEffect(e1,tp)
+end
+function s.splimit(e,c)
+	return not c:IsType(TYPE_XYZ) and c:IsLocation(LOCATION_EXTRA)
 end
