@@ -18,19 +18,19 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 	--xyzlv
 	local e3=Effect.CreateEffect(c)
-    e3:SetType(EFFECT_TYPE_SINGLE)
-    e3:SetCode(EFFECT_XYZ_LEVEL)
-    e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-    e3:SetRange(LOCATION_MZONE)
-    e3:SetValue(function(e)return e:GetHandler():GetLevel()<<16|3 end)
-    c:RegisterEffect(e3)
-    local e4=Effect.CreateEffect(c)
-    e4:SetType(EFFECT_TYPE_SINGLE)
-    e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-    e4:SetCode(511000189)
-    e4:SetValue(5)
-    e4:SetRange(LOCATION_MZONE)
-    c:RegisterEffect(e4)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_XYZ_LEVEL)
+	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetValue(s.xyzlv)
+	c:RegisterEffect(e3)
+	local e4=Effect.CreateEffect(c)
+	e4:SetType(EFFECT_TYPE_SINGLE)
+	e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e4:SetCode(511000189)
+	e4:SetValue(4)
+	e4:SetRange(LOCATION_MZONE)
+	c:RegisterEffect(e4)
 end
 function s.spfilter(c,e,tp)
 	return (c:IsLevel(3) or c:IsLevel(4) or c:IsLevel(5)) and c:IsAttribute(ATTRIBUTE_WATER)
@@ -60,4 +60,11 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.splimit(e,c)
 	return not c:IsType(TYPE_XYZ) and c:IsLocation(LOCATION_EXTRA)
+end
+function s.xyzlv(e,c,rc)
+	if rc:IsAttribute(ATTRIBUTE_WATER) then
+		return (5<<16)|3
+	else
+		return e:GetHandler():GetLevel()
+	end
 end
