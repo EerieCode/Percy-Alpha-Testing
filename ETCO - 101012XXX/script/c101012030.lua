@@ -35,17 +35,26 @@ function s.initial_effect(c)
 end
 s.listed_series={0x23c}
 function s.rescon(sg,tp)
-	return aux.ChkfMMZ(1)(sg,nil,tp) and sg:GetSum(Card.GetLevel)>=8
+	local lv=sg:GetSum(Card.GetLevel)
+	return aux.ChkfMMZ(1)(sg,nil,tp) and lv>=8 and not sg:IsExists(s.rescheck,1,nil,lv)
+end
+function s.rescheck(c,lv)
+	return lv-c:GetLevel()>=8
+end
+function s.cfilter(c)
+	return c:IsReleasable() and c:IsHasLevel()
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckReleaseGroupCost(tp,Card.IsHasLevel,1,false,s.rescon,nil) end
-	local rg=Duel.SelectReleaseGroupCost(tp,Card.IsHasLevel,1,99,false,s.rescon,nil)
+	--if chk==0 then return Duel.CheckReleaseGroupCost(tp,Card.IsHasLevel,1,false,s.rescon,nil) end
+	--local rg=Duel.SelectReleaseGroupCost(tp,Card.IsHasLevel,1,99,false,s.rescon,nil)
+	local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_MZONE,0,nil)
+	if chk==0 then return aux.SelectUnselectGroup(g,e,tp,1,#g,s.rescon,0) end
+	local rg=aux.SelectUnselectGroup(g,e,tp,1,#g,s.rescon,1,tp,HINTMSG_RELEASE)
 	Duel.Release(rg,REASON_COST)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and c:IsCanBeSpecialSummoned(e,0,tp,false,false) end
+	if chk==0 then return c:IsCanBeSpecialSummoned(e,0,tp,false,false) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
