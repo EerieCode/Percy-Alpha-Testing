@@ -16,7 +16,10 @@ end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then
         local ct=Duel.GetMatchingGroupCount(Card.IsCode,tp,LOCATION_GRAVE,0,nil,id)+3
-        return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=ct end
+        if Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)<ct then return false end
+        local g=Duel.GetDecktopGroup(tp,ct)
+        local result=g:FilterCount(Card.IsAbleToHand,nil)>0
+        return result and Duel.IsPlayerCanDiscardDeck(tp,ct) end
     end
 end
 function s.filter(c)
