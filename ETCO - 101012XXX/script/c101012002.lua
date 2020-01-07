@@ -36,6 +36,10 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_series={0x23b}
+function s.atktg(e,c)
+    local lg=c:GetLinkedGroup()
+    return not c:IsSetCard(0x23b) and lg and lg:IsContains(e:GetHandler())
+end
 function s.cfilter(c,tp)
 	return c:IsReason(REASON_BATTLE+REASON_EFFECT) and c:IsPreviousSetCard(0x23b)
 		and c:GetPreviousTypeOnField()&(TYPE_MONSTER+TYPE_LINK)==(TYPE_MONSTER+TYPE_LINK)
@@ -52,10 +56,6 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsRelateToEffect(e) then
 		Duel.Destroy(e:GetHandler(),REASON_EFFECT)
 	end
-end
-function s.atktg(e,c)
-	local lg=c:GetLinkedGroup()
-	return lg and lg:IsContains(e:GetHandler())
 end
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
 	return r&REASON_EFFECT+REASON_BATTLE~=0
