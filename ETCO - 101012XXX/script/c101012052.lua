@@ -14,7 +14,7 @@ function s.initial_effect(c)
 	e1:SetCountLimit(1,id)
 	e1:SetCondition(s.condition)
 	e1:SetTarget(s.target)
-	e1:SetOperation(s.spop)
+	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
 	--special summon from grave
 	local e2=Effect.CreateEffect(c)
