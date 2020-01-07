@@ -42,7 +42,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end 
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
-	local ge1=Effect.GlobalEffect()
+	local ge1=Effect.CreateEffect(e:GetHandler())
 	ge1:SetDescription(aux.Stringid(id,2))
 	ge1:SetType(EFFECT_TYPE_FIELD)
 	ge1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
