@@ -1,5 +1,6 @@
 --アーマード・ビットロン
 --Armored Bitron
+--Scripted by Larry126
 local s,id=GetID()
 function s.initial_effect(c)
 	--spsummon from deck
@@ -41,32 +42,29 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end 
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	local ge1=Effect.GlobalEffect()
+	ge1:SetDescription(aux.Stringid(id,2))
+	ge1:SetType(EFFECT_TYPE_FIELD)
+	ge1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+	ge1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+	ge1:SetTargetRange(1,0)
+	ge1:SetTarget(s.splimit)
+	ge1:SetReset(RESET_PHASE+PHASE_END)
+	Duel.RegisterEffect(ge1,tp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local tc=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp):GetFirst()
 	if tc and Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP) then
-		local c=e:GetHandler()
-		local e1=Effect.CreateEffect(c)
+		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_DISABLE)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 		tc:RegisterEffect(e1,true)
-		local e2=Effect.CreateEffect(c)
-		e2:SetType(EFFECT_TYPE_SINGLE)
+		local e2=e1:Clone()
 		e2:SetCode(EFFECT_DISABLE_EFFECT)
-		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
 		tc:RegisterEffect(e2,true)
+		Duel.SpecialSummonComplete()
 	end
-	Duel.SpecialSummonComplete()
-	local e3=Effect.CreateEffect(e:GetHandler())
-	e3:SetType(EFFECT_TYPE_FIELD)
-	e3:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
-	e3:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
-	e3:SetDescription(aux.Stringid(id,2))
-	e3:SetTargetRange(1,0)
-	e3:SetTarget(s.splimit)
-	e3:SetReset(RESET_PHASE+PHASE_END)
-	Duel.RegisterEffect(e3,tp)
 end
 function s.splimit(e,c,sump,sumtype,sumpos,targetp,se)
 	return not c:IsRace(RACE_CYBERSE)
