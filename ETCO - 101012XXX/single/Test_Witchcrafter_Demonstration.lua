@@ -1,0 +1,32 @@
+--Created using senpaizuri's Puzzle Maker (updated by Naim & Larry126)
+Debug.ReloadFieldBegin(DUEL_ATTACK_FIRST_TURN,4)
+Debug.SetPlayerInfo(0,8000,0,0)
+Debug.SetPlayerInfo(1,8000,0,0)
+
+--Main Deck
+Debug.AddCard(12800777,0,0,LOCATION_DECK,0,POS_FACEDOWN)
+--Hand
+Debug.AddCard(86395581,0,0,LOCATION_HAND,0,POS_FACEDOWN)
+Debug.AddCard(12800777,0,0,LOCATION_HAND,0,POS_FACEDOWN)
+Debug.AddCard(84523092,0,0,LOCATION_HAND,0,POS_FACEDOWN)
+Debug.AddCard(97268402,0,0,LOCATION_HAND,0,POS_FACEDOWN)
+--MMZ
+Debug.AddCard(97268402,0,0,LOCATION_MZONE,0,1,true)
+Debug.AddCard(97268402,0,0,LOCATION_MZONE,1,1,true)
+Debug.AddCard(97268402,0,0,LOCATION_MZONE,2,1,true)
+Debug.AddCard(97268402,0,0,LOCATION_MZONE,3,1,true)
+
+Debug.AddCard(54959865,1,1,LOCATION_MZONE,3,1,true)
+Debug.AddCard(54959865,1,1,LOCATION_MZONE,2,1,true)
+--GY
+Debug.AddCard(10877309,0,0,LOCATION_GRAVE,0,POS_FACEUP)
+Debug.AddCard(84523092,0,0,LOCATION_GRAVE,0,POS_FACEUP)
+--Spell & Trap Zones
+Debug.AddCard(10877309,0,0,LOCATION_SZONE,2,10)
+Debug.AddCard(59919307,0,0,LOCATION_SZONE,0,10)
+--Hand
+Debug.AddCard(77625948,1,1,LOCATION_HAND,0,POS_FACEDOWN)
+--Spell & Trap Zones
+Debug.AddCard(24224830,1,1,LOCATION_SZONE,3,10)
+Debug.ReloadFieldEnd()
+--aux.BeginPuzzle()
