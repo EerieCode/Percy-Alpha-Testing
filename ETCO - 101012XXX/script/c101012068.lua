@@ -28,13 +28,13 @@ function s.tktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
 end
-s.eyefilter=aux.FaceupFilterFunction(Card.IsCode,CARD_EVIL_EYE_SELENE)
+s.eyefilter=aux.FilterFaceupFunction(Card.IsCode,CARD_EVIL_EYE_SELENE)
 function s.tkop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0x129,TYPES_TOKEN,400,400,1,RACE_FIEND,ATTRIBUTE_DARK,POS_FACEUP) then
 		local g=Group.FromCards(Duel.CreateToken(tp,id+1))
 		local ct=1
-		if Duel.IsExistingMatchingCard(s.eyefilter,tp,LOCATION_SZONE,0,1,nil) then
+		if Duel.IsExistingMatchingCard(s.eyefilter,tp,LOCATION_SZONE,0,1,nil) and Duel.GetLocationCount(tp,LOCATION_MZONE)>1 then
 			ct=Duel.AnnounceNumber(tp,1,2)
 		end
 		if ct==2 then
@@ -51,6 +51,9 @@ function s.tkop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetTarget(s.splimit)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
+end
+function s.splimit(e,c,sump,sumtype,sumpos,targetp)
+	return not c:IsRace(RACE_FIEND)
 end
 function s.tgop(e,tp,eg,ep,ev,re,r,rp)
     --cannot be target
