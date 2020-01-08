@@ -1,5 +1,5 @@
---
---Gizmek Inari
+--機巧狐－宇迦之御魂稲荷
+--Gizmek Inari, the Grain Storage Fox
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
@@ -49,8 +49,8 @@ end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and c:IsCanBeSpecialSummoned(e,0,tp,false,false) end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,0)
+		and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,LOCATION_HAND)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -62,7 +62,7 @@ function s.tgfilter(c,e,tp)
 	return c:IsFaceup() and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,c:GetAttribute())
 end
 function s.spfilter(c,e,tp,att)
-	return c:GetAttack()==c:GetDefense() and c:IsAttribute(att) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:GetAttack()==c:GetDefense() and c:IsAttribute(att) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
 end
 function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and s.tgfilter(chkc,e,tp) end
