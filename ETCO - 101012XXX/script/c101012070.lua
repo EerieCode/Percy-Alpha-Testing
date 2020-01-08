@@ -62,7 +62,7 @@ function s.filter(c,e,tp,m,m2,ft)
 		mg=mg:Filter(c.mat_filter,nil)
 	end
 	if ft>0 then
-		res=mg:CheckWithSumEqual(Card.GetOriginalLevel,c:GetOriginalLevel()*2,2,99,c)
+		res=mg:CheckWithSumEqual(Card.GetOriginalLevel,c:GetOriginalLevel()*2,1,99,c)
 	else
 		res=mg:IsExists(s.filterf,1,nil,tp,mg,c)
 	end
@@ -71,7 +71,7 @@ end
 function s.filterf(c,tp,mg,rc)
 	if c:IsControler(tp) and c:IsLocation(LOCATION_MZONE) and c:GetSequence()<5 then
 		Duel.SetSelectedCard(c)
-		return mg:CheckWithSumEqual(Card.GetOriginalLevel,rc:GetOriginalLevel()*2,1,99,rc)
+		return mg:CheckWithSumEqual(Card.GetOriginalLevel,rc:GetOriginalLevel()*2,0,99,rc)
 	else return false end
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
