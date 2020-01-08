@@ -40,7 +40,7 @@ end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_MZONE,nil)
 	local atk=Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsType,TYPE_RITUAL),tp,LOCATION_MZONE,LOCATION_MZONE,nil)*(-500)
-	if #g==0 or ct==0 then return end
+	if #g==0 or atk==0 then return end
 	g:ForEach(s.op,e:GetHandler(),atk)
 end
 function s.op(tc,c,atk)
@@ -48,7 +48,7 @@ function s.op(tc,c,atk)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_UPDATE_ATTACK)
 	e1:SetValue(atk)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 	tc:RegisterEffect(e1)
 end
 function s.filter(c,e,tp,m,m2,ft)
