@@ -16,24 +16,23 @@ function s.initial_effect(c)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 	--If you control a "Witchcrafter" monster, recycle this card
-    local e2=Effect.CreateEffect(c)
-    e2:SetCategory(CATEGORY_TOHAND+CATEGORY_LEAVE_GRAVE)
-    e2:SetDescription(aux.Stringid(id,0))
-    e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-    e2:SetCode(EVENT_PHASE+PHASE_END)
-    e2:SetRange(LOCATION_GRAVE)
-    e2:SetCountLimit(1,id)
-    e2:SetCondition(s.thcon)
-    e2:SetTarget(s.thtg)
-    e2:SetOperation(s.thop)
-    c:RegisterEffect(e2)
+	local e2=Effect.CreateEffect(c)
+	e2:SetCategory(CATEGORY_TOHAND+CATEGORY_LEAVE_GRAVE)
+	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e2:SetCode(EVENT_PHASE+PHASE_END)
+	e2:SetRange(LOCATION_GRAVE)
+	e2:SetCountLimit(1,id)
+	e2:SetCondition(s.thcon)
+	e2:SetTarget(s.thtg)
+	e2:SetOperation(s.thop)
+	c:RegisterEffect(e2)
 end
 	--Part of "Witchcrafter" archetype
 s.listed_series={0x128}
 
-	--Check for "Witchcrafter" monster
 function s.filter(c,e,tp)
-	return c:IsSetCard(0x128) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
+	return c:IsSetCard(0x128) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 	--Activation legality
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
