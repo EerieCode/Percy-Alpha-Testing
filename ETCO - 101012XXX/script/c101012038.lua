@@ -44,17 +44,15 @@ function s.seqop(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.MoveSequence(c,seq2)
 	if c:GetSequence()==seq2 and seq1~=seq2 then
 		Duel.BreakEffect()
+		local diff=math.abs(seq1-seq2)
 		if seq1>seq2 then
-			seq1,seq2=seq2,seq1
-		end
-		dg:Merge(c:GetColumnGroup()) --and the group on its current column
-		for i=seq1,seq2 do
-			--do here the operations to get each of these sequence's column group
+			dg:Merge(c:GetColumnGroup(nil,diff))
+		else
+			dg:Merge(c:GetColumnGroup(diff,nil))
 		end
 		if #dg>0 then
 			Duel.BreakEffect()
 			Duel.Destroy(dg,REASON_EFFECT)
 		end
 	end
-	--currently it only destroys cards in its current and its previous column, nothing in between
 end
