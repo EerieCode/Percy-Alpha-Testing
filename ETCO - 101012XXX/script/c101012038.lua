@@ -18,7 +18,7 @@ function s.initial_effect(c)
 	e3:SetDescription(aux.Stringid(id,0))
 	e3:SetType(EFFECT_TYPE_IGNITION)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetCountLimit(1)
+	--e3:SetCountLimit(1)
 	e3:SetTarget(s.seqtg)
 	e3:SetOperation(s.seqop)
 	c:RegisterEffect(e3)
@@ -39,15 +39,21 @@ function s.seqop(e,tp,eg,ep,ev,re,r,rp,chk)
 	if not c:IsRelateToEffect(e) or c:IsControler(1-tp) or c:IsImmuneToEffect(e) or Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOZONE)
 	local seq1=c:GetSequence() --register the sequence it comes from
-	local prevGroup=c:GetColumnGroup() --and the group of cards there
+	local dg=c:GetColumnGroup() --and the group of cards there
 	local seq2=math.log(Duel.SelectDisableField(tp,1,LOCATION_MZONE,0,0),2) --where it goes to
 	Duel.MoveSequence(c,seq2)
-	if c:GetSequence()==seq2 then
+	if c:GetSequence()==seq2 and seq1~=seq2 then
 		Duel.BreakEffect()
-		local currGroup=c:GetColumnGroup() --the group in the current collumn
-		if #prevGroup>0 or #currGroup>0 then
+		if seq1>seq2 then
+			seq1,seq2=seq2,seq1
+		end
+		dg:Merge(c:GetColumnGroup()) --and the group on its current column
+		for i=seq1,seq2 do
+			--do here the operations to get each of these sequence's column group
+		end
+		if #dg>0 then
 			Duel.BreakEffect()
-			Duel.Destroy(prevGroup+currGroup,REASON_EFFECT)
+			Duel.Destroy(dg,REASON_EFFECT)
 		end
 	end
 	--currently it only destroys cards in its current and its previous column, nothing in between
