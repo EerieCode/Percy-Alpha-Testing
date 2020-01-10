@@ -11,7 +11,7 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetHintTiming(0,0x21c0)
-	e1:SetCountLimit(1,id+1)
+	e1:SetCountLimit(1,id)
 	e1:SetCondition(s.condition)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.activate)
@@ -73,7 +73,7 @@ function s.edfilter(c,p)
 	return c:GetSummonPlayer()==p and c:IsPreviousLocation(LOCATION_EXTRA)
 end
 function s.setcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.edfilter,1,nil,1-tp)
+	return eg:IsExists(s.edfilter,1,nil,1-tp) and aux.exccon(e)
 end
 function s.settg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsSSetable() end
