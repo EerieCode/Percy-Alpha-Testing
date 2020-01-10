@@ -43,7 +43,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		e:SetCategory(CATEGORY_TODECK+CATEGORY_SEARCH)
 		e:SetProperty(EFFECT_FLAG_CARD_TARGET)
 		e:SetOperation(s.thop)
-		s.sptg(e,tp,eg,ep,ev,re,r,rp,1)
+		s.thtg(e,tp,eg,ep,ev,re,r,rp,1)
 	else
 		e:SetCategory(0)
 		e:SetProperty(0)
@@ -54,7 +54,7 @@ function s.tdfilter(c)
 	return c:IsFaceup() and c:IsRace(RACE_SPELLCASTER)
 end
 function s.thfilter(c)
-	return c:IsSetCard(0x128) and c:IsAbleToHand()
+	return c:IsSetCard(0x128) and c:IsType(TYPE_SPELL) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE+LOCATION_REMOVED) and chkc:IsControler(tp) and s.tdfilter(chkc) end
@@ -81,7 +81,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.thfilter2(c)
-	return c:IsSetCard(0x128) and c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
+	return c:IsSetCard(0x128) and c:IsType(TYPE_SPELL) and c:IsFaceup() and c:IsAbleToHand()
 end
 function s.thcheck(sg,e,tp)
     return sg:GetClassCount(Card.GetCode)==#sg
@@ -89,11 +89,12 @@ end
 function s.thtg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_REMOVED) and chkc:IsControler(tp) and s.thfilter2(chkc,e,tp) end
 	local g=Duel.GetMatchingGroup(s.thfilter2,tp,LOCATION_REMOVED,0,nil)
+	Debug.Message(#g)
 	if chk==0 then return aux.SelectUnselectGroup(g,e,tp,1,99,s.thcheck,0) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=aux.SelectUnselectGroup(g,e,tp,1,99,s.thcheck,1,tp,HINTMSG_SPSUMMON)
 	Duel.SetTargetCard(g)
-	DDuel.SetOperationInfo(0,CATEGORY_TOHAND,g,g:GetCount(),0,0)
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,g:GetCount(),0,0)
 end
 function s.thop2(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS):Filter(Card.IsRelateToEffect,nil,e)
