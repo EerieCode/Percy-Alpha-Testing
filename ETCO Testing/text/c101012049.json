@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Linkross"
+  },
+  "Effect": {
+    "en": "1 Link-2 or higher Link Monster\r\nIf this card is Link Summoned: You can Special Summon \"Link Tokens\" (Cyberse/LIGHT/Level 1/ATK 0/DEF 0), up to the Link Rating of the material used for this card's Link Summon, also you cannot use \"Link Tokens\" as Link Material for the rest of this turn. You can only use this effect of \"Linkross\" once per turn."
+  },
+  "String": {
+    "en": [
+      "Special Summon",
+      "Affected by \"Linkross\"",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012030,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "EARTH"
+  ],
+  "Race": [
+    "Beast-Warrior"
+  ],
+  "Rating": 8,
+  "ATK": "3000",
+  "DEF": "1200",
+  "Series": [
+    "Barbaros"
+  ],
+  "CategoryNumber": 17072128
+}

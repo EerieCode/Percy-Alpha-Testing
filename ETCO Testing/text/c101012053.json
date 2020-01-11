@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Gouki The Powerload Ogre"
+  },
+  "Effect": {
+    "en": "2+ Warrior monsters\r\nGains ATK equal to the total Link Rating of all other Link Monsters you control x 200. This Link Summoned card is unaffected by other cards' effects. You can Tribute 1 \"Gouki\" Link Monster, then target cards on the field, up to that monster's Link Rating; destroy them. You can only use this effect of \"Gouki The Powerload Ogre\" once per turn."
+  },
+  "String": {
+    "en": [
+      "Destroy cards",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

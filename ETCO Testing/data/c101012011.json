@@ -1,0 +1,22 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012011,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "WATER"
+  ],
+  "Race": [
+    "Aqua"
+  ],
+  "Rating": 3,
+  "ATK": "1500",
+  "DEF": "400",
+  "Series": [
+    "Nemesis"
+  ],
+  "CategoryNumber": 262192
+}

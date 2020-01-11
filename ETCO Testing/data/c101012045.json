@@ -1,0 +1,23 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012045,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect",
+    "Xyz"
+  ],
+  "Attribute": [
+    "EARTH"
+  ],
+  "Race": [
+    "Insect"
+  ],
+  "Rating": 4,
+  "ATK": "2200",
+  "DEF": "600",
+  "Series": [
+    "Envy"
+  ],
+  "CategoryNumber": 262144
+}

@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Magical Hound"
+  },
+  "Effect": {
+    "en": "If this card is in your hand or GY: You can target 1 face-up Spell/Trap your opponent controls; return it to the hand, and if you do, Special Summon this card.  You can only use this effect of \"Magical Hound once per Duel."
+  },
+  "String": {
+    "en": [
+      "Return a Spell/Trap to hand and Special Summon",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

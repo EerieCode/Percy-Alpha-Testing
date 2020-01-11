@@ -1,0 +1,19 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012001,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "WIND"
+  ],
+  "Race": [
+    "Cyberse"
+  ],
+  "Rating": 8,
+  "ATK": "2000",
+  "DEF": "2000",
+  "CategoryNumber": 262144
+}

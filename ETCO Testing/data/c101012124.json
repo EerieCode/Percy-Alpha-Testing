@@ -1,0 +1,24 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012124,
+  "ReleaseStatus": "OCG",
+  "Alias": 46647145,
+  "CardType": "Monster",
+  "Types": [
+    "Normal",
+    "Token"
+  ],
+  "Attribute": [
+    "DARK"
+  ],
+  "Race": [
+    "Machine"
+  ],
+  "Rating": 1,
+  "ATK": "0",
+  "DEF": "0",
+  "Series": [
+    "World Legacy"
+  ],
+  "CategoryNumber": 0
+}

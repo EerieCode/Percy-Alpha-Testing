@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Cutter Shark"
+  },
+  "Effect": {
+    "en": "You can target 1 WATER monster you control; Special Summon 1 Fish monster with the same Level, but with a different name, from your Deck, but for the rest of this turn, it cannot activate its effects, also you cannot Special Summon monsters from the Extra Deck, except Xyz Monsters. You can only use this effect of \"Cutter Shark\" once per turn. If this card is used for the Xyz Summon of a WATER monster, you can treat it as a Level 3 or 5 monster."
+  },
+  "String": {
+    "en": [
+      "Special Summon",
+      "Affected by \"Cutter Shark\"",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

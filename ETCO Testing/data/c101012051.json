@@ -1,0 +1,27 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012051,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect",
+    "Link"
+  ],
+  "Attribute": [
+    "DARK"
+  ],
+  "Race": [
+    "Warrior"
+  ],
+  "Rating": 3,
+  "ATK": "2800",
+  "LinkArrows": [
+    "Bottom-Center",
+    "Middle-Right",
+    "Top-Center"
+  ],
+  "Series": [
+    "Codebreaker"
+  ],
+  "CategoryNumber": 262145
+}

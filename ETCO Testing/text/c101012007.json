@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Noctovision Dragon"
+  },
+  "Effect": {
+    "en": "When your opponent activates a card or effect that targets a Set card(s) you control (Quick Effect): You can banish this card from your GY; negate that effect, also your opponent cannot target that Set card(s) with card effects for the rest of this turn. You can only use each of the following effects of \"Noctovision Dragon\" once per turn.\r\n● If a DARK Dragon monster(s) is Special Summoned to your field: You can Special Summon this card from your hand.\r\n● If this card is sent to the GY as Link Material: You can draw 1 card."
+  },
+  "String": {
+    "en": [
+      "Special Summon this",
+      "Draw 1 card",
+      "Affected by \"Noctovision Dragon\"",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

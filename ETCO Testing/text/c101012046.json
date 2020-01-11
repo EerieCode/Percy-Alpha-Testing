@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Accesscode Talker"
+  },
+  "Effect": {
+    "en": "2+ Effect Monsters\r\nIf this card is Link Summoned: You can target 1 Link Monster that was used as material for its Link Summon; this card gains ATK equal to that monster's Link Rating x 1000. You can banish 1 Link Monster from your field or GY; destroy 1 card your opponent controls, but for the rest of this turn, you cannot banish monsters with the same Attribute to activate the effect of \"Accesscode Talker\". Your opponent cannot activate cards or effects in response to the activation of this card's effects."
+  },
+  "String": {
+    "en": [
+      "Increase ATK",
+      "Destroy",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

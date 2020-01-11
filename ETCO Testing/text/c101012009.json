@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Archnemesis Eschatos"
+  },
+  "Effect": {
+    "en": "Cannot be Normal Summoned/Set. Must first be Special Summoned (from your hand) by banishing 3 face-up monsters with different Types you control and/or in your GY. Cannot be destroyed by card effects. You can declare 1 Type on the field; destroy all monsters on the field of that Type, also neither player can Special Summon monsters of that Type until the end of the next turn. You can only use this effect of Archnemesis Eschatos\" once per turn."
+  },
+  "String": {
+    "en": [
+      "Destroy",
+      "Affected by \"Archnemesis Eschatos\"",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

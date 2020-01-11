@@ -1,0 +1,22 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012002,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "DARK"
+  ],
+  "Race": [
+    "Warrior"
+  ],
+  "Rating": 4,
+  "ATK": "1800",
+  "DEF": "0",
+  "Series": [
+    "Codebreaker"
+  ],
+  "CategoryNumber": 16785920
+}

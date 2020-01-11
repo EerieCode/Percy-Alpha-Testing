@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Hoárr, Generaider Boss of Rumbling"
+  },
+  "Effect": {
+    "en": "You can only control 1 \"Hoárr, Generaider Boss of Rumbling\". Once per turn, if your opponent adds a card(s) from the Main Deck to the hand, except during the Draw Phase: You can make your opponent send 1 monster from their hand or field to the GY. When a card or effect is activated (Quick Effect): You can Tribute 2 \"Generaider\" monsters and/or Spellcaster monsters; negate the activation, and if you do, destroy that card. You can only use this effect of \"Hoárr, Generaider Boss of Rumbling\" once per turn."
+  },
+  "String": {
+    "en": [
+      "Make the opponent send 1 monster to the GY",
+      "Negate the activation",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

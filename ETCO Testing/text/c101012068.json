@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Evil Eye Manifestation"
+  },
+  "Effect": {
+    "en": "Special Summon 1 \"Familiar of the Evil Eye Token\" (Fiend/DARK/Level 1/ATK 400/DEF 400), or, if \"Evil Eye of Selene\" is in your Spell & Trap Zone, you can Special Summon 2 of them instead. For the rest of this turn after this card resolves, you cannot Special Summon monsters, except Fiend monsters. You can banish this card from your GY; your opponent cannot target \"Evil Eye\" Spells/Traps you control with card effects this turn. You can only use each effect of \"Evil Eye Manifestation\" once per turn."
+  },
+  "String": {
+    "en": [
+      "Special Summon",
+      "Prevent targeting",
+      "Affected by \"Evil Eye Manifestation\" (cannot Special Summon)",
+      "Affected by \"Evil Eye Manifestation\" (cannot target)",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

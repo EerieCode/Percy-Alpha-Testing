@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Stairs of Mail"
+  },
+  "Effect": {
+    "en": "During your Main Phase: You can discard 1 \"Tindangle\" card, then apply 1 of the following effects, but you cannot discard other cards with the same name with the effect of \"Stairs of Mail\" for the rest of this turn.\r\n● Change 1 face-down Defense Position monster you control to face-up Attack Position.\r\n● Change 1 face-up Attack Position monster you control to face-down Defense Position."
+  },
+  "String": {
+    "en": [
+      "Change from face-down Defense to face-up Attack position",
+      "Change from face-up Attack to face-down Defense position",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

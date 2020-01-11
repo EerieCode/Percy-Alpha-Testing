@@ -1,0 +1,19 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012037,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "LIGHT"
+  ],
+  "Race": [
+    "Dinosaur"
+  ],
+  "Rating": 1,
+  "ATK": "0",
+  "DEF": "0",
+  "CategoryNumber": 0
+}

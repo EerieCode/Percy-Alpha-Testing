@@ -1,0 +1,21 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012149,
+  "ReleaseStatus": "OCG",
+  "Alias": 48068379,
+  "CardType": "Monster",
+  "Types": [
+    "Normal",
+    "Token"
+  ],
+  "Attribute": [
+    "LIGHT"
+  ],
+  "Race": [
+    "Cyberse"
+  ],
+  "Rating": 1,
+  "ATK": "0",
+  "DEF": "0",
+  "CategoryNumber": 0
+}

@@ -1,0 +1,22 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012006,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "WATER"
+  ],
+  "Race": [
+    "Cyberse"
+  ],
+  "Rating": 4,
+  "ATK": "600",
+  "DEF": "2100",
+  "Series": [
+    "Marincess"
+  ],
+  "CategoryNumber": 8704
+}

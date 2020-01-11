@@ -1,0 +1,19 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012031,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "EARTH"
+  ],
+  "Race": [
+    "Machine"
+  ],
+  "Rating": 7,
+  "ATK": "2250",
+  "DEF": "2250",
+  "CategoryNumber": 4456448
+}
