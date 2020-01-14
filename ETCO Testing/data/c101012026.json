@@ -1,0 +1,22 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012026,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "DARK"
+  ],
+  "Race": [
+    "Dragon"
+  ],
+  "Rating": 4,
+  "ATK": "500",
+  "DEF": "1800",
+  "Series": [
+    "Dragonmaid"
+  ],
+  "CategoryNumber": 262672
+}

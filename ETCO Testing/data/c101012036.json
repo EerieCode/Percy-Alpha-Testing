@@ -1,0 +1,20 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012036,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect",
+    "Tuner"
+  ],
+  "Attribute": [
+    "WIND"
+  ],
+  "Race": [
+    "Zombie"
+  ],
+  "Rating": 3,
+  "ATK": "0",
+  "DEF": "1800",
+  "CategoryNumber": 0
+}

@@ -1,0 +1,23 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012040,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect",
+    "Fusion"
+  ],
+  "Attribute": [
+    "LIGHT"
+  ],
+  "Race": [
+    "Fairy"
+  ],
+  "Rating": 8,
+  "ATK": "2000",
+  "DEF": "2800",
+  "Series": [
+    "Invoked"
+  ],
+  "CategoryNumber": 8194
+}

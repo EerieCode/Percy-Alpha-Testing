@@ -1,0 +1,20 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012044,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect",
+    "Xyz"
+  ],
+  "Attribute": [
+    "WATER"
+  ],
+  "Race": [
+    "Beast-Warrior"
+  ],
+  "Rating": 5,
+  "ATK": "2500",
+  "DEF": "1600",
+  "CategoryNumber": 514
+}

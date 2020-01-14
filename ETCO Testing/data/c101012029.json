@@ -1,0 +1,22 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012029,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "DARK"
+  ],
+  "Race": [
+    "Fiend"
+  ],
+  "Rating": 3,
+  "ATK": "1500",
+  "DEF": "1500",
+  "Series": [
+    "Unchained"
+  ],
+  "CategoryNumber": 17039360
+}

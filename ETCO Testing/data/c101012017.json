@@ -1,0 +1,23 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012017,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect",
+    "Tuner"
+  ],
+  "Attribute": [
+    "DARK"
+  ],
+  "Race": [
+    "Fiend"
+  ],
+  "Rating": 2,
+  "ATK": "800",
+  "DEF": "300",
+  "Series": [
+    "Resonator"
+  ],
+  "CategoryNumber": 0
+}

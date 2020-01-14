@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Nemesis Flag"
+  },
+  "Effect": {
+    "en": "You can target 1 of your banished monsters, except \"Nemesis Flag\"; Special Summon this card from your hand, and if you do, shuffle that target into the Deck. During your Main Phase: You can add 1 \"Nemesis\" monster from your Deck to your hand, except \"Nemesis Flag\". You can only use each effect of \"Nemesis Flag\" once per turn."
+  },
+  "String": {
+    "en": [
+      "Special Summon",
+      "Search",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

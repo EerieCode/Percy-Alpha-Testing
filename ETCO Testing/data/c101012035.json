@@ -1,0 +1,19 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012035,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "DARK"
+  ],
+  "Race": [
+    "Fiend"
+  ],
+  "Rating": 3,
+  "ATK": "1000",
+  "DEF": "1000",
+  "CategoryNumber": 0
+}

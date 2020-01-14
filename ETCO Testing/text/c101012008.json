@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Archnemesis Protos"
+  },
+  "Effect": {
+    "en": "Cannot be Normal Summoned/Set. Must first be Special Summoned (from your hand) by banishing 3 face-up monsters with different Attributes you control and/or in your GY. Cannot be destroyed by card effects. You can declare 1 Attribute on the field; destroy all monsters on the field of that Attribute, also neither player can Special Summon monsters of that Attribute until the end of the next turn. You can only use this effect of \"Archnemesis Protos\" once per turn."
+  },
+  "String": {
+    "en": [
+      "Destroy",
+      "Affected by \"Archnemesis Protos\"",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

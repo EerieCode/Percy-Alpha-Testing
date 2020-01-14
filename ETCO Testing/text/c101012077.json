@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Witchcrafter Patronus"
+  },
+  "Effect": {
+    "en": "You can target 1 of your Spellcaster monsters that is banished or in your GY; shuffle it into the Deck, and if you do, add 1 \"Witchcrafter\" Spell from your Deck to your hand. During either player's turn, except the turn this card was sent to the GY: You can banish this card from your GY, then target any number of your banished \"Witchcrafter\" Spells with different names; add them to your hand. You can only use each effect of \"Witchcrafter Patronus\" once per turn."
+  },
+  "String": {
+    "en": [
+      "Target 1 Spellcaster to send to the Deck",
+      "Add to hand",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Lantern Shark"
+  },
+  "Effect": {
+    "en": "If this card is Normal or Special Summoned: You can Special Summon 1 Level 3, 4, or 5 WATER monster from your hand in Defense Position, except \"Lantern Shark\", also you cannot Special Summon monsters from the Extra Deck for the rest of this turn, except Xyz Monsters. You can only use this effect of \"Lantern Shark\" once per turn. If this card is used for the Xyz Summon of a WATER monster, you can treat it as a Level 3 or 5 monster."
+  },
+  "String": {
+    "en": [
+      "Special Summon",
+      "Affected by \"Lantern Shark\"",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

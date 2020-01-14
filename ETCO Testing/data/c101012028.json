@@ -1,0 +1,22 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012028,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "FIRE"
+  ],
+  "Race": [
+    "Fairy"
+  ],
+  "Rating": 4,
+  "ATK": "1500",
+  "DEF": "1500",
+  "Series": [
+    "Generaider"
+  ],
+  "CategoryNumber": 0
+}

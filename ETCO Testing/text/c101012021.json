@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Senka Herald - Zhang Yuan"
+  },
+  "Effect": {
+    "en": "Your other \"Senka\" monsters cannot be destroyed by battle. You can only use each of the following effects of \"Senka Herald - Zhang Yuan\" once per turn.\r\n● At the start of the Damage Step, if your \"Senka\" monster battles an opponent's face-up monster: You can Special Summon this card from your hand, and if you do, that opponent's monster loses 1000 ATK.\r\n● If a card(s) your opponent controls is destroyed by battle or card effect: You can target 1 card your opponent controls; destroy it."
+  },
+  "String": {
+    "en": [
+      "Special Summon and change ATK",
+      "Destroy 1 card",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

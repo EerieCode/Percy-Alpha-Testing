@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Gouki Iron Claw"
+  },
+  "Effect": {
+    "en": "During the Damage Step, if your \"Gouki\" monster battles an opponent's monster (Quick Effect): You can send this card from your hand to the GY; until the end of this turn, your battling monster gains 500 ATK, and if it does, it is unaffected by your opponent's card effects. If this card is sent from the field to the GY: You can add 1 \"Gouki\" card from your Deck to your hand, except \"Gouki Iron Claw\". You can only use each effect of \"Gouki Iron Claw\" once per turn."
+  },
+  "String": {
+    "en": [
+      "Change ATK",
+      "Search",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

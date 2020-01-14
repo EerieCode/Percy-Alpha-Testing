@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Mekk-Knight Orcust Girsu"
+  },
+  "Effect": {
+    "en": "If this card is Normal or Special Summoned: You can send 1 \"Orcust\" or \"World Legacy\" card from your Deck to the GY, then, if 2 or more other cards are in this card's column, this card is treated as a Tuner this turn. If you control no other monsters: You can Special Summon 1 \"World Legacy Token\" (Machine/DARK/Level 1/ATK 0/DEF 0) to both players' fields in Defense Position. You can only use each effect of \"Mekk-Knight Orcust Girsu\" once per turn."
+  },
+  "String": {
+    "en": [
+      "Send from deck to the GY",
+      "Special Summon a token",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

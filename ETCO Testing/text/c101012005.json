@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Gouki Guts"
+  },
+  "Effect": {
+    "en": "This Defense Position card cannot be destroyed by battle. You can only use each of the following effects of \"Gouki Guts\" once per turn.\r\n● During your Main Phase: You can have all \"Gouki\" monsters you control gain 200 ATK.\r\n● If this card is sent from the field to the GY: You can add 1 \"Gouki\" card from your Deck to your hand, except \"Gouki Guts\"."
+  },
+  "String": {
+    "en": [
+      "Increase ATK",
+      "Search",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

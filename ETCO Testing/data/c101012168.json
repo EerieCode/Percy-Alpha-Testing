@@ -1,0 +1,23 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012168,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Normal",
+    "Token"
+  ],
+  "Attribute": [
+    "DARK"
+  ],
+  "Race": [
+    "Fiend"
+  ],
+  "Rating": 1,
+  "ATK": "400",
+  "DEF": "400",
+  "Series": [
+    "Evil Eye"
+  ],
+  "CategoryNumber": 0
+}

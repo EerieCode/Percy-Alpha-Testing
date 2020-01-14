@@ -1,0 +1,22 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012010,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "FIRE"
+  ],
+  "Race": [
+    "Pyro"
+  ],
+  "Rating": 2,
+  "ATK": "1100",
+  "DEF": "200",
+  "Series": [
+    "Nemesis"
+  ],
+  "CategoryNumber": 262704
+}

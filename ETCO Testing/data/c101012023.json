@@ -1,0 +1,19 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012023,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "WIND"
+  ],
+  "Race": [
+    "Beast-Warrior"
+  ],
+  "Rating": 4,
+  "ATK": "1000",
+  "DEF": "2000",
+  "CategoryNumber": 2147745792
+}

@@ -1,0 +1,28 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101012053,
+  "ReleaseStatus": "OCG",
+  "CardType": "Monster",
+  "Types": [
+    "Effect",
+    "Link"
+  ],
+  "Attribute": [
+    "EARTH"
+  ],
+  "Race": [
+    "Warrior"
+  ],
+  "Rating": 4,
+  "ATK": "2800",
+  "LinkArrows": [
+    "Bottom-Left",
+    "Bottom-Center",
+    "Bottom-Right",
+    "Middle-Right"
+  ],
+  "Series": [
+    "Gouki"
+  ],
+  "CategoryNumber": 16785411
+}

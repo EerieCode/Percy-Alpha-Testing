@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Void Calamity"
+  },
+  "Effect": {
+    "en": "You can discard 1 card; send 1 Fiend monster from your Deck to the GY. You can send this face-up card from the field to the GY; send \"Infernoid\" monsters with different names from your hand and/or Deck to the GY, up to the number of monsters your opponent controls that were Special Summoned from the Extra Deck. You can only use 1 \"Void Calamity\" effect per turn, and only once that turn."
+  },
+  "String": {
+    "en": [
+      "Discard 1 card: send 1 Fiend monster",
+      "Send this card to the GY: send \"Infernoid\" monsters",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}
