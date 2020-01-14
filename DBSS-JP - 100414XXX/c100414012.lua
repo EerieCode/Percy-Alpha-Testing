@@ -22,7 +22,7 @@ end
 s.listed_series={0x23e}
 	--Check for "Adamacia" monster
 function s.cfilter(c)
-	return c:IsSetCard(0x23e) and IsType(TYPE_MONSTER)
+	return c:IsSetCard(0x23e) and c:IsType(TYPE_MONSTER)
 end
 function s.spcheck(sg,tp)
 	return Duel.IsExistingTarget(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,#sg,sg)

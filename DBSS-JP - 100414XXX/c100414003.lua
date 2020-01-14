@@ -55,10 +55,11 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local sg=g:Select(tp,1,1,nil)
+		Duel.DisableShuffleCheck()
 		Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
 		ct=1
 	end
-	ac=ac-ct
+	local ac=5-ct
 	if ac>0 then
 		Duel.SortDecktop(tp,tp,ac)
 		for i=1,ac do
