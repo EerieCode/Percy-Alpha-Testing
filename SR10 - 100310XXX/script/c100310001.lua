@@ -50,13 +50,15 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chk==0 then return Duel.IsExistingTarget(s.tgfilter,tp,LOCATION_MZONE,0,1,nil) end
     local tc=Duel.SelectTarget(tp,s.tgfilter,tp,LOCATION_MZONE,0,1,nil):GetFirst()
     local dg=Duel.GetMatchingGroup(s.desfilter,tp,0,LOCATION_MZONE,c,tc:GetAttack())
+    dg:AddCard(tc)
     Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetFirstTarget()
     if not tc:IsRelateToEffect(e) or not s.tgfilter(tc) then return end
     local g=Duel.GetMatchingGroup(s.desfilter,tp,0,LOCATION_MZONE,c,tc:GetAttack())
-    if #g>0 then 
+    if #g>0 then
+    	g:AddCard(tc)
     	Duel.Destroy(g,REASON_EFFECT)
     end
 end
