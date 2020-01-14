@@ -23,40 +23,38 @@ function s.initial_effect(c)
     e2:SetOperation(s.desop)
     c:RegisterEffect(e2)
     --special summon
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e1:SetCode(EVENT_DESTROYED)
-	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
-	e1:SetRange(LOCATION_GRAVE)
-	e1:SetCondition(s.spcon)
-	e1:SetTarget(s.sptg)
-	e1:SetOperation(s.spop)
-	c:RegisterEffect(e1)
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,0))
+	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetCode(EVENT_DESTROYED)
+	e3:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e3:SetRange(LOCATION_GRAVE)
+    e3:SetCountLimit(1,id+100)
+	e3:SetCondition(s.spcon)
+	e3:SetTarget(s.sptg)
+	e3:SetOperation(s.spop)
+	c:RegisterEffect(e3)
 end
 function s.splimit(e,se,sp,st)
 	return se:IsHasType(EFFECT_TYPE_ACTIONS)
 end
 function s.tgfilter(c)
-	return c:IsFaceup() and c:IsRace(RACE_MACHINE) and Duel.IsExistingMatchingCard(s.desfilter,c:GetControler(),0,LOCATION_MZONE,1,nil,c:GetAttack())
-end
-function s.desfilter(c,atk)
-    return c:IsFaceup() and c:IsAttackBelow(atk)
+	return c:IsFaceup() and c:IsRace(RACE_MACHINE) and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsAttackBelow,c:GetAttack()),c:GetControler(),0,LOCATION_MZONE,1,nil)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     local c=e:GetHandler()
     if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.tgfilter(chkc) end
     if chk==0 then return Duel.IsExistingTarget(s.tgfilter,tp,LOCATION_MZONE,0,1,nil) end
-    local tc=Duel.SelectTarget(tp,s.tgfilter,tp,LOCATION_MZONE,0,1,nil):GetFirst()
-    local dg=Duel.GetMatchingGroup(s.desfilter,tp,0,LOCATION_MZONE,c,tc:GetAttack())
+    local tc=Duel.SelectTarget(tp,s.tgfilter,tp,LOCATION_MZONE,0,1,1,nil):GetFirst()
+    local dg=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsAttackBelow,tc:GetAttack()),tp,0,LOCATION_MZONE,nil)
     dg:AddCard(tc)
-    Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
+    Duel.SetOperationInfo(0,CATEGORY_DESTROY,dg,#dg,0,0)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
     local tc=Duel.GetFirstTarget()
     if not tc:IsRelateToEffect(e) or not s.tgfilter(tc) then return end
-    local g=Duel.GetMatchingGroup(s.desfilter,tp,0,LOCATION_MZONE,c,tc:GetAttack())
+    local g=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsAttackBelow,tc:GetAttack()),tp,0,LOCATION_MZONE,nil)
     if #g>0 then
     	g:AddCard(tc)
     	Duel.Destroy(g,REASON_EFFECT)
@@ -64,12 +62,12 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.spcfilter(c,tp)
 	return c:IsReason(REASON_BATTLE+REASON_EFFECT)
-		and c:IsPreviousControler(tp) and c:IsPreviousLocation(LOCATION_ONFIELD)
-		and c:IsPreviousPosition(POS_FACEUP) and (c:GetPreviousAttributeOnField&ATTRIBUTE_EARTH)==ATTRIBUTE_EARTH
-		and (c:GetPreviousRaceOnField&RACE_MACHINE)==RACE_MACHINE
+		and c:IsPreviousControler(tp) and c:IsPreviousLocation(LOCATION_MZONE)
+		and c:IsPreviousPosition(POS_FACEUP) and (c:GetPreviousAttributeOnField()&ATTRIBUTE_EARTH)==ATTRIBUTE_EARTH
+		and (c:GetPreviousRaceOnField()&RACE_MACHINE)==RACE_MACHINE and not c:IsCode(id)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.spcfilter,1,nil,tp)
+	return eg:IsExists(s.spcfilter,1,e:GetHandler(),tp)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
