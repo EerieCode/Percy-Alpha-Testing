@@ -39,7 +39,7 @@ function s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 end
 function s.tdop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK,0,nil)
+	local g=Duel.GetMatchingGroup(Card.IsSetCard,tp,LOCATION_DECK,0,nil,0x23e)
 	local rg=aux.SelectUnselectGroup(g,e,tp,1,5,nil,1,tp,aux.Stringid(id,1))
 	if #rg>0 then
 		Duel.ConfirmCards(1-tp,rg)
@@ -49,6 +49,6 @@ function s.tdop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.MoveSequence(tg,0)
 			tg=rg:GetNext()
 		end
-		Duel.SortDecktop(tp,tp,rg)
+		Duel.SortDecktop(tp,tp,#rg)
 	end
 end

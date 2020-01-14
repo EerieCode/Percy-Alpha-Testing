@@ -3,33 +3,31 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--synchro summon
 	aux.AddSynchroProcedure(c,nil,1,1,aux.NonTuner(nil),1,99)
-	c:EnableReviveLimit()	
-	--multi attack
+	c:EnableReviveLimit()
+	--to hand
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e1:SetCountLimit(1,id)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetCondition(s.thcon)
+	e1:SetTarget(s.thtg)
 	e1:SetOperation(s.thop)
 	c:RegisterEffect(e1)
-	
 	--special summon
 	local e2=Effect.CreateEffect(c)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1,id+100)
-	e2:SetHintTiming(0,TIMING_MAIN_END)
-	e2:SetCondition(s.imunecond)
+	e2:SetCondition(s.spcon)
 	e2:SetTarget(s.sptg)
 	e2:SetOperation(s.spop)
 	c:RegisterEffect(e2)
 end
 s.listed_series={0x23e}
-function s.filter(c)
+function s.thfilter(c)
 	return c:IsSetCard(0x23e) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -45,6 +43,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 and g:IsExists(s.thfilter,1,nil) and Duel.SelectYesNo(p,aux.Stringid(id,2)) then
 		Duel.Hint(HINT_SELECTMSG,p,HINTMSG_ATOHAND)
 		local sg=g:FilterSelect(p,s.thfilter,1,1,nil)
+		Duel.DisableShuffleCheck()
 		Duel.SendtoHand(sg,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-p,sg)
 		Duel.ShuffleHand(p)
@@ -58,12 +57,11 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
-
-function s.spcon(e)
-	return Duel.IsExistingMatchingCard(s.spfilter,e:GetHandlerPlayer(),LOCATION_GRAVE,0,1,nil)
+function s.spcon(e,tp)
+	return Duel.GetTurnPlayer()~=tp
 end
 function s.spfilter(c,e,tp)
-	return c:IsRace(RACE_ROCK) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsRace(RACE_ROCK) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.spfilter(chkc,e,tp) end
