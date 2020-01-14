@@ -2,9 +2,8 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	--synchro summon
-	Synchro.AddProcedure(c,nil,1,1,Synchro.NonTuner(nil),1,99)
-	c:EnableReviveLimit()
-	
+	aux.AddSynchroProcedure(c,nil,1,1,aux.NonTuner(nil),1,99)
+	c:EnableReviveLimit()	
 	--multi attack
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
