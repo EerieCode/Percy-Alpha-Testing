@@ -11,7 +11,7 @@ function s.initial_effect(c)
 	e1:SetCode(EFFECT_SPSUMMON_CONDITION)
 	e1:SetValue(s.splimit)
 	c:RegisterEffect(e1)
-	 --destroy
+	--destroy
     local e2=Effect.CreateEffect(c)
     e2:SetCategory(CATEGORY_DESTROY)
     e2:SetType(EFFECT_TYPE_QUICK_O)
@@ -22,6 +22,18 @@ function s.initial_effect(c)
     e2:SetTarget(s.destg)
     e2:SetOperation(s.desop)
     c:RegisterEffect(e2)
+    --special summon
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e1:SetCode(EVENT_DESTROYED)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e1:SetRange(LOCATION_GRAVE)
+	e1:SetCondition(s.spcon)
+	e1:SetTarget(s.sptg)
+	e1:SetOperation(s.spop)
+	c:RegisterEffect(e1)
 end
 function s.splimit(e,se,sp,st)
 	return se:IsHasType(EFFECT_TYPE_ACTIONS)
@@ -34,19 +46,37 @@ function s.desfilter(c,atk)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     local c=e:GetHandler()
-    if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp)
-    if chk==0 then return Duel.IsExistingMatchingCard(c80666118.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,c,c:GetAttack()) end
-    local g=Duel.GetMatchingGroup(c80666118.filter,tp,LOCATION_MZONE,LOCATION_MZONE,c,c:GetAttack())
-    Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,g:GetCount(),0,0)
-    Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,g:GetCount()*500)
+    if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.tgfilter(chkc) end
+    if chk==0 then return Duel.IsExistingTarget(s.tgfilter,tp,LOCATION_MZONE,0,1,nil) end
+    local tc=Duel.SelectTarget(tp,s.tgfilter,tp,LOCATION_MZONE,0,1,nil):GetFirst()
+    local dg=Duel.GetMatchingGroup(s.desfilter,tp,0,LOCATION_MZONE,c,tc:GetAttack())
+    Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
-    local c=e:GetHandler()
-    if not c:IsRelateToEffect(e) or c:IsFacedown() then return end
-    local g=Duel.GetMatchingGroup(c80666118.filter,tp,LOCATION_MZONE,LOCATION_MZONE,c,c:GetAttack())
-    local ct=Duel.Destroy(g,REASON_EFFECT)
-    if ct>0 then
-        Duel.BreakEffect()
-        Duel.Damage(1-tp,ct*500,REASON_EFFECT)
+    local tc=Duel.GetFirstTarget()
+    if not tc:IsRelateToEffect(e) or not s.tgfilter(tc) then return end
+    local g=Duel.GetMatchingGroup(s.desfilter,tp,0,LOCATION_MZONE,c,tc:GetAttack())
+    if #g>0 then 
+    	Duel.Destroy(g,REASON_EFFECT)
     end
+end
+function s.spcfilter(c,tp)
+	return c:IsReason(REASON_BATTLE+REASON_EFFECT)
+		and c:IsPreviousControler(tp) and c:IsPreviousLocation(LOCATION_ONFIELD)
+		and c:IsPreviousPosition(POS_FACEUP) and (c:GetPreviousAttributeOnField&ATTRIBUTE_EARTH)==ATTRIBUTE_EARTH
+		and (c:GetPreviousRaceOnField&RACE_MACHINE)==RACE_MACHINE
+end
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.spcfilter,1,nil,tp)
+end
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,LOCATION_GRAVE)
+end
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:IsRelateToEffect(e) then
+		Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
+	end
 end
