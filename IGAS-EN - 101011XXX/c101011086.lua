@@ -36,8 +36,7 @@ function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp
 end
 function s.filter(c,e,tp,att)
-	return c:IsSetCard(0x23f) and c:IsAttribute(att)
-		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0x23f) and c:IsAttribute(att) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 		and Duel.GetLocationCountFromEx(tp,tp,nil,c)>0
 end
 function s.cfilter(c)
@@ -80,7 +79,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsPreviousLocation(LOCATION_HAND+LOCATION_MZONE)
 end
 function s.eqfilter(c,ec)
-	return c:IsSetCard(0x23f) and c:CheckEquipTarget(ec) and not c:IsCode(id)
+	return c:IsSetCard(0x23f) and not c:IsCode(id)
 end
 function s.eqtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
