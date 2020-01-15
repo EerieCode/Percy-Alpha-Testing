@@ -10,6 +10,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 	--change attr
 	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetType(EFFECT_TYPE_QUICK_O)
 	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
@@ -20,6 +21,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 	--to grave
 	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,1))
 	e3:SetCategory(CATEGORY_TOGRAVE)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
 	e3:SetCode(EVENT_PHASE+PHASE_END)
@@ -71,9 +73,9 @@ function s.cosop(e,tp,eg,ep,ev,re,r,rp)
 		tc:RegisterEffect(e1)
 		local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 		local g=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.filter),tp,LOCATION_GRAVE,0,nil,e,tp,ft)
-		if #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
+		if #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
 			local sc=g:Select(tp,1,1,nil):GetFirst()
-			if ft>0 and sc:IsCanBeSpecialSummoned(e,0,tp,false,false) and (not sc:IsAbleToDeck() or Duel.SelectYesNo(tp,aux.Stringid(id,1))) then
+			if ft>0 and sc:IsCanBeSpecialSummoned(e,0,tp,false,false) and (not sc:IsAbleToDeck() or Duel.SelectYesNo(tp,aux.Stringid(id,3))) then
 				Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP)
 			else
 				Duel.SendtoDeck(sc,nil,2,REASON_EFFECT)
