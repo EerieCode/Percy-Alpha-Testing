@@ -31,6 +31,15 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_series={0x23f}
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	if s.cost(e,tp,eg,ep,ev,re,r,rp,0) and s.costg(e,tp,eg,ep,ev,re,r,rp,0) and Duel.SelectYesNo(tp,94) then
+		e:SetProperty(EFFECT_FLAG_CARD_TARGET)
+		e:SetOperation(s.cosop)
+		s.cost(e,tp,eg,ep,ev,re,r,rp,1)
+		s.costg(e,tp,eg,ep,ev,re,r,rp,1)
+	end
+end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFlagEffect(tp,id)==0 end
 	Duel.RegisterFlagEffect(tp,id,RESET_PHASE+PHASE_END,0,1)

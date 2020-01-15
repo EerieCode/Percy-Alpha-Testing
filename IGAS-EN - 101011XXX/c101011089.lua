@@ -23,7 +23,7 @@ s.listed_series={0x23f}
 function s.lcheck(g,lc,sumtype,tp)
     return g:IsExists(Card.IsLinkSetCard,1,nil,0x23f)
 end
-function s.condition(e,tp,eg,ep,ev,re,r,rp)
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()~=tp
 end
 function s.tgfilter(c,ft)
