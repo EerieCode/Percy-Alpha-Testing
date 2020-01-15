@@ -16,18 +16,16 @@ function s.initial_effect(c)
 	local e2=e1:Clone()
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e2)
-	--spsummon
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,1))
-	e1:SetCategory(CATEGORY_POSITION+CATEGORY_TOHAND)
-	e1:SetType(EFFECT_QUICK)
-	e1:SetType(EFFECT_TYPE_IGNITION)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetCountLimit(1,id+100)
-	e1:SetTarget(s.postg)
-	e1:SetOperation(s.posop)
-	c:RegisterEffect(e1)
-	
+	--position change and to hand
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,1))
+	e3:SetCategory(CATEGORY_POSITION+CATEGORY_TOHAND)
+	e3:SetType(EFFECT_QUICK)
+	e3:SetCode(EVENT_FREE_CHAIN)
+	e3:SetCountLimit(1,id+100)
+	e3:SetTarget(s.postg)
+	e3:SetOperation(s.posop)
+	c:RegisterEffect(e3)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and chkc:IsFaceup() end
