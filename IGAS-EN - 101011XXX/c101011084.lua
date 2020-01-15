@@ -41,7 +41,6 @@ function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local cg=Duel.SelectMatchingCard(tp,s.lvfilter,tp,LOCATION_HAND,0,1,1,nil,lv)
 	Duel.ConfirmCards(1-tp,cg)
 	Duel.ShuffleHand(tp)
-	e:SetLabelObject(cg:GetFirst())
 	e:SetLabel(cg:GetFirst():GetLevel())
 end
 function s.lvop(e,tp,eg,ep,ev,re,r,rp)
