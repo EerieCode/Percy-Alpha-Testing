@@ -41,7 +41,7 @@ function s.initial_effect(c)
 end
 s.listed_series={0x23f}
 function s.atkval(e,c)
-	return Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsSetCard,0x23f),e:GetHandlerPlayer(),LOCATION_SZONE,0,nil)
+	return Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsSetCard,0x23f),e:GetHandlerPlayer(),LOCATION_SZONE,0,nil)*500
 end
 function s.thcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDiscardable,tp,LOCATION_HAND,0,1,nil) end
@@ -57,14 +57,14 @@ end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if not e:GetHandler():IsRelateToEffect(e) then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local tc=Duel.SelectMatchingCard(s.thfilter,tp,LOCATION_DECK,0,nil):GetFirst()
+	local tc=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,nil):GetFirst()
 	if tc then
 		Duel.SendtoHand(tc,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,tc)
 	end
 end
 function s.setfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x23f) and c:IsAbleToHand()
+	return c:IsFaceup() and c:IsSetCard(0x23f) and c:IsAbleToHand() and not c:IsLocation(LOCATION_FZONE)
 end
 function s.settg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_SZONE) and chkc:IsControler(tp) and s.setfilter(chkc) end

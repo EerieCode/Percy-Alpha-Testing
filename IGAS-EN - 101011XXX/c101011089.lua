@@ -4,7 +4,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
-    aux.AddLinkProcedure(c,nil,2,2,s.lcheck)
+	aux.AddLinkProcedure(c,nil,2,2,s.lcheck)
 	--sp summon
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,1))
@@ -16,11 +16,11 @@ function s.initial_effect(c)
 	e1:SetCountLimit(1,id)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
-	c:RegisterEffect(e1)	
+	c:RegisterEffect(e1)
 end
 s.listed_series={0x23f}	
 function s.lcheck(g,lc,sumtype,tp)
-    return g:IsExists(Card.IsLinkSetCard,1,nil,0x23f)
+	return g:IsExists(Card.IsLinkSetCard,1,nil,0x23f)
 end
 function s.tgfilter(c,ft)
 	return c:IsFaceup() and c:IsType(TYPE_EFFECT)
@@ -72,4 +72,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.BreakEffect()
 		Duel.Draw(tp,1,REASON_EFFECT)
 	end
+end
+function s.eqlimit(e,c)
+	return c==e:GetLabelObject()
 end
