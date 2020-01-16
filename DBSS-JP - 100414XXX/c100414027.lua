@@ -1,4 +1,4 @@
---
+--黄金卿エルドリッチ
 --Golden Lord Eldorichie
 --Scripted by Naim
 local s,id=GetID()
