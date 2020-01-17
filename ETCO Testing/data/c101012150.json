@@ -15,9 +15,5 @@
   ],
   "Rating": 1,
   "ATK": "0",
-  "DEF": "0",
-  "Series": [
-    "@Ignister"
-  ],
-  "CategoryNumber": 0
+  "DEF": "0"
 }
