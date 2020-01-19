@@ -1,485 +1,1236 @@
+mse version: 2.0.0
+game: yugioh
+short name: Series 10
+installer group: Yugioh/Standard
+icon: card-sample.png
+position hint: 01
 
+version: 2017-04-21
+depends on:
+	package: yugioh.mse-game
+	version: 2017-04-21
+
+card width: 813
+card height: 1185
+card dpi: 300
+
+############################################################## Extra style 样式设置
+styling field:
+	type: color
+	name: name color
+	description: Customize the color of the card name.卡片名颜色设置，如果为default，则根据卡片类型和罕见度自动调整
+	initial: rgb(254,254,254)
+	choice: 
+		name: default
+		color:rgb(254,254,254)
+	choice: 
+		name: white
+		color: rgb(255,255,255)
+	choice: 
+		name: red
+		color: rgb(60,0,0)
+	choice: 
+		name: silver
+		color: rgb(230,230,230)
+	choice:
+		name: light blue
+		color: rgb(211,252,252)
+	choice: 
+		name: gold
+		color: rgb(88,76,12)
+styling field:
+	type: boolean
+	name: name has shadow
+	initial: no
+	description: Whether to allow the card with shadow ? 卡片名称拥有阴影？
+styling field:
+	type: color
+	name: shadow color
+	description: The shadow color for card name.卡片名阴影颜色设置，如果为default，则根据卡片类型和罕见度自动调整
+	initial: rgb(1,1,1)
+	choice: 
+		name: default
+		color: rgb(1,1,1)
+	choice: 
+		name: black
+		color: rgb(0,0,0)
+	choice: 
+		name: white
+		color: rgb(255,255,255)
+	choice: 
+		name: red
+		color: rgb(60,0,0)
+	choice: 
+		name: silver
+		color: rgb(230,230,230)
+	choice: 
+		name: gold
+		color: rgb(255,215,0)
+styling field:
+	type: choice
+	name: image frame
+	description: Choosing "no" will omit the image frame like on Anniversary Edition cards. 透明卡图请设置为full
+	initial: yes
+	choice: yes
+	choice: no
+	choice: full
+styling field:
+	type: text
+	name: small pendulum text
+	multi line: true
+	description: Pendulum怪兽的效果文注音
+styling field:
+	type: text
+	name: small rule text
+	multi line: true
+	description: 效果文注音
+styling field:
+	type:choice
+	name: cover image
+	initial: none
+	choice: none
+	choice: default
+	choice: jp
+	choice: jpa
+	description: 让卡片显示为卡背，仅用来做打印
+#####################
+#styling style:
+############################################################## Extra scripts 额外脚本
+init script:
+	# 中间图无边框
+	image_noframe := {styling.image_frame=="no"}
+	# 透明卡图
+	is_transparent := {styling.image_frame=="full"}
+	# 获取Pendulum的类型，big，small，middle
+	get_pendulum_mask := {card.pendulum}
+	# 不是Pendulum怪兽
+	is_nopendulum := {get_pendulum_mask() == "none"}
+	# 是Pendulum怪兽
+	is_pendulum :={not is_nopendulum()}
+	# Pendulum的三种类型判断
+	is_big_pend :={get_pendulum_mask() == "big"}
+	is_medium_pend :={get_pendulum_mask() == "medium"}
+	is_small_pend :={get_pendulum_mask() == "small"}
+	is_deckmaster :={get_pendulum_mask()== "deck master"}
+	# 镀膜为全卡图
+	foil_is_full :={ card.rarity=="parallel rare" or card.rarity=="star rare" or card.rarity=="mosaic rare" or card.rarity=="millenium rare" or card.rarity=="platinum rare" or card.rarity=="Kaiba Corporation Rare" or card.rarity=="shatterfoil rare"}
+	# 卡名使用自定义颜色
+	use_name_color := {styling.name_color != rgb(254,254,254)}
+	# 卡名使用阴影
+	set_shadow :={styling.shadow_color != rgb(1,1,1)}
+	no_shadow :={card.rarity=="common"}
 ############################################################## Card fields
-############################# Background stuff
-card field:
+card style:
+	############################# Background stuff
+	card type:
+		left: 0
+		top: 0
+		width: 813
+		height: 1185
+		z index: -1
+		render style: image
+		popup style: in place
+		choice images:
+			normal monster: card-normal.png
+			effect monster: card-effect.png
+			ritual monster: card-ritual.png
+			synchro monster: card-synchro.png
+			dark synchro monster: card-dsynchro.png
+			fusion monster: card-fusion.png
+			token monster: card-token.png
+			xyz monster: card-xyz.png
+			link monster: card-link.png
+			obelisk: card-obelisk.png
+			slifer: card-slifer.png
+			ra: card-ra.png
+			spell card: card-spell.png
+			speed spell card: card-speedspell.png
+			trap card: card-trap.png
+			token card: card-token2.png
+			dragons card: card-dragons.png
+			command card: card-spell.png
+			zarc card: card-zarc.png
+	foils:
+		left:
+			script:
+				if foil_is_full() then 0
+				else if is_transparent() then 25
+				else if image_noframe() and is_nopendulum() then 84
+				else if is_nopendulum() then 97
+				else 53
+		top:
+			script:
+				if foil_is_full() then 0 
+				else if is_transparent() then 25
+				else if image_noframe() and is_nopendulum() then 203.5
+				else if is_nopendulum() then 217
+				else 213
+		width:
+			script:
+				if foil_is_full() then 813
+				else if is_transparent() then 761
+				else if image_noframe() and is_nopendulum() then 644
+				else if is_nopendulum() then 618
+				else 708
+		height:
+			script:
+				if foil_is_full() then 1185
+				else if is_transparent() then 1129
+				else if image_noframe() and is_nopendulum() then 644
+				else if is_nopendulum() then 618
+				else if is_big_pend() or is_deckmaster() then  530
+				else if is_medium_pend() then  530
+				else if is_small_pend() then  566
+				else 544
+		z index: 5
+		render style: image
+		popup style: in place
+		image:
+			script:	if card.rarity=="super rare" then "foil/superfoil.png" else
+				if card.rarity=="secret rare" then "foil/secretfoil.png" else
+				if card.rarity=="ultimate rare" then "foil/ultimatefoil.png" else
+				if card.rarity=="ultra rare" then "foil/ultrafoil.png" else
+				if card.rarity=="ghost rare" then "foil/ghostfoil.png" else
+				if card.rarity=="gold rare" then "foil/defaultfoil.png" else
+				if card.rarity=="parallel rare" then "foil/parallelfoil.png" else
+				if card.rarity=="mosaic rare" then "foil/mosaicfoil.png" else
+				if card.rarity=="Kaiba Corporation Rare" then"foil/kaibararefoil.png" else
+				if card.rarity=="star rare" then "foil/starfoil.png" else
+				if card.rarity=="millenium rare" then "foil/milleniumfoil.png" else
+				if card.rarity=="platinum rare" then "foil/platinumfoil.png" else
+				if card.rarity=="shatterfoil rare" then "foil/shatterfoil.png" else
+				if card.rarity=="prismatic rare" then "foil/prismaticfoil.png" else "blank2.png"
+		visible: script: not hide_foil()
+	############################# Name line
+	name:
+		left: 63
+		top: 63
+		width: script: if card.card_type=="command card" then 685 else 600
+		height: 48
+		alignment: middle shrink-overflow
+		padding bottom: 0
+		z index: 2
+		font:
+			name:
+				script:
+					if is_tw() then "DFPLiShuW5-B5" 
+					else if is_jp() then "Yu-Gi-Oh! DFG Leisho 4" 
+					else if is_ko() then "KoreanYSB" 
+					else if is_cn() then "方正隶变_GBK" 
+					else "MatrixRegularSmallCaps"
+			italic name: { if is_tw() then "Yu-Gi-Oh! DFG Leisho 5" else "Yu-Gi-Oh! DFG Leisho 4" }
+			size: 
+				script:
+					if is_en() then "65"
+					else if is_jp() then "36"
+					else if is_cn() then "48"
+					else "65"
+			color:
+				script:
+					if hide_foil() and is_blmonster() then rgb(255,255,255)
+					else if hide_foil() and is_nmonster() then rgb(255,255,255)
+					else if hide_foil() then rgb(0,0,0)
+					else if use_name_color() then styling.name_color
+					else if not hide_foil() and card.rarity=="rare" then rgb(255,255,255)
+					else if not hide_foil() and card.rarity=="star rare" and is_blmonster() then rgb(255,255,255)
+					else if not hide_foil() and card.rarity=="star rare" then rgb(35,40,49)
+					else if not hide_foil() and card.rarity=="mosaic rare" and is_blmonster() then rgb(255,255,255)
+					else if not hide_foil() and card.rarity=="mosaic rare" then rgb(10,10,10)
+					else if not hide_foil() and card.rarity=="promo" then rgb(60,0,0)
+					else if not hide_foil() and card.rarity=="secret rare" then rgb(102,255,255)
+					else if not hide_foil() and card.rarity=="ghost rare (No foil)" then rgb(133,168,169)
+					else if not hide_foil() and card.rarity=="ultra rare" then rgb(255,240,0)
+					else if not hide_foil() and card.rarity=="ultimate rare" then rgb(88,76,12)
+					else if not hide_foil() and card.rarity=="ultimate rare (No foil)" then rgb(69,60,0)
+					else if not hide_foil() and card.rarity=="parallel rare" then rgb(88,76,12)
+					else if not hide_foil() and card.rarity=="gold rare" then rgb(88,76,12)
+					else if is_blmonster() or is_link() then rgb(255,255,255) 
+					else if is_nmonster() then rgb(255,255,255) 
+					else rgb(0,0,0)
+			shadow color: 
+				script: 
+					if no_shadow() and is_blmonster() then rgba(0,0,0,0) #没阴影
+					else if set_shadow() then styling.shadow_color  #自定义阴影颜色
+					else if not hide_foil() and card.rarity=="star rare" and is_blmonster() then rgb(255,255,255)
+					else if not hide_foil() and card.rarity=="star rare" then rgb(255,255,255)
+					else if not hide_foil() and card.rarity=="mosaic rare" and is_blmonster() then rgb(255,255,255)
+					else if not hide_foil() and card.rarity=="mosaic rare" then rgb(255,255,255)
+					else if not hide_foil() and card.rarity=="promo" then rgb(255,200,210)
+					else if not hide_foil() and card.rarity=="secret rare" then rgb(182,162,255)
+					else if not hide_foil() and card.rarity=="ghost rare (No foil)" then rgb(234,255,255)
+					else if not hide_foil() and card.rarity=="ultra rare" then rgb(255,215,0)
+					else if not hide_foil() and card.rarity=="ultimate rare" then rgb(255,215,0)
+					else if not hide_foil() and card.rarity=="ultimate rare (No foil)" then rgb(255,243,110)
+					else if not hide_foil() and card.rarity=="parallel rare" then rgb(255,215,0)
+					else if not hide_foil() and card.rarity=="gold rare" then rgb(255,215,0)
+					else if no_shadow() and is_spell_card() or is_trap_card() then rgba(0,0,0,0)				
+					else rgba(0,0,0,0)
+			shadow displacement x: 0.3
+			shadow displacement y: 1.2
+			shadow blur: 2
+		symbol font:
+			name: yugioh-text-replacements
+			alignment: right middle center
+			size: 10
+	attribute:
+		left: 675
+		top : 52
+		width: 77
+		height: 77
+		z index: 2
+		render style: image
+		popup style: in place
+		alignment: middle center
+		choice images:
+			earth: { "attribute/earth_"+get_lang_ex()+".png"}
+			water: { "attribute/water_"+get_lang_ex()+".png"}
+			fire: { "attribute/fire_"+get_lang_ex()+".png"}
+			wind: { "attribute/wind_"+get_lang_ex()+".png"}
+			light: { "attribute/light_"+get_lang_ex()+".png"}
+			dark: { "attribute/dark_"+get_lang_ex()+".png"}
+			divine: { "attribute/divine_"+get_lang_ex()+".png"}
+			spell: { "attribute/spell_"+get_lang_ex()+".png"}
+			trap: { "attribute/trap_"+get_lang_ex()+".png"}
+			start: attribute/start.png
+			one: attribute/one.png
+			two: attribute/two.png
+			three: attribute/three.png
+			laugh: {"attribute/laugh_"+get_lang_ex()+".png" }
+		visible: script: if card.card_type=="command card" then false else true
+	level:
+		left: {if is_13star() then 62 else 76}
+		top : {if is_jp() and is_nmonster() then 140 else 140}
+		height: 60.5
+		width: {if is_13star() then 676 else 652}
+		z index: 3
+		alignment: {if is_13star() then "center middle shrink-overflow" else if is_blmonster() then "middle shrink-overflow left" else "middle shrink-overflow right" }
+		font:
+			name: 
+				script:
+					if st_has_text() then "Yu-Gi-Oh! DFG Leisho 4"
+					else if is_tw() then "DFPLiShuW5-B5"
+					else if is_ko() then "SD Book-B"
+					else if is_cn() then "方正隶变_GBK"
+					else if is_jp() then "Yu-Gi-Oh! DFG Leisho 4"
+					else "Yu-Gi-Oh!ITCStoneSerifSmallCapsBold"
+			italic name: Matrix
+			size: 30
+			color: rgb(0,0,0)
+		symbol font:
+			name: yugioh-standard-levels
+			alignment: middle center right
+			scale down to: 1
+			size:16
+		visible: script: if card.card_type=="link monster" then false else true
+	############################# Image
+	image:
+		left:
+			script:
+				if is_transparent() then 25
+				else if image_noframe() and is_nopendulum() then 84
+				else if is_nopendulum() then 96
+				else 53
+		top:
+			script:
+				if is_transparent() then 25
+				else if image_noframe() and is_nopendulum() then 203.5
+				else if is_nopendulum() then 215
+				else 213
+		width:
+			script:
+				if is_transparent() then 761
+				else if image_noframe() and is_nopendulum() then 644
+				else if is_nopendulum() then 622
+				else 708
+		height:
+			script:
+				if is_transparent() then 1129
+				else if image_noframe() and is_nopendulum() then 644
+				else if is_nopendulum() then 622
+				else if is_big_pend() or is_deckmaster() then 530
+				else if is_medium_pend() then  530
+				else if is_small_pend() then  566
+				else 544
+		z index: 1
+		mask: 
+			script:
+				if card.card_type=="speed spell card" then "mask-speedspell.png"
+	############################# Card type
+	monster type:
+		left: 63
+		top :
+			script:
+				if is_big_pend() or is_deckmaster() then 923
+				else 893
+		width: 685
+		height: 21
+		alignment: middle left shrink-overflow
+		z index: 2
+		font:
+			name:
+				script:
+					if is_tw() then "DFPLiShuW5-B5" 
+					else if is_jp() then "Yu-Gi-Oh! DFG Leisho 4" 
+					else if is_ko() then "SD Book-B"
+					else if is_cn() then "方正隶变_GBK" 
+					else "Yu-Gi-Oh!ITCStoneSerifSmallCapsBold"
+			italic name: { if is_en() or is_ko() or is_it() then "ITC Stone Serif" else if is_cn() then "DFPLiShuW5-B5" else "Yu-Gi-Oh! DFG Leisho 4" }
+			size: 23
+			color: rgb(0,0,0)
+		symbol font:
+			name: yugioh-standard-levels
+			alignment: middle
+			size: 11
+		visible: 
+			script:
+					if is_nmonster() then false
+					else if is_bosscard() and card.card_type=="normal monster" then false 
+					else true
+	############################# Text box
+	rule text:
+		left: 63
+		top :
+			script: 
+				if is_big_pend() or is_deckmaster() then 957
+				else if is_nmonster() then 893
+				else if is_bosscard() and card.card_type=="normal monster" then 786 
+				else 925
+		width: 685
+		height:
+			script: 
+				if is_nmonster() then 210
+				else if is_bosscard() and card.card_type=="normal monster" then 163 
+				else if is_big_pend() or is_deckmaster() then 113 else 149
+		font:
+			name: 
+				script:
+					if is_tw() then "DFPLiShuW5-B5" 
+					else if is_jp() then "Yu-Gi-Oh! DF Leisho 3" 
+					else if is_ko() then "SD Book-L"
+					else if is_cn() then "方正隶变_GBK"
+					else "MatrixBook"
+			italic name: { if is_en() or is_it() then "ITC Stone Serif Italic" else if is_tw() then "Yu-Gi-Oh! DFG Leisho 5" else "Yu-Gi-Oh! DFG Leisho 4" }
+			size: { if is_ko() then "10.5" else if is_en() or is_it() then "18" else if is_tw() then "16" else if is_jp() then "16" else if is_cn() then "16"}
+			scale down to: 4
+			color: rgb(0,0,0)
+		symbol font:
+			name: yugioh-text-replacements
+			alignment: middle center
+			size: 4
+		alignment: top left justify
+		z index: 3
+		padding left: 0
+		padding top: 0
+		padding right: 0
+		padding bottom: 0
+		line height hard: 0.9
+		line height line: 0.9
+		line height soft: 0.9
+		line height hard max: 1.1
+		line height line max: 1.1
+	############################# Attack/Defense
+	attack:
+		right: 
+			script:
+				if to_text(card.defense)=="?" or to_text(card.defense)=="X000" or to_text(card.defense)=="@" then 584
+				else if to_int(to_text(card.defense)) < 10000 then 584
+				else if to_int(to_text(card.defense)) < 100000 then 560
+				else if to_int(to_text(card.defense)) < 1000000 then 540
+				else 584
+		top: 1087.5
+		width: 68
+		height: 20
+		z index: 5
+		alignment: right middle
+		font:
+			name: MatrixBoldSmallCaps
+			italic name: Matrix-Bold
+			size: 28
+			color: rgb(20,20,20)
+		symbol font:
+			name: yugioh-text-replacements
+			alignment: shrink-overflow middle center
+			size: 7
+		visible: script: if is_nmonster() then false else true
+	defense:
+		right: 746
+		top: 1087.5
+		width: 68
+		height: 20
+		z index: 5
+		alignment: right middle
+		font:
+			name: MatrixBoldSmallCaps
+			italic name: Matrix-Bold
+			size: 28
+			color: rgb(20,20,20)
+		symbol font:
+			name: yugioh-text-replacements
+			alignment: shrink-overflow middle center
+			size: 7
+		visible: script: if is_nmonster() or card.card_type=="link monster" then false else true
+	###################### Link
+	link number:
+		left: 728
+		top: 1085
+		height: 23
+		width: 22.5
+		z index: 5
+		alignment: right middle
+		font:
+			name: Eurostile Candy W01 Semibold
+			size: 25
+			color: rgb(0,0,0)
+		symbol font:
+			name: yugioh-text-replacements
+			alignment: shrink-overflow middle center
+			size: 8
+		visible: script: if is_nmonster() or not is_link() then false else true
+	###################### Link markers
+	Link Marker UL:
+		left: 65
+		top: 184.5
+		width: {if is_link() then 72.5 else 0}
+		height: 72.5
+		z index: 5
+		render style:image
+		popup style: in place
+		choice images: 
+			yes: link_marker_ul.png
+			none:	link_marker_ul_off.png
+		visible: script: if is_link() then true else false
+	Link Marker UR:
+		left: 675
+		top: 184.5
+		width: {if is_link() then 72.5 else 0}
+		height: 72.5
+		z index: 5
+		render style:image
+		popup style: in place
+		choice images: 
+			yes: link_marker_ur.png
+			none: link_marker_ur_off.png
+		visible: script: if is_link() then true else false
+	Link Marker DL:
+		left: 65
+		top: 792
+		width: {if is_link() then 72.5 else 0}
+		height: 72.5
+		z index: 5
+		render style:image
+		popup style: in place
+		choice images: 
+			yes: link_marker_dl.png
+			none: link_marker_dl_off.png
+		visible: script: if is_link() then true else false
+	Link Marker DR:
+		left: 675
+		top: 792
+		width: {if is_link() then 72 else 0}
+		height: 72
+		z index: 5
+		render style:image
+		popup style: in place
+		choice images: 
+			yes: link_marker_dr.png
+			none:	link_marker_dr_off.png
+		visible: script: if is_link() then true else false
+	Link Marker Up:
+		left: 326
+		top: 170
+		width: {if is_link() then 159 else 0}
+		height: 47.5
+		z index: 5
+		render style: image
+		popup style: in place
+		choice images: 
+			yes: link_marker_u.png
+			none: link_marker_u_off.png
+		visible: script: if is_link() then true else false
+	Link Marker Down:
+		left: 325
+		top: 831
+		width: {if is_link() then 159 else 0}
+		height: 47.5
+		z index: 5
+		render style:image
+		popup style: in place
+		choice images: 
+			yes: link_marker_d.png
+			none: link_marker_d_off.png
+		visible: script: if is_link() then true else false
+	Link Marker Left:
+		left: 54
+		top: 447
+		width: {if is_link() then 48.5 else 0}
+		height: 157.5
+		z index: 5
+		render style:image
+		popup style: in place
+		choice images: 
+			yes: link_marker_l.png
+			none: link_marker_l_off.png
+		visible: script: if is_link() then true else false
+	Link Marker Right:
+		left: 713
+		top: 447
+		width: {if is_link() then 48.5 else 0}
+		height: 157.5
+		z index: 5
+		render style:image
+		popup style: in place
+		choice images: 
+			yes: link_marker_r.png
+			none: link_marker_r_off.png
+		visible: script: if is_link() then true else false
+	############################# Edition and Set ID (number)
+	number:
+		left: {if is_link() then 520 else if is_pendulum() then 63 else 583}
+		top : {if is_pendulum() then 1087 else 855}
+		width: 146
+		height: 18
+		z index: 2
+		alignment: {if is_pendulum() then "shrink-overflow left middle" else "shrink-overflow right middle"}
+		font:
+			name: ITC Stone Serif
+			size: 19
+			color: script: if is_pendulum() then rgb(0,0,0) else if is_blmonster() or is_transparent() then rgb(255,255,255)else rgb(0,0,0)
+		visible: script: not hide_number()
+	edition:
+		left: 140
+		top : 1133
+		width: 218
+		height: 22
+		z index: 2
+		alignment: center middle
+		font:
+			name: { if card.edition=="DUEL TERMINAL" then "BankGothic Md BT" else "Palatino Linotype Bold" }
+			size: { if card.edition=="DUEL TERMINAL" then "18" else "18" }
+			color: script: if is_pendulum() then rgb(0,0,0) else if is_blmonster() or is_transparent() then rgb(255,255,255)else rgb(0,0,0)
+		visible: script: not hide_edition()
+	gamecode:
+		left: 37
+		top : 1133
+		width: 110
+		height: 18
+		alignment: left middle shrink-overflow
+		z index: 3
+		font:
+			name: ITC Stone Serif
+			size: 16.5
+			color: script: if is_pendulum() then rgb(0,0,0) else if is_blmonster() then rgb(255,255,255) else rgb(0,0,0)
+		visible: script: not hide_gamecode()
+	cannotduel:
+		left: 32
+		top : 1133
+		width: 352
+		height: 18
+		alignment: left middle shrink-overflow
+		z index: 2
+		font:
+			name: script: if is_jp() then "FOT-Rodin Pro M" else "ITC Stone Serif"
+			size: script: if is_jp() then 13.5 else 16
+			color: script: if is_pendulum() then rgb(0,0,0) else if is_blmonster() then rgb(255,255,255) else rgb(0,0,0)
+		visible: script: not hide_cannotduel()
+	#############################Watermark
+	watermark:
+		left: 38
+		top: 1158
+		width: 200
+		height: 18
+		z index: 6
+		alignment: left
+		font:
+			name: ITC Stone Serif
+			size: 18
+			color: rgb(0,0,0)
+		visible: script: not hide_watermark()
+	watermark2:
+		right: 729
+		top: 1158
+		width: 346
+		height: 18
+		z index: 6
+		alignment: right
+		font:
+			name: ITC Stone Serif
+			size: 18
+			color: rgb(0,0,0)
+		visible: script: not hide_watermark2()
+	############################# Copyright stuff
+	rarity:
+		left: 745
+		top : 1116
+		height: 38
+		width: 38
+		z index: 3
+		render style: image
+		popup style: in place
+		choice images:
+			common: blank2.png
+			rare: blank2.png
+			super rare: blank2.png
+			ultra rare: blank2.png
+			secret rare: blank2.png
+			ultimate rare: blank2.png
+			parallel rare: blank2.png
+			gold rare: blank2.png
+			ghost rare: blank2.png
+			mosaic rare: blank2.png
+			star rare: blank2.png
+			platinum rare: blank2.png
+			Kaiba Corporation Rare: blank2.png
+	corner foil:
+		left: 745
+		top : 1116
+		height: 42
+		width: 42
+		z index: 6
+		render style: image list
+		choice images:
+			stamp:
+				script: if no_corner() then "blank2.png" 
+				else if edition_is_image() or card.rarity=="gold rare" or card.rarity=="ultra rare" then "cornerfirst.png"
+				else "cornerdefault.png"
+	copyright:
+		right: 731
+		top : 1131
+		width: 254
+		height: 21
+		z index: 4
+		alignment: right middle
+		font:
+			name: {if is_en() or is_ko() or is_it() then "ITC Stone Serif" else "FOT-Rodin Pro M" }
+			size: {if is_en() or is_it() then 15.5 else 7.4 }
+			color: script: if is_pendulum() then rgb(0,0,0) else if is_blmonster() then rgb(255,255,255) else rgb(0,0,0)
+		visible: script: not hide_copyright()
+	###################### pendulum
+	pendulum:
+		left: 0
+		top: 619
+		width: 813
+		height: 157
+		z index: -1
+		render style:image list
+		popup style: in place
+		choice images:
+		visible: script: if is_link() then false else true
+	pendulum text:
+		left: script: if is_deckmaster() then 57 else 113
+		top: script: if is_small_pend() then 698 else 662
+		width: script: if is_nopendulum() then 0 else if is_deckmaster() then 603 else 488
+		height: script: if is_small_pend() then 70 else if is_big_pend() or is_deckmaster() then 135 else 110
+		font:
+			name: 
+				script:
+					if is_tw() then "DFPLiShuW5-B5" 
+					else if is_jp() then "Yu-Gi-Oh! DF Leisho 3" 
+					else if is_ko() then "SD Book-L"
+					else if is_cn() then "方正隶变_GBK"					
+					else "MatrixBook" 
+			size: { if is_ko() then "10.5" else if is_en() or is_it() then "16" else if is_tw() then "16" else if is_jp() then "16" else if is_cn() then "16"}
+			scale down to: 8
+			color: rgb(0,0,0)
+		symbol font:
+			name: yugioh-text-replacements
+			alignment: middle center
+			scale down to: 2
+			size: 3.5
+		alignment: {if is_en() or is_it() then "top left justify" else "top left stretch if-overflow" }
+		z index: 3
+		padding left: 0
+		padding top: 0
+		padding right: 0
+		padding bottom: 0
+		line height hard: 1.0
+		line height line: 1.0
+		line height soft: 1.0
+		line height hard max: 1.1
+		line height line max: 1.1
+		visible: script: if is_nopendulum() then false else true
+	###################### pendulum
+	pendulum:
+		left: 0
+		top: 753
+		width: 813
+		height: 170
+		z index: -1
+		render style:image list
+		popup style: in place
+		choice images:
+		visible: script: if is_link() then false else true
+	pendulum text:
+		left: script: if is_deckmaster() then 63 else 128
+		top: script: if is_small_pend() then 790 else 750
+		width: script: if is_nopendulum() then 0 else if is_deckmaster() then 687 else 556
+		height: script: if is_small_pend() then 80 else if is_big_pend() or is_deckmaster() then 150 else 120
+		font:
+			name: 
+				script:
+					if is_tw() then "DFPLiShuW5-B5" 
+					else if is_jp() then "Yu-Gi-Oh! DF Leisho 3" 
+					else if is_ko() then "SD Book-L"
+					else if is_cn() then "方正隶变_GBK"					
+					else "MatrixBook" 
+			size: { if is_ko() then "10.5" else if is_en() or is_it() then "16" else if is_tw() then "16" else if is_jp() then "16" else if is_cn() then "16"}
+			scale down to: 8
+			color: rgb(0,0,0)
+		symbol font:
+			name: yugioh-text-replacements
+			alignment: middle center
+			scale down to: 2
+			size: 3.5
+		alignment: {if is_en() or is_it() then "top left justify" else "top left stretch if-overflow" }
+		z index: 3
+		padding left: 0
+		padding top: 0
+		padding right: 0
+		padding bottom: 0
+		line height hard: 1.0
+		line height line: 1.0
+		line height soft: 1.0
+		line height hard max: 1.1
+		line height line max: 1.1
+		visible: script: if is_nopendulum() then false else true
+	pendulum scale 1:
+		left: 68
+		top: script: if is_big_pend() then 831 else if is_small_pend() then 833 else 813
+		width: 28
+		height:   script: if is_big_pend() then 38 else if is_small_pend() then 34 else 36
+		z index: 3
+		alignment: middle center
+		font:
+			name: MatrixSmallBoldCaps
+			italic name: Matrix-Bold
+			size: 39
+			color: rgb(0,0,0)
+		visible: script: if is_nopendulum() or is_deckmaster() then false else true
+	pendulum scale 2:
+		left: 715
+		top: script: if is_big_pend() then 831 else if is_small_pend() then 833 else 813
+		width: 28
+		height:  script: if is_big_pend() then 38 else if is_small_pend() then 34 else 36
+		z index: 3
+		alignment: middle center
+		font:
+			name: MatrixSmallBoldCaps
+			italic name: Matrix-Bold
+			size: 39
+			color: rgb(0,0,0)
+		visible: script: if is_nopendulum() or is_deckmaster() then false else true
+	######################
+	small name:
+		left: 62
+		top: 53
+		width: 500
+		height: 11
+		alignment: middle left
+		padding bottom: 0
+		z index: 2
+		font:
+			name: FOT-Rodin Pro M
+			weight: bold
+			size: 10
+			color: script: if is_nmonster() or is_blmonster() then rgb(255,255,255) else rgb(0,0,0)
+		visible: script: if is_jp() then true else false
+	small type 1:
+		left: 67
+		top : script: if is_big_pend() then 812 else 781
+		width: { length(remove_tags(card.type_1))*30 + 2 }
+		height: 9
+		alignment: middle shrink-overflow
+		padding bottom: 0
+		z index: 2
+		font:
+			name: FOT-Rodin Pro M
+			weight: bold
+			size: 5
+		visible: script: if is_nmonster() then false else if is_jp() then true else false
+	small type 2:
+		left: { card_style.small_type_1.left+card_style.small_type_1.width+16 }
+		top : script: if is_big_pend() then 812 else 781
+		width: { length(remove_tags(card.type_2))*30 + 2 }
+		height: 9
+		alignment: middle shrink-overflow
+		padding bottom: 0
+		z index: 2
+		font:
+			name: FOT-Rodin Pro M
+			weight: bold
+			size: 5
+		visible: script: if is_nmonster() then false else if is_jp() then true else false
+	small type 3:
+		left: { card_style.small_type_2.left+card_style.small_type_2.width+16 }
+		top : script: if is_big_pend() then 812 else 781
+		width: { length(remove_tags(card.type_3))*30 + 2 }
+		height: 9
+		alignment: middle shrink-overflow
+		padding bottom: 0
+		z index: 2
+		font:
+			name: FOT-Rodin Pro M
+			weight: bold
+			size: 5
+		visible: script: if is_nmonster() then false else if is_jp() then true else false
+	small type 4:
+		left: { card_style.small_type_3.left+card_style.small_type_3.width+16 }
+		top : script: if is_big_pend() then 812 else 781
+		width: { length(remove_tags(card.type_4))*30 + 2 }
+		height: 9
+		alignment: middle shrink-overflow
+		padding bottom: 0
+		z index: 2
+		font:
+			name: FOT-Rodin Pro M
+			weight: bold
+			size: 5
+		visible: script: if is_nmonster() then false else if is_jp() then true else false
+############################################extra card field:
+extra card field:
+	type: color
+	name: pendulum text bg
+	default: rgb(255,255,255)
+	editable: false
+extra card field:
 	type: choice
-	name: card type
-	choice: normal monster
-	choice: effect monster
-	choice: ritual monster
-	choice: synchro monster
-	choice: dark synchro monster
-	choice: fusion monster
-	choice: token monster
-	choice: token card
-	choice:	xyz monster
-	choice: link monster
-	choice: obelisk
-	choice: slifer
-	choice: ra
-	choice: spell card
-	choice: trap card
-	choice: speed spell card
-	choice: dragons card
-	choice: command card
-	choice: zarc card
-	description: Selected Card Type. 选择卡片类型
-#   为了适应DataEditorX的存档制作
-#	default: card_type()
-	choice colors cardlist:
-		normal monster:	   rgb(168,168,0)
-		effect monster:	   rgb(178,68,0)
-		ritual monster:	   rgb(16,128,235)
-		synchro monster:   rgb(168,168,168)
-		dark synchro monster:  rgb(64,64,64)
-		fusion monster:	   rgb(108,34,108)
-		token monster:	   rgb(98,98,98)		
-		xyz monster:   rgb(0,0,0)
-		link monster: rgb(64,64,158)
-		obelisk:	   rgb(64,64,158)
-		slifer:		   rgb(198,30,64)
-		ra:		   rgb(225,225,0)
-		spell card:	   rgb(10,128,0)
-		trap card:	   rgb(235,30,128)
-		token card:		rgb(98,98,98)
-		speed spell card:	rgb(10,128,0)
-card field:
+	name: foil card border
+	choice: image
+	editable: false
+extra card field:
 	type: choice
-	name: foils
+	name: foil image border
+	choice: image
 	editable: false
-	choice: none
-	choice: holo image
-	choice: secret holo image
-	choice: ultimate holo image
-	choice: parallel holo image
-	choice: gold holo image
-	choice: star holo image
-	choice: mosaic holo image
-	default: foil()
-############################# Name line
-card field:
-	type: text
-	name: name
-	identifying: true
-	show statistics: false
-	card list visible: true
-	card list column: 1
-	script: name_filter(value)
-	description: 卡片名
-card field:
+extra card field:
 	type: choice
-	name: attribute
-	choice: none
-	choice: earth
-	choice: water
-	choice: fire
-	choice: wind
-	choice: light
-	choice: dark
-	choice: divine
-	choice: spell
-	choice: trap
-	choice: start
-	choice: one
-	choice: two
-	choice: three
-	choice: laugh
-	default: attribute()
-	card list visible: true
-	card list column: 2
-card field:
+	name: foil pendulum border
+	choice: image
+	editable: false
+extra card field:
 	type: choice
-	name: type symbol
-	choice: aqua
-	choice: beast
-	choice: beast-warrior
-	choice: creator god
-	choice: dinosaur
-	choice: divine-beast
-	choice: dragon
-	choice: fairy
-	choice: fiend
-	choice: fish
-	choice: insect
-	choice: machine
-	choice: plant
-	choice: psychic
-	choice: pyro
-	choice: reptile
-	choice: rock
-	choice: sea serpent
-	choice: spellcaster
-	choice: thunder
-	choice: warrior
-	choice: winged beast
-	choice: wyrm
-	choice: zombie
-	choice: cyberse
-	choice: charisma
-card field:
-	type: text
-	name: level
-	description: * = star, % = continuous, ! = counter, + = equipment, & = field, $ = quickplay, # = ritual 如果需要OCG样式，请在套牌设置ST mark is text为yes
-	script: level_filter(value)
-############################# Image
-card field:
-	type: image
-	name: image
-	show statistics: false
-	description: Double Click Selected Image. 双击选取图片
-############################# Card type
-# Keep type1, type2, and separator fields for backwards compatibility until two or three versions after 0.3.8.
-card field:
-	type: text
-	name: type1
-	script: monster_type_filter(value)
-	default: "    "
+	name: foil desc border
+	choice: image
+	editable: false
+extra card field:
+	type: choice
+	name: pendulum border
+	choice: image
+	editable: false
+extra card field:
+	type: choice
+	name: foil attribute border
+	choice: image
+	editable: false
+extra card field:
+	type: choice
+	name: copyright image
+	choice: image
 	editable: false
 	show statistics: false
-card field:
-	type: text
-	name: type2
-	script: card_class_filter(value)
+	card list visible: false
+	card list allow:false
+extra card field:
+	type: choice
+	name: edition image
+	choice: image
 	editable: false
 	show statistics: false
-card field:
+	card list visible: false
+	card list allow:false
+extra card field:
 	type: text
-	name: separator
-	script: get_sep()
+	name: ATK label
+	default: "ATK/"
+	show statistics: false
+	card list visible: false
+	card list allow: false
+extra card field:
+	type: text
+	name: DEF label
+	default: "DEF/"
+	show statistics: false
+	card list visible: false
+	card list allow: false
+extra card field:
+	type: choice
+	name: pendulum line
+	choice: image
 	editable: false
-	save value: false
+extra card field:
+	type: text
+	name: small desc
 	show statistics: false
-# These are the new type fields.
-card field:
-	type: text
-	name: type 1
-	script: monster_type_filter(value)
-	default: card.type1 # Remove when card.type1 is removed.
-card field:
-	type: text
-	name: type 2
-	script: card_class_filter(value)
-	default: if contains(card.type2, match:get_sep()) then split_text(match:get_sep(), card.type2).0 else "" # Remove when card.type2 is removed.
-card field:
-	type: text
-	name: type 3
-	script: card_class_filter(value)
-	default: if contains(card.type2, match:get_sep()) then split_text(match:get_sep(), card.type2).1 else "" # Remove when card.type2 is removed.
-card field:
-	type: text
-	name: type 4
-	script: card_class_filter(value)
-	default: if contains(card.type2, match:get_sep()) then split_text(match:get_sep(), card.type2).2 else "" # Remove when card.type2 is removed.
-card field:
-	type: text
-	name: type 5
-	script: card_class_filter(value)
-	default: if contains(card.type2, match:get_sep()) then split_text(match:get_sep(), card.type2).3 else "" # Remove when card.type2 is removed.
-card field:
-	type: text
-	name: type 6
-	script: card_class_filter(value)
-	default: if contains(card.type2, match:get_sep()) then split_text(match:get_sep(), card.type2).3 else "" # Remove when card.type2 is removed.
-card field:
-	type: text
-	name: monster type
-	description: If no Comobox, please input space.如果看不到下拉框，请输入空格
-	script:
-		# Either just monster, monster / type1
-		# prefix: "<sym-auto>[</sym-auto>",
-		# suffix: "<sym-auto>]</sym-auto>",
-		# 用来选择
-		combined_editor(
-			field1: card.type_1,
-			separator1: get_sep(),
-			field2: card.type_2,
-			separator2: get_sep(),
-			field3: card.type_3,
-			separator3: get_sep(),
-			field4: card.type_4,
-			separator4: get_sep(),
-			field5: card.type_5,
-			separator5: get_sep(),
-			field6: card.type_6
-			soft_before_empty: true,
-			hide_when_empty: true
-		)
-		#用来调整格式
-		combined_editor(
-			field1: card.type_1,
-			separator1: get_sepex(card.type_2),
-			field2: card.type_2,
-			separator2: get_sepex(card.type_3),
-			field3: card.type_3,
-			separator3: get_sepex(card.type_4),
-			field4: card.type_4,
-			separator4: get_sepex(card.type_5),
-			field5: card.type_5,
-			separator5: get_sepex(card.type_6),
-			field6: card.type_6,
-			prefix: if remove_tags(card.type_1)=="    " then "" else if is_jp() then "【" else if is_en() then "[ " else "<sym-auto>[</sym-auto>"
-			suffix: if remove_tags(card.type_1)=="    " then "" else if is_jp() then "】" else if is_en() then " ]" else "<sym-auto>]</sym-auto>"
-			soft_before_empty: true,
-			hide_when_empty: true
-		)
-	card list visible: true
-	card list column: 3
-	show statistics: false
-############################# Edition and Card ID
-card field:
-	type: text
-	name: number
-#	script: 
-#		set.code
-#		+ "-" +
-#		set.language +
-#		if pos_of_card()<=9 then "00" + pos_of_card(value) else
-#		if pos_of_card()>=9 and pos_of_card()<=99 then "0" + pos_of_card(value) else
-#		if pos_of_card()>=999 then "999" else pos_of_card(value)
-	card list visible: true
-	card list column: 6
-	card list width: 55
-	card list name: #
-	editable: true
-	save value: true
-	show statistics: false
-card field:
-	type: text
-	name: edition
-	default: set.edition
-	show statistics: false
-############################# Text box
-card field:
-	type: text
-	name: rules
-	script: text_filter(value)
 	editable: false
-	show statistics: false
-card field:
-	type: text
-	name: rule text
+	default: styling.small_rule_text
 	multi line: true
-	save value: true
-	show statistics: false
-	script:
-		if nm_ext_querry(value) and is_en() then flavor_text_filter(value)
-		else if is_en() then text_filter(value) else text_filter2(value)
-	default: card.rules
-	description: 日文注音，请在风格设置，勾选“本张牌使用特特殊设置”，在下面输入。
-############################# pendulum
-card field:
-	type: choice
-	name: pendulum
-	show statistics: false
-	save value: true
-	choice: none
-	choice: big
-	choice: medium
-	choice: small
-	choice: deck master
-	description: Pendulum 摇摆类型选择
-card field:
+	save value: false
+extra card field:
 	type: text
-	name: pendulum text
+	name: small pdesc
+	show statistics: false
+	editable: false
+	default: styling.small_pendulum_text
 	multi line: true
-	save value: true
-	show statistics: false
-	script: if is_en() then text_filter(value) else text_filter2(value)
-	description: 日文注音，请在风格设置，勾选“本张牌使用特特殊设置”，在下面输入。
-card field:
-	type: text
-	name: pendulum scale 1
-	save value: true
-	show statistics: false
-card field:
-	type: text
-	name: pendulum scale 2
-	save value: true
-	show statistics: false
-card field:
-	type: text
-	name: levelnum
-	default: length(remove_tags(card.level))
-	save value: true
-	show statistics: false
-############################# Link Markers
-card field:
-	type: choice
-	name: Link Marker Up
-	choice: none
-	choice: yes
-	save value: yes
-	show statistics: false
-card field:
-	type: choice
-	name: Link Marker UL
-	choice: none
-	choice: yes
-	save value: yes
-	show statistics: false
-card field:
-	type: choice
-	name: Link Marker UR
-	choice: none
-	choice: yes
-	save value: yes
-	show statistics: false
-card field:
-	type: choice
-	name: Link Marker Down
-	choice: none
-	choice: yes
-	save value: yes
-	show statistics: false
-card field:
-	type: choice
-	name: Link Marker DL
-	choice: none
-	choice: yes
-	save value: yes
-	show statistics: false
-card field:
-	type: choice
-	name: Link Marker DR
-	choice: none
-	choice: yes
-	save value: yes
-	show statistics: false
-card field:
-	type: choice
-	name: Link Marker Left
-	choice: none
-	choice: yes
-	save value: yes
-	show statistics: false
-card field:
-	type: choice
-	name: Link Marker Right
-	choice: none
-	choice: yes
-	save value: yes
-	show statistics: false
-############################# Attack/Defense
-card field:
-	type: text
-	name: attack
-	save value: true
-	script: a_and_d_filter(value)
-	card list visible: true
-	card list column: 4
-	card list width: 33
-	card list name: ATK
-	description: & = unlimited 无限
-card field:
-	type: text
-	name: defense
-	save value: true
-	script: a_and_d_filter(value)
-	card list visible: true
-	card list column: 5
-	card list width: 33
-	card list name: DEF
-	description: & = unlimited 无限
-############################ Link
-card field:
-	type: text
-	name: link number
-	save value: true
-	script: a_and_d_filter(value)
-	card list visible: true
-	card list column: 5
-	card list name: Link
-	card list width: 33
-############################# Copyright stuff
-card field:
-	type: choice
-	name: rarity
-	show statistics: true
-	choice: common
-	choice: rare
-	choice: super rare
-	choice: ultra rare
-	choice: secret rare
-	choice: ultimate rare
-	choice: ghost rare
-	choice: gold rare
-	choice: parallel rare
-	choice: millenium rare
-	choice: Kaiba Corporation Rare
-	choice: mosaic rare
-	choice: star rare
-	choice: platinum rare
-	choice: collectors rare
-	choice: shatterfoil rare
-	choice: prismatic rare
-	card list visible: true
-	card list column: 7
-	description: Rarity.罕见度
-card field:
-	type: choice
-	name: corner foil
-	choice: stamp
-	editable: false
-card field:
-	type: text
-	name: copyright
-	default: set.copyright
-	show statistics: false
-	description: style info->copyright images = yes 显示图片版权
-############################# small text stuff
-card field:
-	type: text
-	name: small name
-	show statistics: false
-	save value: true
-card field:
-	type: text
-	name: small type 1
-	show statistics: false
-	editable: false
-	default: small_type(card.type_1)
 	save value: false
-card field:
-	type: text
-	name: small type 2
-	show statistics: false
+extra card field:
+	type: choice
+	name: cover image
+	choice: image
 	editable: false
-	default: small_type(card.type_2)
 	save value: false
-card field:
-	type: text
-	name: small type 3
-	show statistics: false
-	editable: false
-	default: small_type(card.type_3)
-	save value: false
-card field:
-	type: text
-	name: small type 4
-	show statistics: false
-	editable: false
-	default: small_type(card.type_4)
-	save value: false
+###############################
+extra card style:
+	ATK label:
+		right: 
+			script:
+				if to_text(card.attack)=="?" or to_text(card.attack)=="X000" or to_text(card.attack)=="@" then 505
+				else if to_int(to_text(card.attack)) < 10000 and to_int(to_text(card.defense)) < 10000 then 505
+				else if to_int(to_text(card.attack)) < 10000 and to_int(to_text(card.defense)) < 99999 then 480
+				else if to_int(to_text(card.attack)) < 10000 and to_int(to_text(card.defense)) < 999999 then 460
+				else if to_int(to_text(card.attack)) < 99999 and to_int(to_text(card.defense)) < 10000 then 486
+				else if to_int(to_text(card.attack)) < 99999 and to_int(to_text(card.defense)) < 99999 then 463
+				else if to_int(to_text(card.attack)) < 99999 and to_int(to_text(card.defense)) < 999999 then 444
+				else if to_int(to_text(card.attack)) < 999999 and to_int(to_text(card.defense)) < 10000 then 468
+				else if to_int(to_text(card.attack)) < 999999 and to_int(to_text(card.defense)) < 99999 then 445
+				else if to_int(to_text(card.attack)) < 999999 and to_int(to_text(card.defense)) < 999999 then 423
+				else 505
+		top: 1087.5
+		width: 64.5
+		height: 19.5
+		z index: 6
+		alignment: middle center
+		font:
+			name: MatrixBoldSmallCaps
+			size: 28
+			color: rgb(20,20,20)
+		visible: script: if is_nmonster() then false else true
+	DEF label:
+		right: 
+			script:
+				if to_text(card.defense)=="?" or to_text(card.defense)=="X000" or to_text(card.defense)=="@" then 669
+				else if to_int(to_text(card.defense)) < 10000 then 669
+				else if to_int(to_text(card.defense)) <99999 then 650
+				else if to_int(to_text(card.defense)) <999999 then 630
+				else 669
+		top: 1087.5
+		width: 64.5
+		height: 19.5
+		z index: 6
+		alignment: middle center
+		font:
+			name: MatrixBoldSmallCaps
+			size: 28
+			color: rgb(20,20,20)
+		visible: script: if is_nmonster() or is_link() then false else true
+	pendulum line:
+		left: 78
+		top: 187
+		width: script: if is_nopendulum() then 0 else 677
+		height: 24
+		z index: 0
+		render style:image
+		choice images:
+			image:
+				script:
+					if card.card_type=="normal monster" then "pendulum/line-normal.png"
+					else if card.card_type=="effect monster" then "pendulum/line-effect.png"
+					else if card.card_type=="fusion monster" then "pendulum/line-fusion.png"
+					else if card.card_type=="ritual monster" then "pendulum/line-ritual.png"
+					else if card.card_type=="synchro monster" then "pendulum/line-synchro.png"
+					else if card.card_type=="xyz monster" then "pendulum/line-xyz.png"
+					else if card.card_type=="token monster" then "pendulum/line-token.png"
+					else if card.card_type=="token card" then "pendulum/line-token.png"
+					else "blank2.png"
+		visible: script: if is_nopendulum() then false else true	
+	copyright image:
+		right: 646
+		top : 999
+		width: 253
+		height: 16
+		z index: 4
+		render style: image
+		choice images:
+			image:
+				script:
+					if is_pendulum() then 
+						if is_en() then "enCopyrightBlack.png" 
+						else "jpCopyrightBlack.png"
+					else if is_blmonster() then 
+						if is_en() then "enCopyrightWhite.png" 
+						else "jpCopyrightWhite.png"
+					else 
+						if is_en() then "enCopyrightBlack.png" 
+						else "jpCopyrightBlack.png"
+		visible: script: if copyright_is_image() then true else false
+	edition image:
+		left: 157
+		top : 1133
+		width: 116
+		height: 18.5
+		z index: 4
+		render style: image
+		choice images:
+			image:
+				script:
+					if is_pendulum() then "1steditionblack_"+get_lang_ex()+".png"
+					else if is_blmonster() then "1steditionwhite_"+get_lang_ex()+".png"
+					else "1steditionblack_"+get_lang_ex()+".png"
+		visible: script: if is_jp() then false else if edition_is_image() then true else false
+	pendulum border:
+		left: 0
+		top: 0
+		width: 813
+		height: 1185
+		z index: 1
+		render style:image
+		choice images:
+			image:
+				script:
+					if is_big_pend() then "pendulum/pendulum_lg.png" 
+					else if is_medium_pend() then "pendulum/pendulum_md.png" 
+					else if is_deckmaster() then "pendulum/card-deckmaster.png"
+					else "pendulum/pendulum_sm.png"
+		visible: script: if is_nopendulum() then false else true
 ############################
-card field:
-	type: text
-	name: gamecode
-	show statistics: false
-	description: set info->hide gamecode = no 隐藏密码
-card field:
-	type: text
-	name: cannotduel
-	show statistics: false
-	description: set info->hide cannotduel= no 隐藏密码
-card field:
-	type: text
-	name: watermark
-	default: set.watermark
-	show statistics: false
-	description: put watermark
-card field:
-	type: text
-	name: watermark2
-	default: set.watermark2
-	show statistics: false
-	description: put watermark
+	cover image:
+		left: 0
+		top: 0
+		width: 813
+		height: 1185
+		z index: 7
+		render style: image
+		choice images:
+			image: 
+				script: 
+					if styling.cover_image=="none" then "blank2.png" 
+					else "cover/"+styling.cover_image+".png"
+		visible: script: if styling.cover_image=="none" then false else true
+##########################
+	small pdesc:
+		left: script: if is_deckmaster() then 58.5 else 114.5
+		top: script: if is_small_pend() then 695 else 660
+		width: script: if is_nopendulum() then 0 else if is_deckmaster() then 599.5 else 484.5
+		height: script: if is_small_pend() then 75 else if is_big_pend() or is_deckmaster() then 138 else 113
+		font:
+			name: FOT-Rodin Pro M
+			weight: bold
+			size: 4.8
+			scale down to: 2
+			color: rgb(0,0,0)
+		alignment: top left
+		z index: 4
+		line height hard: 1.0
+		line height line: 1.0
+		line height soft: 1.0
+		visible: script: if is_nopendulum() then false else if is_jp() then true else false
+	small desc:
+		left: 58
+		top : 
+			script: 
+				if is_nmonster() then 784.5 
+				else if is_big_pend() then 833 
+				else if is_bosscard() and card.card_type=="normal mosnter" then 784.5 
+				else 811
+		width: {if is_jp() then 603 else 0}
+		height: 
+			script: 
+				if is_nmonster() then 190 
+				else  if is_big_pend() or is_deckmaster() then 109
+				else 135
+		font:
+			name: FOT-Rodin Pro M
+			size: 5.5
+			scale down to: 3
+			color: rgb(0,0,0)
+		alignment: top left
+		z index: 4
+		line height hard: 1.0
+		line height line: 1.0
+		line height soft: 1.0
+		visible: script: if is_jp() then true else false
+	######## foil
+	foil attribute border:
+		left: 600
+		top : 43
+		width: 65
+		height: 81
+		z index: 5
+		render style: image
+		alignment: center middle
+		choice images:
+			image: foil/collectattribute.png
+		visible: 
+			script: 
+				if hide_foil() then false
+				else if card.rarity=="collectors rare" then true else false
+	foil image border:
+		left: 77
+		top: 182
+		width: 565
+		height: 565
+		z index: 5
+		render style: image
+		choice images:
+			image: 
+				script:
+					if card.rarity=="gold rare" then "foil/goldimage.png"
+					else "foil/collectimage.png"
+		visible:
+			script:
+			if is_pendulum() or is_deckmaster() or hide_foil() or image_noframe() then false
+			else if card.rarity=="collectors rare" or card.rarity=="gold rare" then true
+			else false
+	foil desc border:
+		left: 40
+		top: 773
+		width: 637
+		height: 219
+		z index: 2
+		render style: image
+		choice images:
+			image: 
+				script:
+					if card.rarity=="gold rare" then "foil/golddesc.png"
+					else "foil/collectdesc.png"
+		visible: 
+			script: 
+				if hide_foil() then false
+				else if card.rarity=="collectors rare" or card.rarity=="gold rare" then true
+			else false
+	foil pendulum border:
+		left: 40
+		top: 180
+		width: 637
+		height: 814
+		z index:5
+		render style:image
+		choice images:
+			image:
+				script:
+					if is_big_pend() and card.rarity=="gold rare" then "foil/goldpend_b.png" 
+					else if is_medium_pend() and card.rarity=="gold rare" then "foil/goldpend_m.png" 
+					else if card.rarity=="gold rare" then "foil/goldpend_s.png"
+					else if is_big_pend() and card.rarity=="collectors rare" then "foil/collectpend_b.png" 
+					else if is_medium_pend() and card.rarity=="collectors rare" then "foil/collectpend_m.png" 
+					else "foil/collectpend_s.png"
+		visible: 
+			script:
+				if hide_foil() or is_nopendulum() then false
+				else if card.rarity=="collectors rare" or card.rarity=="gold rare" then true
+				else false
+	foil card border:
+		left: 0
+		top: 0
+		width: 813
+		height: 1185
+		z index: 1
+		render style: image
+		choice images:
+			image: 
+				script: 
+					if is_transparent() then "border2.png" 
+					else if card.rarity=="gold rare" and not hide_foil() then "foil/goldborder.png"
+					else if card.rarity=="collectors rare" and not hide_foil() then "foil/collectborder.png"
+					else "border2.png"
+		visible: true
+	#############################
