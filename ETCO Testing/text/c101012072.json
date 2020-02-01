@@ -1,8 +1,0 @@
-{
-  "Name": {
-    "en": "Beaming Prosperity"
-  },
-  "Effect": {
-    "en": "Excavate cards from the top of your Deck, equal to the number of \"Beaming Prosperity\" in your GY +3, and if you do, if there are 3 card types (Monster, Spell, and Trap) among them, add 1 of them to your hand, also send the remaining cards to the GY. Otherwise, shuffle all excavated cards into the Deck. You can only activate 1 \"Beaming Prosperity\" per turn."
-  }
-}
