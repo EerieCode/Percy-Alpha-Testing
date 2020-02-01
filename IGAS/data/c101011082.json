@@ -1,0 +1,23 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101011082,
+  "ReleaseStatus": {
+    "Master": [
+      "TCG"
+    ]
+  },
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "WIND"
+  ],
+  "Race": [
+    "Dragon"
+  ],
+  "Rating": 3,
+  "ATK": "1700",
+  "DEF": "0",
+  "CategoryNumber": 18448
+}

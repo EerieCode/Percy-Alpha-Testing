@@ -1,0 +1,15 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101011084,
+  "ReleaseStatus": {
+    "Master": [
+      "TCG"
+    ]
+  },
+  "CardType": "Spell",
+  "Types": [
+    "Equip"
+  ],
+  "Rating": 0,
+  "CategoryNumber": 18874370
+}

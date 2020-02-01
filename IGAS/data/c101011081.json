@@ -1,0 +1,23 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101011081,
+  "ReleaseStatus": {
+    "Master": [
+      "TCG"
+    ]
+  },
+  "CardType": "Monster",
+  "Types": [
+    "Effect"
+  ],
+  "Attribute": [
+    "DARK"
+  ],
+  "Race": [
+    "Zombie"
+  ],
+  "Rating": 4,
+  "ATK": "1800",
+  "DEF": "100",
+  "CategoryNumber": 16
+}

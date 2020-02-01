@@ -1,0 +1,27 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101011087,
+  "ReleaseStatus": {
+    "Master": [
+      "TCG"
+    ]
+  },
+  "CardType": "Monster",
+  "Types": [
+    "Effect",
+    "Synchro"
+  ],
+  "Attribute": [
+    "FIRE"
+  ],
+  "Race": [
+    "Fiend"
+  ],
+  "Rating": 8,
+  "ATK": "2500",
+  "DEF": "1000",
+  "Series": [
+    "Plunder Patroll"
+  ],
+  "CategoryNumber": 8196
+}

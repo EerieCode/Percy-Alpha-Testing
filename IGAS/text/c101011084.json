@@ -1,0 +1,28 @@
+{
+  "Name": {
+    "en": "Execution of the Contract"
+  },
+  "Effect": {
+    "en": "You can reveal 1 Ritual Monster in your hand; the equipped monster becomes the revealed monster's Level, until the end of the turn (even if this card leaves the field). If this card is sent to the GY because the equipped monster is tributed: You can target 1 monster your opponent controls; destroy it. You can only use each effect of \"Execution of the Contract\" once per turn."
+  },
+  "String": {
+    "en": [
+      "Change Level",
+      "Destroy",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  }
+}

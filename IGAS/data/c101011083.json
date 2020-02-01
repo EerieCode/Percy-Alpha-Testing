@@ -1,0 +1,24 @@
+{
+  "Passcode": 0,
+  "BetaPasscode": 101011083,
+  "ReleaseStatus": {
+    "Master": [
+      "TCG"
+    ]
+  },
+  "CardType": "Monster",
+  "Types": [
+    "Effect",
+    "Xyz"
+  ],
+  "Attribute": [
+    "EARTH"
+  ],
+  "Race": [
+    "Zombie"
+  ],
+  "Rating": 9,
+  "ATK": "900",
+  "DEF": "3300",
+  "CategoryNumber": 262144
+}
