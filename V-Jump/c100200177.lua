@@ -27,7 +27,7 @@ end
 function s.tkop(e,tp,eg,ep,ev,re,r,rp)
 	local sync=e:GetHandler():GetReasonCard()
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsPlayerCanSpecialSummonMonster(tp,id+100,0x2016,TYPES_TOKEN,0,0,sync:GetLevel(),RACE_MACHINE,ATTRIBUTE_WIND) then
-		local tk=Duel.CreateToken(tp,id+1)
+		local tk=Duel.CreateToken(tp,id+100)
 		Duel.SpecialSummon(tk,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
