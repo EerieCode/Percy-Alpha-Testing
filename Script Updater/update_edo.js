@@ -364,7 +364,8 @@ const SIMPLE_MAP = {
     "IsLinkState": "IsLinked",
     "IsAttackable": "CanAttack",
     "IsChainAttackable": "CanChainAttack",
-    "IsHasLevel": "HasLevel"
+    "IsHasLevel": "HasLevel",
+    "Duel.AnnounceCardFilter": "Duel.AnnounceCard"
 };
 
 // updates simple find-replaces such as new constants and renamed functions with the same params
