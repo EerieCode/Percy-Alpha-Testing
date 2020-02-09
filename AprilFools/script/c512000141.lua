@@ -2,6 +2,7 @@
 --Pacifis, the Unfixable City
 --Scripted by AlphaKretin
 local s,id=GetID()
+local CARD_SPIRAL_TOKEN=2819436
 function s.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
@@ -105,8 +106,8 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local sp=1-rp
 	if e:GetHandler():IsRelateToEffect(e) and Duel.GetLocationCount(sp,LOCATION_MZONE)>0 
-		and Duel.IsPlayerCanSpecialSummonMonster(sp,id+1,0xfa,TYPES_TOKEN,2000,2000,6,RACE_WYRM,ATTRIBUTE_WATER) then
-		local token=Duel.CreateToken(sp,id+1)
+		and Duel.IsPlayerCanSpecialSummonMonster(sp,CARD_SPIRAL_TOKEN,0xfa,TYPES_TOKEN,2000,2000,6,RACE_WYRM,ATTRIBUTE_WATER) then
+		local token=Duel.CreateToken(sp,CARD_SPIRAL_TOKEN)
 		Duel.SpecialSummon(token,0,sp,sp,false,false,POS_FACEUP)
 	end
 end
