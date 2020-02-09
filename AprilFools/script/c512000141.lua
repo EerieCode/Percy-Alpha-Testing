@@ -31,6 +31,7 @@ function s.initial_effect(c)
 	e4:SetCode(EVENT_CHAINING)
 	e4:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e4:SetRange(LOCATION_FZONE)
+	e4:SetCondition(s.regcon)
 	e4:SetOperation(aux.chainreg)
 	c:RegisterEffect(e4)
 	local e5=Effect.CreateEffect(c)
@@ -88,6 +89,9 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 	end
+end
+function s.regcon(e,tp,eg,ep,ev,re,r,rp)
+	return not re:IsOriginalCode(id)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetFlagEffect(1)>0
