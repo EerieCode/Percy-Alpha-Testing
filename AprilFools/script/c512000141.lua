@@ -92,7 +92,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.regcon(e,tp,eg,ep,ev,re,r,rp)
-	return not re:IsOriginalCode(id)
+	return not re:GetHandler():IsOriginalCode(id)
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetFlagEffect(1)>0
