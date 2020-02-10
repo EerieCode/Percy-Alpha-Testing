@@ -26,6 +26,7 @@ function s.regop(e,tp,eg,ep,ev,re,r,rp)
 	if c:IsPreviousLocation(LOCATION_HAND) then Duel.Draw(tp, 1, REASON_RULE) end
 	if not s.global_active_check[tp] then
 		Duel.Hint(HINT_MESSAGE,tp,aux.Stringid(1040,14))
+		Duel.Hint(HINT_MESSAGE,1-tp,aux.Stringid(1040,14))
 		local g=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
 		local ct=#g
 		Duel.SendtoDeck(g,nil,-2,REASON_RULE)
@@ -36,6 +37,8 @@ function s.regop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.SendtoHand(gc,tp,REASON_RULE)
 			i=i+1
 		end
+		local rg=Duel.GetFieldGroup(tp,LOCATION_HAND,0)
+		Duel.ConfirmCards(1-tp,rg)
 		s.global_active_check[tp] = true
 	end
 end
