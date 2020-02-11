@@ -6,15 +6,15 @@ function s.initial_effect(c)
 	c:EnableReviveLimit()
 	aux.AddXyzProcedure(c,nil,3,2,nil,nil,99,nil,false,s.xyzcheck)
 	--cannot be target
-    local e1=Effect.CreateEffect(c)
-    e1:SetType(EFFECT_TYPE_SINGLE)
-    e1:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
-    e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-    e1:SetRange(LOCATION_MZONE)
-    e1:SetCondition(s.ntcon)
-    e1:SetValue(aux.tgoval)
-    c:RegisterEffect(e1)
-    --negate
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetCondition(s.ntcon)
+	e1:SetValue(aux.tgoval)
+	c:RegisterEffect(e1)
+	--negate
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetCategory(CATEGORY_NEGATE)
@@ -44,8 +44,8 @@ function s.discon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.discost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-    if chk==0 then return c:CheckRemoveOverlayCard(tp,2,REASON_COST) end
-    c:RemoveOverlayCard(tp,2,2,REASON_COST)
+	if chk==0 then return c:CheckRemoveOverlayCard(tp,2,REASON_COST) end
+	c:RemoveOverlayCard(tp,2,2,REASON_COST)
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
