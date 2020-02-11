@@ -1,6 +1,6 @@
---黄金郷のガーディアン
---Conquistador of the Golden Land
 --黄金郷のコンキスタドール
+--Conquistador of the Golden Land
+--scripted by Naim
 local s,id=GetID()
 function s.initial_effect(c)
 	--special summon itself
