@@ -43,7 +43,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=aux.SelectUnselectGroup(g,e,tp,3,3,aux.dncheck,1,tp,HINTMSG_TODECK)
 	if #sg==3 and Duel.SendtoDeck(sg,tp,2,REASON_EFFECT)>0 then
 		local dg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,c)
-		Duel.Destroy(dg)
+		Duel.Destroy(dg,REASON_EFFECT)
 	end
 end
 function s.lptg(e,tp,eg,ep,ev,re,r,rp,chk)
