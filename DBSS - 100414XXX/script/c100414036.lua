@@ -60,7 +60,7 @@ function s.lpop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_REMOVED,0,nil,0x243)
 	local sg=aux.SelectUnselectGroup(g,e,tp,3,3,aux.dncheck,1,tp,HINTMSG_TODECK)
 	if #sg==3 and Duel.SendtoDeck(sg,tp,2,REASON_EFFECT)>0 then
-		local inital=Duel.GetLP(1-tp)
+		local initial=Duel.GetLP(1-tp)
 		local lp=math.ceil(initial/2)
 		Duel.SetLP(1-tp,lp)
 		local rec=Duel.GetLP(1-tp)
