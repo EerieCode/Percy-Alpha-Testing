@@ -24,6 +24,7 @@ function s.initial_effect(c)
     e2:SetOperation(s.setop)
     c:RegisterEffect(e2)
 end
+s.listed_series={0x23f,0x241}
 function s.spfilter(c,e,tp)
     return (Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x23f),tp,LOCATION_MZONE,0,1,nil) 
     	or c:IsSetCard(0x23f)) and c:IsRace(RACE_ZOMBIE) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
