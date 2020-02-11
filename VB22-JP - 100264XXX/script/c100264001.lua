@@ -44,13 +44,13 @@ function s.gycfilter(c,tp)
 	return c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost() and aux.SpElimFilter(c,false,true)
 end
 function s.gycheck(sg,e,tp)
-	return sg:FilterCount(Card.GetOriginalAttribute)==1 
-		and sg:FilterCount(Card.GetOriginalRace)==1 
-		and sg:FilterCount(Card.GetCode)==#sg
+	return sg:GetClassCount(Card.GetOriginalAttribute)==1 
+		and sg:GetClassCount(Card.GetOriginalRace)==1 
+		and sg:GetClassCount(Card.GetCode)==#sg
 		and Duel.IsExistingTarget(Card.IsAbleToGrave,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,sg)
 end
 function s.gycost(e,tp,eg,ep,ev,re,r,rp,chk)
-	lcoal g=Duel.GetMatchingGroup(s.gycfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil,tp)
+	local g=Duel.GetMatchingGroup(s.gycfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,0,nil,tp)
 	if chk==0 then return aux.SelectUnselectGroup(g,e,tp,2,2,s.gycheck,0) end
 	local sg=aux.SelectUnselectGroup(g,e,tp,2,2,s.gycheck,1,tp,HINTMSG_REMOVE)
 	Duel.Remove(sg,POS_FACEUP,REASON_COST)

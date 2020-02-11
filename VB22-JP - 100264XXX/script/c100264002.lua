@@ -47,6 +47,10 @@ function s.discost(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk==0 then return c:CheckRemoveOverlayCard(tp,2,REASON_COST) end
     c:RemoveOverlayCard(tp,2,2,REASON_COST)
 end
+function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
+end
 function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateActivation(ev)
 end
