@@ -24,10 +24,10 @@ function s.initial_effect(c)
 	e2:SetOperation(s.setop)
 	c:RegisterEffect(e2)
 end
-s.listed_series={0x23f,0x241}
+s.listed_series={0x241,0x243}
 function s.spfilter(c,e,tp)
-	return (Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x23f),tp,LOCATION_MZONE,0,1,nil) 
-		or c:IsSetCard(0x23f)) and c:IsRace(RACE_ZOMBIE) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
+	return (Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x241),tp,LOCATION_MZONE,0,1,nil) 
+		or c:IsSetCard(0x241)) and c:IsRace(RACE_ZOMBIE) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -52,7 +52,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e1,tp)
 end
 function s.setfilter(c)
-	return c:IsSetCard(0x241) and c:IsSSetable()
+	return c:IsSetCard(0x243) and c:IsSSetable()
 end
 function s.settg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0

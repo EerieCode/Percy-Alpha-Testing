@@ -22,16 +22,16 @@ function s.initial_effect(c)
 	e2:SetOperation(s.lpop)
 	c:RegisterEffect(e2)
 end
-s.listed_series={0x23f,0x240,0x241}
+s.listed_series={0x241,0x242,0x243}
 function s.con(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard(0x23f)),tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard(0x241)),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.tdfilter(c,set)
 	return c:IsFaceup() and c:IsSetCard(set) and c:IsAbleToDeck()
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_REMOVED,0,nil,0x240)
+	local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_REMOVED,0,nil,0x242)
 	if chk==0 then return aux.SelectUnselectGroup(g,e,tp,3,3,aux.dncheck,0) and
 		Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,c) end
 	local dg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,c)
@@ -39,7 +39,7 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,dg,#dg,0,0)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_REMOVED,0,nil,0x240)
+	local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_REMOVED,0,nil,0x242)
 	local sg=aux.SelectUnselectGroup(g,e,tp,3,3,aux.dncheck,1,tp,HINTMSG_TODECK)
 	if #sg==3 and Duel.SendtoDeck(sg,tp,2,REASON_EFFECT)>0 then
 		local dg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,c)
@@ -48,7 +48,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.lptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_REMOVED,0,nil,0x241)
+	local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_REMOVED,0,nil,0x243)
 	if chk==0 then return aux.SelectUnselectGroup(g,e,tp,3,3,aux.dncheck,0) end
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,nil,3,0,LOCATION_REMOVED)
 	local rec=math.ceil(Duel.GetLP(1-tp)/2)
@@ -57,7 +57,7 @@ function s.lptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,rec)
 end
 function s.lpop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_REMOVED,0,nil,0x241)
+	local g=Duel.GetMatchingGroup(s.tdfilter,tp,LOCATION_REMOVED,0,nil,0x243)
 	local sg=aux.SelectUnselectGroup(g,e,tp,3,3,aux.dncheck,1,tp,HINTMSG_TODECK)
 	if #sg==3 and Duel.SendtoDeck(sg,tp,2,REASON_EFFECT)>0 then
 		local inital=Duel.GetLP(1-tp)
