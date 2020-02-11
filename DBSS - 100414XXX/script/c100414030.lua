@@ -14,16 +14,13 @@ function s.initial_effect(c)
     c:RegisterEffect(e1)
     --Set
     local e2=Effect.CreateEffect(c)
-    e2:SetDescription(aux.Stringid(id,0))
+    e2:SetDescription(aux.Stringid(id,1))
     e2:SetType(EFFECT_TYPE_IGNITION)
     e2:SetRange(LOCATION_GRAVE)
     e2:SetCost(aux.bfgcost)
     e2:SetTarget(s.settg)
     e2:SetOperation(s.setop)
     c:RegisterEffect(e2)
-end
-function s.eldicheck(tp)
-	return 
 end
 function s.spfilter(c,e,tp)
     return (Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x23f),tp,LOCATION_MZONE,0,1,nil) 
