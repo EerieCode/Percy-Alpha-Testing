@@ -1,4 +1,4 @@
---
+--黒き覚醒のエルドリクシル
 --Eldlixir of Black Awakening
 --Scripted by AlphaKretin
 local s,id=GetID()
