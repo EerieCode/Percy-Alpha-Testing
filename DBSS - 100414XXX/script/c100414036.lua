@@ -63,8 +63,8 @@ function s.lpop(e,tp,eg,ep,ev,re,r,rp)
 		local inital=Duel.GetLP(1-tp)
 		local lp=math.ceil(initial/2)
 		Duel.SetLP(1-tp,lp)
-		local rec=initial-Duel.GetLP(1-tp)
-		if rec>0 then
+		local rec=Duel.GetLP(1-tp)
+		if rec~=initial then
 			Duel.BreakEffect()
 			Duel.Recover(tp,rec,REASON_EFFECT)
 		end
