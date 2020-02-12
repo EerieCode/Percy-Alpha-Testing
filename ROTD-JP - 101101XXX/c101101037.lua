@@ -1,0 +1,66 @@
+--竜魔道騎士ガイア
+--Gaia the Dragonic Magic Knight
+local s,id=GetID()
+function s.initial_effect(c)
+	--fusion
+	c:EnableReviveLimit()
+	Fusion.AddProcMix(c,true,true,aux.FilterBoolFunctionEx(Card.IsFusionCard,0xdb),s.matfilter)
+	--change name
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e1:SetCode(EFFECT_CHANGE_CODE)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetValue(66889139)
+	c:RegisterEffect(e1)
+	--to hand1
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetCategory(CATEGORY_ATKCHANGE)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetType(EFFECT_TYPE_IGNITION)
+	e2:SetCountLimit(1)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetTarget(s.destg)
+	e2:SetOperation(s.desop)
+	c:RegisterEffect(e2)
+	--ATK Up
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,1))
+	e3:SetCategory(CATEGORY_ATKCHANGE)
+	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e3:SetCode(EVENT_BATTLE_DESTROYING)
+	e3:SetCondition(aux.bdocon)
+	e3:SetOperation(s.atkop)
+	c:RegisterEffect(e3)
+end
+function s.matfilter(c,fc,sumtype,tp)
+	return c:IsRace(RACE_DRAGON,fc,sumtype,tp) and c:IsLevelAbove(5)
+end
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chkc then return e:GetHandler():GetAttack()>=1000 and chkc:IsOnField() and chkc~=c end
+	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,e:GetHandler()) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,e:GetHandler())
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+end
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local tc=Duel.GetFirstTarget()
+	if c:IsRelateToEffect(e) and UpdateAttack(-2600,RESET_EVENT+RESETS_STANDARD,c)=-2600 then
+		if tc:IsRelateToEffect(e) then
+			Duel.Destroy(tc,REASON_EFFECT)
+		end
+	end
+end
+function s.atkop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:IsRelateToEffect(e) and c:IsFaceup() then
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_UPDATE_ATTACK)
+		e1:SetValue(2600)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_BATTLE)
+		c:RegisterEffect(e1)
+	end
+end
