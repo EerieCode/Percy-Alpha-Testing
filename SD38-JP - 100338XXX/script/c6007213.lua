@@ -1,4 +1,5 @@
 --神炎皇ウリア
+--Uria, Lord of Searing Flames
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
