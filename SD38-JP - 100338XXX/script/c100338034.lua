@@ -7,7 +7,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetHintTiming(0,TIMING_ATTACK)
-	e1:SetTarget(s.target)
+	e1:SetTarget(s.tg)
 	c:RegisterEffect(e1)
 	--Procedure enhancement
 	local e2=Effect.CreateEffect(c)
@@ -43,24 +43,52 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 s.listed_names={6007213,32491822,69890967}
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc) end
 	if chk==0 then return true end
+	if s.target(e,tp,eg,ep,ev,re,r,rp,0) and Duel.SelectYesNo(tp,94) then
+		s.target(e,tp,eg,ep,ev,re,r,rp,1)
+	else
+		e:SetCategory(0)
+		e:SetProperty(0)
+		e:SetOperation(nil)
+	end
+end
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then 
+		if op==2 then return s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc) else return false end
+	end
 	local tc=Duel.GetAttacker()
 	local dc=Duel.GetAttackTarget()
-	if s.atkcost(e,tp,eg,ep,ev,re,r,rp,0)
-		and s.atktg(e,tp,eg,ep,ev,re,r,rp,0)
-		and Duel.CheckEvent(EVENT_ATTACK_ANNOUNCE)
+	local b1=s.atkcost(e,tp,eg,ep,ev,re,r,rp,0) and s.atktg(e,tp,eg,ep,ev,re,r,rp,0)
+		and	Duel.CheckEvent(EVENT_ATTACK_ANNOUNCE)
 		and ((tc:IsCode(6007213) and tc:IsControler(tp))  or (dc and dc:IsCode(6007213) and dc:IsControler(tp)))
-		and Duel.SelectYesNo(tp,94) then
-			e:SetCategory(CATEGORY_ATKCHANGE)
-			e:SetProperty(EFFECT_FLAG_CARD_TARGET)
-			e:SetOperation(s.atkop)
-			s.atkcost(e,tp,eg,ep,ev,re,r,rp,1)
-			s.atktg(e,tp,eg,ep,ev,re,r,rp,1)
-	else
-			e:SetCategory(0)
-			e:SetProperty(0)
-			e:SetOperation(nil)
+	local b2=s.spcost(e,tp,eg,ep,ev,re,r,rp,0) and s.sptg(e,tp,eg,ep,ev,re,r,rp,0)
+	if chk==0 then return b1 or b2 or b3 end
+	local stable={}
+	local dtable={}
+	if b1 then
+		table.insert(stable,1)
+		table.insert(dtable,aux.Stringid(id,0))
+	end
+	if b2 then
+		table.insert(stable,2)
+		table.insert(dtable,aux.Stringid(id,1))
+	end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EFFECT)
+	local op=stable[Duel.SelectOption(tp,table.unpack(dtable))]
+	e:SetLabel(op)
+	if op==1 then
+		e:SetCategory(CATEGORY_ATKCHANGE)
+		e:SetOperation(s.atkop)
+		s.atkcost(e,tp,eg,ep,ev,re,r,rp,1)
+		s.atktg(e,tp,eg,ep,ev,re,r,rp,1)
+	elseif op==2 then
+		e:SetCategory(CATEGORY_TOHAND+CATEGORY_SPECIAL_SUMMON)
+		e:SetProperty(0)
+		e:SetOperation(s.spop)
+		s.spcost(e,tp,eg,ep,ev,re,r,rp,1)
+		s.sptg(e,tp,eg,ep,ev,re,r,rp,1)
 	end
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
