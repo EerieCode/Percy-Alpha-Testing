@@ -1,4 +1,5 @@
 --降雷皇ハモン
+--Hamon, Lord of Striking Thunder
 local s,id=GetID()
 function s.initial_effect(c)
 	c:EnableReviveLimit()
