@@ -112,7 +112,7 @@ function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_DAMAGE_CAL,0,1)
 end
 function s.atkfilter(c)
-	return c:GetType()==TYPE_TRAP+TYPE_CONTINUOUS and (c:IsFaceup() or c:IsLocation(LOCATION_GRAVE))
+	return c:IsType(TYPE_TRAP) and (c:IsFaceup() or c:IsLocation(LOCATION_GRAVE))
 end
 function s.atkval(e,c)
 	return Duel.GetMatchingGroupCount(s.atkfilter,c:GetControler(),LOCATION_GRAVE+LOCATION_ONFIELD,LOCATION_GRAVE+LOCATION_ONFIELD,nil)*1000
