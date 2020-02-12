@@ -91,7 +91,11 @@ end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetAttacker()
 	local dc=Duel.GetAttackTarget()
-	return (tc:IsCode(6007213) and tc:IsControler(tp)) or (dc and dc:IsCode(6007213) and dc:IsControler(tp))
+	if (tc:IsCode(6007213) and tc:IsControler(tp))
+		then e:SetLabelObject(tc) return true
+	elseif (dc and dc:IsCode(6007213) and dc:IsControler(tp))
+		then e:SetLabelObject(dc) return true end
+	return false
 end
 function s.atkcfilter(c)
 	return c:IsType(TYPE_TRAP) and c:IsAbleToGraveAsCost()
@@ -105,6 +109,8 @@ end
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:GetFlagEffect(id)==0 end
+	Duel.SetTargetCard(e:GetLabelObject())
+	e:SetLabelObject(nil)
 	c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_DAMAGE_CAL,0,1)
 end
 function s.atkfilter(c)
@@ -116,16 +122,11 @@ end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) then return end
-	local a=Duel.GetAttacker()
-	local b=Duel.GetAttackTarget()
-	local tc=nil
-	if a:IsCode(6007213) and a:IsControler(tp) then tc=a
-		elseif b:IsCode(6007213) and c:IsControler(tp) then tc=b
-	end
-	if tc and tc:IsFaceup() then
+	local tc=Duel.GetFirstTarget()
+	if tc:IsFaceup() and tc:IsRelateToEffect(e) and tc:IsRelateToBattle() then
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_UPDATE_ATTACK)
+		e1:SetCode(EFFECT_SET_ATTACK_FINAL)
 		e1:SetValue(s.atkval)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e1)
@@ -136,7 +137,7 @@ function s.atkcfilter(c)
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DISCARD)
 	local tc=Duel.SelectMatchingCard(tp,Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,1,nil):GetFirst()
 	Duel.SendtoGrave(tc,REASON_COST+REASON_DISCARD)
 end
