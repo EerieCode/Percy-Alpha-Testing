@@ -84,6 +84,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		s.atkcost(e,tp,eg,ep,ev,re,r,rp,1)
 		s.atktg(e,tp,eg,ep,ev,re,r,rp,1)
 	elseif op==2 then
+		e:GetHandler():RegisterFlagEffect(id+100,RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
 		e:SetCategory(CATEGORY_TOHAND+CATEGORY_SPECIAL_SUMMON)
 		e:SetProperty(0)
 		e:SetOperation(s.spop)
@@ -100,11 +101,10 @@ function s.atkcfilter(c)
 	return c:IsType(TYPE_TRAP) and c:IsAbleToGraveAsCost()
 end
 function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.atkcfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil) and Duel.GetFlagEffect(tp,id)==0 end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.atkcfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 	local tc=Duel.SelectMatchingCard(tp,s.atkcfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,1,nil):GetFirst()
 	Duel.SendtoGrave(tc,REASON_COST)
-	Duel.RegisterFlagEffect(tp,id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_DAMAGE_CAL,0,1)
 end
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local c=e:GetHandler()
@@ -152,7 +152,7 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_GRAVE,0,1,nil,e,tp,ft) and e:GetHandler():GetFlagEffect(id+100)==0 end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_GRAVE)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
-	e:GetHandler():GetFlagEffect(id+100,RESET_PHASE+PHASE_END,0,1)
+	e:GetHandler():RegisterFlagEffect(id+100,RESETS_STANDARD+RESET_PHASE+PHASE_END,0,1)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
