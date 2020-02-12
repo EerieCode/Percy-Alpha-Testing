@@ -44,7 +44,6 @@ function s.initial_effect(c)
 end
 s.listed_names={6007213,32491822,69890967}
 function s.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc) end
 	if chk==0 then return true end
 	if s.target(e,tp,eg,ep,ev,re,r,rp,0) and Duel.SelectYesNo(tp,94) then
 		s.target(e,tp,eg,ep,ev,re,r,rp,1)
@@ -55,9 +54,6 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	end
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then 
-		if op==1 then return s.atkop(e,tp,eg,ep,ev,re,r,rp,chk,chkc) else return false end
-	end
 	local tc=Duel.GetAttacker()
 	local dc=Duel.GetAttackTarget()
 	local b1=s.atkcost(e,tp,eg,ep,ev,re,r,rp,0) and s.atktg(e,tp,eg,ep,ev,re,r,rp,0)
