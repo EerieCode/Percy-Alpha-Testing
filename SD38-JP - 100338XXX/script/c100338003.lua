@@ -1,5 +1,5 @@
 --暗黒の招来神
---Dark Calling Beast
+--Dark Beckoning Beast
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
@@ -14,14 +14,14 @@ function s.initial_effect(c)
 	e1:SetOperation(s.thop)
 	c:RegisterEffect(e1)
 	--extra summon
-    local e2=Effect.CreateEffect(c)
-    e2:SetDescription(aux.Stringid(id,1))
-    e2:SetType(EFFECT_TYPE_FIELD)
-    e2:SetCode(EFFECT_EXTRA_SUMMON_COUNT)
-    e2:SetRange(LOCATION_MZONE)
-    e2:SetTargetRange(LOCATION_HAND+LOCATION_MZONE,0)
-    e2:SetTarget(s.extg)
-    c:RegisterEffect(e2)
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetType(EFFECT_TYPE_FIELD)
+	e2:SetCode(EFFECT_EXTRA_SUMMON_COUNT)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetTargetRange(LOCATION_HAND+LOCATION_MZONE,0)
+	e2:SetTarget(s.extg)
+	c:RegisterEffect(e2)
 end
 s.listed_names={69890967,6007213,32491822}
 function s.thfilter(c)
@@ -40,5 +40,5 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.extg(e,c)
-    return c:IsRace(RACE_FIEND) and c:IsAttack(0) and c:IsDefense(0)
+	return c:IsRace(RACE_FIEND) and c:GetAttack()==0 and c:GetDefense()==0
 end
