@@ -43,7 +43,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e4)
 end
 s.listed_names={6007213,32491822,69890967}
-function s.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function s.tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	if s.target(e,tp,eg,ep,ev,re,r,rp,0) and Duel.SelectYesNo(tp,94) then
 		s.target(e,tp,eg,ep,ev,re,r,rp,1)
@@ -53,7 +53,7 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		e:SetOperation(nil)
 	end
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=Duel.GetAttacker()
 	local dc=Duel.GetAttackTarget()
 	local b1=s.atkcost(e,tp,eg,ep,ev,re,r,rp,0) and s.atktg(e,tp,eg,ep,ev,re,r,rp,0)
@@ -102,7 +102,7 @@ function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local tc=Duel.SelectMatchingCard(tp,s.atkcfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,1,nil):GetFirst()
 	Duel.SendtoGrave(tc,REASON_COST)
 end
-function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return c:GetFlagEffect(id)==0 end
 	c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_DAMAGE_CAL,0,1)
@@ -143,7 +143,7 @@ end
 function s.filter(c,e,tp,ft)
 	return c:IsCode(6007213,32491822,69890967) and (c:IsAbleToHand() or (ft>0 and c:IsCanBeSpecialSummoned(e,0,tp,true,false)))
 end
-function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_GRAVE,0,1,nil,e,tp,ft) and e:GetHandler():GetFlagEffect(id+100)==0 end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_GRAVE)
