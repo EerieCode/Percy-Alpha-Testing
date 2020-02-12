@@ -29,9 +29,8 @@ function s.initial_effect(c)
 	e4:SetType(EFFECT_TYPE_ACTIVATE)
 	e4:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e4:SetCode(EVENT_LEAVE_FIELD)
-	e4:SetCondition(c99075257.condition)
-	e4:SetTarget(c99075257.target)
-	e4:SetOperation(c99075257.operation)
+	e4:SetCondition(s.ndcon)
+	e4:SetOperation(s.ndop)
 	c:RegisterEffect(e4)
 end
 s.listed_names={6007213,32491822,69890967}
@@ -54,4 +53,31 @@ function s.negop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
-
+function s.ndfilter(c,tp)
+	local cd=c:GetPreviousCodeOnField()
+	return (cd==6007213 or cd==32491822 or cd==69890967) and c:IsPreviousPosition(LOCATION_ONFIELD) 
+		and c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousControler()==tp
+end
+function s.ndcon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.ndfilter,1,nil,tp)
+end
+function s.ndop(e,tp,eg,ep,ev,re,r,rp)
+	local e0=Effect.CreateEffect(e:GetHandler())
+	e0:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT+EFFECT_FLAG_OATH)
+	e0:SetDescription(aux.Stringid(id,1))
+	e0:SetReset(RESET_PHASE+PHASE_END)
+	e0:SetTargetRange(1,0)
+	Duel.RegisterEffect(e0,tp)
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_CHANGE_DAMAGE)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetTargetRange(1,0)
+	e1:SetValue(0)
+	e1:SetReset(RESET_PHASE+PHASE_END)
+	Duel.RegisterEffect(e1,tp)
+	local e2=e1:Clone()
+	e2:SetCode(EFFECT_NO_EFFECT_DAMAGE)
+	e2:SetReset(RESET_PHASE+PHASE_END)
+	Duel.RegisterEffect(e2,tp)
+end
