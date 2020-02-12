@@ -56,7 +56,7 @@ function s.tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then 
-		if op==2 then return s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc) else return false end
+		if op==1 then return s.atkop(e,tp,eg,ep,ev,re,r,rp,chk,chkc) else return false end
 	end
 	local tc=Duel.GetAttacker()
 	local dc=Duel.GetAttackTarget()
@@ -64,7 +64,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		and	Duel.CheckEvent(EVENT_ATTACK_ANNOUNCE)
 		and ((tc:IsCode(6007213) and tc:IsControler(tp))  or (dc and dc:IsCode(6007213) and dc:IsControler(tp)))
 	local b2=s.spcost(e,tp,eg,ep,ev,re,r,rp,0) and s.sptg(e,tp,eg,ep,ev,re,r,rp,0)
-	if chk==0 then return b1 or b2 or b3 end
+	if chk==0 then return b1 or b2 end
 	local stable={}
 	local dtable={}
 	if b1 then
@@ -76,8 +76,9 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 		table.insert(dtable,aux.Stringid(id,1))
 	end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EFFECT)
-	local op=stable[Duel.SelectOption(tp,table.unpack(dtable))]
+	local op=stable[Duel.SelectOption(tp,table.unpack(dtable))+1]
 	e:SetLabel(op)
+	Debug.Message("Opcao selecionada = "..tostring(op))
 	if op==1 then
 		e:SetCategory(CATEGORY_ATKCHANGE)
 		e:SetOperation(s.atkop)
