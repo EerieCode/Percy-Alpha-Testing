@@ -41,7 +41,7 @@ s.listed_series={0xbd}
 function s.actcon(e)
 	local ph=Duel.GetCurrentPhase()
 	return ph>=PHASE_BATTLE_START and ph<=PHASE_BATTLE 
-		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode),tp,LOCATION_MZONE,0,1,nil,CARD_GAIA_CHAMPION)
+		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,CARD_GAIA_CHAMPION),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.cfilter1(c)
 	return c:IsSetCard(0xbd) and not c:IsPublic()
