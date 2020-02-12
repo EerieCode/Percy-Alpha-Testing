@@ -26,8 +26,8 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 	--No damage
 	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_ACTIVATE)
-	e4:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_F)
+	e4:SetRange(LOCATION_SZONE)
 	e4:SetCode(EVENT_LEAVE_FIELD)
 	e4:SetCondition(s.ndcon)
 	e4:SetOperation(s.ndop)
@@ -39,7 +39,7 @@ function s.cfilter(c)
 end
 function s.negcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
-		and rp~=tp and re:IsActiveType(TYPE_TRAP+TYPE_SPELL) and Duel.IsChainDisablable(ev) 
+		and rp~=tp and re:IsActiveType(TYPE_SPELL+TYPE_TRAP) and Duel.IsChainDisablable(ev) 
 		and e:GetHandler():GetFlagEffect(id)==0
 end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
@@ -55,7 +55,7 @@ function s.negop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.ndfilter(c,tp)
 	local cd=c:GetPreviousCodeOnField()
-	return (cd==6007213 or cd==32491822 or cd==69890967) and c:IsPreviousPosition(LOCATION_ONFIELD) 
+	return (cd==6007213 or cd==32491822 or cd==69890967) and c:IsPreviousLocation(LOCATION_ONFIELD) 
 		and c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousControler()==tp
 end
 function s.ndcon(e,tp,eg,ep,ev,re,r,rp)
