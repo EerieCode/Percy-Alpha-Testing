@@ -27,9 +27,9 @@ function s.initial_effect(c)
 	e3:SetOperation(s.disop)
 	c:RegisterEffect(e3)
 end
-s.listed_names={66889139}
+s.listed_names={CARD_GAIA_CHAMPION}
 function s.thfilter(c)
-	return aux.IsCodeListed(c,66889139) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
+	return aux.IsCodeListed(c,CARD_GAIA_CHAMPION) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
@@ -44,7 +44,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.discfilter(c,tp)
-	return c:IsFaceup() and c:IsCode(66889139) and Duel.IsExistingMatchingCard(s.disfilter,tp,0,LOCATION_MZONE,1,nil,c:GetAttack())
+	return c:IsFaceup() and c:IsCode(CARD_GAIA_CHAMPION) and Duel.IsExistingMatchingCard(s.disfilter,tp,0,LOCATION_MZONE,1,nil,c:GetAttack())
 end
 function s.disfilter(c,atk)
 	return c:IsFaceup() and c:IsAttackBelow(atk) and aux.disfilter1(c)
