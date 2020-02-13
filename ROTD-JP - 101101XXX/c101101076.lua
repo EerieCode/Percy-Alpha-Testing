@@ -125,7 +125,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		local att=tc:GetAttribute()
 		if 	Duel.IsExistingMatchingCard(s.sameatt,tp,0,LOCATION_MZONE,1,nil,att) and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
 			Duel.BreakEffect()
-			local tgc=Duel.SelectMatchingCard(tp,s.smatt,tp,0,LOCATION_MZONE,1,1,nil,att):GetFirst()
+			local tgc=Duel.SelectMatchingCard(tp,s.sameatt,tp,0,LOCATION_MZONE,1,1,nil,att):GetFirst()
 			if tgc then
 				Duel.SendtoGrave(tgc,REASON_EFFECT)
 			end
