@@ -15,19 +15,21 @@ function s.initial_effect(c)
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetCategory(CATEGORY_DRAW+CATEGORY_TOGRAVE+CATEGORY_DAMAGE)
-	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
-	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e2:SetType(EFFECT_TYPE_ACTIVATE)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e2:SetHintTiming(0,TIMING_END_PHASE)
-	e2:SetRange(LOCATION_SZONE)
+	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
 	e2:SetCondition(s.condition)
 	e2:SetTarget(s.target)
 	e2:SetOperation(s.activate)
 	c:RegisterEffect(e2)
+	local e3=e2:Clone()
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetRange(LOCATION_SZONE)
+	e3:SetCountLimit(1)
+	c:RegisterEffect(e3)
 end
 	--Lists "Mayakashi" archetype
 s.listed_series={0x121}
-
 	--Zombie synchro monster special summoned anywhere but extra deck
 function s.cfilter(c)
 	return c:IsRace(RACE_ZOMBIE) and c:IsType(TYPE_SYNCHRO) 
@@ -41,18 +43,15 @@ end
 function s.setfilter(c)
 	return c:IsSetCard(0x121) and c:IsType(TYPE_TRAP+TYPE_SPELL) and c:IsSSetable() and not c:IsCode(id)
 end
-	--Check for face-up monster
-function s.sendfilter(c)
-	return c:IsFaceup()
-end
 	--Activation legality
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) and Duel.GetFlagEffect(tp,id)==0
 	or Duel.IsExistingMatchingCard(s.setfilter,tp,LOCATION_DECK,0,1,nil) and Duel.GetFlagEffect(tp,id+1)==0
-	or Duel.IsExistingMatchingCard(s.sendfilter,tp,0,LOCATION_MZONE,1,nil) and Duel.GetFlagEffect(tp,id+2)==0 end
+	or Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) and Duel.GetFlagEffect(tp,id+2)==0 end
 	Duel.SetTargetPlayer(1-tp)
 	Duel.SetTargetParam(800)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,800)
+	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,0,LOCATION_MZONE)
 end
 	--Apply 1 of the following effects
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
@@ -60,22 +59,22 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local ops={}
 	local opval={}
 	if Duel.IsPlayerCanDraw(tp,1) and Duel.GetFlagEffect(tp,id)==0 then
-		ops[off]=aux.Stringid(id,0)
+		ops[off]=aux.Stringid(id,1)
 		opval[off-1]=1
 		off=off+1
 	end
 	if Duel.IsExistingMatchingCard(s.setfilter,tp,LOCATION_DECK,0,1,nil) and Duel.GetFlagEffect(tp,id+1)==0 then
-		ops[off]=aux.Stringid(id,1)
+		ops[off]=aux.Stringid(id,2)
 		opval[off-1]=2
 		off=off+1
 	end
-	if Duel.IsExistingMatchingCard(s.sendfilter,tp,0,LOCATION_MZONE,1,nil) and Duel.GetFlagEffect(tp,id+2)==0 then
-		ops[off]=aux.Stringid(id,2)
+	if Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) and Duel.GetFlagEffect(tp,id+2)==0 then
+		ops[off]=aux.Stringid(id,3)
 		opval[off-1]=3
 		off=off+1
 	end
 	if Duel.GetFlagEffect(tp,id+3)==0 then
-		ops[off]=aux.Stringid(id,3)
+		ops[off]=aux.Stringid(id,4)
 		opval[off-1]=4
 		off=off+1
 	end
@@ -94,7 +93,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 			Duel.RegisterFlagEffect(tp,id+1,RESET_PHASE+PHASE_END,0,1)
 		end
 	elseif opval[op]==3 then --Send opponent's monster with lowest ATK to GY
-		local g=Duel.GetMatchingGroup(s.sendfilter,tp,0,LOCATION_MZONE,nil)
+		local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_MZONE,nil)
 		if g:GetCount()>0 then
 			local tg=g:GetMinGroup(Card.GetAttack)
 			if tg:GetCount()>1 then
