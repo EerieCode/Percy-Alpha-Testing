@@ -11,7 +11,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCountLimit(1,id+EFFECT_COUNT_CODE_OATH)
 	e1:SetTarget(s.target)
-	e1:SetOperation(s.operation2)
+	e1:SetOperation(s.operation)
 	e1:SetLabel(0)
 	c:RegisterEffect(e1)
 end
