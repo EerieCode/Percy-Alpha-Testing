@@ -34,6 +34,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 		e:SetLabel(1)
 		Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,2,tp,LOCATION_DECK)
 	else
+		e:SetLabel(0)
 		Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 	end
 end
@@ -46,6 +47,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
 		if e:GetLabel()==1 then
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 			local sg=Duel.SelectMatchingCard(tp,s.filter2,tp,LOCATION_DECK,0,1,1,nil,lv,code)
 			if #sg>0 then
 				Duel.BreakEffect()
