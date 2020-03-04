@@ -1,11 +1,11 @@
---Snowflower Sprite Snowdrop
 --六花精スノードロップ
+--Snowflower Sprite Snowdrop
 --Logical Nonsense
 
 --Substitute ID
 local s,id=GetID()
 function s.initial_effect(c)
-	--Tribute 1 plant; special summon this card and 1 other plant from hand
+	--Tribute 1 Plant; Special Summon this card and 1 other plant from hand
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -52,45 +52,57 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 	--Special summon this card and 1 other plant from hand
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetHandler():IsRelateToEffect(e) then return end
-	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then return end
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)<2 then return end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_HAND,0,1,1,e:GetHandler(),e,tp)
-	if g:GetCount()>0 then
-		g:AddCard(e:GetHandler())
-		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+	if e:GetHandler():IsRelateToEffect(e) and Duel.GetLocationCount(tp,LOCATION_MZONE)>1
+		and not Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT)
+		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false)
+		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_HAND,0,1,e:GetHandler(),e,tp) then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+		local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_HAND,0,1,1,e:GetHandler(),e,tp)
+		if #g>0 then
+			g:AddCard(e:GetHandler())
+			Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+		end
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+		e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+		e1:SetTargetRange(1,0)
+		e1:SetTarget(s.splimit)
+		e1:SetReset(RESET_PHASE+PHASE_END)
+		Duel.RegisterEffect(e1,tp)
 	end
 end
+function s.splimit(e,c)
+	return not c:IsRace(RACE_PLANT)
+end
 	--Chek for plant monster to copy level from
-function s.lvfilter(c,lv)
+function s.lvfilter1(c,tp)
 	return c:IsFaceup() and c:IsRace(RACE_PLANT) and c:IsHasLevel()
+		and Duel.IsExistingMatchingCard(s.lvfilter2,tp,LOCATION_MZONE,0,1,c,c:GetLevel())
+end
+	--Check if there are other plant monsters with a level
+function s.lvfilter2(c,lv)
+	return c:IsFaceup() and c:IsRace(RACE_PLANT) and c:IsLevelAbove(0) and c:GetLevel()~=lv
 end
 	--Actvation legality
 function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.lvfilter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.lvfilter,tp,LOCATION_MZONE,0,1,nil) end
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.lvfilter1(chkc,tp) end
+	if chk==0 then return Duel.IsExistingTarget(s.lvfilter1,tp,LOCATION_MZONE,0,1,nil,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	Duel.SelectTarget(tp,s.lvfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
-end
-	--Check if there are other plant monsters with a level
-function s.lvfilter2(c)
-	return c:IsFaceup() and c:IsRace(RACE_PLANT) and c:IsLevelAbove(0)
+	Duel.SelectTarget(tp,s.lvfilter1,tp,LOCATION_MZONE,0,1,1,nil,tp)
 end
 	--All plant monsters you control becomes that target's level, until end phase
 function s.lvop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if not tc:IsRelateToEffect(e) or tc:IsFacedown() then return end
-	local g=Duel.GetMatchingGroup(s.lvfilter2,tp,LOCATION_MZONE,0,tc)
-	local lc=g:GetFirst()
 	local lv=tc:GetLevel()
-	while lc~=nil do
+	local g=Duel.GetMatchingGroup(s.lvfilter2,tp,LOCATION_MZONE,0,nil,lv)
+	for lc in aux.Next(g) do
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_CHANGE_LEVEL)
 		e1:SetValue(lv)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 		lc:RegisterEffect(e1)
-		lc=g:GetNext()
 	end
 end
