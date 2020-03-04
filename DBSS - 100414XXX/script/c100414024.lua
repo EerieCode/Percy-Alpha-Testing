@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetCategory(CATEGORY_RELEASE)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e2:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_DAMAGE_STEP)
+	e2:SetProperty(EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_RELEASE)
 	e2:SetRange(LOCATION_SZONE)
 	e2:SetCountLimit(1,id)
@@ -36,7 +36,7 @@ function s.initial_effect(c)
 end
 s.listed_series={0x244}
 function s.relfilter(c,tp)
-	return c:IsSetCard(0x244) and c:IsType(TYPE_MONSTER) and c:IsPreviousLocation(LOCATION_MZONE) and c:GetPreviousControler()==tp
+	return c:IsPreviousSetCard(0x244) and c:IsPreviousLocation(LOCATION_MZONE) and c:IsPreviousControler(tp)
 end
 function s.relcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.relfilter,1,nil,tp)
@@ -46,6 +46,7 @@ function s.reltg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_RELEASE,nil,1,0,LOCATION_MZONE)
 end
 function s.relop(e,tp,eg,ep,ev,re,r,rp)
+	if not e:GetHandler():IsRelateToEffect(e) then return end
 	local g=Duel.GetMatchingGroup(Card.IsReleasable,1-tp,LOCATION_MZONE,0,nil)
 	if #g>0 then
 		Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_RELEASE)
@@ -55,7 +56,7 @@ function s.relop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.desfilter(c,tp)
-	return  c:IsFaceup() and not c:IsSetCard(0x244)
+	return c:IsFaceup() and not c:IsRace(RACE_PLANT)
 end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==1-tp and Duel.IsExistingMatchingCard(s.desfilter,tp,LOCATION_MZONE,0,1,nil)
