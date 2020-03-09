@@ -1,5 +1,5 @@
 --斬機ダイア
---Mathmech Dia
+--Mathmech Diameter
 --Scripted by AlphaKretin
 local s,id=GetID()
 function s.initial_effect(c)
@@ -8,19 +8,21 @@ function s.initial_effect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
 	e1:SetCode(EVENT_SUMMON_SUCCESS)
+	e1:SetCountLimit(1,id)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
 	--give effect
-    local e2=Effect.CreateEffect(c)
-    e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
-    e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-    e2:SetCode(EVENT_BE_MATERIAL)
-    e2:SetCondition(s.efcon)
-    e2:SetOperation(s.efop)
-    c:RegisterEffect(e2)
+	local e2=Effect.CreateEffect(c)
+	e2:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e2:SetCode(EVENT_BE_MATERIAL)
+	e2:SetCountLimit(1,id+100)
+	e2:SetCondition(s.efcon)
+	e2:SetOperation(s.efop)
+	c:RegisterEffect(e2)
 end
 function s.spfilter(c,e,tp)
 	return c:IsLevel(4) and c:IsRace(RACE_CYBERSE) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
@@ -46,11 +48,11 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.SpecialSummonComplete()
 end
 function s.efcon(e,tp,eg,ep,ev,re,r,rp)
-	local rc=c:GetReasonCard()
-    return r==REASON_SYNCHRO or r==REASON_XYZ and rc:IsSetCard(0x132)
+	local rc=e:GetHandler():GetReasonCard()
+	return rc:IsSetCard(0x132) and (r==REASON_SYNCHRO or r==REASON_XYZ)
 end
 function s.efop(e,tp,eg,ep,ev,re,r,rp)
-	local rc=c:GetReasonCard()
+	local rc=e:GetHandler():GetReasonCard()
 	--negate
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetDescription(aux.Stringid(id,1))
