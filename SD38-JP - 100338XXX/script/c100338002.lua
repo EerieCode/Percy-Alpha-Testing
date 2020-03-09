@@ -3,7 +3,7 @@
 --Scripted by Eerie Code
 local s,id=GetID()
 function s.initial_effect(c)
-	c:EnableCounterPermit(0x14a)
+	c:EnableCounterPermit(0x202)
 	--be target
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
@@ -38,13 +38,13 @@ function s.ctfilter(c)
 	return c:IsCode(69890967,6007213,32491822) and c:IsAbleToGrave()
 end
 function s.ctcheck(sg,e,tp)
-	return sg:GetClassCount(Card.GetCode)==#sg and e:GetHandler():IsCanAddCounter(0x14a,#sg)
+	return sg:GetClassCount(Card.GetCode)==#sg and e:GetHandler():IsCanAddCounter(0x202,#sg)
 end
 function s.cttg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.ctfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil)
-		and e:GetHandler():IsCanAddCounter(0x14a,1) end
+		and e:GetHandler():IsCanAddCounter(0x202,1) end
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,0,tp,LOCATION_HAND+LOCATION_DECK)
-	Duel.SetOperationInfo(0,CATEGORY_COUNTER,nil,0,0,0x14a)
+	Duel.SetOperationInfo(0,CATEGORY_COUNTER,nil,0,0,0x202)
 end
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
@@ -53,7 +53,7 @@ function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=aux.SelectUnselectGroup(g,e,tp,1,3,s.ctcheck,1,tp,HINTMSG_TOGRAVE)
 	if #sg>0 and Duel.SendtoGrave(sg,REASON_EFFECT)~=0 and c:IsRelateToEffect(e) and c:IsFaceup() then
 		local oc=#(Duel.GetOperatedGroup())
-		c:AddCounter(0x14a,oc)
+		c:AddCounter(0x202,oc)
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_FIELD)
 		e1:SetCode(EFFECT_AVOID_BATTLE_DAMAGE)
@@ -72,9 +72,9 @@ function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.reptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chk==0 then return not c:IsReason(REASON_REPLACE) and c:IsCanRemoveCounter(tp,0x14a,1,REASON_EFFECT) end
+	if chk==0 then return not c:IsReason(REASON_REPLACE) and c:IsCanRemoveCounter(tp,0x202,1,REASON_EFFECT) end
 	return Duel.SelectEffectYesNo(tp,c,96)
 end
 function s.repop(e,tp,eg,ep,ev,re,r,rp)
-	e:GetHandler():RemoveCounter(tp,0x14a,1,REASON_EFFECT)
+	e:GetHandler():RemoveCounter(tp,0x202,1,REASON_EFFECT)
 end
