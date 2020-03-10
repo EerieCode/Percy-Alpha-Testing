@@ -25,13 +25,14 @@ function s.initial_effect(c)
 	e2:SetOperation(s.eqop)
 	c:RegisterEffect(e2)
 	 --Cannot target
-    local e3=Effect.CreateEffect(c)
-    e3:SetType(EFFECT_TYPE_EQUIP)
-    e3:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
-    e3:SetValue(aux.tgoval)
-    e3:SetCondition(s.indcon)
-    c:RegisterEffect(e3)
+    	local e3=Effect.CreateEffect(c)
+   	e3:SetType(EFFECT_TYPE_EQUIP)
+   	e3:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
+   	e3:SetValue(aux.tgoval)
+   	e3:SetCondition(s.indcon)
+   	c:RegisterEffect(e3)
 end
+s.listed_series={0x207a}
 function s.cfilter(c)
 	return ((c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE)) or c::IsSetCard(0x207a)) and c:IsAbleToDeckAsCost()
 end
