@@ -22,7 +22,7 @@ function s.filter(c)
 	return c:IsFaceup() and c:IsRace(RACE_BEAST) and c:IsType(TYPE_XYZ)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsOnField() end
+	if chkc then return chkc:IsOnField() and chkc:IsAbleToHand() end
 	local dg=Duel.GetMatchingGroup(s.filter,tp,LOCATION_MZONE,0,nil)
 	if chk==0 then
 		if e:GetLabel()==100 then
