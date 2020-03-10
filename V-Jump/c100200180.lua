@@ -32,6 +32,7 @@ function s.initial_effect(c)
 	e3:SetCountLimit(1,id+100)
 	e3:SetTarget(s.tdtg)
 	e3:SetOperation(s.tdop)
+	c:RegisterEffect(e3)
 end
 	--Check for level 3 monster summoned to player's field
 function s.cfilter(c,tp)
