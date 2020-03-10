@@ -4,6 +4,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--spsummon
 	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_DRAW)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetCode(EVENT_TO_GRAVE)
@@ -25,7 +26,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.eqop)
 	c:RegisterEffect(e2)
 	 --indes battle
-    	local e3=Effect.CreateEffect(c)
+	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_EQUIP)
 	e3:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	e3:SetValue(1)
@@ -33,7 +34,7 @@ function s.initial_effect(c)
 end
 s.listed_series={0x207a}
 function s.cfilter(c)
-	return ((c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE)) or c::IsSetCard(0x207a)) and c:IsAbleToDeckAsCost()
+	return ((c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE)) or c:IsSetCard(0x207a)) and c:IsAbleToDeckAsCost()
 end
 function s.drcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,3,e:GetHandler()) end
@@ -51,7 +52,6 @@ function s.drop(e,tp,eg,ep,ev,re,r,rp)
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	Duel.Draw(p,d,REASON_EFFECT)
 end
-
 function s.filter(c)
 	return c:IsFaceup() and c:IsRace(RACE_WARRIOR)
 end

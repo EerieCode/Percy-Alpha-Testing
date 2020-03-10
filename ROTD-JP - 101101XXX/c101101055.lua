@@ -29,9 +29,10 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function s.thfilter(c)
-	return c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATRRIBUTE_FIRE) and c:IsAbleToHand()
+	return c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+Debug.Message(Duel.IsExistingTarget(s.thfilter,tp,LOCATION_GRAVE,0,1,nil))
 	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_GRAVE) and s.thfilter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.thfilter,tp,LOCATION_GRAVE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
@@ -53,7 +54,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return c:IsReason(REASON_LOST_TARGET) and ec:IsLocation(LOCATION_GRAVE)
 end
 function s.filter(c,e,tp)
-	return c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATRRIBUTE_FIRE) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsRace(RACE_WARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
