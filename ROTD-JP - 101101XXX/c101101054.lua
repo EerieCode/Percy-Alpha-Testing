@@ -74,6 +74,8 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		hint:SetReset(RESET_PHASE+PHASE_END)
 		hint:SetTargetRange(1,0)
 		Duel.RegisterEffect(hint,tp)
+		Duel.BreakEffect()
+		Duel.Destroy(c,REASON_EFFECT)
 	end
 end
 function s.atktg(e,c)
