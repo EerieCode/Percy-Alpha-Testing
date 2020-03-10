@@ -37,44 +37,67 @@ function s.rmvtg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.rvmop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(tp,aux.TRUE,tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,1,1,nil)
 	if #g and Duel.Remove(g,POS_FACEUP,REASON_EFFECT)>0 then
 		local dg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
 		if #dg>0 and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
 			Duel.BreakEffect()
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-			local tc=gg:Select(tp,1,1,nil)
+			local tc=dg:Select(tp,1,1,nil)
 			Duel.HintSelection(tc)
 			Duel.Destroy(tc,REASON_EFFECT)
 		end
 	end
 end
 function s.desfilter(c,e)
-	return c:IsFaceup() and c:IsSetCard(0x214) and c:IsDestructable(e)
+	return c:IsFaceup() and c:IsSetCard(0x241) and c:IsDestructable(e)
 end
 function s.spfilter(c,e,tp)
-	return c:IsAttribute(ATRRIBUTE_FIRE) and c:IsRace(RACE_WARRIOR) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
-end
-function s.spcheck(sg,e,tp,mg)
-	return aux.ChkfMMZ(#sg) and sg:GetClassCount(Card.GetCode)==#sg
+	return c:IsAttribute(ATTRIBUTE_FIRE) and c:IsRace(RACE_WARRIOR) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_DECK,0,nil,e,tp)
+	local ct=Duel.GetLocationCount(tp,LOCATION_MZONE,tp,LOCATION_REASON_TOFIELD)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.desfilter,tp,LOCATION_MZONE,0,1,nil,e)
-		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
+		and g:CheckWithSumEqual(Card.GetLevel,9,1,ct) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectMatchingCard(tp,s.desfilter,tp,LOCATION_MZONE,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.desfilter,tp,LOCATION_MZONE,0,1,1,nil,e)
 		if #g and Duel.Destroy(g,REASON_EFFECT)>0 then
 		local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 		if ft==0 then return end
 		local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_DECK,0,nil,e,tp)
 		if #g>0 then
-		if ft>3 then ft=3 end
-		if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 end
-			local sg=aux.SelectUnselectGroup(g,e,tp,1,ft,s.spcheck,1,tp,HINTMSG_SPSUMMON,s.spcheck)
-			Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP_DEFENSE)
+			if ft>3 then ft=3 end
+			if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 end
+			if g:CheckWithSumEqual(Card.GetLevel,9,1,ft) then
+				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+				local sg=g:SelectWithSumEqual(tp,Card.GetLevel,9,1,ft)
+				local tc=sg:GetFirst()
+					for tc in aux.Next(sg) do
+						if Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP_DEFENSE) then
+							local e1=Effect.CreateEffect(e:GetHandler())
+							e1:SetType(EFFECT_TYPE_SINGLE)
+							e1:SetCode(EFFECT_DISABLE)
+							e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+							tc:RegisterEffect(e1,true)
+							local e2=Effect.CreateEffect(e:GetHandler())
+							e2:SetType(EFFECT_TYPE_SINGLE)
+							e2:SetCode(EFFECT_DISABLE_EFFECT)
+							e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+							tc:RegisterEffect(e2,true)
+						end
+					end
+				Duel.SpecialSummonComplete()
+			end
 		end
 	end
+	local hint=Effect.CreateEffect(e:GetHandler())
+	hint:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+	hint:SetDescription(aux.Stringid(id,3))
+	hint:SetReset(RESET_PHASE+PHASE_END)
+	hint:SetTargetRange(1,0)
+	Duel.RegisterEffect(hint,tp)
 end
