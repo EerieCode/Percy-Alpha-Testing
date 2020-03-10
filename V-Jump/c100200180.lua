@@ -32,7 +32,6 @@ function s.initial_effect(c)
 	e3:SetCountLimit(1,id+100)
 	e3:SetTarget(s.tdtg)
 	e3:SetOperation(s.tdop)
-	c:RegisterEffect(e3)
 end
 	--Check for level 3 monster summoned to player's field
 function s.cfilter(c,tp)
@@ -80,7 +79,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		--Client hint
 		local e4=Effect.CreateEffect(e:GetHandler())
 		e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT+EFFECT_FLAG_OATH)
-		e4:SetDescription(aux.Stringid(id,1))
+		e4:SetDescription(aux.Stringid(id,2))
 		e4:SetReset(RESET_PHASE+PHASE_END)
 		e4:SetTargetRange(1,0)
 		Duel.RegisterEffect(e4,tp)
