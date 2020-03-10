@@ -50,18 +50,18 @@ function s.rvmop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.desfilter(c,e)
-    return c:IsFaceup() and c:IsSetCard(0x150) and c:IsDestructable(e)
+	return c:IsFaceup() and c:IsSetCard(0x214) and c:IsDestructable(e)
 end
 function s.spfilter(c,e,tp)
-    return c:IsAttribute(ATRRIBUTE_FIRE) and c:IsRace(RACE_WARRIOR) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
+	return c:IsAttribute(ATRRIBUTE_FIRE) and c:IsRace(RACE_WARRIOR) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
 function s.spcheck(sg,e,tp,mg)
-    return aux.ChkfMMZ(#sg) and sg:GetClassCount(Card.GetCode)==#sg
+	return aux.ChkfMMZ(#sg) and sg:GetClassCount(Card.GetCode)==#sg
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-    if chk==0 then return Duel.IsExistingMatchingCard(s.desfilter,tp,LOCATION_MZONE,0,1,nil,e)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.desfilter,tp,LOCATION_MZONE,0,1,nil,e)
 		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
-    Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
