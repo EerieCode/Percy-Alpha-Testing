@@ -1,10 +1,10 @@
--- 焔聖騎士導-ローラン
--- Flame Noble Knight Vanguard Roland 
+--焔聖騎士導-ローラン
+--Flame Noble Knight Vanguard Roland
 local s,id=GetID()
 function s.initial_effect(c)
 	 --synchro summon
-    	aux.AddSynchroProcedure(c,nil,1,1,aux.NonTuner(nil),1,99)
-    	c:EnableReviveLimit()
+	aux.AddSynchroProcedure(c,nil,1,1,aux.NonTuner(nil),1,99)
+	c:EnableReviveLimit()
 	--to hand
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
@@ -49,10 +49,13 @@ function s.filter(c,tp)
 		and Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,c)
 end
 function s.tgfilter(c)
-	return cc:IsType(TYPE_EQUIP) and c:IsAbleToGrave()
+	return c:IsType(TYPE_EQUIP) and c:IsAbleToGrave()
 end
 function s.thfilter(c)
 	return c:IsRace(RACE_WARRIOR) and c:IsAbleToHand()
+end
+function s.tgcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,tp)
 end
 function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,tp) end
@@ -74,8 +77,6 @@ function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
-
-
 function s.eqcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetCurrentPhase()==PHASE_MAIN1 or Duel.GetCurrentPhase()==PHASE_MAIN2
 end
@@ -115,7 +116,6 @@ function s.equipop(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetReset(RESET_EVENT+RESETS_STANDARD)
 	c:RegisterEffect(e2)
 end
-
 function s.eqlimit(e,c)
 	return c==e:GetLabelObject()
 end
