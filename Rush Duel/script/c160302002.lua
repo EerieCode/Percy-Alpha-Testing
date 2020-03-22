@@ -1,4 +1,5 @@
---Gravity Press Dragon - グラビティ・プレス・ドラゴン
+-- グラビティ・プレス・ドラゴン
+--Gravity Press Dragon 
 local s,id=GetID()
 function s.initial_effect(c)
 	--to hand
@@ -17,7 +18,7 @@ if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToGraveAsCost,tp,LO
 	Duel.SendtoGrave(g,REASON_COST)
 end
 function s.filter(c)
-	return c:IsFaceup() and (c:GetAttack()>0 or c:GetDefense()()>0) and c:IsAbleToHand()
+	return c:IsFaceup() and (c:GetAttack()>0 or c:GetDefense()()>0) 
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,0,LOCATION_MZONE,1,e:GetHandler()) end
@@ -37,7 +38,7 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 			g:GetFirst():RegisterEffect(e1)
 			local e2=Effect.CreateEffect(c)
 			e2:SetType(EFFECT_TYPE_SINGLE)
-			e2:SetCode(EFFECT_UPDATE_ATTACK)
+			e2:SetCode(EFFECT_UPDATE_DEFENSE)
 			e2:SetValue(-700)
 			e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 			g:GetFirst():RegisterEffect(e2)
