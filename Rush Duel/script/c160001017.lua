@@ -30,7 +30,7 @@ end
 function s.operation(e,tp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local tc = Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_GRAVE,0,1,1,nil):GetFirst()
-	if tc then
+	if tc and tc:IsRelateToEffect(e) then
 		Duel.SendtoHand(tc,tp,REASON_EFFECT)
 	end
 end
