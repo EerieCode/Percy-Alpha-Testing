@@ -43,8 +43,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetReset(RESET_EVENT+RESETS_REDIRECT)
 		c:RegisterEffect(e1,true)
 		local dg=Duel.GetMatchingGroup(aux.TRUE,tp,0,LOCATION_ONFIELD,nil)
-		if #dg>0 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
-			Duel.BreakEffect()
+		if #dg>0 then
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 			local sg=dg:Select(tp,1,1,nil)
 			Duel.HintSelection(sg)
