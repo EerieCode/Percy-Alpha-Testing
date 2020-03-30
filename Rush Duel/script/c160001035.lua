@@ -4,11 +4,12 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--to hand
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_TOHAND)
+	e1:SetCategory(CATEGORY_ATKCHANGE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetCountLimit(1)
 	e1:SetCost(s.cost)
+	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
 end
