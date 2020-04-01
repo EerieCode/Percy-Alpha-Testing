@@ -9,6 +9,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetHintTiming(0,TIMING_END_PHASE)
 	e1:SetCountLimit(1,id)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
@@ -31,10 +32,10 @@ function s.rescon(sg,e,tp,mg)
 	return sg:GetClassCount(Card.GetRace)==1 and sg:GetClassCount(Card.GetControler)==#sg
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
-    local tc=Duel.GetFirstTarget()
-    if tc:IsRelateToEffect(e) and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)~=0 then
-    	--negate
-    	local e1=Effect.CreateEffect(c)
+	local tc=Duel.GetFirstTarget()
+	if tc:IsRelateToEffect(e) and Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)~=0 then
+		--negate
+		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_DISABLE)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
@@ -45,11 +46,11 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetReset(RESET_EVENT+RESETS_STANDARD)
 		tc:RegisterEffect(e2)
 		Duel.SpecialSummonComplete()
-    	local g=Duel.GetMatchingGroup(s.rmfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
-    	if aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,0) then
-    		Duel.BreakEffect()
-    		local rg=aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,1,tp,HINTMSG_REMOVE)
-    		Duel.Remove(rg,POS_FACEUP,REASON_EFFECT)
-    	end
-    end
+		local g=Duel.GetMatchingGroup(s.rmfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+		if aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,0) then
+			Duel.BreakEffect()
+			local rg=aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,1,tp,HINTMSG_REMOVE)
+			Duel.Remove(rg,POS_FACEUP,REASON_EFFECT)
+		end
+	end
 end
