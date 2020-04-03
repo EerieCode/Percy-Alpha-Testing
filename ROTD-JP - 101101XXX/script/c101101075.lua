@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
 	c:RegisterEffect(e1)
 end
-s.listed_series={0x9d}
+s.listed_series={0xef}
 function s.check(e)
 	return function(tp,sg,fc)
 		return not e:GetLabelObject() or not sg:IsContains(e:GetLabelObject())
@@ -24,7 +24,7 @@ function s.extrafil(e,tp,mg1)
 end
 function s.costfilter(c,target,e,tp,eg,ep,ev,re,r,rp,chk)
 	e:SetLabelObject(c)
-	local res = c:IsSetCard(0x9d) and c:IsType(TYPE_MONSTER) and (c:IsLocation(LOCATION_HAND) or c:IsFaceup())
+	local res = c:IsSetCard(0xef) and c:IsType(TYPE_MONSTER) and (c:IsLocation(LOCATION_HAND) or c:IsFaceup())
 				and c:IsAbleToGraveAsCost() and target(e,tp,eg,ep,ev,re,r,rp,0)
 	e:SetLabelObject(nil)
 	return res
