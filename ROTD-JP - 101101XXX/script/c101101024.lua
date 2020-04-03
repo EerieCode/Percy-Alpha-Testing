@@ -55,6 +55,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(s.actlimit)
 	e1:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e1,tp)
+	aux.RegisterClientHint(e:GetHandler(),nil,tp,1,0,aux.Stringid(id,1),nil)
 end
 function s.actlimit(e,re,tp)
 	local rc=re:GetHandler()
