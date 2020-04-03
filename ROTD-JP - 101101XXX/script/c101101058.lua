@@ -18,6 +18,7 @@ function s.initial_effect(c)
 	table.insert(GhostBelleTable,e1)
 	--Special summon from hand
 	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_GRAVE)
@@ -40,7 +41,7 @@ function s.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,#g,0,LOCATION_GRAVE)
 end
 function s.spfilter(c)
-	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0xa9,0xc3) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsType(TYPE_MONSTER) and (c:IsSetCard(0xa9) or c:IsSetCard(0xc3)) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.tedop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
@@ -51,7 +52,7 @@ function s.tedop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 			local sc=g:Select(tp,1,1,nil):GetFirst()
 			if sc then
-				Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP) then
+				Duel.SpecialSummon(sc,0,tp,tp,false,false,POS_FACEUP)
 			end
 		end
 	end

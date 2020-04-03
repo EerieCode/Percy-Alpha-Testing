@@ -25,6 +25,7 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_QUICK_O)
 	e3:SetCode(EVENT_FREE_CHAIN)
 	e3:SetRange(LOCATION_SZONE)
+	e3:SetHintTiming(0,TIMINGS_CHECK_MONSTER)
 	e3:SetCountLimit(1)
 	e3:SetCost(s.descost)
 	e3:SetTarget(s.destg)
@@ -71,6 +72,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.Destroy(tg,REASON_EFFECT)
 		end
 	else
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
 		local g=Duel.SelectMatchingCard(tp,Card.IsAbleToDeck,tp,LOCATION_HAND,0,1,1,nil)
 		if Duel.SelectOption(tp,aux.Stringid(id,3),aux.Stringid(id,4))==0 then
 			Duel.SendtoDeck(g,nil,0,REASON_EFFECT)
