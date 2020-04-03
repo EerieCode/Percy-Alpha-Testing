@@ -28,7 +28,7 @@ end
 s.listed_names={30068120,70245411}
 s.listed_series={0xa9,0x46}
 function s.setfilter(c)
-	return c:IsCode(70245411) and c:IsSSetable() 
+	return c:IsCode(70245411) and c:IsSSetable()
 end
 function s.gyfilter(c)
 	return c:IsType(TYPE_MONSTER) and (c:IsCode(30068120) or c:IsSetCard(0xa9)) and c:IsAbleToGrave()

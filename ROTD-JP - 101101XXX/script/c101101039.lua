@@ -28,6 +28,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.atkop)
 	c:RegisterEffect(e2)
 end
+s.listed_names={id}
 s.listed_series={0xc3,0xa9,0xad}
 s.material_setcode={0xa9,0xc3}
 function s.descon(e,tp,eg,ep,ev,re,r,rp)

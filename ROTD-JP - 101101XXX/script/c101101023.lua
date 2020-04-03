@@ -54,19 +54,15 @@ function s.sumop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Summon(tp,tc,true,nil,1)
 	end
 end
-	--Check for fairy monsters
-function s.statfilter(c)
-	return c:IsFaceup() and c:IsRace(RACE_FAIRY)
-end
 	--Activation legality
 function s.stattg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,tp,0,LOCATION_MZONE,1,nil) 
-		and Duel.IsExistingMatchingCard(s.statfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
+		and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsRace,RACE_FAIRY),tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 end
 	--Opponent's monsters loses 500 ATK/DEF for each fairy on the field until end of the turn
 function s.statop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_MZONE,nil)
-	local ct=Duel.GetMatchingGroupCount(s.statfilter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	local ct=Duel.GetMatchingGroupCount(aux.FilterFaceupFunction(Card.IsRace,RACE_FAIRY),tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	for tc in aux.Next(g) do
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
