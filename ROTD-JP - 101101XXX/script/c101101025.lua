@@ -27,6 +27,7 @@ function s.initial_effect(c)
 	e2:SetCost(s.cpcost)
 	e2:SetTarget(s.cptg)
 	e2:SetOperation(s.cpop)
+	c:RegisterEffect(e2)
 end
 	--Lists "Darklord" archetype
 s.listed_series={0xef}
@@ -34,8 +35,7 @@ s.listed_series={0xef}
 	--Pay 1000 LP
 function s.cpcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckLPCost(tp,1000) end
-	Duel.
-	PayLPCost(tp,1000)
+	Duel.PayLPCost(tp,1000)
 end
 	--Check for "Darklord" spell/trap
 function s.cpfilter(c)
