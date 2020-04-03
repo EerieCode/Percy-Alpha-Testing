@@ -5,15 +5,25 @@ local s,id=GetID()
 function s.initial_effect(c)
 	local e1=Fusion.CreateSummonEff({handler=c,fusfilter=aux.FilterBoolFunction(Card.IsAttribute,ATTRIBUTE_DARK),extrafil=s.extrafil,stage2=s.stage2})
 	local tg=e1:GetTarget()
-	e1:SetTarget(function(e,tp,eg,ep,ev,re,r,rp,chk)
-					if chk==0 then return true end
-					return tg(e,tp,eg,ep,ev,re,r,rp,chk)
-				end)
+	e1:SetTarget(s.target(tg))
 	e1:SetCost(s.cost(tg))
 	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
 	c:RegisterEffect(e1)
 end
 s.listed_series={0xef}
+function s.target(target)
+	return function(e,tp,eg,ep,ev,re,r,rp,chk)
+		if chk==0 then
+			if e:GetLabel()==0 then
+				return target(e,tp,eg,ep,ev,re,r,rp,0)
+			end
+			e:SetLabel(0)
+			return true
+		end
+		e:SetLabel(0)
+		return target(e,tp,eg,ep,ev,re,r,rp,chk)
+	end
+end
 function s.check(e)
 	return function(tp,sg,fc)
 		return not e:GetLabelObject() or not sg:IsContains(e:GetLabelObject())
@@ -24,14 +34,19 @@ function s.extrafil(e,tp,mg1)
 end
 function s.costfilter(c,target,e,tp,eg,ep,ev,re,r,rp,chk)
 	e:SetLabelObject(c)
-	local res = c:IsSetCard(0xef) and c:IsType(TYPE_MONSTER) and (c:IsLocation(LOCATION_HAND) or c:IsFaceup())
+	local res=c:IsSetCard(0xef) and c:IsType(TYPE_MONSTER) and (c:IsLocation(LOCATION_HAND) or c:IsFaceup())
 				and c:IsAbleToGraveAsCost() and target(e,tp,eg,ep,ev,re,r,rp,0)
 	e:SetLabelObject(nil)
 	return res
 end
 function s.cost(target)
 	return function(e,tp,eg,ep,ev,re,r,rp,chk)
-		if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,1,nil,target,e,tp,eg,ep,ev,re,r,rp,chk) end
+		if chk==0 then
+			e:SetLabel(0)
+			local res=Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,1,nil,target,e,tp,eg,ep,ev,re,r,rp,chk)
+			if res then e:SetLabel(1)
+			return res
+		end
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 		local g=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,1,1,nil,target,e,tp,eg,ep,ev,re,r,rp,chk)
 		Duel.SendtoGrave(g,REASON_COST)
@@ -45,5 +60,6 @@ function s.stage2(e,tc,tp,sg,chk)
 			Duel.BreakEffect()
 			Duel.Recover(tp,lp,REASON_EFFECT)
 		end
+		e:SetLabel(0)
 	end
 end
