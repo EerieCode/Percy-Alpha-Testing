@@ -19,7 +19,7 @@ function s.initial_effect(c)
 end
 s.listed_series={0xef}
 function s.filter(c,e,tp)
-	return c:IsSetCard(0xef) and c:HasLevel()
+	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0xef) and c:HasLevel() and not c:IsCode(id)
 end
 function s.spfilter(c,e,tp)
 	return s.filter(c,e,tp) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
@@ -27,6 +27,9 @@ function s.spfilter(c,e,tp)
 end
 function s.athfilter(c,e,tp,lv)
 	return s.filter(c,e,tp) and c:IsAbleToHand() and not c:IsLevel(lv)
+end
+function s.spfilter2(c,e,tp)
+	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0xef) and c:HasLevel() and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_DECK,0,nil,e,tp)
@@ -36,16 +39,26 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_DECK)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
+function s.rescon(sg,e,tp,mg)
+	return sg:GetClassCount(Card.GetLevel)==#sg
+end
+function s.cancelcon(sg,e,tp,mg)
+	return sg:IsExists(s.spfilter2,nil,1,e,tp)
+end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(1-tp,LOCATION_MZONE,tp,LOCATION_REASON_TOFIELD)<=0 then return end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g1=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_HAND+LOCATION_DECK,0,1,1,nil,e,tp,lv)
-	if #g1>0 and Duel.SpecialSummon(g1,0,tp,1-tp,false,false,POS_FACEUP_DEFENSE)>0 then
-		 local g2=Duel.SelectMatchingCard(tp,s.athfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp,g1:GetFirst():GetLevel())
-		 if #g2>0 then
-			Duel.SendtoHand(g2,nil,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,g2)
-		end
+	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_HAND+LOCATION_DECK,0,nil,e,tp,lv)
+	Debug.Message(#g)
+	local sg=aux.SelectUnselectGroup(g,e,tp,2,2,s.rescon,1,tp,HINTMSG_SELECT,s.cancelcon,nil,true)
+	if #sg~=2 then return end
+	Duel.ConfirmCards(1-tp,sg)
+	Duel.ShuffleDeck(tp)
+	Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_SPSUMMON)
+	local cg=sg:Select(1-tp,1,1,nil):GetFirst()
+	if Duel.SpecialSummon(cg,0,tp,1-tp,false,false,POS_FACEUP_DEFENSE)>0 then
+		sg:RemoveCard(cg)
+		Duel.SendtoHand(sg,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,sg)
 	end
 	local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD)
