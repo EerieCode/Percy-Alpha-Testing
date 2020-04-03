@@ -6,13 +6,13 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	c:SetSPSummonOnce(id)
-	--Grants all the player's "Darklord" monsters piercing damage
+	--Grants all the player's fairy monsters piercing damage
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetCode(EFFECT_PIERCE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetTargetRange(LOCATION_MZONE,0)
-	e1:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0xef))
+	e1:SetTarget(aux.TargetBoolFunction(Card.IsRace,RACE_FAIRY))
 	c:RegisterEffect(e1)
 	--Pay 1000 LP; copy the effect of 1 "Darklord" S/T, then shuffle it into deck
 	local e2=Effect.CreateEffect(c)
