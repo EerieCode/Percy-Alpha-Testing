@@ -12,10 +12,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectMatchingCard(tp,Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,1,nil)
-	Duel.SendtoGrave(g,REASON_COST)
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,nil) end	
 end
 function s.filter(c)
 	return c:IsFaceup() and (c:GetAttack()>0 or c:GetDefense()>0) 
@@ -25,6 +22,11 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
+	-- requirement
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	local g=Duel.SelectMatchingCard(tp,Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,1,nil)
+	Duel.SendtoGrave(g,REASON_COST)
+	-- effect
 	if c:IsRelateToEffect(e) and c:IsFaceup() then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 		local g=Duel.SelectMatchingCard(tp,s.filter,tp,0,LOCATION_MZONE,1,1,nil)

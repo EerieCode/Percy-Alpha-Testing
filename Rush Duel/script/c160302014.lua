@@ -6,6 +6,7 @@ function s.initial_effect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_BATTLE_DESTROYED)
+	e1:SetProperty(EFFECT_FLAG_DELAY)
 	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.activate)
@@ -25,6 +26,7 @@ function s.chlimit(e,ep,tp)
 	return not e:IsHasType(EFFECT_TYPE_ACTIVATE)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	-- effect
 	local tc=Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_MZONE,0,1,nil)
 	if tc:IsRelateToEffect(e) then
 		Duel.BreakEffect()

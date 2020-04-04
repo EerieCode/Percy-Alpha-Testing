@@ -19,7 +19,6 @@ function s.costfilter(c,e,tp)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_HAND,0,1,e:GetHandler()) end
-	Duel.DiscardHand(tp,s.costfilter,1,1,REASON_COST)
 end
 function s.cfilter(c)
 	return c:IsFaceup() and c:IsLevelAbove(7) and c:IsRace(RACE_SPELLCASTER)
@@ -34,6 +33,9 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,dam)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	-- requirement
+	Duel.DiscardHand(tp,s.costfilter,1,1,REASON_COST)
+	-- effect
 	local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
 	local dam=Duel.GetFieldGroupCount(1-tp,LOCATION_ONFIELD,0)*300
 	Duel.Damage(p,dam,REASON_EFFECT)

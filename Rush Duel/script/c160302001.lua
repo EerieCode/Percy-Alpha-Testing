@@ -17,7 +17,6 @@ function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.atkcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDiscardDeckAsCost(tp,1) end
-	Duel.DiscardDeck(tp,1,REASON_COST)
 end
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
@@ -25,6 +24,9 @@ function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return con end
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
+	-- requirement
+	Duel.DiscardDeck(tp,1,REASON_COST)
+	-- effect
 	local c=e:GetHandler()
 	if c:IsFaceup() and c:IsRelateToEffect(e) then
 		c:RegisterFlagEffect(id,RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END,0,0)

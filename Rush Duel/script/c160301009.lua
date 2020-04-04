@@ -14,7 +14,6 @@ function s.initial_effect(c)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDiscardable,tp,LOCATION_HAND,0,1,nil) end
-	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD)
 end
 function s.thfilter(c)
 	return c:IsRace(RACE_DRAGON) and c:IsLevelAbove(5) and  c:IsType(TYPE_MONSTER) and c:IsAbleToHand()
@@ -24,6 +23,9 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_GRAVE) 
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	-- requirement
+	Duel.DiscardHand(tp,Card.IsDiscardable,1,1,REASON_COST+REASON_DISCARD)
+	-- effect
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_GRAVE,0,1,1,nil)
 	if #g>0 then

@@ -6,6 +6,7 @@ function s.initial_effect(c)
 	e1:SetCategory(CATEGORY_DESTROY)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e1:SetProperty(EFFECT_FLAG_DELAY)
 	e1:SetCondition(s.condition)
 	e1:SetCost(s.drcost)
 	e1:SetTarget(s.target)
@@ -17,9 +18,6 @@ function s.cfilter(c)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_GRAVE,0,4,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
-	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_GRAVE,0,4,4,nil)
-	Duel.SendtoDeck(g,nil,2,REASON_COST)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return tp~=Duel.GetTurnPlayer()
@@ -37,6 +35,11 @@ function s.chlimit(e,ep,tp)
 	return not e:IsHasType(EFFECT_TYPE_ACTIVATE)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	-- requirement
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
+	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_GRAVE,0,4,4,nil)
+	Duel.SendtoDeck(g,nil,4,REASON_COST)
+	-- effect
 	local g=Duel.GetMatchingGroup(s.filter,tp,0,LOCATION_MZONE,nil)
 	if #g>0 then
 		Duel.Destroy(g,REASON_EFFECT)

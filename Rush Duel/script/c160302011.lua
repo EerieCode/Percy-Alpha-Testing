@@ -15,7 +15,6 @@ function s.cfilter(c)
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,3,e:GetHandler()) end
-	Duel.DiscardHand(tp,s.cfilter,3,3,REASON_COST+REASON_DISCARD,e:GetHandler())
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
@@ -26,6 +25,9 @@ function s.spfilter(c,e,tp)
 	return c:IsRace(RACE_DRAGON) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	-- requirement
+	Duel.DiscardHand(tp,s.cfilter,3,3,REASON_COST+REASON_DISCARD,e:GetHandler())
+	-- effect
 	local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	local ct=Duel.Destroy(sg,REASON_EFFECT)
 	local g=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_GRAVE,0,nil,e,tp)

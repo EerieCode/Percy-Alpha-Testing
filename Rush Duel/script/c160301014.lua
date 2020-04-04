@@ -6,6 +6,7 @@ function s.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e1:SetProperty(EFFECT_FLAG_DELAY)
 	e1:SetCondition(s.condition)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.activate)
@@ -24,6 +25,7 @@ function s.chlimit(e,ep,tp)
 	return not e:IsHasType(EFFECT_TYPE_ACTIVATE)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	-- effect
 	local tc=Duel.GetAttacker()
 	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
 		local e1=Effect.CreateEffect(e:GetHandler())

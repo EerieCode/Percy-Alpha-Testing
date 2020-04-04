@@ -13,9 +13,6 @@ function s.initial_effect(c)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 if chk==0 then return Duel.IsExistingMatchingCard(Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectMatchingCard(tp,Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,1,nil)
-	Duel.SendtoGrave(g,REASON_COST)
 end
 function s.thfilter(c)
 	return c:IsType(TYPE_UNION) and c:IsAbleToHand()
@@ -25,6 +22,11 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_GRAVE)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	-- requirement
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	local g=Duel.SelectMatchingCard(tp,Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,1,nil)
+	Duel.SendtoGrave(g,REASON_COST)
+	-- effect
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_GRAVE,0,1,1,e:GetHandler())
 	if #g>0 then

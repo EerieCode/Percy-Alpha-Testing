@@ -16,13 +16,15 @@ function s.initial_effect(c)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsPlayerCanDiscardDeckAsCost(tp,1) end
-	Duel.DiscardDeck(tp,1,REASON_COST)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsType,tp,LOCATION_GRAVE,0,1,nil,TYPE_MONSTER) end
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
+	--requirement
+	Duel.DiscardDeck(tp,1,REASON_COST)
+	--effect
 	if c:IsRelateToEffect(e) and c:IsFaceup() then
 		local att=Duel.GetMatchingGroup(Card.IsType,tp,LOCATION_GRAVE,0,nil,TYPE_MONSTER):GetClassCount(Card.GetAttribute)
 		local e1=Effect.CreateEffect(c)

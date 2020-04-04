@@ -19,8 +19,6 @@ function s.cfilter(c,e,tp)
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,e:GetHandler(),e,tp) end
-	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
-	Duel.SendtoGrave(g,REASON_COST)
 end
 function s.filter(c,e,tp)
 	return c:IsRace(RACE_SPELLCASTER) and c:IsAttribute(ATTRIBUTE_DARK) and c:IsLevelAbove(7) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
@@ -31,6 +29,10 @@ function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	-- requirement
+	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
+	Duel.SendtoGrave(g,REASON_COST)
+	-- effect
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	local c=e:GetHandler()
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
