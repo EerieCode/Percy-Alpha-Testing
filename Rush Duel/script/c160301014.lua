@@ -1,8 +1,8 @@
+--火の粉のカーテン
 --Curtain of Sparks
--- 火の粉のカーテン
 local s,id=GetID()
 function s.initial_effect(c)
-	--Activate
+	--Opponent's attacking monster loses 500 ATK
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_ATTACK_ANNOUNCE)
@@ -25,9 +25,9 @@ function s.chlimit(e,ep,tp)
 	return not e:IsHasType(EFFECT_TYPE_ACTIVATE)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	-- effect
+	--Effect
 	local tc=Duel.GetAttacker()
-	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
+	if tc:IsRelateToBattle() and tc:IsFaceup() then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_UPDATE_ATTACK)
