@@ -1,7 +1,8 @@
--- Dragon Encounter - ドラゴン・エンカウント
+--ドラゴン・エンカウント
+--Dragon Encounter
 local s,id=GetID()
 function s.initial_effect(c)
-	--Activate
+	--If opponent normal summons, special summon 1 dragon monster from hand
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -11,14 +12,9 @@ function s.initial_effect(c)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
-	local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e2:SetType(EFFECT_TYPE_ACTIVATE)
+	--Same as above, but for special summons
+	local e2=e1:Clone()
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e2:SetProperty(EFFECT_FLAG_DELAY)
-	e2:SetCondition(s.condition)
-	e2:SetTarget(s.target)
-	e2:SetOperation(s.activate)
 	c:RegisterEffect(e2)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
@@ -37,7 +33,7 @@ function s.chlimit(e,ep,tp)
 	return not e:IsHasType(EFFECT_TYPE_ACTIVATE)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	-- effect
+	--Effect
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_HAND,0,1,1,nil,e,tp)
